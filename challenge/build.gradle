@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'maven-publish'
 }
 
 android {
@@ -35,6 +36,27 @@ android {
     composeOptions {
         kotlinCompilerVersion "1.6.21"
         kotlinCompilerExtensionVersion "1.2.0-rc01"
+    }
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = 'biz.ohrae.challenge'
+                artifactId = 'ZeroEyesChallenge'
+                version = '0.0.1'
+            }
+
+            debug(MavenPublication) {
+                // Applies the component for the debug build variant.
+                from components.debug
+                groupId = 'biz.ohrae.challenge'
+                artifactId = 'ZeroEyesChallenge'
+                version = '0.0.1'
+            }
+        }
     }
 }
 
