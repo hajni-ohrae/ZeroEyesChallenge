@@ -44,7 +44,7 @@ afterEvaluate {
         publications {
             release(MavenPublication) {
                 from components.release
-                groupId = 'biz.ohrae.challenge'
+                groupId = 'com.github.ohrae-git'
                 artifactId = 'ZeroEyesChallenge'
                 version = '0.0.1'
             }
@@ -52,7 +52,7 @@ afterEvaluate {
             debug(MavenPublication) {
                 // Applies the component for the debug build variant.
                 from components.debug
-                groupId = 'biz.ohrae.challenge'
+                groupId = 'com.github.ohrae-git'
                 artifactId = 'ZeroEyesChallenge'
                 version = '0.0.1'
             }
