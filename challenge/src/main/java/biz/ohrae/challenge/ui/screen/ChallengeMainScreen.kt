@@ -1,4 +1,4 @@
-package biz.ohrae.challenge.ui
+package biz.ohrae.challenge.ui.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

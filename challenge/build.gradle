@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'dagger.hilt.android.plugin'
     id 'kotlin-kapt'
     id 'maven-publish'
 }
@@ -17,6 +18,13 @@ android {
     }
 
     buildTypes {
+        debug {
+            kotlinOptions {
+                freeCompilerArgs += [
+                        '-opt-in=kotlin.RequiresOptIn',
+                ]
+            }
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -97,4 +105,19 @@ dependencies {
     kaptAndroidTest "com.google.dagger:hilt-compiler:$hilt_version"
     implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03'
     annotationProcessor 'androidx.hilt:hilt-compiler:1.0.0'
+
+    // accompanist
+    def accompanist = '0.24.11-rc'
+    implementation "com.google.accompanist:accompanist-pager:$accompanist"
+    implementation "com.google.accompanist:accompanist-appcompat-theme:$accompanist"
+    implementation "com.google.accompanist:accompanist-permissions:$accompanist"
+    implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist"
+    implementation "com.google.accompanist:accompanist-navigation-animation:$accompanist"
+    implementation "com.google.accompanist:accompanist-flowlayout:$accompanist"
+
+    // Timber
+    implementation 'com.jakewharton.timber:timber:5.0.1'
+
+    // Gson
+    implementation 'com.google.code.gson:gson:2.9.0'
 }
