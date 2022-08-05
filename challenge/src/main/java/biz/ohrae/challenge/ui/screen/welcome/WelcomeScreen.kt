@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.model.WelcomeScreenState
-import biz.ohrae.challenge.ui.components.commons.FlatTextButton
+import biz.ohrae.challenge.ui.components.button.FlatTextButton
 import biz.ohrae.challenge.ui.theme.DefaultBlack
 import biz.ohrae.challenge.ui.theme.appColor
 import com.google.accompanist.pager.ExperimentalPagerApi

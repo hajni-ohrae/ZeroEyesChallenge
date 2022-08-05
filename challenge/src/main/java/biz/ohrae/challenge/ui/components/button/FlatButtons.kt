@@ -1,4 +1,4 @@
-package biz.ohrae.challenge.ui.components.commons
+package biz.ohrae.challenge.ui.components.button
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -33,6 +33,12 @@ private fun ButtonGallery() {
             text = "다음",
             backgroundColor = appColor.AlertSuccessColor,
             enabled = false
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+        FlatTextButton(
+            modifier = Modifier.fillMaxWidth().aspectRatio(6.5f),
+            text = "취소",
+            backgroundColor = appColor.AlertWarningColor,
         )
     }
 }
