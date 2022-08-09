@@ -120,4 +120,9 @@ dependencies {
 
     // Gson
     implementation 'com.google.code.gson:gson:2.9.0'
+
+    // glide
+    implementation 'com.github.skydoves:landscapist-glide:1.6.0'
+    implementation 'com.github.bumptech.glide:annotations:4.13.2'
+    kapt 'com.github.bumptech.glide:compiler:4.13.0'
 }
