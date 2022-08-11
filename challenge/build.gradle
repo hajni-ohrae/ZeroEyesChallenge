@@ -10,6 +10,7 @@ android {
     compileSdk 32
 
     defaultConfig {
+        namespace "biz.ohrae.challenge_component"
         minSdk 23
         targetSdk 32
 
