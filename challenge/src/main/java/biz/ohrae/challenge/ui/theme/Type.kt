@@ -81,6 +81,10 @@ data class MyTypography(
         fontFamily = fonts,
         fontWeight = FontWeight.W900,
     ),
+    val bold: TextStyle = TextStyle(
+        fontFamily = fonts,
+        fontWeight = FontWeight.Bold,
+    ),
 )
 val myTypography = MyTypography()
 
