@@ -27,25 +27,21 @@ private fun CategorySurFaceGallery() {
             text = "무료",
             backgroundColor = Color(0x335c94ff),
             textColor = Color(0xff5c94ff)
-        ) {
-        }
+        )
         Spacer(modifier = Modifier.width(20.dp))
-
         CategorySurFace(
             modifier = Modifier,
             text = "사진인증",
             backgroundColor = Color(0xffdedede),
             textColor = Color(0xff7c7c7c)
-        ) {
-        }
+        )
         Spacer(modifier = Modifier.width(20.dp))
         CategorySurFace(
             modifier = Modifier,
             text = "18세미만 참여불가",
             backgroundColor = appColor.PointColor200,
             textColor = appColor.PointColor500
-        ) {
-        }
+        )
     }
 }
 
@@ -56,7 +52,6 @@ fun CategorySurFace(
     textStyle: TextStyle = myTypography.w700,
     backgroundColor: Color,
     textColor: Color,
-    content: @Composable () -> Unit
 ) {
     Surface(
         modifier = modifier,

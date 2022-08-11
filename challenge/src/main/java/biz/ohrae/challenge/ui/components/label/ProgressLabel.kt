@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 
 @Preview(
@@ -42,7 +43,8 @@ fun ProgressLabel(
             modifier = Modifier.padding(8.dp),
             text = text,
             style = myTypography.bold,
-            color = textColor
+            color = textColor,
+            fontSize = dpToSp(dp = 12.dp)
         )
     }
 }
