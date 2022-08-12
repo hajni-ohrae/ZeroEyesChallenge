@@ -18,12 +18,32 @@ import biz.ohrae.challenge.ui.theme.myTypography
 )
 @Composable
 private fun ProgressLabelGallery() {
-    Row(modifier = Modifier.fillMaxWidth()) {
-        ProgressLabel(text = "진행중", backgroundColor = Color(0xfff3f8ff), textColor = Color(0xff4985f8))
-        Spacer(modifier = Modifier.width(10.dp))
-        ProgressLabel(text = "모집중", backgroundColor = Color(0xffebfaf1), textColor = Color(0xff219653))
-        Spacer(modifier = Modifier.width(10.dp))
-        ProgressLabel(text = "완료", backgroundColor = Color(0xffdedede), textColor = Color(0xff6c6c6c))
+    Column {
+        Row(modifier = Modifier.fillMaxWidth()) {
+            ProgressLabel(
+                text = "진행중",
+                backgroundColor = Color(0xfff3f8ff),
+                textColor = Color(0xff4985f8)
+            )
+            Spacer(modifier = Modifier.width(10.dp))
+            ProgressLabel(
+                text = "모집중",
+                backgroundColor = Color(0xffebfaf1),
+                textColor = Color(0xff219653)
+            )
+            Spacer(modifier = Modifier.width(10.dp))
+            ProgressLabel(
+                text = "완료",
+                backgroundColor = Color(0xffdedede),
+                textColor = Color(0xff6c6c6c)
+            )
+        }
+        Spacer(modifier = Modifier.height(10.dp))
+        ProgressLabel(
+            text = "100% 환급 + 리워즈",
+            backgroundColor = Color(0xfff3f8ff),
+            textColor = Color(0xff4985f8)
+        )
     }
 }
 

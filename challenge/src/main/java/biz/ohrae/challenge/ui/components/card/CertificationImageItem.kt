@@ -12,22 +12,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.model.card.CertificationItemData
 import biz.ohrae.challenge.ui.components.avatar.Avatar
 import biz.ohrae.challenge.ui.theme.DefaultWhite
-import biz.ohrae.challenge.ui.theme.TextBlack
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
+import biz.ohrae.challenge_component.R
+import com.skydoves.landscapist.glide.GlideImage
 
 @Preview(
     showBackground = true,
     widthDp = 360
 )
 @Composable
-private fun CertificationItemGallery() {
+private fun CertificationImageItemGallery() {
     val list = listOf(
         CertificationItemData("", "아이오", 1, "2022.05.09", "누적 08:06"),
         CertificationItemData("", "아이오", 2, "2022.05.09", "누적 08:06"),
@@ -47,7 +49,7 @@ private fun CertificationItemGallery() {
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(list) { item ->
-                CertificationItem(item.userName, item.count, item.date, item.accumulate)
+                CertificationImageItem(item.imageUrl, item.userName, item.count, item.date)
             }
         }
     }
@@ -58,11 +60,11 @@ private fun CertificationItemGallery() {
     widthDp = 360
 )
 @Composable
-fun CertificationItem(
+fun CertificationImageItem(
+    imageUrl: String = "",
     username: String = "아이오",
     count: Int = 1,
     date: String = "2022.05.09",
-    accumulate: String = "누적 08:06"
 ) {
     Card(
         modifier = Modifier
@@ -72,6 +74,12 @@ fun CertificationItem(
         elevation = 0.dp,
         backgroundColor = Color(0xfff9f9f9)
     ) {
+        GlideImage(
+            modifier = Modifier.fillMaxSize(),
+            imageModel = imageUrl,
+            contentScale = ContentScale.Crop,
+            previewPlaceholder = R.drawable.img_example,
+        )
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -96,19 +104,20 @@ fun CertificationItem(
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         text = username,
-                        color = TextBlack,
+                        color = DefaultWhite,
                         style = myTypography.bold,
                         fontSize = dpToSp(dp = 12.dp)
                     )
                 }
-                Spacer(modifier = Modifier.fillMaxHeight(0.106f))
+                Spacer(modifier = Modifier.weight(1f))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
                 ) {
                     CategorySurFace(
-                        backgroundColor = Color(0x335c94ff),
-                        textColor = Color(0xff5c94ff),
+                        backgroundColor = Color(0x99121212),
+                        textColor = DefaultWhite,
+                        textStyle = myTypography.extraBold,
                         text = "${count}회"
                     )
                 }
@@ -116,20 +125,12 @@ fun CertificationItem(
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = date,
-                    color = TextBlack,
-                    style = myTypography.bold,
+                    color = DefaultWhite,
+                    style = myTypography.extraBold,
                     fontSize = dpToSp(dp = 16.dp),
                     textAlign = TextAlign.Center
                 )
                 Spacer(modifier = Modifier.fillMaxHeight(0.068f))
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = accumulate,
-                    color = TextBlack,
-                    style = myTypography.bold,
-                    fontSize = dpToSp(dp = 16.dp),
-                    textAlign = TextAlign.Center
-                )
             }
         }
     }

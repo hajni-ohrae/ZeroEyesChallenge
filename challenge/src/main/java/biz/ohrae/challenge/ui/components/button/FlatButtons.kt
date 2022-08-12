@@ -1,5 +1,6 @@
 package biz.ohrae.challenge.ui.components.button
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
@@ -22,23 +23,28 @@ private fun ButtonGallery() {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
-        FlatTextButton(
+        FlatButton(
             modifier = Modifier.fillMaxWidth().aspectRatio(6.5f),
             text = "확인",
             backgroundColor = appColor.AlertSuccessColor
         )
         Spacer(modifier = Modifier.height(20.dp))
-        FlatTextButton(
+        FlatButton(
             modifier = Modifier.fillMaxWidth().aspectRatio(6.5f),
             text = "다음",
             backgroundColor = appColor.AlertSuccessColor,
             enabled = false
         )
         Spacer(modifier = Modifier.height(20.dp))
-        FlatTextButton(
+        FlatButton(
             modifier = Modifier.fillMaxWidth().aspectRatio(6.5f),
             text = "취소",
             backgroundColor = appColor.AlertWarningColor,
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+        FlatBorderButton(
+            modifier = Modifier.fillMaxWidth().aspectRatio(6.5f),
+            text = "챌린저스 결과 보기",
         )
     }
 }
@@ -48,7 +54,7 @@ private fun ButtonGallery() {
     showBackground = true
 )
 @Composable
-fun FlatTextButton(
+fun FlatButton(
     modifier: Modifier = Modifier,
     text: String = "확인",
     textStyle: TextStyle = myTypography.w700,
@@ -63,6 +69,37 @@ fun FlatTextButton(
             contentColor = DefaultWhite
         ),
         shape = RoundedCornerShape(10.dp),
+        onClick = {
+            if (enabled) {
+                onClick()
+            }
+        }
+    ) {
+        Text(
+            text = text,
+            style = textStyle,
+            fontSize = dpToSp(dp = 14.dp)
+        )
+    }
+}
+
+
+@Composable
+fun FlatBorderButton(
+    modifier: Modifier = Modifier,
+    text: String = "확인",
+    textStyle: TextStyle = myTypography.bold,
+    enabled: Boolean = true,
+    onClick: () -> Unit = {}
+) {
+    TextButton(
+        modifier = modifier,
+        colors = ButtonDefaults.textButtonColors(
+            backgroundColor = DefaultWhite,
+            contentColor = TextBlack
+        ),
+        shape = RoundedCornerShape(24.dp),
+        border = BorderStroke(1.dp, Color(0xffc7c7c7)),
         onClick = {
             if (enabled) {
                 onClick()
