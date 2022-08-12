@@ -32,7 +32,12 @@ private fun ChallengesInParticipationCardGallery() {
         modifier = Modifier
             .fillMaxWidth()
     ) {
-        ChallengesInParticipationCard(title = "매일 6시간씩 한국사 공부",1,30)
+        ChallengesInParticipationCard(title = "매일 6시간씩 한국사 공부",1,30,"ongoing")
+        Spacer(modifier = Modifier.height(20.dp))
+        ChallengesInParticipationCard(title = "매일 6시간씩 한국사 공부",0,30,"recruiting")
+        Spacer(modifier = Modifier.height(20.dp))
+        ChallengesInParticipationCard(title = "매일 6시간씩 한국사 공부",10,30,"ongoing")
+
     }
 }
 
@@ -41,6 +46,7 @@ fun ChallengesInParticipationCard(
     title: String,
     count:Int,
     maxPeople:Int,
+    type:String
 ) {
     val achievementRate = (count.toDouble() / maxPeople.toDouble() * 100.0).roundToInt()
     Card(
@@ -59,8 +65,7 @@ fun ChallengesInParticipationCard(
             ) {
                 ProgressLabel(
                     text = "진행중",
-                    backgroundColor = Color(0xfff3f8ff),
-                    textColor = Color(0xff4985f8)
+                    type = type
                 )
                 Spacer(modifier = Modifier.width(10.dp))
 
