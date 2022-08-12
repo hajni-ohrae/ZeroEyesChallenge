@@ -21,7 +21,7 @@ import biz.ohrae.challenge.ui.theme.myTypography
     showBackground = true
 )
 @Composable
-private fun modifierGallery() {
+private fun DialogButtonGallery() {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
