@@ -24,21 +24,11 @@ private fun CategorySurFaceGallery() {
     Row(modifier = Modifier
         .background(DefaultWhite)) {
 
-        PaidFilterCard(
-            modifier = Modifier,
-            text = "전체",
-            select = true
-        ) {}
+        PaidFilterCard(modifier = Modifier, text = "전체", select = true)
         Spacer(modifier = Modifier.width(20.dp))
-        PaidFilterCard(
-            modifier = Modifier,
-            text = "유료",
-        ) {}
+        PaidFilterCard(modifier = Modifier, text = "유료",)
         Spacer(modifier = Modifier.width(20.dp))
-        PaidFilterCard(
-            modifier = Modifier,
-            text = "무료",
-        ) {}
+        PaidFilterCard(modifier = Modifier, text = "무료",)
     }
 }
 
@@ -48,7 +38,6 @@ fun PaidFilterCard(
     text: String = "무료",
     textStyle: TextStyle = myTypography.w700,
     select: Boolean = false,
-    content: @Composable () -> Unit
 ) {
     Card(
         modifier = modifier,
