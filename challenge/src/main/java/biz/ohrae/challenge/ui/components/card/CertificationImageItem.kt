@@ -115,8 +115,6 @@ fun CertificationImageItem(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     CategorySurFace(
-                        backgroundColor = Color(0x99121212),
-                        textColor = DefaultWhite,
                         textStyle = myTypography.extraBold,
                         text = "${count}회"
                     )

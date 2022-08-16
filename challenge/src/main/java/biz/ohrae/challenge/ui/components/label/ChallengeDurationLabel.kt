@@ -24,19 +24,19 @@ import biz.ohrae.challenge.ui.theme.myTypography
     widthDp = 360
 )
 @Composable
-private fun ProgressLabelGallery() {
+private fun ChallengeDurationLabelGallery() {
     Column(modifier = Modifier.fillMaxWidth()) {
-        StartCountLabel(
+        ChallengeDurationLabel(
             modifier = Modifier,
             dDay = "오늘부터 시작", week = "4주동안", numberOfTimes = "매일"
         )
         Spacer(modifier = Modifier.height(10.dp))
-        StartCountLabel(
+        ChallengeDurationLabel(
             modifier = Modifier.fillMaxWidth(),
             dDay = "내일부터 시", week = "3주동안", numberOfTimes = "주말만"
         )
         Spacer(modifier = Modifier.height(10.dp))
-        StartCountLabel(
+        ChallengeDurationLabel(
             modifier = Modifier.fillMaxWidth(),
             dDay = "D-3", week = "1주동안", numberOfTimes = "주6회"
         )
@@ -44,7 +44,7 @@ private fun ProgressLabelGallery() {
 }
 
 @Composable
-fun StartCountLabel(
+fun ChallengeDurationLabel(
     modifier: Modifier = Modifier,
     dDay: String,
     week: String,

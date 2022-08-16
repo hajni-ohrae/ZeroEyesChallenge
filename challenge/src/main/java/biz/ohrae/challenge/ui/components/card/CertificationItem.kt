@@ -107,8 +107,6 @@ fun CertificationItem(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     CategorySurFace(
-                        backgroundColor = Color(0x335c94ff),
-                        textColor = Color(0xff5c94ff),
                         text = "${count}회"
                     )
                 }
