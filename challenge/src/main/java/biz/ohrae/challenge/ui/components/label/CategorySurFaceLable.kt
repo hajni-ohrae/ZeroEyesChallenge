@@ -20,26 +20,27 @@ import biz.ohrae.challenge.ui.theme.*
 )
 @Composable
 private fun CategorySurFaceGallery() {
-    Row(
-        modifier = Modifier
-            .background(DefaultWhite)
-    ) {
+    Row(modifier = Modifier
+        .background(DefaultWhite)) {
         CategorySurFace(
             modifier = Modifier,
             text = "무료",
-            type = "price"
+            backgroundColor = Color(0x335c94ff),
+            textColor = Color(0xff5c94ff)
         )
         Spacer(modifier = Modifier.width(20.dp))
         CategorySurFace(
             modifier = Modifier,
             text = "사진인증",
-            type = "certified"
+            backgroundColor = Color(0xffdedede),
+            textColor = Color(0xff7c7c7c)
         )
         Spacer(modifier = Modifier.width(20.dp))
         CategorySurFace(
             modifier = Modifier,
             text = "18세미만 참여불가",
-            type = "ageLimit"
+            backgroundColor = Color(0x33c27247),
+            textColor = Color(0xffc27247)
         )
     }
 }
@@ -49,26 +50,9 @@ fun CategorySurFace(
     modifier: Modifier = Modifier,
     text: String = "무료",
     textStyle: TextStyle = myTypography.w700,
-    type: String = "",
+    backgroundColor: Color,
+    textColor: Color,
 ) {
-    val backgroundColor = when (type) {
-        "price" -> Color(0x335c94ff)
-        "certified" -> Color(0xffdedede)
-        "ageLimit" -> Color(0x33c27247)
-        else -> {
-            Color(0xfff3f8ff)
-        }
-    }
-
-    val textColor = when (type) {
-        "price" -> Color(0xff5c94ff)
-        "certified" -> Color(0xff7c7c7c)
-        "ageLimit" -> Color(0xffc27247)
-        else -> {
-            Color(0xff4985f8)
-        }
-    }
-
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(22.dp),

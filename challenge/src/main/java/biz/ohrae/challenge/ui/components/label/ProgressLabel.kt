@@ -22,23 +22,27 @@ private fun ProgressLabelGallery() {
         Row(modifier = Modifier.fillMaxWidth()) {
             ProgressLabel(
                 text = "진행중",
-                type = "ongoing",
+                backgroundColor = Color(0xfff3f8ff),
+                textColor = Color(0xff4985f8),
             )
             Spacer(modifier = Modifier.width(10.dp))
             ProgressLabel(
                 text = "모집중",
-                type = "recruiting"
+                backgroundColor = Color(0xffebfaf1),
+                textColor = Color(0xff219653),
             )
             Spacer(modifier = Modifier.width(10.dp))
             ProgressLabel(
                 text = "완료",
-                type = "completion"
+                backgroundColor = Color(0xffdedede),
+                textColor = Color(0xff6c6c6c),
             )
         }
         Spacer(modifier = Modifier.height(10.dp))
         ProgressLabel(
             text = "100% 환급 + 리워즈",
-            type = "rewards"
+            backgroundColor = Color(0xfff3f8ff),
+            textColor = Color(0xff4985f8)
         )
     }
 }
@@ -47,28 +51,9 @@ private fun ProgressLabelGallery() {
 fun ProgressLabel(
     modifier: Modifier = Modifier,
     text: String,
-    type: String
+    backgroundColor: Color,
+    textColor: Color,
 ) {
-    val backgroundColor = when (type) {
-        "ongoing" -> Color(0xfff3f8ff)
-        "recruiting" -> Color(0xffebfaf1)
-        "completion" -> Color(0xffdedede)
-        "rewards" -> Color(0xfff3f8ff)
-        else -> {
-            Color(0xfff3f8ff)
-        }
-    }
-
-    val textColor = when (type) {
-        "ongoing" -> Color(0xff4985f8)
-        "recruiting" -> Color(0xff219653)
-        "completion" -> Color(0xff6c6c6c)
-        "rewards" -> Color(0xff4985f8)
-        else -> {
-            Color(0xff4985f8)
-        }
-    }
-
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(6.dp),
