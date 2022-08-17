@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.model.list_item.RankItemData
-import biz.ohrae.challenge.ui.components.avatar.Avatar
+import biz.ohrae.challenge.ui.components.avatar.circularAvatar
 import biz.ohrae.challenge.ui.theme.DefaultBlack
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
@@ -63,7 +63,7 @@ fun RankItem(
                 .fillMaxHeight(0.72f),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Avatar(
+            circularAvatar(
                 modifier = Modifier
                     .fillMaxHeight()
                     .aspectRatio(1f)

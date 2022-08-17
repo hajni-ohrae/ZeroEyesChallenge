@@ -34,6 +34,9 @@ private fun AvatarGallery() {
         Avatar(
             modifier = Modifier.size(40.dp)
         )
+        circularAvatar(
+            modifier = Modifier.size(40.dp)
+        )
         AvatarWithNumber(
             modifier = Modifier.size(40.dp),
             number = "1",
@@ -55,6 +58,27 @@ private fun AvatarGallery() {
 
 @Composable
 fun Avatar(
+    modifier: Modifier = Modifier,
+    url: String = "https://avatars.githubusercontent.com/u/27887884?v=4",
+) {
+    GlideImage(
+        modifier = modifier,
+        imageModel = url,
+        contentScale = ContentScale.Crop,
+        contentDescription = "avatar",
+        previewPlaceholder = R.drawable.icon_user,
+        failure = {
+            Image(
+                painter = painterResource(id = R.drawable.icon_user),
+                modifier = modifier,
+                contentDescription = "avatar_fail"
+            )
+        }
+    )
+}
+
+@Composable
+fun circularAvatar(
     modifier: Modifier = Modifier,
     url: String = "https://avatars.githubusercontent.com/u/27887884?v=4",
     backgroundColor: Color? = GrayColor7

@@ -12,11 +12,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import biz.ohrae.challenge.model.card.CertificationItemData
 import biz.ohrae.challenge.model.card.ChallengeItemData
 import biz.ohrae.challenge.ui.components.avatar.Avatar
+import biz.ohrae.challenge.ui.components.avatar.circularAvatar
 import biz.ohrae.challenge.ui.components.label.ChallengeDurationLabel
 import biz.ohrae.challenge.ui.theme.*
 
@@ -27,9 +28,9 @@ import biz.ohrae.challenge.ui.theme.*
 @Composable
 private fun ChallengeCardItemGallery() {
     val list = listOf(
-        ChallengeItemData("매일 6시간씩 한국사 공부","하진", "오늘부터 시작", "4주동안", "주말만", 17),
+        ChallengeItemData("매일 6시간씩 한국사 공부", "하진", "오늘부터 시작", "4주동안", "주말만", 17),
         ChallengeItemData("7월 한달 | 완벽한 스마트 학습 25회 달성하기", "하진", "오늘부터 시작", "4주동안", "주말만", 17),
-        ChallengeItemData("매일 6시간씩 한국사 공부","하진", "오늘부터 시작", "4주동안", "주말만", 17),
+        ChallengeItemData("매일 6시간씩 한국사 공부", "하진", "오늘부터 시작", "4주동안", "주말만", 17),
         ChallengeItemData("매일 6시간씩 한국사 공부", "하진", "오늘부터 시작", "4주동안", "주말만", 17)
     )
     Column(modifier = Modifier.background(GrayColor5)) {
@@ -65,7 +66,8 @@ fun ChallengeCardItem(
         modifier = Modifier
             .fillMaxWidth(),
         shape = RoundedCornerShape(10.dp),
-        elevation = 0.dp,) {
+        elevation = 0.dp,
+    ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Row() {
                 CategorySurFace(
@@ -99,22 +101,38 @@ fun ChallengeCardItem(
             )
             Spacer(modifier = Modifier.height(19.dp))
 
-            Row (
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight(0.1875f),
+                horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Avatar(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    text = userName,
-                    style = myTypography.bold,
-                    fontSize = dpToSp(dp = 12.dp)
-                )
+                Row() {
+                    circularAvatar(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        modifier = Modifier.align(Alignment.CenterVertically),
+                        text = userName,
+                        textAlign = TextAlign.Center,
+                        style = myTypography.bold,
+                        fontSize = dpToSp(dp = 12.dp)
+                    )
+                }
+                Row() {
+                    Avatar()
+                    Text(
+                        modifier = Modifier.align(Alignment.CenterVertically),
+                        text = personnel.toString(),
+                        textAlign = TextAlign.Center,
+                        style = myTypography.bold,
+                        fontSize = dpToSp(dp = 12.dp)
+                    )
+                }
+
             }
 
         }

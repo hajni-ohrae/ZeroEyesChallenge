@@ -17,7 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.model.card.CertificationItemData
-import biz.ohrae.challenge.ui.components.avatar.Avatar
+import biz.ohrae.challenge.ui.components.avatar.circularAvatar
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
@@ -96,7 +96,7 @@ fun CertificationImageItem(
                         .fillMaxHeight(0.1875f),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Avatar(
+                    circularAvatar(
                         modifier = Modifier
                             .fillMaxHeight()
                             .aspectRatio(1f)
