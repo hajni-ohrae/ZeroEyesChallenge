@@ -25,7 +25,8 @@ import biz.ohrae.challenge.ui.theme.myTypography
 )
 @Composable
 private fun ChallengeDurationLabelGallery() {
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(
+        modifier = Modifier.fillMaxWidth()) {
         ChallengeDurationLabel(
             modifier = Modifier,
             dDay = "오늘부터 시작", week = "4주동안", numberOfTimes = "매일"
