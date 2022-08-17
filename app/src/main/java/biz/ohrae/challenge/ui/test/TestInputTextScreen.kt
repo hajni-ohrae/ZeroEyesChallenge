@@ -23,6 +23,7 @@ fun TestInputTextScreen() {
 
     var bankNumber by remember { mutableStateOf("") }
     var authNumber by remember { mutableStateOf("") }
+    var titleText by remember { mutableStateOf("") }
     var longText by remember { mutableStateOf("") }
 
     Column(
@@ -67,6 +68,19 @@ fun TestInputTextScreen() {
             value = authNumber,
             onValueChange = {
                 authNumber = it
+            }
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        TextBox(
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(5f),
+            placeholder = "예) 주 2회 자전거 타고 인증하기",
+            maxLength = 60,
+            singleLine = true,
+            value = titleText,
+            onValueChange = {
+                titleText = it
             }
         )
         Spacer(modifier = Modifier.height(10.dp))

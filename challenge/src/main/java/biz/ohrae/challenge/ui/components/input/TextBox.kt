@@ -35,6 +35,17 @@ private fun TextBoxGallery() {
         TextBox(
             modifier = Modifier
                 .fillMaxWidth()
+                .aspectRatio(5f),
+            placeholder = "예) 주 2회 자전거 타고 인증하기",
+            maxLength = 60,
+            singleLine = true,
+            value = "",
+            onValueChange = {}
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        TextBox(
+            modifier = Modifier
+                .fillMaxWidth()
                 .aspectRatio(1.122f),
             placeholder = "예) 공부하는 책과 함께 손이 나온 사진 찍기\n" +
                     " \n" +
@@ -57,6 +68,7 @@ fun TextBox(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     maxLength: Int = Int.MAX_VALUE,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    singleLine: Boolean = false,
     value: String,
     onValueChange: (String) -> Unit,
 ) {
@@ -70,7 +82,8 @@ fun TextBox(
         ) {
             Column(modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp, 20.dp)
+                .padding(16.dp, 13.dp),
+                verticalArrangement = if (singleLine) Arrangement.Center else Arrangement.Top
             ) {
                 BasicTextField(
                     value = value,
@@ -79,7 +92,7 @@ fun TextBox(
                             onValueChange(it)
                         }
                     },
-                    singleLine = false,
+                    singleLine = singleLine,
                     keyboardActions = keyboardActions,
                     keyboardOptions = keyboardOptions,
                     decorationBox = @Composable { innerTextField ->
