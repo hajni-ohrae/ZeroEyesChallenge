@@ -1,6 +1,8 @@
 package biz.ohrae.challenge.ui
 
+import android.os.Build
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Column
@@ -34,6 +36,11 @@ class MainActivity : AppCompatActivity() {
             override fun onClickTestEditText() {
                 navController.navigate(NavScreen.InputTextTest.route)
             }
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        } else {
+            window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN or WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         }
 
         setContent {
