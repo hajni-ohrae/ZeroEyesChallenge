@@ -45,7 +45,7 @@ fun ChallengeFilter(
             verticalAlignment = Alignment.CenterVertically) {
             Text(text = "필터")
             TextButton( onClick = { /*TODO*/ }) {
-                Text(text = "취소",color = Color(0xff747474))
+                Text( text = "취소",color = Color(0xff747474))
             }
         }
     }
