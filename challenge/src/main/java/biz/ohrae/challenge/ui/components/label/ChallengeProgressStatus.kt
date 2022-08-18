@@ -15,6 +15,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.ui.theme.DefaultWhite
+import biz.ohrae.challenge.ui.theme.myTypography
 
 @Preview(
     showBackground = true,
@@ -36,7 +37,7 @@ fun ChallengeProgressStatus(
     modifier: Modifier = Modifier,
     textColor: Color = Color(0xff6c6c6c),
     text: String = "",
-    borderStroke: BorderStroke,
+    borderStroke: BorderStroke = BorderStroke(0.dp, Color(0xffececec)),
     backgroundColor : Color = DefaultWhite
 ) {
     Surface(
@@ -47,6 +48,7 @@ fun ChallengeProgressStatus(
         Text(
             modifier = Modifier.padding(0.dp, 12.dp),
             textAlign = TextAlign.Center,
+            style = myTypography.bold,
             text = text,
             color = textColor
         )
