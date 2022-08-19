@@ -29,14 +29,14 @@ import biz.ohrae.challenge.ui.theme.myTypography
 )
 @Composable
 private fun ChallengeDetailsTitleGallery() {
-    val challengeItemData = ChallengeItemData("매일 6시간씩 한국사 공부", "하진", "오늘부터 시작", "4주동안", "주말만", 17)
+    val challengeItemData = ChallengeItemData.mock()
 
     Column(modifier = Modifier.background(DefaultWhite)) {
         ChallengeDetailsTitle(
             challengeItemData.personnel,
             challengeItemData.title,
-            "4월11일(월)",
-            "4월24일(일)"
+            challengeItemData.startDate,
+            challengeItemData.endDate
         )
     }
 }

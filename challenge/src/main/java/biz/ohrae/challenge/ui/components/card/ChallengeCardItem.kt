@@ -28,10 +28,10 @@ import biz.ohrae.challenge.ui.theme.*
 @Composable
 private fun ChallengeCardItemGallery() {
     val list = listOf(
-        ChallengeItemData("매일 6시간씩 한국사 공부", "하진", "오늘부터 시작", "4주동안", "주말만", 17),
-        ChallengeItemData("7월 한달 | 완벽한 스마트 학습 25회 달성하기", "하진", "오늘부터 시작", "4주동안", "주말만", 17),
-        ChallengeItemData("매일 6시간씩 한국사 공부", "하진", "오늘부터 시작", "4주동안", "주말만", 17),
-        ChallengeItemData("매일 6시간씩 한국사 공부", "하진", "오늘부터 시작", "4주동안", "주말만", 17)
+        ChallengeItemData("매일 6시간씩 한국사 공부", "하진", "오늘부터 시작", "4주동안", "주말만", 17, "4월11일(월)", "4월24일(일)"),
+        ChallengeItemData("7월 한달 | 완벽한 스마트 학습 25회 달성하기", "하진", "오늘부터 시작", "4주동안", "주말만", 17, "4월11일(월)", "4월24일(일)"),
+        ChallengeItemData("매일 6시간씩 한국사 공부", "하진", "오늘부터 시작", "4주동안", "주말만", 17, "4월11일(월)", "4월24일(일)"),
+        ChallengeItemData("매일 6시간씩 한국사 공부", "하진", "오늘부터 시작", "4주동안", "주말만", 17, "4월11일(월)", "4월24일(일)")
     )
     Column(modifier = Modifier.background(GrayColor5)) {
         LazyVerticalGrid(
