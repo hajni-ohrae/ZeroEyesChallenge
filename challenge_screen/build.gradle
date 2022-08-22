@@ -103,4 +103,6 @@ dependencies {
     implementation landscapistGlide
     implementation glideAnnotations
     kapt glideCompiler
+
+    implementation project(':challenge')
 }
