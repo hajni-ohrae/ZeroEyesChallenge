@@ -43,7 +43,54 @@ private fun ChallengeDurationLabelGallery() {
         )
     }
 }
+@Composable
+fun ChallengeDurationLabel2(
+    modifier: Modifier = Modifier,
+    dDay: String,
+    week: String,
+    numberOfTimes: String,
+) {
+    Surface(
+        modifier = modifier,
+        shape = RoundedCornerShape(6.dp),
+        color = Color(0xfff5f5f5)
+    ) {
+        Row(
+            modifier = Modifier.padding(20.dp,12.dp)) {
+            Text(
+                modifier = Modifier.weight(3F),
+                text = week,
+                textAlign = TextAlign.Center,
+                style = myTypography.bold,
+                fontSize = dpToSp(dp = 13.dp)
+            )
+            Divider(modifier = Modifier
+                .height(12.dp)
+                .width(1.dp)
+                .background(Color(0xfffafafa)))
+            Text(
+                modifier = Modifier.weight(3F),
+                text = numberOfTimes,
+                textAlign = TextAlign.Center,
+                style = myTypography.bold,
+                fontSize = dpToSp(dp = 13.dp)
+            )
+            Divider(modifier = Modifier
+                .height(12.dp)
+                .width(1.dp)
+                .background(Color(0xfffafafa)))
+            Text(
+                modifier = Modifier.weight(4F),
+                text = dDay,
+                textAlign = TextAlign.Center,
+                color = appColor.PointColor,
+                style = myTypography.bold,
+                fontSize = dpToSp(dp = 13.dp)
+            )
+        }
 
+    }
+}
 @Composable
 fun ChallengeDurationLabel(
     modifier: Modifier = Modifier,
