@@ -1,7 +1,4 @@
-package biz.ohrae.challenge.model.card
-
-import android.os.Parcelable
-import java.util.ArrayList
+package biz.ohrae.challenge.model.list_item
 
 data class ChallengeItemData(
     val title: String,

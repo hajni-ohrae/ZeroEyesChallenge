@@ -32,3 +32,8 @@ class MainActivity: AppCompatActivity() {
         }
     }
 }
+
+
+sealed class ChallengeNavScreen(val route: String) {
+    object ChallengeMain : ChallengeNavScreen("ChallengeMain")
+}

@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import biz.ohrae.challenge.model.card.ChallengeItemData
+import biz.ohrae.challenge.model.list_item.ChallengeItemData
 import biz.ohrae.challenge.ui.components.avatar.Avatar
 import biz.ohrae.challenge.ui.components.avatar.circularAvatar
 import biz.ohrae.challenge.ui.components.label.ChallengeDurationLabel

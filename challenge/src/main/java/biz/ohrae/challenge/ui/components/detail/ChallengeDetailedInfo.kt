@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import biz.ohrae.challenge.model.card.ChallengeItemData
+import biz.ohrae.challenge.model.list_item.ChallengeItemData
 import biz.ohrae.challenge.ui.components.label.ChallengeDurationLabel2
 import biz.ohrae.challenge.ui.theme.dpToSp
 
