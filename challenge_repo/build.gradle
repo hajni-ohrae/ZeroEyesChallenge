@@ -1,6 +1,5 @@
 plugins {
     id 'com.android.library'
-    id 'kotlin-parcelize'
     id 'org.jetbrains.kotlin.android'
     id 'dagger.hilt.android.plugin'
     id 'kotlin-kapt'
@@ -19,13 +18,6 @@ android {
     }
 
     buildTypes {
-        debug {
-            kotlinOptions {
-                freeCompilerArgs += [
-                        '-opt-in=kotlin.RequiresOptIn',
-                ]
-            }
-        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -38,10 +30,6 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    buildFeatures {
-        viewBinding true
-        compose true
-    }
     composeOptions {
         kotlinCompilerVersion kotlin_compiler_version
         kotlinCompilerExtensionVersion kotlin_compiler_extension_version
@@ -49,24 +37,13 @@ android {
 }
 
 dependencies {
-    // androidX
+// androidX
     implementation androidXCore
     implementation androidXAppCompat
     implementation androidMaterial
     testImplementation junit
     androidTestImplementation junitExt
     androidTestImplementation espressoCore
-
-    // compose
-    implementation composeUI
-    implementation composeMaterial
-    implementation composeUIToolingPreView
-    implementation composeRuntimeLiveData
-    implementation composeUITooling
-    debugImplementation composeUITooling
-    runtimeOnly composeRuntime
-    debugImplementation customView
-    debugImplementation customViewPoolingContainer
 
     // lifecycle
     implementation lifecycleRuntimeKtx
@@ -86,25 +63,21 @@ dependencies {
     kaptAndroidTest daggerHiltCompiler
     androidTestImplementation daggerHiltAndroidTesting
 
-    // accompanist
-    implementation accompanistPager
-    implementation accompanistTheme
-    implementation accompanistPermissions
-    implementation accompanistSystemUIController
-    implementation accompanistNavigationAnimation
-    implementation accompanistFlowLayout
+    // retrofit2
+    implementation retrofit2
+    implementation okhttp3
+    implementation retrofit2GsonConverter
+    implementation retrofit2ScalarConverter
+    implementation okhttp3Logging
+
+    // firebase
+    implementation platform(firebaseBom)
+    implementation firebaseCrashlytics
+    implementation firebaseAnalytics
 
     // Timber
     implementation timber
 
     // Gson
     implementation gson
-
-    // glide
-    implementation landscapistGlide
-    implementation glideAnnotations
-    kapt glideCompiler
-
-    implementation project(':challenge')
-    implementation project(':challenge_repo')
 }

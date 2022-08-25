@@ -39,7 +39,7 @@ buildscript {
         lifecycleViewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 
         /** hilt **/
-        hilt_version = '2.41'
+        hilt_version = '2.42'
         hiltAndroid = "com.google.dagger:hilt-android:$hilt_version"
         hiltNavigationCompose = "androidx.hilt:hilt-navigation-compose:1.0.0"
         androidXHiltLifecycleViewModel = 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03'
@@ -63,6 +63,21 @@ buildscript {
         accompanistNavigationAnimation = "com.google.accompanist:accompanist-navigation-animation:$accompanist"
         accompanistFlowLayout = "com.google.accompanist:accompanist-flowlayout:$accompanist"
 
+        /** retrofit2 **/
+        retrofit2_version = '2.9.0'
+        okhttp_version = "5.0.0-alpha.6"
+        retrofit2 = "com.squareup.retrofit2:retrofit:$retrofit2_version"
+        okhttp3 = "com.squareup.okhttp3:okhttp:$okhttp_version"
+        retrofit2GsonConverter = "com.squareup.retrofit2:converter-gson:$retrofit2_version"
+        retrofit2ScalarConverter = "com.squareup.retrofit2:converter-scalars:$retrofit2_version"
+        okhttp3Logging = "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+
+        /** Firebase **/
+        firebase_version = "30.3.1"
+        firebaseBom = "com.google.firebase:firebase-bom:$firebase_version"
+        firebaseCrashlytics = 'com.google.firebase:firebase-crashlytics-ktx'
+        firebaseAnalytics = 'com.google.firebase:firebase-analytics-ktx'
+
         /** timber **/
         timber = 'com.jakewharton.timber:timber:5.0.1'
 
@@ -78,9 +93,11 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.2.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.21"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10"
         classpath "com.github.dcendents:android-maven-gradle-plugin:2.1"
-        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.40.5'
+        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.42'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.1'
+        classpath 'com.google.gms:google-services:4.3.13'
     }
 }
 
@@ -89,6 +106,8 @@ plugins {
     id 'com.android.application' version '7.2.2' apply false
     id 'com.android.library' version '7.2.2' apply false
     id 'org.jetbrains.kotlin.android' version '1.7.10' apply false
+    id 'org.jetbrains.kotlin.kapt' version '1.7.10' apply false
+    id 'org.jetbrains.kotlin.plugin.parcelize' version '1.7.10' apply false
     id 'com.github.dcendents.android-maven' version '2.1' apply false
 }
 

@@ -24,3 +24,4 @@ rootProject.name = "ZeroEyesChallenge"
 include ':app'
 include ':challenge'
 include ':challenge_screen'
+include ':challenge_repo'

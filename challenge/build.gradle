@@ -100,7 +100,7 @@ dependencies {
     // hilt
     implementation hiltAndroid
     implementation hiltNavigationCompose
-    implementation androidXHiltLifecycleViewModel
+//    implementation androidXHiltLifecycleViewModel
     annotationProcessor daggerHiltAndroidCompiler
     annotationProcessor androidXHiltCompiler
     kapt daggerHiltCompiler

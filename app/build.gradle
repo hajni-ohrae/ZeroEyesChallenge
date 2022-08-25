@@ -62,7 +62,7 @@ dependencies {
     // hilt
     implementation hiltAndroid
     implementation hiltNavigationCompose
-    implementation androidXHiltLifecycleViewModel
+//    implementation androidXHiltLifecycleViewModel
     annotationProcessor daggerHiltAndroidCompiler
     annotationProcessor androidXHiltCompiler
     kapt daggerHiltCompiler
@@ -70,9 +70,22 @@ dependencies {
     kaptAndroidTest daggerHiltCompiler
     androidTestImplementation daggerHiltAndroidTesting
 
+    // retrofit2
+    implementation retrofit2
+    implementation okhttp3
+    implementation retrofit2GsonConverter
+    implementation retrofit2ScalarConverter
+    implementation okhttp3Logging
+
+    // firebase
+    implementation platform(firebaseBom)
+    implementation firebaseCrashlytics
+    implementation firebaseAnalytics
+
     // timber
     implementation timber
 
     implementation project(':challenge')
     implementation project(':challenge_screen')
+    implementation project(':challenge_repo')
 }
