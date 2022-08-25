@@ -36,7 +36,9 @@ class MainActivity : AppCompatActivity() {
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            ChallengeMainScreen(challengeData = challengeData)
+            if (challengeData != null) {
+                ChallengeMainScreen(challengeData = challengeData)
+            }
         }
     }
 

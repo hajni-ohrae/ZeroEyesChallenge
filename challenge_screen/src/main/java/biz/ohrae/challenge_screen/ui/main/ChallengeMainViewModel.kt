@@ -18,10 +18,6 @@ class ChallengeMainViewModel @Inject constructor(private val challengeMainRepo: 
     private val _challengeData = MutableLiveData<ChallengeData>()
     val challengeData get() = _challengeData
 
-    init {
-        _challengeData.value = ChallengeData.mock()
-    }
-
     fun getChallengeList() {
         viewModelScope.launch {
             challengeMainRepo.getChallenges().flowOn(Dispatchers.IO).collect {
