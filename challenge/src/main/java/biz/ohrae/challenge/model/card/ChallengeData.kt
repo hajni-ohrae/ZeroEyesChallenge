@@ -14,5 +14,6 @@ data class ChallengeData (
                 ChallengeItemData.mock(),
                 ChallengeItemData.mock()
             ),
+        )
     }
 }
