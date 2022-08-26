@@ -53,7 +53,7 @@ sealed class NetworkResponse<out T : Any, out U : Any> {
     data class UnknownError(val request: Request, val error: Throwable?) : NetworkResponse<Nothing, Nothing>() {
         init {
             Timber.e("UnknownError")
-            reportNetworkError(request, error)
+//            reportNetworkError(request, error)
         }
     }
 

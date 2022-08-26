@@ -1,14 +1,11 @@
 package biz.ohrae.challenge_repo.data.remote
 
 import com.google.gson.JsonObject
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface ApiService {
     @POST(Routes.LOGIN)
-    suspend fun login(@Body body: JsonObject?): NetworkResponse<Result, Error>
+    suspend fun login(@Body body: JsonObject?): NetworkResponse<Result2, Error>
 
     @GET(Routes.AUTH_TOKEN_CHECK)
     suspend fun authTokenCheck(): NetworkResponse<Result, Error>
@@ -16,8 +13,15 @@ interface ApiService {
     @GET(Routes.AUTH_TOKEN_REFRESH)
     suspend fun authTokenRefresh(): NetworkResponse<Result, Error>
 
-    @GET(Routes.GET_CHALLENGE)
-    suspend fun getChallenge(): NetworkResponse<Result, Error>
+    @GET(Routes.GET_ALL_CHALLENGE)
+    suspend fun getAllChallenge(
+        @Header("x-access-token") accessToken: String,
+        @Query("payment_type") paymentType: String,
+        @Query("verification_period_type") verificationPeriodType: String,
+        @Query("per_week") perWeek: String? = null,
+        @Query("period") period: String? = null,
+        @Query("is_adult_only") isAdultOnly: String? = null,
+        ): NetworkResponse<Result, Error>
 
     @POST(Routes.CREATE_CHALLENGE)
     suspend fun createChallenge(@Body body: JsonObject?): NetworkResponse<Result, Error>
@@ -44,16 +48,25 @@ interface ApiService {
     suspend fun setWarning(@Body body: JsonObject?): NetworkResponse<Result, Error>
 
     @POST(Routes.CANCEL_WARNING)
-    suspend fun cancelWarning(@Path("redcard_id") redCardId: String, @Body body: JsonObject?): NetworkResponse<Result, Error>
+    suspend fun cancelWarning(
+        @Path("redcard_id") redCardId: String,
+        @Body body: JsonObject?
+    ): NetworkResponse<Result, Error>
 
     @GET(Routes.GET_ALL_BLOCK)
     suspend fun getAllBlock(): NetworkResponse<Result, Error>
 
     @POST(Routes.SET_BLOCK_USER)
-    suspend fun setBlockUser(@Path("user_id") userId: String, @Body body: JsonObject?): NetworkResponse<Result, Error>
+    suspend fun setBlockUser(
+        @Path("user_id") userId: String,
+        @Body body: JsonObject?
+    ): NetworkResponse<Result, Error>
 
     @POST(Routes.CANCEL_BLOCK_USER)
-    suspend fun cancelBlockUser(@Path("user_id") userId: String, @Body body: JsonObject?): NetworkResponse<Result, Error>
+    suspend fun cancelBlockUser(
+        @Path("user_id") userId: String,
+        @Body body: JsonObject?
+    ): NetworkResponse<Result, Error>
 
     @POST(Routes.CREATE_USER)
     suspend fun createUser(@Body body: JsonObject?): NetworkResponse<Result, Error>

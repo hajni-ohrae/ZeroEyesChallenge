@@ -2,12 +2,19 @@ package biz.ohrae.challenge_repo.ui.main
 
 import biz.ohrae.challenge_repo.data.remote.ApiService
 import biz.ohrae.challenge_repo.data.remote.NetworkResponse
+import biz.ohrae.challenge_repo.model.user.User
+import biz.ohrae.challenge_repo.util.prefs.SharedPreference
+import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import timber.log.Timber
 import javax.inject.Inject
 
-class UserRepo @Inject constructor(private val apiService: ApiService) {
+class UserRepo @Inject constructor(
+    private val apiService: ApiService,
+    private val gson: Gson,
+    private val prefs: SharedPreference
+) {
     suspend fun login() {
         val jsonObject = JsonObject()
         val serviceIds = JsonArray()
@@ -23,13 +30,17 @@ class UserRepo @Inject constructor(private val apiService: ApiService) {
             is NetworkResponse.Success -> {
                 val isSuccess = response.body.success
                 if (isSuccess) {
-
+                    val user = gson.fromJson(response.body.dataset, User::class.java)
+                    Timber.e("user : ${gson.toJson(user)}")
+                    prefs.setUserData(user)
                 } else {
                     Timber.e("error code : ${response.body.code}")
+                    if (response.body.code == "3002") {
+                        createServiceUser()
+                    }
                 }
             }
             else -> {
-
             }
         }
     }
@@ -47,5 +58,18 @@ class UserRepo @Inject constructor(private val apiService: ApiService) {
         jsonObject.add("service_ids", serviceIds)
 
         val response = apiService.createUserService(jsonObject)
+
+        when (response) {
+            is NetworkResponse.Success -> {
+                val isSuccess = response.body.success
+                if (isSuccess) {
+                    Timber.e("data : ${response.body.dataset}")
+                } else {
+
+                }
+            }
+            else -> {
+            }
+        }
     }
 }
