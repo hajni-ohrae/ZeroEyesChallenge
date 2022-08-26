@@ -109,9 +109,7 @@ fun ChallengeCardItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Row() {
-                    circularAvatar(
-                        modifier = Modifier
-                            .fillMaxHeight()
+                    circularAvatar(Modifier.size(20.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
@@ -123,7 +121,7 @@ fun ChallengeCardItem(
                     )
                 }
                 Row() {
-                    Avatar()
+                    Avatar(Modifier.size(20.dp))
                     Text(
                         modifier = Modifier.align(Alignment.CenterVertically),
                         text = personnel.toString(),

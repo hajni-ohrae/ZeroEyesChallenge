@@ -3,8 +3,11 @@ package biz.ohrae.challenge_screen.ui.main
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -33,8 +36,11 @@ class MainActivity : AppCompatActivity() {
     private fun BuildContent() {
         val challengeData by viewModel.challengeData.observeAsState()
 
+//        Headerr()
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
         ) {
             if (challengeData != null) {
                 ChallengeMainScreen(challengeData = challengeData)
