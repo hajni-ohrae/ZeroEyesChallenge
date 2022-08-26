@@ -38,9 +38,7 @@ class MainActivity : AppCompatActivity() {
 
 //        Headerr()
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
+            modifier = Modifier.fillMaxSize()
         ) {
             if (challengeData != null) {
                 ChallengeMainScreen(challengeData = challengeData)
