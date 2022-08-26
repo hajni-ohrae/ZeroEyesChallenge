@@ -3,6 +3,7 @@ package biz.ohrae.challenge_repo.di
 import biz.ohrae.challenge_repo.data.remote.ApiService
 import biz.ohrae.challenge_repo.ui.main.ChallengeMainRepo
 import biz.ohrae.challenge_repo.ui.main.UserRepo
+import biz.ohrae.challenge_repo.ui.register.RegisterRepo
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import com.google.gson.Gson
 import dagger.Module
@@ -32,5 +33,15 @@ object RepositoryModule {
         prefs: SharedPreference
     ): UserRepo {
         return UserRepo(apiService, gson, prefs)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideRegisterRepo(
+        apiService: ApiService,
+        gson: Gson,
+        prefs: SharedPreference
+    ): RegisterRepo {
+        return RegisterRepo(apiService, gson, prefs)
     }
 }
