@@ -8,8 +8,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import biz.ohrae.challenge.model.card.ChallengeData
+import biz.ohrae.challenge.model.MainScreenState
 import biz.ohrae.challenge.ui.components.card.ChallengeCardItem
+import biz.ohrae.challenge.ui.components.card.MainTopCard
 import biz.ohrae.challenge.ui.components.card.PaidFilterCard
 
 @Preview(
@@ -20,8 +21,9 @@ import biz.ohrae.challenge.ui.components.card.PaidFilterCard
 @Composable
 fun ChallengeMainScreen(
     select: Boolean = true,
-    challengeData: ChallengeData? = null
+    mainScreenState: MainScreenState? = null,
 ) {
+    Spacer(modifier = Modifier.height(16.dp))
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -33,11 +35,10 @@ fun ChallengeMainScreen(
         ) {
             item {
                 ItemHeader(
-                    challengeData = challengeData!!,
-                    select = select
+                    mainScreenState = mainScreenState
                 )
             }
-            items(challengeData?.challengeList!!) { item ->
+            items(mainScreenState?.challengeList!!) { item ->
                 ChallengeCardItem(
                     item.title,
                     item.userName,
@@ -54,21 +55,17 @@ fun ChallengeMainScreen(
 @Composable
 fun ItemHeader(
     select: Boolean = true,
-    challengeData: ChallengeData
+    mainScreenState: MainScreenState? = null,
 ) {
+
     Column {
         LazyRow(
             modifier = Modifier,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(challengeData.challengeList) { item ->
-                ChallengeCardItem(
-                    item.title,
-                    item.userName,
-                    item.dDay,
-                    item.week,
-                    item.numberOfTimes,
-                    item.personnel
+            items(mainScreenState!!.topBannerList) { item ->
+                MainTopCard(
+                    content = item.content
                 )
             }
         }
@@ -78,7 +75,7 @@ fun ItemHeader(
 
 @Composable
 fun FilterCard(select: Boolean = true) {
-    Row() {
+    Row(modifier = Modifier.padding(0.dp, 22.dp)) {
         PaidFilterCard(modifier = Modifier, text = "전체", select = select)
         Spacer(modifier = Modifier.width(4.dp))
         PaidFilterCard(modifier = Modifier, text = "유료")

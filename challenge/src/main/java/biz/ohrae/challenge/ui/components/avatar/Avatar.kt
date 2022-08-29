@@ -61,19 +61,10 @@ fun Avatar(
     modifier: Modifier = Modifier,
     url: String = "https://avatars.githubusercontent.com/u/27887884?v=4",
 ) {
-    GlideImage(
-        modifier = modifier,
-        imageModel = url,
-        contentScale = ContentScale.Crop,
-        contentDescription = "avatar",
-        previewPlaceholder = R.drawable.icon_user,
-        failure = {
-            Image(
-                painter = painterResource(id = R.drawable.icon_user),
-                modifier = modifier,
-                contentDescription = "avatar_fail"
-            )
-        }
+    Image(
+        painter = painterResource(id = R.drawable.icon_user),
+        modifier = modifier.clip(CircleShape),
+        contentDescription = "avatar_fail"
     )
 }
 
@@ -83,10 +74,21 @@ fun circularAvatar(
     url: String = "https://avatars.githubusercontent.com/u/27887884?v=4",
     backgroundColor: Color? = GrayColor7
 ) {
-    Image(
-        painter = painterResource(id = R.drawable.icon_user),
-        modifier = modifier.clip(CircleShape),
-        contentDescription = "avatar"
+    GlideImage(
+        modifier = modifier
+            .clip(CircleShape)
+            .background(backgroundColor!!),
+        imageModel = url,
+        contentScale = ContentScale.Crop,
+        contentDescription = "avatar",
+        previewPlaceholder = R.drawable.icon_user,
+        failure = {
+            Image(
+                painter = painterResource(id = R.drawable.icon_user),
+                modifier = modifier.clip(CircleShape),
+                contentDescription = "avatar_fail"
+            )
+        }
     )
 }
 

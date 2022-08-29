@@ -28,10 +28,46 @@ import biz.ohrae.challenge.ui.theme.*
 @Composable
 private fun ChallengeCardItemGallery() {
     val list = listOf(
-        ChallengeItemData("매일 6시간씩 한국사 공부", "하진", "오늘부터 시작", "4주동안", "주말만", 17, "4월11일(월)", "4월24일(일)"),
-        ChallengeItemData("7월 한달 | 완벽한 스마트 학습 25회 달성하기", "하진", "오늘부터 시작", "4주동안", "주말만", 17, "4월11일(월)", "4월24일(일)"),
-        ChallengeItemData("매일 6시간씩 한국사 공부", "하진", "오늘부터 시작", "4주동안", "주말만", 17, "4월11일(월)", "4월24일(일)"),
-        ChallengeItemData("매일 6시간씩 한국사 공부", "하진", "오늘부터 시작", "4주동안", "주말만", 17, "4월11일(월)", "4월24일(일)")
+        ChallengeItemData(
+            "매일 6시간씩 한국사 공부",
+            "하진",
+            "오늘부터 시작",
+            "4주동안",
+            "주말만",
+            17,
+            "4월11일(월)",
+            "4월24일(일)"
+        ),
+        ChallengeItemData(
+            "7월 한달 | 완벽한 스마트 학습 25회 달성하기",
+            "하진",
+            "오늘부터 시작",
+            "4주동안",
+            "주말만",
+            17,
+            "4월11일(월)",
+            "4월24일(일)"
+        ),
+        ChallengeItemData(
+            "매일 6시간씩 한국사 공부",
+            "하진",
+            "오늘부터 시작",
+            "4주동안",
+            "주말만",
+            17,
+            "4월11일(월)",
+            "4월24일(일)"
+        ),
+        ChallengeItemData(
+            "매일 6시간씩 한국사 공부",
+            "하진",
+            "오늘부터 시작",
+            "4주동안",
+            "주말만",
+            17,
+            "4월11일(월)",
+            "4월24일(일)"
+        )
     )
     Column(modifier = Modifier.background(GrayColor5)) {
         LazyVerticalGrid(
@@ -66,9 +102,11 @@ fun ChallengeCardItem(
         modifier = Modifier
             .fillMaxWidth(),
         shape = RoundedCornerShape(10.dp),
+        backgroundColor = DefaultWhite,
         elevation = 0.dp,
     ) {
-        Column(modifier = Modifier.padding(20.dp)) {
+        Column(modifier = Modifier.padding(20.dp)
+            .background(DefaultWhite)) {
             Row() {
                 CategorySurFace(
                     modifier = Modifier,
@@ -93,7 +131,7 @@ fun ChallengeCardItem(
             }
             Text(
                 modifier = Modifier.padding(0.dp, 12.dp), text = title,
-                fontSize = dpToSp(dp = 16.dp),
+                fontSize = dpToSp(dp = 16.dp), color = DefaultBlack,
             )
             ChallengeDurationLabel(
                 modifier = Modifier.fillMaxWidth(),
@@ -109,7 +147,8 @@ fun ChallengeCardItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Row() {
-                    circularAvatar(Modifier.size(20.dp)
+                    circularAvatar(
+                        Modifier.size(20.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
@@ -117,7 +156,7 @@ fun ChallengeCardItem(
                         text = userName,
                         textAlign = TextAlign.Center,
                         style = myTypography.bold,
-                        fontSize = dpToSp(dp = 12.dp)
+                        fontSize = dpToSp(dp = 12.dp), color = DefaultBlack
                     )
                 }
                 Row() {
@@ -127,7 +166,7 @@ fun ChallengeCardItem(
                         text = personnel.toString(),
                         textAlign = TextAlign.Center,
                         style = myTypography.bold,
-                        fontSize = dpToSp(dp = 12.dp)
+                        fontSize = dpToSp(dp = 12.dp), color = DefaultBlack
                     )
                 }
 

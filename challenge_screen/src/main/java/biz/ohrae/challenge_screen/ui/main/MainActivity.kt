@@ -34,14 +34,13 @@ class MainActivity : AppCompatActivity() {
 
     @Composable
     private fun BuildContent() {
-        val challengeData by viewModel.challengeData.observeAsState()
-
-//        Headerr()
+        val mainScreenState by viewModel.mainScreenState.observeAsState()
+//        Header()
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            if (challengeData != null) {
-                ChallengeMainScreen(challengeData = challengeData)
+            if (mainScreenState != null) {
+                ChallengeMainScreen(mainScreenState = mainScreenState)
             }
         }
     }

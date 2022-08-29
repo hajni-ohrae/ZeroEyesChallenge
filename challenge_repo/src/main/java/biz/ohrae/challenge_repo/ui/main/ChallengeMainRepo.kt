@@ -1,6 +1,6 @@
 package biz.ohrae.challenge_repo.ui.main
 
-import biz.ohrae.challenge.model.card.ChallengeData
+import biz.ohrae.challenge.model.MainScreenState
 import biz.ohrae.challenge_repo.data.remote.ApiService
 import biz.ohrae.challenge_repo.data.remote.NetworkResponse
 import biz.ohrae.challenge_repo.model.FlowResult
@@ -28,7 +28,7 @@ class ChallengeMainRepo @Inject constructor(
         }
 
         return flow {
-            emit(FlowResult(ChallengeData.mock(), "", ""))
+            emit(FlowResult(MainScreenState.mock(), "", ""))
         }
     }
 }

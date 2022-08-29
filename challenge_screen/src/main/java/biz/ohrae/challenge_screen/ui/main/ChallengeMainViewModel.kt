@@ -3,7 +3,7 @@ package biz.ohrae.challenge_screen.ui.main
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import biz.ohrae.challenge.model.card.ChallengeData
+import biz.ohrae.challenge.model.MainScreenState
 import biz.ohrae.challenge_repo.ui.main.ChallengeMainRepo
 import biz.ohrae.challenge_repo.ui.main.UserRepo
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
@@ -22,8 +22,8 @@ class ChallengeMainViewModel @Inject constructor(
     private val prefs: SharedPreference,
     private val gson: Gson
 ) : ViewModel() {
-    private val _challengeData = MutableLiveData<ChallengeData>()
-    val challengeData get() = _challengeData
+    private val _mainScreenState = MutableLiveData<MainScreenState>()
+    val mainScreenState get() = _mainScreenState
 
     init {
         login()
@@ -41,7 +41,7 @@ class ChallengeMainViewModel @Inject constructor(
         viewModelScope.launch {
             challengeMainRepo.getChallenges().flowOn(Dispatchers.IO).collect {
                 Timber.e("result : ${gson.toJson(it.data)}")
-                _challengeData.value = it.data as ChallengeData
+                _mainScreenState.value = it.data as MainScreenState
             }
         }
     }
