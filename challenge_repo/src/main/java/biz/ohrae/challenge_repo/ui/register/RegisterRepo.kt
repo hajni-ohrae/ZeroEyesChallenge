@@ -1,10 +1,14 @@
 package biz.ohrae.challenge_repo.ui.register
 
+import biz.ohrae.challenge.model.MainScreenState
 import biz.ohrae.challenge_repo.data.remote.ApiService
 import biz.ohrae.challenge_repo.data.remote.NetworkResponse
+import biz.ohrae.challenge_repo.model.FlowResult
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class RegisterRepo @Inject constructor(
