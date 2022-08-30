@@ -62,12 +62,12 @@ fun ChallengeOpenScreen(
             fontSize = dpToSp(dp = 12.dp),
             color = DefaultBlack
         )
-        MyDropDown(
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(7.1f),
-            label = "1주동안",
-            list = list)
+//        MyDropDown(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .aspectRatio(7.1f),
+//            label = "1주동안",
+//            list = list)
     }
 
 }
