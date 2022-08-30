@@ -49,6 +49,7 @@ fun ChallengeMainScreen(
                 )
             }
         }
+
     }
 }
 

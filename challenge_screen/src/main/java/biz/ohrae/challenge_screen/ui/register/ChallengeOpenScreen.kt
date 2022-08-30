@@ -1,6 +1,5 @@
 package biz.ohrae.challenge_screen.ui.register
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import biz.ohrae.challenge.model.register.ChallengeOpenState
 import biz.ohrae.challenge.ui.components.dropdown.MyDropDown
 import biz.ohrae.challenge.ui.theme.DefaultBlack
 import biz.ohrae.challenge.ui.theme.dpToSp
@@ -24,6 +24,7 @@ import biz.ohrae.challenge.ui.theme.myTypography
 )
 @Composable
 fun ChallengeOpenScreen(
+    challengeOpenState: ChallengeOpenState = ChallengeOpenState.mock()
 ) {
     Column(modifier = Modifier.padding(24.dp, 0.dp)) {
         Text(
@@ -62,12 +63,20 @@ fun ChallengeOpenScreen(
             fontSize = dpToSp(dp = 12.dp),
             color = DefaultBlack
         )
-//        MyDropDown(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .aspectRatio(7.1f),
-//            label = "1주동안",
-//            list = list)
+        MyDropDown(
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(7.1f),
+            label = "1주동안",
+            list = challengeOpenState.authCycleList
+        )
+        MyDropDown(
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(7.1f),
+            label = "1주동안",
+            list = challengeOpenState.authFrequencyList
+        )
     }
 
 }
