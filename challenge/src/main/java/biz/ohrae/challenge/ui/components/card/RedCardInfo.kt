@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -19,7 +18,6 @@ import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 
-
 @Preview(
     showBackground = true,
     widthDp = 360
@@ -27,20 +25,28 @@ import biz.ohrae.challenge.ui.theme.myTypography
 @Composable
 private fun RedCardInfoGallery() {
     Column() {
-        RedCardInfo()
+        RedCardInfo(
+            modifier = Modifier
+                .fillMaxWidth().aspectRatio(13f)
+        )
     }
 }
 
 @Composable
-fun RedCardInfo() {
-    Card(
-        shape = RoundedCornerShape(10.dp),
-        elevation = 0.dp,
-    ) {
-        Column(modifier = Modifier.background(Color(0xffffeee5))) {
+fun RedCardInfo(
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier) {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            shape = RoundedCornerShape(10.dp),
+        ) {
             Row(
                 modifier = Modifier
-                    .padding(10.dp), verticalAlignment = Alignment.CenterVertically
+                    .fillMaxSize()
+                    .background(Color(0xffffeee5))
+                    .padding(8.dp, 0.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Surface(
                     modifier = Modifier
@@ -56,13 +62,14 @@ fun RedCardInfo() {
                     )
                 }
                 Spacer(modifier = Modifier.width(6.dp))
-                Text(text = "인증 규정을 지키지 않을 경우 레드카드가 발급됩니다", style = myTypography.bold,
-                    fontSize = dpToSp(dp = 12.dp))
+                Text(
+                    text = "인증 규정을 지키지 않을 경우 레드카드가 발급됩니다",
+                    style = myTypography.bold,
+                    fontSize = dpToSp(dp = 12.dp)
+                )
                 Spacer(modifier = Modifier.width(5.dp))
                 Text(text = ">", style = myTypography.bold)
-
             }
         }
-
     }
 }

@@ -1,4 +1,4 @@
-package biz.ohrae.challenge.ui.components.Filter
+package biz.ohrae.challenge.ui.components.filter
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -7,7 +7,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -16,14 +15,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import biz.ohrae.challenge.ui.components.card.CertificationItem
-import biz.ohrae.challenge.ui.components.card.PaidFilterCard
-import biz.ohrae.challenge.ui.components.list_item.ProgressRatioItem
 import biz.ohrae.challenge.ui.theme.DefaultWhite
-import biz.ohrae.challenge.ui.theme.GrayColor5
-import biz.ohrae.challenge.ui.theme.TextBlack
 import biz.ohrae.challenge.ui.theme.myTypography
-import java.util.ArrayList
 
 @Preview(
     widthDp = 360,
