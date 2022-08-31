@@ -1,8 +1,6 @@
 package biz.ohrae.challenge_screen.ui.register
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.RadioButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -26,10 +24,13 @@ import biz.ohrae.challenge.ui.theme.myTypography
 @Composable
 fun RegisterAuthScreen(
 ) {
-    Column() {
-        Text(text = "챌린지 인증")
+    Column(modifier = Modifier.padding(24.dp,0.dp)) {
+        Text(text = "챌린지 인증", style = myTypography.w700, fontSize = dpToSp(dp = 20.dp))
+        Spacer(modifier = Modifier.height(16.dp))
         biz.ohrae.challenge.ui.components.button.RadioButton("Item", "사진인증", "즉석 촬영으로만 인증이 가능합니다")
-        biz.ohrae.challenge.ui.components.button.RadioButton("Item", "사진인증", "즉석 촬영으로만 인증이 가능합니다")
-        biz.ohrae.challenge.ui.components.button.RadioButton("Item", "사진인증", "즉석 촬영으로만 인증이 가능합니다")
+        Spacer(modifier = Modifier.height(16.dp))
+        biz.ohrae.challenge.ui.components.button.RadioButton("Item", "출석인증 (자동)", "입실 시 자동 인증됩니다")
+        Spacer(modifier = Modifier.height(16.dp))
+        biz.ohrae.challenge.ui.components.button.RadioButton("Item", "이용시간 인증 (자동)", "입실~퇴실 시간으로 자동 인증됩니다")
     }
 }

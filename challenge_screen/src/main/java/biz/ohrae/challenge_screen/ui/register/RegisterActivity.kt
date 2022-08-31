@@ -3,12 +3,17 @@ package biz.ohrae.challenge_screen.ui.register
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
+import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
+import biz.ohrae.challenge.ui.theme.DefaultWhite
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,9 +35,15 @@ class RegisterActivity : AppCompatActivity() {
     @Composable
     private fun BuildContent() {
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .background(DefaultWhite)
         ) {
+            BackButton()
+            Column(modifier = Modifier.padding(24.dp,0.dp)) {
+                ChallengeOpenScreen()
 
+            }
         }
     }
 
