@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.model.register.ChallengeOpenState
+import biz.ohrae.challenge.ui.components.card.ChallengeStartEndDateCard
 import biz.ohrae.challenge.ui.components.dropdown.MyDropDown
 import biz.ohrae.challenge.ui.theme.DefaultBlack
 import biz.ohrae.challenge.ui.theme.DefaultWhite
@@ -88,6 +89,8 @@ fun ChallengeOpenScreen(
         label = "",
         list = challengeOpenState.authFrequencyList
         )
+        Spacer(modifier = Modifier.height(28.dp))
+        ChallengeStartEndDateCard("챌린지 종료일")
     }
 
 }

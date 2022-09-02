@@ -17,10 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import biz.ohrae.challenge.ui.theme.DefaultBlack
-import biz.ohrae.challenge.ui.theme.TextBlack
-import biz.ohrae.challenge.ui.theme.dpToSp
-import biz.ohrae.challenge.ui.theme.myTypography
+import biz.ohrae.challenge.ui.theme.*
 
 @Preview(
     showBackground = true,
@@ -31,7 +28,7 @@ import biz.ohrae.challenge.ui.theme.myTypography
 private fun TextBoxGallery() {
     Column(
         modifier = Modifier
-            .background(DefaultBlack)
+            .background(DefaultWhite)
             .fillMaxWidth()
             .padding(24.dp, 0.dp)
     ) {

@@ -63,6 +63,13 @@ private fun ButtonGallery() {
                 .aspectRatio(6f),
             text = "참여 신청"
         )
+        Spacer(modifier = Modifier.height(20.dp))
+        FlatBottomButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(6f),
+            text = "참여 신청"
+        )
     }
 }
 
@@ -157,6 +164,40 @@ fun FlatDoubleButton(
                 contentDescription = "icon_like"
             )
         }
+        Button(
+            modifier = Modifier
+                .fillMaxHeight()
+                .weight(1f),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color(0xff003865),
+                contentColor = DefaultWhite
+            ),
+            shape = RectangleShape,
+            onClick = {
+                onClick()
+            }
+        ) {
+            Text(
+                text = text,
+                style = textStyle,
+                fontSize = dpToSp(dp = 18.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun FlatBottomButton(
+    modifier: Modifier = Modifier,
+    text: String = "확인",
+    textStyle: TextStyle = myTypography.bold,
+    enabled: Boolean = true,
+    onClick: () -> Unit = {},
+    onClickLike: () -> Unit = {}
+) {
+    Row(
+        modifier = modifier,
+    ) {
         Button(
             modifier = Modifier
                 .fillMaxHeight()
