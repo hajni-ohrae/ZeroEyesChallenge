@@ -2,7 +2,9 @@ package biz.ohrae.challenge_screen.ui.register
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -35,11 +37,8 @@ import biz.ohrae.challenge.ui.theme.myTypography
 fun ChallengeGoals(
     challengeOpenState: ChallengeOpenState = ChallengeOpenState.mock()
 ) {
-    val selectedValue = remember { mutableStateOf("") }
-    val focusManager = LocalFocusManager.current
-
-    val maxChar = 60
-    Column(modifier = Modifier.background(DefaultWhite)) {
+   val scrollState = rememberScrollState()
+    Column(modifier = Modifier.background(DefaultWhite).verticalScroll(scrollState)) {
         Text(
             text = "챌린지 목표",
             style = myTypography.w500,

@@ -16,4 +16,5 @@ class ChallengeRegisterViewModel @Inject constructor(
     private val prefs: SharedPreference,
     private val gson: Gson
 ) : ViewModel() {
+
 }

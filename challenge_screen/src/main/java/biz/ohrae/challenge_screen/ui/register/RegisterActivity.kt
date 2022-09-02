@@ -11,6 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge.ui.theme.DefaultWhite
@@ -19,6 +23,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class RegisterActivity : AppCompatActivity() {
     private lateinit var viewModel: ChallengeRegisterViewModel
+
+    private lateinit var navController: NavHostController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,26 +40,53 @@ class RegisterActivity : AppCompatActivity() {
 
     @Composable
     private fun BuildContent() {
+        navController = rememberNavController()
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(DefaultWhite)
         ) {
-            BackButton()
+            BackButton(onBack = {onBack()})
             Column(modifier = Modifier.padding(24.dp,0.dp)) {
-                ChallengeOpenScreen()
+                Navigation()
 
             }
         }
     }
+    @Composable
+    private fun Navigation() {
+        NavHost(
+            navController = navController,
+            startDestination = ChallengeRegisterNavScreen.ChallengeGoals.route
+        ) {
+            composable(ChallengeRegisterNavScreen.ChallengeGoals.route) {
+                ChallengeGoals()
+            }
+            composable(ChallengeRegisterNavScreen.ChallengeOpen.route){
+                ChallengeOpenScreen()
+            }
 
+            composable(ChallengeRegisterNavScreen.ChallengerRecruitment.route){
+                ChallengerRecruitment()
+            }
+
+            composable(ChallengeRegisterNavScreen.RegisterAuth.route){
+                RegisterAuthScreen()
+            }
+
+
+        }
+    }
     private fun init() {
+    }
+    private fun onBack() {
+        finish()
     }
 }
 
 sealed class ChallengeRegisterNavScreen(val route: String) {
-    object ChallengeRegister1 : ChallengeRegisterNavScreen("ChallengeRegister1")
-    object ChallengeRegister2 : ChallengeRegisterNavScreen("ChallengeRegister2")
-    object ChallengeRegister3 : ChallengeRegisterNavScreen("ChallengeRegister3")
-    object ChallengeRegister4 : ChallengeRegisterNavScreen("ChallengeRegister4")
+    object ChallengeGoals : ChallengeRegisterNavScreen("ChallengeGoals")
+    object ChallengeOpen : ChallengeRegisterNavScreen("ChallengeOpen")
+    object ChallengerRecruitment : ChallengeRegisterNavScreen("ChallengerRecruitment")
+    object RegisterAuth : ChallengeRegisterNavScreen("RegisterAuth")
 }
