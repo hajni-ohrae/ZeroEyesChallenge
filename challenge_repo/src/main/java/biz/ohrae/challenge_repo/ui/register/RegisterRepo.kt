@@ -17,20 +17,20 @@ class RegisterRepo @Inject constructor(
     private val gson: Gson,
     private val prefs: SharedPreference
 ) {
-    suspend fun createChallenge(challengeData: ChallengeData) {
+    suspend fun createChallenge(userId: String, challengeData: ChallengeData): Flow<FlowResult> {
         val jsonObject = JsonObject()
         val response = apiService.createChallenge(jsonObject)
-        jsonObject.addProperty("customer_id", challengeData.user_id)
-        jsonObject.addProperty("customer_id", challengeData.goal)
-        jsonObject.addProperty("customer_id", challengeData.subject)
-        jsonObject.addProperty("customer_id", challengeData.apply_start_date)
-        jsonObject.addProperty("customer_id", challengeData.apply_end_date)
-        jsonObject.addProperty("customer_id", challengeData.start_date)
-        jsonObject.addProperty("customer_id", challengeData.min_deposit_amount)
-        jsonObject.addProperty("customer_id", challengeData.free_rewards)
-        jsonObject.addProperty("customer_id", challengeData.free_winners)
-        jsonObject.addProperty("customer_id", challengeData.free_rewards_offer_way)
-        jsonObject.addProperty("customer_id", challengeData.is_verification_photo)
+        jsonObject.addProperty("user_id", userId)
+        jsonObject.addProperty("goal", challengeData.goal)
+        jsonObject.addProperty("subject", challengeData.subject)
+        jsonObject.addProperty("apply_start_date", challengeData.apply_start_date)
+        jsonObject.addProperty("apply_end_date", challengeData.apply_end_date)
+        jsonObject.addProperty("start_date", challengeData.start_date)
+        jsonObject.addProperty("min_deposit_amount", challengeData.min_deposit_amount)
+        jsonObject.addProperty("free_rewards", challengeData.free_rewards)
+        jsonObject.addProperty("free_winners", challengeData.free_winners)
+        jsonObject.addProperty("free_rewards_offer_way", challengeData.free_rewards_offer_way)
+        jsonObject.addProperty("is_verification_photo", challengeData.is_verification_photo)
         jsonObject.addProperty("is_verification_checkin", challengeData.is_verification_checkin)
         jsonObject.addProperty("is_verification_time", challengeData.is_verification_time)
         jsonObject.addProperty("is_adult_only", challengeData.is_adult_only)
@@ -42,13 +42,20 @@ class RegisterRepo @Inject constructor(
         when (response) {
             is NetworkResponse.Success -> {
                 val isSuccess = response.body.success
-                if (isSuccess) {
-
+                return if (isSuccess) {
+                    flow {
+                        emit(FlowResult(true, "", ""))
+                    }
                 } else {
-
+                    flow {
+                        emit(FlowResult(false, response.body.code, response.body.message))
+                    }
                 }
             }
             else -> {
+                return flow {
+                    emit(FlowResult(null, "", ""))
+                }
             }
         }
     }

@@ -135,7 +135,7 @@ fun ChallengeGoals(
                     .fillMaxWidth()
                     .aspectRatio(6f),
                 text = "개설완료",
-                onClick = { clickListener?.onClickChallengeCreate("") }
+                onClick = { clickListener?.onClickChallengeCreate(authTitle,precautions) }
             )
         }
     }

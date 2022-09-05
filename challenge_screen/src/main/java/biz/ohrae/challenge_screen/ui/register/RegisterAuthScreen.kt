@@ -28,6 +28,7 @@ import biz.ohrae.challenge.ui.theme.myTypography
 fun RegisterAuthScreen(
     challengeOpenState: ChallengeOpenState = ChallengeOpenState.mock(),
     clickListener: RegisterClickListener? = null,
+
 ) {
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(challengeOpenState.challengeRadioOptions[0].radioTitleEn) }
 
@@ -36,7 +37,7 @@ fun RegisterAuthScreen(
         Spacer(modifier = Modifier.height(16.dp))
         Column {
             challengeOpenState.challengeRadioOptions.forEach { radioOption ->
-                Row(                                                
+                Row(
                     Modifier
                         .fillMaxWidth()
                         .selectable(
@@ -83,7 +84,7 @@ fun RegisterAuthScreen(
                 .fillMaxWidth()
                 .aspectRatio(6f),
             text = "다음",
-            onClick = { clickListener?.onClickAuthNext("") }
+            onClick = { clickListener?.onClickAuthNext(selectedOption) }
         )
     }
 
