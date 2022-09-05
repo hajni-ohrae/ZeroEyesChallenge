@@ -4,9 +4,9 @@ import biz.ohrae.challenge.model.list_item.ChallengeItemData
 
 data class MainScreenState(
     val challengeList: List<ChallengeItemData>,
-    val topBannerList:List<TopBannerData>,
-    val authCycleList:List<AuthCycle>,
-    ) {
+    val topBannerList: List<TopBannerData>,
+    val authCycleList: List<AuthCycle>,
+) {
     companion object {
         fun mock() = MainScreenState(
             challengeList = listOf(
@@ -42,8 +42,5 @@ data class TopBannerData(
 }
 
 data class AuthCycle(
-    val cycle:String
-)
-data class AuthFrequency(
-    val frequency:String
+    val cycle: String
 )

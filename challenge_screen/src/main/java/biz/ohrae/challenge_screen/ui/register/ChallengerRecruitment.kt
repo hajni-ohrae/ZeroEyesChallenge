@@ -27,17 +27,17 @@ import biz.ohrae.challenge.ui.theme.myTypography
 )
 @Composable
 fun ChallengerRecruitment(
-    challengeOpenState: ChallengeOpenState = ChallengeOpenState.mock()
-) {
-    Column() {
-        Column(modifier = Modifier.background(DefaultWhite)) {
-            Text(
-                text = "챌린지 개설",
-                style = myTypography.w500,
-                fontSize = dpToSp(dp = 20.dp),
-                color = DefaultBlack
-            )
-        }
+    challengeOpenState: ChallengeOpenState = ChallengeOpenState.mock(),
+    clickListener: RegisterClickListener? = null,
+
+    ) {
+    Column(modifier = Modifier.background(DefaultWhite).padding(24.dp,0.dp)) {
+        Text(
+            text = "챌린저 모집",
+            style = myTypography.w500,
+            fontSize = dpToSp(dp = 20.dp),
+            color = DefaultBlack
+        )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = "챌린지를 함께할 챌린저를 모집할 기간을 선택하세요",
@@ -83,7 +83,7 @@ fun ChallengerRecruitment(
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "성인이 아닌 회원에게는 챌린지가 노출되지 않습니다" ,
+            text = "성인이 아닌 회원에게는 챌린지가 노출되지 않습니다",
             style = myTypography.w700,
             fontSize = dpToSp(dp = 12.dp),
             color = Color(0xff828282)
@@ -94,10 +94,17 @@ fun ChallengerRecruitment(
             fontSize = dpToSp(dp = 12.dp),
             color = Color(0xff005bad)
         )
+    }
+
+
+    Column(modifier = Modifier.fillMaxHeight(), Arrangement.Bottom) {
 
         FlatBottomButton(
-            modifier = Modifier.fillMaxWidth().aspectRatio(6f),
-            text = "다음"
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(6f),
+            text = "다음",
+            onClick = {clickListener?.onClickRecruitmentNext("")}
         )
     }
 }

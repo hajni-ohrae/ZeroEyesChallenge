@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import biz.ohrae.challenge.ui.components.button.FlatButton
 import biz.ohrae.challenge.ui.components.dropdown.MyDropDown
 
 @Composable

@@ -1,10 +1,9 @@
 package biz.ohrae.challenge.model.register
 
-import biz.ohrae.challenge.model.list_item.ChallengeItemData
-
 data class ChallengeOpenState(
     val authCycleList: List<String>,
     val authFrequencyList: List<String>,
+    val challengeRadioOptions: List<RadioOptions>
 ) {
     companion object {
         fun mock() = ChallengeOpenState(
@@ -24,7 +23,17 @@ data class ChallengeOpenState(
                 "주 4회 인증",
                 "주 5회 인증",
                 "주 6회 인증",
+            ),
+            challengeRadioOptions = listOf(
+                RadioOptions("사진인증", "photo","즉석 촬영으로만 인증이 가능합니다"),
+                RadioOptions("출석인증 (자동)", "checkIn","입실 시 자동 인증됩니다"),
+                RadioOptions("이용시간 인증 (자동)", "time","입실~퇴실 시간으로 자동 인증됩니다"),
             )
         )
     }
 }
+data class RadioOptions(
+    val radioTitle: String,
+    val radioTitleEn:String,
+    val radioContent: String,
+)

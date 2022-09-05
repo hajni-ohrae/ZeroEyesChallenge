@@ -203,12 +203,14 @@ fun FlatBottomButton(
                 .fillMaxHeight()
                 .weight(1f),
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color(0xff003865),
+                backgroundColor = if (enabled) Color(0xff003865) else GrayColor7,
                 contentColor = DefaultWhite
             ),
             shape = RectangleShape,
             onClick = {
-                onClick()
+                if (enabled) {
+                    onClick()
+                }
             }
         ) {
             Text(

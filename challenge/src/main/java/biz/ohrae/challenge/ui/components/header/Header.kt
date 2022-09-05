@@ -56,6 +56,7 @@ fun BackButton(
     IconButton(
         modifier = Modifier.padding(16.dp,13.dp),
         onClick = {
+            onBack
         }
     ) {
         Icon(
