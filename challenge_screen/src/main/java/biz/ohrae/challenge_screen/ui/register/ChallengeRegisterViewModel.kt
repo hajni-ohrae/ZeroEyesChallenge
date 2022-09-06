@@ -82,7 +82,7 @@ class ChallengeRegisterViewModel @Inject constructor(
         }
     }
 
-    fun challengeGoals(goal: String, precautions: String, imgUrl: String = "") {
+    fun challengeGoals(goal: String, precautions: String, imgUrl: String?) {
         viewModelScope.launch {
             val state = _challengeData.value?.copy()
             state?.let {
