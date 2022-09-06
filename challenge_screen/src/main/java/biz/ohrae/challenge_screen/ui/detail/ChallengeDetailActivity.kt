@@ -21,10 +21,13 @@ import dagger.hilt.android.AndroidEntryPoint
 class ChallengeDetailActivity : AppCompatActivity() {
     private lateinit var viewModel: ChallengeDetailViewModel
     private lateinit var navController: NavHostController
+    private var challengeId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this)[ChallengeDetailViewModel::class.java]
+
+        challengeId = intent.getStringExtra("challengeId")
 
         init()
         setContent {
@@ -68,7 +71,7 @@ class ChallengeDetailActivity : AppCompatActivity() {
     }
 
     private fun init() {
-        viewModel.getChallenge("")
+        viewModel.getChallenge(challengeId.toString())
     }
 
 }

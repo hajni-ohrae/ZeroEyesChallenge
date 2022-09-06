@@ -67,13 +67,14 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onClickChallengeItem(id: String) {
-                goDetail()
+                goDetail(id)
             }
         }
     }
 
-    private fun goDetail() {
+    private fun goDetail(id: String) {
         val intent = Intent(this, ChallengeDetailActivity::class.java)
+        intent.putExtra("challengeId", id)
         startActivity(intent)
     }
 }

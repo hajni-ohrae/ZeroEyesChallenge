@@ -26,7 +26,7 @@ interface ApiService {
     @GET(Routes.GET_CHALLENGE)
     suspend fun getAllChallenge(
         @Header("x-access-token") accessToken: String,
-        @Query("challenge_id") challengeId: String,
+        @Path("challenge_id") challengeId: String,
     ): NetworkResponse<Result, Error>
 
     @POST(Routes.CREATE_CHALLENGE)
