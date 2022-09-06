@@ -2,11 +2,11 @@ package biz.ohrae.challenge.model.register
 
 data class ChallengeData(
     val user_id: String? = null,
-    val goal: String? = null,
-    val subject: String? = null,
+    var goal: String? = null,
+    var subject: String? = null,
     val apply_start_date: String? = null,
     val apply_end_date: String? = null,
-    val start_date: String? = null,
+    var start_date: String? = null,
     val min_deposit_amount: Int = 0,
     val free_rewards: String? = null,
     val free_winners: String? = null,
@@ -21,32 +21,32 @@ data class ChallengeData(
     val period: Int = 0,
     var verification_period_type: String? = null,
 //    daily | weekday | weekend | per_week
-    val per_week: Int = 0,
-    val image_path: String? = null,
+    var per_week: Int = 0,
+    var image_path: String? = null,
 ) {
     companion object {
-        fun mock(id: String = "b-DZuUzIs1") = ChallengeData(
+        fun mock(id: String = "2d4033ab-244b-47f3-84e9-6af72be39d9f") = ChallengeData(
             user_id = id,
             goal = "주 2회 자전거 타고 인증하기",
-            subject = null,
-            apply_start_date = "2022-09-06 12:00:00",
-            apply_end_date = "2022-09-13 12:00:00",
-            start_date = "2022-09-06 12:00:00",
-            min_deposit_amount = 100,
-            free_rewards = null,
-            free_winners = null,
-            free_rewards_offer_way = null,
-            is_verification_photo = 0,
+            subject = "test",
+            apply_start_date = "2022-09-06",
+            apply_end_date = "2022-09-13",
+            start_date = "2022-09-13",
+            min_deposit_amount = 1000,
+            free_rewards = "",
+            free_winners = "",
+            free_rewards_offer_way = "",
+            is_verification_photo = 1,
             is_verification_checkin = 0,
             is_verification_time = 0,
-            is_adult_only = 0,
+            is_adult_only = 1,
             is_feed_open = 0,
-            achievement_percent = 0,
-            rewards_percent = 0,
-            period = 0,
-            verification_period_type = null,
-            per_week = 0,
-            image_path = null
+            achievement_percent = 1,
+            rewards_percent = 1,
+            period = 3,
+            verification_period_type = "daily",
+            per_week = 3,
+            image_path = "daily"
 
         )
     }

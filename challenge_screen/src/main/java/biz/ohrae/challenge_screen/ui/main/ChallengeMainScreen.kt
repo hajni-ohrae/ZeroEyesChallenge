@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.IconButton
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,6 +24,7 @@ import biz.ohrae.challenge.ui.components.card.PaidFilterCard
 fun ChallengeMainScreen(
     select: Boolean = true,
     mainScreenState: MainScreenState? = null,
+    clickListener: MainClickListener? = null
 ) {
     Spacer(modifier = Modifier.height(16.dp))
     Column(
@@ -35,7 +38,8 @@ fun ChallengeMainScreen(
         ) {
             item {
                 ItemHeader(
-                    mainScreenState = mainScreenState
+                    mainScreenState = mainScreenState,
+                    clickListener = clickListener
                 )
             }
             items(mainScreenState?.challengeList!!) { item ->
@@ -57,6 +61,7 @@ fun ChallengeMainScreen(
 fun ItemHeader(
     select: Boolean = true,
     mainScreenState: MainScreenState? = null,
+    clickListener:MainClickListener? = null
 ) {
 
     Column {
@@ -71,6 +76,12 @@ fun ItemHeader(
             }
         }
         FilterCard(select = select)
+        Box(){
+            IconButton(onClick = { clickListener?.onClickRegister() }) {
+                Text(text = "button")
+
+            }
+        }
     }
 }
 

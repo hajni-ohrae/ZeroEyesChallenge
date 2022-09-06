@@ -14,8 +14,8 @@ data class ChallengeOpenState(
                 "4주동안"
             ),
             authFrequencyList = listOf(
-                "매일인증",
-                "평일만 인증(월,화,수,목,금",
+                "매일 인증",
+                "평일만 인증(월,화,수,목,금)",
                 "주말만 인증 (토,일)",
                 "주 1회 인증",
                 "주 2회 인증",
@@ -32,6 +32,10 @@ data class ChallengeOpenState(
         )
     }
 }
+data class AuthFrequency(
+    val frequency:String,
+    val type:String
+)
 data class RadioOptions(
     val radioTitle: String,
     val radioTitleEn:String,

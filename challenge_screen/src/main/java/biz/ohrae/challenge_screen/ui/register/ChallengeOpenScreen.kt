@@ -1,11 +1,18 @@
 package biz.ohrae.challenge_screen.ui.register
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.model.register.ChallengeOpenState
@@ -17,6 +24,8 @@ import biz.ohrae.challenge.ui.theme.DefaultBlack
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
+import biz.ohrae.challenge_component.R
+import kotlinx.coroutines.selects.select
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -34,14 +43,16 @@ fun ChallengeOpenScreen(
 ) {
     val nowTime = System.currentTimeMillis()
     val tDate = Date(nowTime)
-    val tDateFormat = SimpleDateFormat("yyyy-MM-dd kk:mm:ss", Locale("ko", "KR"))
+    val tDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale("ko", "KR"))
     val calendarText = SimpleDateFormat("MM월dd일 (E)", Locale("ko", "KR"))
     val today = calendarText.format(tDate)
 
 
-    Column(modifier = Modifier
-        .background(DefaultWhite)
-        .padding(24.dp, 0.dp)) {
+    Column(
+        modifier = Modifier
+            .background(DefaultWhite)
+            .padding(24.dp, 0.dp)
+    ) {
         Text(
             text = "챌린저 모집",
             style = myTypography.w500,
@@ -92,26 +103,26 @@ fun ChallengeOpenScreen(
             label = "",
             list = challengeOpenState.authCycleList
         )
+
         MyDropDown(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(7.1f),
             label = "",
-            list = challengeOpenState.authFrequencyList
+            list = challengeOpenState.authFrequencyList,
         )
+
         if (challengeAuth == 1) {
             MyDropDown(
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(7.1f),
                 label = "",
-                list = challengeOpenState.authFrequencyList
+                list = challengeOpenState.authFrequencyList,
             )
         }
         Spacer(modifier = Modifier.height(28.dp))
         ChallengeStartEndDateCard("챌린지 종료일")
-
-
     }
     Column(modifier = Modifier.fillMaxHeight(), Arrangement.Bottom) {
 
@@ -120,8 +131,9 @@ fun ChallengeOpenScreen(
                 .fillMaxWidth()
                 .aspectRatio(6f),
             text = "다음",
-            onClick = { clickListener?.onClickRecruitmentNext("") }
+            onClick = { clickListener?.onClickOpenNext(tDateFormat.toString(), "1주동안", "매일인증") }
         )
     }
+
 
 }

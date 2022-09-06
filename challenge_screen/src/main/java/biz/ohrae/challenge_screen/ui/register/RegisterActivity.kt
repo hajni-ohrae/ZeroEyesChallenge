@@ -114,21 +114,47 @@ class RegisterActivity : AppCompatActivity() {
                 navController.navigate(ChallengeRegisterNavScreen.ChallengeOpen.route)
             }
 
-            override fun onClickOpenNext(auth: String) {
+            override fun onClickOpenNext(
+                startDay: String,
+                perWeek: String,
+                verificationPeriodType: String
+            ) {
+                val week = perWeek.replace("[^0-9]".toRegex(), "")
+                val type:String
+                when (verificationPeriodType) {
+                    "매일인증" -> {
+                        type = "daily"
+                    }
+                    "평일만 인증(월,화,수,목,금)" -> {
+                        type = "weekday"
+                    }
+                    "주말만 인증 (토,일)" -> {
+                        type = "weekend"
+                    }
+                    else ->{
+                        type = "per_week"
+                    }
+                }
+                viewModel.verificationPeriodType(startDay,week,type)
                 navController.navigate(ChallengeRegisterNavScreen.ChallengerRecruitment.route)
 
             }
 
-            override fun onClickRecruitmentNext(auth: String) {
+            override fun onClickRecruitmentNext() {
                 navController.navigate(ChallengeRegisterNavScreen.ChallengeGoals.route)
             }
 
-            override fun onClickChallengeCreate(auth: String) {
-                viewModel.createChallenge(challengeData)
+            override fun onClickChallengeCreate(auth: String, precautions: String, imgUrl: String?) {
+//                viewModel.createChallenge(challengeData)
+                viewModel.challengeGoals(auth,precautions,imgUrl)
             }
 
             override fun onClickSelectedAuth(auth: String) {
 
+            }
+
+            override fun onClickDropDownItem(item: String) {
+                TODO("Not yet implemented")
             }
 
         }
@@ -137,7 +163,7 @@ class RegisterActivity : AppCompatActivity() {
     private fun observeViewModel() {
         viewModel.isChallengeCreate.observe(this){
             if (it){
-                val intent = Intent(this, MainActivity::class.java)
+                val intent = Intent(this@RegisterActivity, MainActivity::class.java)
                 startActivity(intent)
             }
         }

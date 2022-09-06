@@ -1,5 +1,6 @@
 package biz.ohrae.challenge_screen.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
@@ -12,16 +13,21 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
 import dagger.hilt.android.AndroidEntryPoint
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
+import biz.ohrae.challenge_screen.ui.register.RegisterActivity
+import biz.ohrae.challenge_screen.ui.register.RegisterClickListener
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: ChallengeMainViewModel
+    private lateinit var mainClickListener: MainClickListener
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this)[ChallengeMainViewModel::class.java]
 
         init()
+        initClickListener()
         setContent {
             ChallengeInTheme {
                 BuildContent()
@@ -37,13 +43,31 @@ class MainActivity : AppCompatActivity() {
             modifier = Modifier.fillMaxSize()
         ) {
             if (mainScreenState != null) {
-                ChallengeMainScreen(mainScreenState = mainScreenState)
+                ChallengeMainScreen(
+                    mainScreenState = mainScreenState,
+                    clickListener = mainClickListener
+                )
             }
         }
     }
 
     private fun init() {
         viewModel.getChallengeList()
+    }
+
+    private fun initClickListener() {
+        mainClickListener = object : MainClickListener {
+            override fun onClickPurchaseTicket() {
+                TODO("Not yet implemented")
+            }
+
+            override fun onClickRegister() {
+                val intent = Intent(this@MainActivity,RegisterActivity::class.java)
+                startActivity(intent)
+            }
+
+
+        }
     }
 
 }

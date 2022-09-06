@@ -29,25 +29,24 @@ class ChallengeRegisterViewModel @Inject constructor(
     val isChallengeCreate get() = _isChallengeCreate
 
 
-    fun createChallenge(challengeData: ChallengeData){
+    fun createChallenge(challengeData: ChallengeData) {
         viewModelScope.launch {
             val userId = prefs.getUserData()?.id
-            val response = registerRepo.createChallenge(userId.toString(),challengeData)
+            val response = registerRepo.createChallenge(userId.toString(), challengeData)
             response.flowOn(Dispatchers.IO).collect { it ->
                 it.data?.let { data ->
                     _isChallengeCreate.value = data as Boolean
-                    if (!data){
+                    if (!data) {
 
                     }
                 }
             }
         }
-
     }
 
-    fun selectAuth(auth:String){
+    fun selectAuth(auth: String) {
         viewModelScope.launch {
-            val state = challengeData.value?.copy()
+            val state = ChallengeData.mock().copy()
             state?.let {
                 when (auth) {
                     "photo" -> {
@@ -60,8 +59,40 @@ class ChallengeRegisterViewModel @Inject constructor(
                         it.is_verification_time = 1
                     }
                 }
+                _challengeData.value = it
             }
 
+        }
+    }
+
+    fun verificationPeriodType(
+        startDay: String,
+        perWeek: String,
+        verificationPeriodType: String
+    ) {
+        viewModelScope.launch {
+            val state = _challengeData.value?.copy()
+            state?.let {
+                it.start_date = startDay
+                it.per_week = perWeek.toInt()
+                it.verification_period_type = verificationPeriodType
+
+                _challengeData.value = it
+            }
+        }
+    }
+
+    fun challengeGoals(goal: String, precautions: String, imgUrl: String = "") {
+        viewModelScope.launch {
+            val state = _challengeData.value?.copy()
+            state?.let {
+                it.goal = goal
+                it.subject = precautions
+                it.image_path = imgUrl
+
+                _challengeData.value = it
+                createChallenge(_challengeData.value!!)
+            }
         }
     }
 

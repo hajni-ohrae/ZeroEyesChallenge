@@ -2,17 +2,19 @@ package biz.ohrae.challenge_screen.ui.register
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Checkbox
+import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.model.register.ChallengeOpenState
 import biz.ohrae.challenge.ui.components.button.FlatBottomButton
 import biz.ohrae.challenge.ui.components.button.FlatDoubleButton
 import biz.ohrae.challenge.ui.components.card.ChallengeStartEndDateCard
+import biz.ohrae.challenge.ui.components.checkBox.CheckBox
 import biz.ohrae.challenge.ui.components.dropdown.MyDropDown
 import biz.ohrae.challenge.ui.theme.DefaultBlack
 import biz.ohrae.challenge.ui.theme.DefaultWhite
@@ -29,9 +31,11 @@ import biz.ohrae.challenge.ui.theme.myTypography
 fun ChallengerRecruitment(
     challengeOpenState: ChallengeOpenState = ChallengeOpenState.mock(),
     clickListener: RegisterClickListener? = null,
-
-    ) {
-    Column(modifier = Modifier.background(DefaultWhite).padding(24.dp,0.dp)) {
+) {
+    var checked by remember { mutableStateOf(false) }
+    Column(modifier = Modifier
+        .background(DefaultWhite)
+        .padding(24.dp, 0.dp)) {
         Text(
             text = "챌린저 모집",
             style = myTypography.w500,
@@ -94,6 +98,21 @@ fun ChallengerRecruitment(
             fontSize = dpToSp(dp = 12.dp),
             color = Color(0xff005bad)
         )
+
+        CheckBox(
+            checkBoxSize = 20.dp,
+            checkBoxSpacing = 4.dp,
+            label = "이용제한",
+            labelStyle = myTypography.w700,
+            onClick = {
+                checked = !checked
+            },
+            onCheckedChange = {
+                checked = !checked
+            },
+            checked = checked,
+        )
+
     }
 
 
@@ -104,7 +123,7 @@ fun ChallengerRecruitment(
                 .fillMaxWidth()
                 .aspectRatio(6f),
             text = "다음",
-            onClick = {clickListener?.onClickRecruitmentNext("")}
+            onClick = { clickListener?.onClickRecruitmentNext() }
         )
     }
 }
