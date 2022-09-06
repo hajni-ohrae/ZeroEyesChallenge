@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
 import dagger.hilt.android.AndroidEntryPoint
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
+import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailActivity
 import biz.ohrae.challenge_screen.ui.register.RegisterActivity
 import biz.ohrae.challenge_screen.ui.register.RegisterClickListener
 
@@ -20,7 +21,6 @@ import biz.ohrae.challenge_screen.ui.register.RegisterClickListener
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: ChallengeMainViewModel
     private lateinit var mainClickListener: MainClickListener
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,10 +66,16 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
 
-
+            override fun onClickChallengeItem(id: String) {
+                goDetail()
+            }
         }
     }
 
+    private fun goDetail() {
+        val intent = Intent(this, ChallengeDetailActivity::class.java)
+        startActivity(intent)
+    }
 }
 
 sealed class ChallengeNavScreen(val route: String) {

@@ -23,6 +23,12 @@ interface ApiService {
         @Query("is_adult_only") isAdultOnly: String? = null,
         ): NetworkResponse<Result, Error>
 
+    @GET(Routes.GET_CHALLENGE)
+    suspend fun getAllChallenge(
+        @Header("x-access-token") accessToken: String,
+        @Query("challenge_id") challengeId: String,
+    ): NetworkResponse<Result, Error>
+
     @POST(Routes.CREATE_CHALLENGE)
     suspend fun createChallenge(@Body body: JsonObject?): NetworkResponse<Result, Error>
 

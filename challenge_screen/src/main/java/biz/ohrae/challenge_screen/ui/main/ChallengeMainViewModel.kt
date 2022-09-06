@@ -31,9 +31,7 @@ class ChallengeMainViewModel @Inject constructor(
 
     private fun login() {
         viewModelScope.launch {
-            if (prefs.getUserData() == null) {
-                userRepo.login()
-            }
+            userRepo.login()
         }
     }
 

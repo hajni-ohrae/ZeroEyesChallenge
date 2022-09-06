@@ -29,5 +29,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="biz.ohrae.challenge_screen.ui.detail.ChallengeDetailActivity"
+            android:exported="true">
+        </activity>
     </application>
 </manifest>

@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -82,13 +83,16 @@ private fun ChallengeCardItemGallery() {
                     item.dDay,
                     item.week,
                     item.numberOfTimes,
-                    item.personnel
+                    item.personnel,
+                    onClick = {
+                    }
                 )
             }
         }
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ChallengeCardItem(
     title: String,
@@ -96,7 +100,8 @@ fun ChallengeCardItem(
     dDay: String,
     week: String,
     numberOfTime: String,
-    personnel: Int
+    personnel: Int,
+    onClick: (id: String) -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -104,6 +109,9 @@ fun ChallengeCardItem(
         shape = RoundedCornerShape(10.dp),
         backgroundColor = DefaultWhite,
         elevation = 0.dp,
+        onClick = {
+            onClick("1ce39b40-feed-4ba3-9831-aea1bbfcec8f")
+        }
     ) {
         Column(modifier = Modifier.padding(20.dp)
             .background(DefaultWhite)) {

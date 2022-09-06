@@ -18,7 +18,7 @@ import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class ChallengeDetailActivity : AppCompatActivity() {
     private lateinit var viewModel: ChallengeDetailViewModel
     private lateinit var navController: NavHostController
 
@@ -68,6 +68,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun init() {
+        viewModel.getChallenge("")
     }
 
 }

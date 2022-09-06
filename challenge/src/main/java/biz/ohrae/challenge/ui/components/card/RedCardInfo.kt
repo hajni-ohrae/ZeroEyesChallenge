@@ -15,6 +15,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.ui.theme.DefaultWhite
+import biz.ohrae.challenge.ui.theme.TextBlack
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 
@@ -64,6 +65,7 @@ fun RedCardInfo(
                 Spacer(modifier = Modifier.width(6.dp))
                 Text(
                     text = "인증 규정을 지키지 않을 경우 레드카드가 발급됩니다",
+                    color = TextBlack,
                     style = myTypography.bold,
                     fontSize = dpToSp(dp = 12.dp)
                 )

@@ -32,6 +32,7 @@ class UserRepo @Inject constructor(
                 if (isSuccess) {
                     val user = gson.fromJson(response.body.dataset, User::class.java)
                     Timber.e("user : ${gson.toJson(user)}")
+                    Timber.d("access-token : ${user.access_token}")
                     prefs.setUserData(user)
                 } else {
                     Timber.e("error code : ${response.body.code}")

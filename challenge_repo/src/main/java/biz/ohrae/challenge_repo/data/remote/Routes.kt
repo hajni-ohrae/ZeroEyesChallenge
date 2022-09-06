@@ -12,6 +12,7 @@ object Routes {
 
     // 챌린지
     const val GET_ALL_CHALLENGE = "${CHALLENGE}/api/challenge/get/all"
+    const val GET_CHALLENGE = "${CHALLENGE}/api/challenge/get/{challenge_id}"
     const val CREATE_CHALLENGE = "${CHALLENGE}/api/challenge/create"
     const val REGISTER_CHALLENGE = "${CHALLENGE}/api/challenge/register"
     const val FAVORITE_CHALLENGE = "${CHALLENGE}/api/challenge/favorite"

@@ -49,7 +49,10 @@ fun ChallengeMainScreen(
                     item.dDay,
                     item.week,
                     item.numberOfTimes,
-                    item.personnel
+                    item.personnel,
+                    onClick = {
+                        clickListener?.onClickChallengeItem(it)
+                    }
                 )
             }
         }

@@ -1,4 +1,4 @@
-package biz.ohrae.challenge_repo.ui.main
+package biz.ohrae.challenge_repo.ui.detail
 
 import biz.ohrae.challenge.model.MainScreenState
 import biz.ohrae.challenge_repo.data.remote.ApiService
@@ -10,14 +10,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class ChallengeMainRepo @Inject constructor(
+class ChallengeDetailRepo @Inject constructor(
     private val apiService: ApiService,
     private val gson: Gson,
     private val prefs: SharedPreference
 ) {
-    suspend fun getChallenges(): Flow<FlowResult> {
+    suspend fun getChallenge(id: String): Flow<FlowResult> {
         val accessToken = prefs.getUserData()?.access_token
-        val response = apiService.getAllChallenge(accessToken.toString(), "", "")
+        val response = apiService.getAllChallenge(accessToken.toString(), id)
 
         when (response) {
             is NetworkResponse.Success -> {
