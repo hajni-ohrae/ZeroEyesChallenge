@@ -82,7 +82,7 @@ class ChallengeRegisterViewModel @Inject constructor(
         }
     }
 
-    fun challengeGoals(goal: String, precautions: String, imgUrl: String?) {
+    fun challengeGoals(goal: String, precautions: String, imgUrl: String) {
         viewModelScope.launch {
             val state = _challengeData.value?.copy()
             state?.let {
@@ -93,6 +93,14 @@ class ChallengeRegisterViewModel @Inject constructor(
                 _challengeData.value = it
                 createChallenge(_challengeData.value!!)
             }
+        }
+    }
+
+    fun selectDropBox(item: String) {
+        if (item.contains("주동안")) {
+
+        } else if (item.contains("인증")) {
+
         }
     }
 

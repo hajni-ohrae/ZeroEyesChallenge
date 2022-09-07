@@ -95,7 +95,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun onBack() {
-        finish()
+        navController.popBackStack()
     }
     private fun initClickListener() {
         registerClickListener = object : RegisterClickListener {
@@ -144,7 +144,7 @@ class RegisterActivity : AppCompatActivity() {
                 navController.navigate(ChallengeRegisterNavScreen.ChallengeGoals.route)
             }
 
-            override fun onClickChallengeCreate(auth: String, precautions: String, imgUrl: String?) {
+            override fun onClickChallengeCreate(auth: String, precautions: String, imgUrl: String) {
 //                viewModel.createChallenge(challengeData)
                 viewModel.challengeGoals(auth,precautions,imgUrl)
             }
