@@ -39,13 +39,16 @@ import java.util.*
 fun ChallengeOpenScreen(
     challengeOpenState: ChallengeOpenState = ChallengeOpenState.mock(),
     clickListener: RegisterClickListener? = null,
-    challengeAuth: Int? = 0
+    challengeAuth: Int? = 0,
+    viewModel: ChallengeRegisterViewModel? = null
 ) {
     val nowTime = System.currentTimeMillis()
     val tDate = Date(nowTime)
     val tDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale("ko", "KR"))
     val calendarText = SimpleDateFormat("MM월dd일 (E)", Locale("ko", "KR"))
     val today = calendarText.format(tDate)
+
+    val day = tDateFormat.format(tDate)
 
 
     Column(
@@ -96,20 +99,22 @@ fun ChallengeOpenScreen(
             fontSize = dpToSp(dp = 14.dp),
             color = DefaultBlack
         )
-        MyDropDown(
+        DropDown(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(7.1f),
             label = "",
-            list = challengeOpenState.authCycleList
+            list = challengeOpenState.authCycleList,
+            viewModel = viewModel
         )
 
-        MyDropDown(
+        DropDown(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(7.1f),
             label = "",
             list = challengeOpenState.authFrequencyList,
+            viewModel = viewModel
         )
 
         if (challengeAuth == 1) {
@@ -131,9 +136,93 @@ fun ChallengeOpenScreen(
                 .fillMaxWidth()
                 .aspectRatio(6f),
             text = "다음",
-            onClick = { clickListener?.onClickOpenNext(tDateFormat.toString(), "1주동안", "매일인증") }
+            onClick = { clickListener?.onClickOpenNext(day, "1주동안", "매일인증") }
         )
     }
 
 
+}
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun DropDown(
+    modifier: Modifier = Modifier,
+    label: String,
+    list: List<String>,
+    viewModel: ChallengeRegisterViewModel?
+) {
+    var expanded by remember { mutableStateOf(false) }
+    var selectedItem by remember { mutableStateOf(list[0]) }
+    var cardWidth by remember { mutableStateOf(Size.Zero) }
+
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Text(
+            text = label,
+            style = myTypography.default,
+            fontSize = dpToSp(dp = 10.dp),
+            color = Color(0xff6c6c6c)
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Card(
+            modifier = modifier.onSizeChanged {
+                cardWidth = Size(it.width.toFloat(), it.height.toFloat())
+            },
+            shape = RoundedCornerShape(6.dp),
+            border = BorderStroke(1.dp, Color(0xff959595)),
+            elevation = 0.dp,
+            onClick = {
+                expanded = true
+            },
+            backgroundColor = DefaultWhite
+        ) {
+            Column(modifier = Modifier.fillMaxSize()) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(18.dp, 0.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = selectedItem,
+                        style = myTypography.bold,
+                        fontSize = dpToSp(dp = 16.dp),
+                        color = Color(0xff6c6c6c)
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                    Icon(
+                        painter = painterResource(id = R.drawable.arrow_slidedown),
+                        contentDescription = "arrow_slidedown",
+                        tint = Color.Unspecified
+                    )
+                }
+                DropdownMenu(
+                    modifier = Modifier
+                        .width(with(LocalDensity.current) { cardWidth.width.toDp() })
+                        .background(
+                            DefaultWhite
+                        ),
+                    expanded = expanded,
+                    onDismissRequest = {
+                        expanded = false
+                    }
+                ) {
+                    list.forEach {
+                        DropdownMenuItem(
+                            onClick = {
+                                expanded = false
+                                selectedItem = it
+                                viewModel?.selectDropBox(it)
+                            }
+                        ) {
+                            Text(
+                                text = it,
+                                style = myTypography.bold,
+                                fontSize = dpToSp(dp = 16.dp),
+                                color = Color(0xff6c6c6c)
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

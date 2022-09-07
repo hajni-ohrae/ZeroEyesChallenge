@@ -31,6 +31,7 @@ import biz.ohrae.challenge.ui.theme.myTypography
 fun ChallengerRecruitment(
     challengeOpenState: ChallengeOpenState = ChallengeOpenState.mock(),
     clickListener: RegisterClickListener? = null,
+    viewModel: ChallengeRegisterViewModel? = null
 ) {
     var checked by remember { mutableStateOf(false) }
     Column(modifier = Modifier
@@ -71,12 +72,13 @@ fun ChallengerRecruitment(
             fontSize = dpToSp(dp = 14.dp),
             color = DefaultBlack
         )
-        MyDropDown(
+        DropDown(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(7.1f),
             label = "",
-            list = challengeOpenState.authCycleList
+            list = challengeOpenState.authCycleList,
+            viewModel = viewModel
         )
         Spacer(modifier = Modifier.height(28.dp))
         Text(

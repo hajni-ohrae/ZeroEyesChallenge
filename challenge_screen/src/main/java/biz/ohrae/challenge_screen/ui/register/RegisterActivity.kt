@@ -80,7 +80,11 @@ class RegisterActivity : AppCompatActivity() {
                 ChallengeGoals(clickListener = registerClickListener)
             }
             composable(ChallengeRegisterNavScreen.ChallengeOpen.route) {
-                ChallengeOpenScreen(clickListener = registerClickListener, challengeAuth = challengeDataState?.is_verification_time)
+                ChallengeOpenScreen(
+                    clickListener = registerClickListener,
+                    challengeAuth = challengeDataState?.is_verification_time,
+                    viewModel = viewModel
+                )
             }
 
             composable(ChallengeRegisterNavScreen.ChallengerRecruitment.route) {
@@ -95,8 +99,13 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun onBack() {
-        finish()
+        if (navController.currentBackStackEntry?.destination?.route == ChallengeRegisterNavScreen.RegisterAuth.route) {
+            finish()
+        }
+        navController.popBackStack()
+
     }
+
     private fun initClickListener() {
         registerClickListener = object : RegisterClickListener {
 //            override fun onClickNext() {
@@ -120,22 +129,21 @@ class RegisterActivity : AppCompatActivity() {
                 verificationPeriodType: String
             ) {
                 val week = perWeek.replace("[^0-9]".toRegex(), "")
-                val type:String
-                when (verificationPeriodType) {
+                val type: String = when (verificationPeriodType) {
                     "매일인증" -> {
-                        type = "daily"
+                        "daily"
                     }
                     "평일만 인증(월,화,수,목,금)" -> {
-                        type = "weekday"
+                        "weekday"
                     }
                     "주말만 인증 (토,일)" -> {
-                        type = "weekend"
+                        "weekend"
                     }
-                    else ->{
-                        type = "per_week"
+                    else -> {
+                        "per_week"
                     }
                 }
-                viewModel.verificationPeriodType(startDay,week,type)
+                viewModel.verificationPeriodType(startDay, week, type)
                 navController.navigate(ChallengeRegisterNavScreen.ChallengerRecruitment.route)
 
             }
@@ -144,9 +152,9 @@ class RegisterActivity : AppCompatActivity() {
                 navController.navigate(ChallengeRegisterNavScreen.ChallengeGoals.route)
             }
 
-            override fun onClickChallengeCreate(auth: String, precautions: String, imgUrl: String?) {
+            override fun onClickChallengeCreate(auth: String, precautions: String, imgUrl: String) {
 //                viewModel.createChallenge(challengeData)
-                viewModel.challengeGoals(auth,precautions,imgUrl)
+                viewModel.challengeGoals(auth, precautions, imgUrl)
             }
 
             override fun onClickSelectedAuth(auth: String) {
@@ -161,8 +169,8 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun observeViewModel() {
-        viewModel.isChallengeCreate.observe(this){
-            if (it){
+        viewModel.isChallengeCreate.observe(this) {
+            if (it) {
                 val intent = Intent(this@RegisterActivity, MainActivity::class.java)
                 startActivity(intent)
             }

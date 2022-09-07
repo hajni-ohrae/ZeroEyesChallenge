@@ -113,8 +113,25 @@ fun ChallengeCardItem(
             onClick("1ce39b40-feed-4ba3-9831-aea1bbfcec8f")
         }
     ) {
-        Column(modifier = Modifier.padding(20.dp)
-            .background(DefaultWhite)) {
+        val time = when (numberOfTime) {
+            "daily" -> {
+                "매일"
+            }
+            "weekday" -> {
+                "평일만"
+            }
+            "weekday" -> {
+                "주말만"
+            }
+            else -> {
+                "주${numberOfTime}회"
+            }
+        }
+        Column(
+            modifier = Modifier
+                .padding(20.dp)
+                .background(DefaultWhite)
+        ) {
             Row() {
                 CategorySurFace(
                     modifier = Modifier,

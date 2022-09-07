@@ -39,6 +39,8 @@ class RegisterRepo @Inject constructor(
         jsonObject.addProperty("rewards_percent", challengeData.rewards_percent)
         jsonObject.addProperty("period", challengeData.period)
         jsonObject.addProperty("verification_period_type", challengeData.verification_period_type)
+        jsonObject.addProperty("per_week", challengeData.per_week)
+        jsonObject.addProperty("image_path", challengeData.image_path)
         when (response) {
             is NetworkResponse.Success -> {
                 val isSuccess = response.body.success

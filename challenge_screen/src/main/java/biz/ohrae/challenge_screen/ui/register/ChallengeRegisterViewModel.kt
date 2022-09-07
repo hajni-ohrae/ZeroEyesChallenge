@@ -82,7 +82,7 @@ class ChallengeRegisterViewModel @Inject constructor(
         }
     }
 
-    fun challengeGoals(goal: String, precautions: String, imgUrl: String?) {
+    fun challengeGoals(goal: String, precautions: String, imgUrl: String) {
         viewModelScope.launch {
             val state = _challengeData.value?.copy()
             state?.let {
@@ -92,6 +92,31 @@ class ChallengeRegisterViewModel @Inject constructor(
 
                 _challengeData.value = it
                 createChallenge(_challengeData.value!!)
+            }
+        }
+    }
+
+    fun selectDropBox(item: String) {
+        val authType: String
+        val state = _challengeData.value?.copy()
+        state?.let {
+            if (item.contains("주동안")) {
+
+            } else if (item.contains("인증")) {
+                when (item) {
+                    "매일인증" -> {
+                        it.verification_period_type = "daily"
+                    }
+                    "평일만 인증(월,화,수,목,금)" -> {
+                        it.verification_period_type = "weekday"
+                    }
+                    "주말만 인증 (토,일)" -> {
+                        it.verification_period_type ="weekend"
+                    }
+                    else -> {
+                        it.verification_period_type = "per_week"
+                    }
+                }
             }
         }
     }

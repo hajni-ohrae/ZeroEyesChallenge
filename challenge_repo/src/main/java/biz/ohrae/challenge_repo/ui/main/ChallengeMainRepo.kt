@@ -1,6 +1,7 @@
 package biz.ohrae.challenge_repo.ui.main
 
 import biz.ohrae.challenge.model.MainScreenState
+import biz.ohrae.challenge.model.register.ChallengeData
 import biz.ohrae.challenge_repo.data.remote.ApiService
 import biz.ohrae.challenge_repo.data.remote.NetworkResponse
 import biz.ohrae.challenge_repo.model.FlowResult
@@ -21,6 +22,25 @@ class ChallengeMainRepo @Inject constructor(
 
         when (response) {
             is NetworkResponse.Success -> {
+                val isSuccess = response.body.success
+                if (isSuccess) {
+                    val dataset = response.body.dataset
+                    dataset?.let {
+                        val data = it[0].asJsonObject
+                        val challengeList = Gson().fromJson(data, ChallengeData::class.java)
+                        return flow {
+                            emit(FlowResult(challengeList, "", ""))
+                        }
+                    } ?: run {
+                        return flow {
+                            emit(FlowResult(null, "", ""))
+                        }
+                    }
+                } else {
+                    return flow {
+                        emit(FlowResult(null, response.body.code, response.body.message))
+                    }
+                }
 
             }
             else -> {

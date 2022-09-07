@@ -38,7 +38,7 @@ private fun DropDownGallery() {
                 .fillMaxWidth()
                 .aspectRatio(7.1f),
             label = "은행명",
-            list = list
+            list = list,
         )
     }
 }
@@ -49,7 +49,7 @@ private fun DropDownGallery() {
 fun MyDropDown(
     modifier: Modifier = Modifier,
     label: String,
-    list: List<String>
+    list: List<String>,
 ) {
     var expanded by remember { mutableStateOf(false) }
     var selectedItem by remember { mutableStateOf(list[0]) }

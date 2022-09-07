@@ -127,6 +127,8 @@ fun ChallengeGoals(
                 onValueChange = { precautions = it }
             )
         }
+        Spacer(modifier = Modifier.height(53.dp))
+
 
         Column(modifier = Modifier.fillMaxHeight(), Arrangement.Bottom) {
 
@@ -135,7 +137,7 @@ fun ChallengeGoals(
                     .fillMaxWidth()
                     .aspectRatio(6f),
                 text = "개설완료",
-                onClick = { clickListener?.onClickChallengeCreate(authTitle,precautions) }
+                onClick = { clickListener?.onClickChallengeCreate(authTitle,precautions,"") }
             )
         }
     }
