@@ -60,7 +60,7 @@ fun BackButton(
         IconButton(
             modifier = Modifier,
             onClick = {
-                onBack
+                onBack()
             }
         ) {
             Icon(
