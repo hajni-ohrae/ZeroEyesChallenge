@@ -60,6 +60,7 @@ fun ChallengeDetailsTitle(personnel: Int, detailTitle: String, startDay: String,
             modifier = Modifier.fillMaxWidth(),
             textColor = Color(0xff4985f8),
             text = "0일 00시간 00분",
+            isRemainTime = true,
             backgroundColor = Color(0xfff3f8ff)
         )
         Spacer(modifier = Modifier.height(24.dp))

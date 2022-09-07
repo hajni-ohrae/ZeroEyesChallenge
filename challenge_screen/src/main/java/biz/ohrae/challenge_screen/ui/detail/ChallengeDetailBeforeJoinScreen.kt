@@ -1,8 +1,8 @@
 package biz.ohrae.challenge_screen.ui.detail
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -25,6 +26,8 @@ import biz.ohrae.challenge.ui.components.card.RedCardInfo
 import biz.ohrae.challenge.ui.components.detail.ChallengeDetailRefundDescription
 import biz.ohrae.challenge.ui.components.detail.ChallengeDetailsTitle
 import biz.ohrae.challenge.ui.components.image.ImageBox
+import biz.ohrae.challenge.ui.components.image.ImageBoxWithExampleTitle
+import biz.ohrae.challenge.ui.components.text.MiddleDotText
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.TextBlack
 import biz.ohrae.challenge.ui.theme.dpToSp
@@ -68,6 +71,7 @@ fun ChallengeDetailBeforeJoinScreen() {
                 .background(Color(0xffebebeb)))
             Spacer(modifier = Modifier.height(32.dp))
             ChallengeDescription()
+            ChallengePhotoAuthentication()
             Divider(modifier = Modifier
                 .fillMaxWidth()
                 .height(1.dp)
@@ -78,7 +82,9 @@ fun ChallengeDetailBeforeJoinScreen() {
                 .height(1.dp)
                 .background(Color(0xffebebeb)))
             ArrowTextButton2(
-                modifier = Modifier.fillMaxWidth().aspectRatio(3.71f),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(3.71f),
                 text = "챌린지 이용 주의사항",
                 textColor = TextBlack
             )
@@ -89,7 +95,9 @@ fun ChallengeDetailBeforeJoinScreen() {
             Spacer(modifier = Modifier.height(96.dp))
         }
         FlatDoubleButton(
-            modifier = Modifier.fillMaxWidth().aspectRatio(6f),
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(6f),
             text = "참여 신청"
         )
     }
@@ -134,26 +142,26 @@ fun ChallengeDescription() {
             fontSize = dpToSp(dp = 18.dp)
         )
         Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = "· 4주 동안 매일, 이용권 사용 내역이 이용시간으로 자동\n  인증됩니다.",
+        MiddleDotText(
+            text = "4주 동안 매일, 이용권 사용 내역이 이용시간으로 자동 인증됩니다.",
+            fontSize = dpToSp(dp = 14.dp),
+            lineHeight = dpToSp(dp = 19.6.dp),
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        MiddleDotText(
+            text = "인증 가능한 요일은 월,화,수,목,금,토,일 입니다",
             fontSize = dpToSp(dp = 14.dp),
             lineHeight = dpToSp(dp = 19.6.dp)
         )
         Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = "· 인증 가능한 요일은 월,화,수,목,금,토,일 입니다",
+        MiddleDotText(
+            text = "이용시간은 이용권으로 입실한 시점부터 퇴실까지의 시간이 자동 누적됩니다 (외출시간 포함)",
             fontSize = dpToSp(dp = 14.dp),
             lineHeight = dpToSp(dp = 19.6.dp)
         )
         Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = "· 이용시간은 이용권으로 입실한 시점부터 퇴실까지의\n  시간이 자동 누적됩니다 (외출시간 포함)",
-            fontSize = dpToSp(dp = 14.dp),
-            lineHeight = dpToSp(dp = 19.6.dp)
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = "· 인증샷 피드에 이용권 사용 시간이 공개됩니다",
+        MiddleDotText(
+            text = "인증샷 피드에 이용권 사용 시간이 공개됩니다",
             fontSize = dpToSp(dp = 14.dp),
             lineHeight = dpToSp(dp = 19.6.dp)
         )
@@ -170,17 +178,57 @@ fun ChallengeDescription() {
             fontSize = dpToSp(dp = 18.dp)
         )
         Spacer(modifier = Modifier.height(13.dp))
-        Text(
-            text = "· 만화책은 안됩니다.",
+        MiddleDotText(
+            text = "만화책은 안됩니다.",
             fontSize = dpToSp(dp = 14.dp),
             lineHeight = dpToSp(dp = 19.6.dp)
         )
         Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            text = "· 손은 어떤 제스처든 모두 가능해요.",
+        MiddleDotText(
+            text = "손은 어떤 제스처든 모두 가능해요.",
             fontSize = dpToSp(dp = 14.dp),
             lineHeight = dpToSp(dp = 19.6.dp)
         )
+        Spacer(modifier = Modifier.height(32.dp))
+    }
+}
+
+@Preview(
+    showBackground = true,
+    widthDp = 360,
+)
+@Composable
+fun ChallengePhotoAuthentication() {
+    Column(modifier = Modifier.fillMaxWidth()) {
+        val configuration = LocalConfiguration.current
+        val screenWidth = configuration.screenWidthDp.dp
+        val itemHeight = screenWidth.value / 1.40625f
+
+        Text(
+            text = "인증샷 이렇게 찍어주세요",
+            style = myTypography.bold,
+            fontSize = dpToSp(dp = 18.dp)
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        LazyRow(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            item {
+                ImageBoxWithExampleTitle(
+                    modifier = Modifier.size(itemHeight.dp),
+                    imagePath = "https://dev.mooin.kr/public/kiosk/image/63",
+                    isGood = true
+                )
+            }
+            item {
+                ImageBoxWithExampleTitle(
+                    modifier = Modifier.size(itemHeight.dp),
+                    imagePath = "https://dev.mooin.kr/public/kiosk/image/63",
+                    isGood = false
+                )
+            }
+        }
         Spacer(modifier = Modifier.height(32.dp))
     }
 }
