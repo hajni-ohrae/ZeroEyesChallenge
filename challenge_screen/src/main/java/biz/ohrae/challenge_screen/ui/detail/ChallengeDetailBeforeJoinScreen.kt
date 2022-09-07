@@ -8,6 +8,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,7 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import biz.ohrae.challenge.model.list_item.ChallengeItemData
+import androidx.hilt.navigation.compose.hiltViewModel
 import biz.ohrae.challenge.ui.components.avatar.Avatar
 import biz.ohrae.challenge.ui.components.button.ArrowTextButton2
 import biz.ohrae.challenge.ui.components.button.FlatDoubleButton
@@ -32,6 +34,7 @@ import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.TextBlack
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
+import biz.ohrae.challenge_repo.util.prefs.Utils
 
 @Preview(
     showBackground = true,
@@ -39,9 +42,12 @@ import biz.ohrae.challenge.ui.theme.myTypography
     heightDp = 1800
 )
 @Composable
-fun ChallengeDetailBeforeJoinScreen() {
-    val challengeItemData = ChallengeItemData.mock()
+fun ChallengeDetailBeforeJoinScreen(
+    viewModel: ChallengeDetailViewModel = hiltViewModel()
+) {
     val scrollState = rememberScrollState()
+    val challengeData by viewModel.challengeData.observeAsState()
+
     Column(modifier = Modifier
         .fillMaxSize()
         .verticalScroll(scrollState)
@@ -59,10 +65,10 @@ fun ChallengeDetailBeforeJoinScreen() {
             )
             Spacer(modifier = Modifier.height(24.dp))
             ChallengeDetailsTitle(
-                challengeItemData.personnel,
-                challengeItemData.title,
-                challengeItemData.startDate,
-                challengeItemData.endDate
+                personnel = 0,
+                detailTitle = challengeData?.subject.toString(),
+                startDay = Utils.convertDate6(challengeData?.start_date.toString()),
+                endDay = Utils.convertDate6(challengeData?.end_date.toString())
             )
             Spacer(modifier = Modifier.height(32.dp))
             Divider(modifier = Modifier

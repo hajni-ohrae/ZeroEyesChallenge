@@ -178,6 +178,18 @@ object Utils {
         }
     }
 
+    fun convertDate6(dateStr: String): String {
+        return try {
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
+            val date = inputFormat.parse(dateStr)
+            val outputFormat = SimpleDateFormat("M월 d일(E)", Locale.KOREA)
+            outputFormat.timeZone = TimeZone.getTimeZone("Asia/Seoul")
+            outputFormat.format(date!!)
+        } catch (ignore: Exception) {
+            dateStr
+        }
+    }
+
     fun minutesToString(min: Int): String {
         val days = min / (24 * 60)
         val hours = min % (24 * 60) / 60

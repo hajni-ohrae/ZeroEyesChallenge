@@ -24,10 +24,10 @@ interface ApiService {
         ): NetworkResponse<Result, Error>
 
     @GET(Routes.GET_CHALLENGE)
-    suspend fun getAllChallenge(
+    suspend fun getChallenge(
         @Header("x-access-token") accessToken: String,
         @Path("challenge_id") challengeId: String,
-    ): NetworkResponse<Result, Error>
+    ): NetworkResponse<Result2, Error>
 
     @POST(Routes.CREATE_CHALLENGE)
     suspend fun createChallenge(@Body body: JsonObject?): NetworkResponse<Result, Error>

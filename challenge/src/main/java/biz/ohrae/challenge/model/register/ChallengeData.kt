@@ -7,6 +7,7 @@ data class ChallengeData(
     val apply_start_date: String? = null,
     val apply_end_date: String? = null,
     var start_date: String? = null,
+    var end_date: String? = null,
     val min_deposit_amount: Int = 0,
     val free_rewards: String? = null,
     val free_winners: String? = null,
@@ -32,6 +33,7 @@ data class ChallengeData(
             apply_start_date = "2022-09-13",
             apply_end_date = "2022-09-20",
             start_date = "2022-09-20",
+            end_date = "2022-09-29",
             min_deposit_amount = 1000,
             free_rewards = "",
             free_winners = "",
@@ -47,7 +49,6 @@ data class ChallengeData(
             verification_period_type = "daily",
             per_week = 3,
             image_path = "daily"
-
         )
     }
 

@@ -65,7 +65,9 @@ class ChallengeDetailActivity : AppCompatActivity() {
             startDestination = ChallengeDetailNavScreen.DetailBeforeJoin.route
         ) {
             composable(ChallengeDetailNavScreen.DetailBeforeJoin.route) {
-                ChallengeDetailBeforeJoinScreen()
+                ChallengeDetailBeforeJoinScreen(
+                    viewModel = viewModel
+                )
             }
         }
     }
