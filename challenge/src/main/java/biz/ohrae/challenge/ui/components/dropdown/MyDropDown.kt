@@ -26,7 +26,13 @@ import biz.ohrae.challenge_component.R
 )
 @Composable
 private fun DropDownGallery() {
-    val list = listOf("우리은행", "국민은행", "농협", "토스뱅크", "카카오뱅크")
+    val list = listOf(
+        DropDownItem(label = "우리은행", value = "우리은행"),
+        DropDownItem(label = "국민은행", value = "국민은행"),
+        DropDownItem(label = "농협", value = "농협"),
+        DropDownItem(label = "토스뱅크", value = "토스뱅크"),
+        DropDownItem(label = "카카오뱅크", value = "카카오뱅크"),
+    )
 
     Column(
         modifier = Modifier
@@ -49,7 +55,8 @@ private fun DropDownGallery() {
 fun MyDropDown(
     modifier: Modifier = Modifier,
     label: String,
-    list: List<String>,
+    list: List<DropDownItem>,
+    onSelectItem: (item: DropDownItem) -> Unit = {},
 ) {
     var expanded by remember { mutableStateOf(false) }
     var selectedItem by remember { mutableStateOf(list[0]) }
@@ -83,7 +90,7 @@ fun MyDropDown(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = selectedItem,
+                        text = selectedItem.label,
                         style = myTypography.bold,
                         fontSize = dpToSp(dp = 16.dp),
                         color = Color(0xff6c6c6c)
@@ -111,10 +118,11 @@ fun MyDropDown(
                             onClick = {
                                 expanded = false
                                 selectedItem = it
+                                onSelectItem(it)
                             }
                         ) {
                             Text(
-                                text = it,
+                                text = it.label,
                                 style = myTypography.bold,
                                 fontSize = dpToSp(dp = 16.dp),
                                 color = Color(0xff6c6c6c)
