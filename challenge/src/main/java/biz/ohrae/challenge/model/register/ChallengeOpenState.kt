@@ -1,28 +1,30 @@
 package biz.ohrae.challenge.model.register
 
+import biz.ohrae.challenge.ui.components.dropdown.DropDownItem
+
 data class ChallengeOpenState(
-    val authCycleList: List<String>,
-    val authFrequencyList: List<String>,
+    val authCycleList: List<DropDownItem>,
+    val authFrequencyList: List<DropDownItem>,
     val challengeRadioOptions: List<RadioOptions>
 ) {
     companion object {
         fun mock() = ChallengeOpenState(
             authCycleList = listOf(
-                "1주동안",
-                "2주동안",
-                "3주동안",
-                "4주동안"
+                DropDownItem("1주동안","1"),
+                DropDownItem("2주동안","2"),
+                DropDownItem("3주동안","3"),
+                DropDownItem("4주동안","4"),
             ),
             authFrequencyList = listOf(
-                "매일 인증",
-                "평일만 인증(월,화,수,목,금)",
-                "주말만 인증 (토,일)",
-                "주 1회 인증",
-                "주 2회 인증",
-                "주 3회 인증",
-                "주 4회 인증",
-                "주 5회 인증",
-                "주 6회 인증",
+                DropDownItem("매일 인증","daily"),
+                DropDownItem("평일만 인증(월,화,수,목,금)","weekday"),
+                DropDownItem("주말만 인증 (토,일)","weekend"),
+                DropDownItem("주 1회 인증","per_week"),
+                DropDownItem("주 2회 인증","per_week"),
+                DropDownItem("주 3회 인증","per_week"),
+                DropDownItem("주 4회 인증","per_week"),
+                DropDownItem("주 5회 인증","per_week"),
+                DropDownItem("주 6회 인증","per_week"),
             ),
             challengeRadioOptions = listOf(
                 RadioOptions("사진인증", "photo","즉석 촬영으로만 인증이 가능합니다"),
@@ -32,10 +34,6 @@ data class ChallengeOpenState(
         )
     }
 }
-data class AuthFrequency(
-    val frequency:String,
-    val type:String
-)
 data class RadioOptions(
     val radioTitle: String,
     val radioTitleEn:String,

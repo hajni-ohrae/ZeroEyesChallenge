@@ -31,7 +31,6 @@ private fun HeaderGallery() {
         Spacer(modifier = Modifier.height(30.dp))
         BackButton()
     }
-
 }
 
 @Composable

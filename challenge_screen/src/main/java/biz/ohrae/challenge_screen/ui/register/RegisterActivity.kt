@@ -34,7 +34,6 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var registerClickListener: RegisterClickListener
     private lateinit var challengeData: ChallengeData
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this)[ChallengeRegisterViewModel::class.java]
@@ -76,9 +75,11 @@ class RegisterActivity : AppCompatActivity() {
             composable(ChallengeRegisterNavScreen.RegisterAuth.route) {
                 RegisterAuthScreen(clickListener = registerClickListener)
             }
+
             composable(ChallengeRegisterNavScreen.ChallengeGoals.route) {
                 ChallengeGoals(clickListener = registerClickListener)
             }
+
             composable(ChallengeRegisterNavScreen.ChallengeOpen.route) {
                 ChallengeOpenScreen(
                     clickListener = registerClickListener,
@@ -90,8 +91,6 @@ class RegisterActivity : AppCompatActivity() {
             composable(ChallengeRegisterNavScreen.ChallengerRecruitment.route) {
                 ChallengerRecruitment(clickListener = registerClickListener)
             }
-
-
         }
     }
 
@@ -103,21 +102,10 @@ class RegisterActivity : AppCompatActivity() {
             finish()
         }
         navController.popBackStack()
-
     }
 
     private fun initClickListener() {
         registerClickListener = object : RegisterClickListener {
-//            override fun onClickNext() {
-//                if (navController.currentBackStackEntry?.destination?.route == ChallengeRegisterNavScreen.RegisterAuth.route) {
-//                    navController.navigate(ChallengeRegisterNavScreen.ChallengeOpen.route)
-//                } else if (navController.currentBackStackEntry?.destination?.route == ChallengeRegisterNavScreen.ChallengeOpen.route) {
-//                    navController.navigate(ChallengeRegisterNavScreen.ChallengerRecruitment.route)
-//                } else if (navController.currentBackStackEntry?.destination?.route == ChallengeRegisterNavScreen.ChallengerRecruitment.route) {
-//                    navController.navigate(ChallengeRegisterNavScreen.ChallengeGoals.route)
-//                }
-//            }
-
             override fun onClickAuthNext(auth: String) {
                 viewModel.selectAuth(auth)
                 navController.navigate(ChallengeRegisterNavScreen.ChallengeOpen.route)
@@ -175,7 +163,6 @@ class RegisterActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
-
     }
 }
 
