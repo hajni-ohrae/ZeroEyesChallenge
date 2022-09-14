@@ -37,9 +37,12 @@ class ChallengeMainViewModel @Inject constructor(
 
     fun getChallengeList() {
         viewModelScope.launch {
-            val response = challengeMainRepo.getChallenges().flowOn(Dispatchers.IO).collect {
+            challengeMainRepo.getChallenges().flowOn(Dispatchers.IO).collect {
                 Timber.e("result : ${gson.toJson(it.data)}")
-                _mainScreenState.value = it.data as MainScreenState
+                it.data?.let { data ->
+                    val state = data as MainScreenState
+                    _mainScreenState.value = state
+                }
             }
         }
     }
