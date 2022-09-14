@@ -36,5 +36,9 @@
             android:name="biz.ohrae.challenge_screen.ui.detail.ChallengeDetailActivity"
             android:exported="true">
         </activity>
+        <activity
+            android:name="biz.ohrae.challenge_screen.ui.participation.ParticipationActivity"
+            android:exported="true">
+        </activity>
     </application>
 </manifest>

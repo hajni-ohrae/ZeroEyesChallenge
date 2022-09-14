@@ -1,5 +1,6 @@
 package biz.ohrae.challenge_screen.ui.detail
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
@@ -15,6 +16,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import biz.ohrae.challenge.ui.components.header.NavigationHeader
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
+import biz.ohrae.challenge_screen.ui.main.MainClickListener
+import biz.ohrae.challenge_screen.ui.participation.ParticipationActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -22,6 +25,8 @@ class ChallengeDetailActivity : AppCompatActivity() {
     private lateinit var viewModel: ChallengeDetailViewModel
     private lateinit var navController: NavHostController
     private var challengeId: String? = null
+    private lateinit var detailClickListener: ChallengeDetailClickListener
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +35,7 @@ class ChallengeDetailActivity : AppCompatActivity() {
         challengeId = intent.getStringExtra("challengeId")
 
         init()
+        initClickListener()
         setContent {
             ChallengeInTheme {
                 BuildContent()
@@ -66,7 +72,8 @@ class ChallengeDetailActivity : AppCompatActivity() {
         ) {
             composable(ChallengeDetailNavScreen.DetailBeforeJoin.route) {
                 ChallengeDetailBeforeJoinScreen(
-                    viewModel = viewModel
+                    viewModel = viewModel,
+                    clickListener = detailClickListener
                 )
             }
         }
@@ -76,6 +83,14 @@ class ChallengeDetailActivity : AppCompatActivity() {
         viewModel.getChallenge(challengeId.toString())
     }
 
+    private fun initClickListener() {
+        detailClickListener = object : ChallengeDetailClickListener {
+            override fun onClickParticipation() {
+                intent = Intent(this@ChallengeDetailActivity, ParticipationActivity::class.java)
+                startActivity(intent)
+            }
+        }
+    }
 }
 
 sealed class ChallengeDetailNavScreen(val route: String) {

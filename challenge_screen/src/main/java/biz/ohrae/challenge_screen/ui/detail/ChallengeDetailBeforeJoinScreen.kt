@@ -43,15 +43,18 @@ import biz.ohrae.challenge_repo.util.prefs.Utils
 )
 @Composable
 fun ChallengeDetailBeforeJoinScreen(
-    viewModel: ChallengeDetailViewModel = hiltViewModel()
+    viewModel: ChallengeDetailViewModel = hiltViewModel(),
+    clickListener: ChallengeDetailClickListener? = null
 ) {
     val scrollState = rememberScrollState()
     val challengeData by viewModel.challengeData.observeAsState()
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .verticalScroll(scrollState)
-        .background(DefaultWhite)) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(scrollState)
+            .background(DefaultWhite)
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -71,22 +74,28 @@ fun ChallengeDetailBeforeJoinScreen(
                 endDay = Utils.convertDate6(challengeData?.end_date.toString())
             )
             Spacer(modifier = Modifier.height(32.dp))
-            Divider(modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp)
-                .background(Color(0xffebebeb)))
+            Divider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(Color(0xffebebeb))
+            )
             Spacer(modifier = Modifier.height(32.dp))
             ChallengeDescription()
             ChallengePhotoAuthentication()
-            Divider(modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp)
-                .background(Color(0xffebebeb)))
+            Divider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(Color(0xffebebeb))
+            )
             ChallengeHost()
-            Divider(modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp)
-                .background(Color(0xffebebeb)))
+            Divider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(Color(0xffebebeb))
+            )
             ArrowTextButton2(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -94,17 +103,20 @@ fun ChallengeDetailBeforeJoinScreen(
                 text = "챌린지 이용 주의사항",
                 textColor = TextBlack
             )
-            Divider(modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp)
-                .background(Color(0xffebebeb)))
+            Divider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(Color(0xffebebeb))
+            )
             Spacer(modifier = Modifier.height(96.dp))
         }
         FlatDoubleButton(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(6f),
-            text = "참여 신청"
+            text = "참여 신청",
+            onClick = { clickListener?.onClickParticipation() }
         )
     }
 }
@@ -121,9 +133,11 @@ fun ChallengeDescription() {
         )
         Spacer(modifier = Modifier.height(16.dp))
         val annotatedString = buildAnnotatedString {
-            append("확실한 동기부여를 위해서 돈을 걸어요\n" +
-                    "챌린지를 시작하기 전에 돈을 걸고 \n" +
-                    "내가 실천한 만큼 돌려받으면 끝까지 포기할 수가 없죠\n")
+            append(
+                "확실한 동기부여를 위해서 돈을 걸어요\n" +
+                        "챌린지를 시작하기 전에 돈을 걸고 \n" +
+                        "내가 실천한 만큼 돌려받으면 끝까지 포기할 수가 없죠\n"
+            )
             withStyle(style = SpanStyle(fontWeight = FontWeight.ExtraBold)) {
                 append("돈을 걸기 전과 후 달라진 나의 변화를 경험")
             }

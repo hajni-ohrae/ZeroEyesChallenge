@@ -72,13 +72,12 @@ fun ChallengerRecruitment(
             fontSize = dpToSp(dp = 14.dp),
             color = DefaultBlack
         )
-        DropDown(
+        MyDropDown(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(7.1f),
             label = "",
             list = challengeOpenState.authCycleList,
-            viewModel = viewModel
         )
         Spacer(modifier = Modifier.height(28.dp))
         Text(
