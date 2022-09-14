@@ -106,6 +106,7 @@ fun ChallengeOpenScreen(
                 .aspectRatio(7.1f),
             label = "",
             list = challengeOpenState.authCycleList,
+            onSelectItem = {clickListener?.onClickPeriod(it.value)}
         )
 
         MyDropDown(
@@ -114,6 +115,7 @@ fun ChallengeOpenScreen(
                 .aspectRatio(7.1f),
             label = "",
             list = challengeOpenState.authFrequencyList,
+            onSelectItem = {clickListener?.onClickPeriodType(it.value)}
         )
 
         if (challengeAuth == 1) {

@@ -149,8 +149,12 @@ class RegisterActivity : AppCompatActivity() {
 
             }
 
-            override fun onClickDropDownItem(item: String) {
-                TODO("Not yet implemented")
+            override fun onClickPeriod(item: String) {
+                viewModel.selectPeriod(item)
+            }
+
+            override fun onClickPeriodType(item: String) {
+                viewModel.selectPeriodType(item)
             }
 
         }

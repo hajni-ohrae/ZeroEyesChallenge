@@ -94,4 +94,20 @@ class ChallengeRegisterViewModel @Inject constructor(
             }
         }
     }
+
+    fun selectPeriod(item:String){
+        val state = _challengeData.value?.copy()
+        state?.let {
+            it.period = item.toInt()
+            _challengeData.value = it
+        }
+    }
+
+    fun selectPeriodType(item:String){
+        val state = _challengeData.value?.copy()
+        state?.let {
+            it.verification_period_type = item
+            _challengeData.value = it
+        }
+    }
 }

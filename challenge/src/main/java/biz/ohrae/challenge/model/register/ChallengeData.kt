@@ -19,7 +19,7 @@ data class ChallengeData(
     val is_feed_open: Int = 0,
     val achievement_percent: Int = 0,
     val rewards_percent: Int = 0,
-    val period: Int = 0,
+    var period: Int = 0,
     var verification_period_type: String? = null,
 //    daily | weekday | weekend | per_week
     var per_week: Int = 0,

@@ -21,7 +21,7 @@ interface ApiService {
         @Query("per_week") perWeek: String? = null,
         @Query("period") period: String? = null,
         @Query("is_adult_only") isAdultOnly: String? = null,
-        ): NetworkResponse<Result, Error>
+    ): NetworkResponse<Result, Error>
 
     @GET(Routes.GET_CHALLENGE)
     suspend fun getChallenge(
@@ -33,7 +33,10 @@ interface ApiService {
     suspend fun createChallenge(@Body body: JsonObject?): NetworkResponse<Result, Error>
 
     @POST(Routes.REGISTER_CHALLENGE)
-    suspend fun registerChallenge(@Body body: JsonObject?): NetworkResponse<Result, Error>
+    suspend fun registerChallenge(
+        @Header("x-access-token") accessToken: String,
+        @Body body: JsonObject?
+    ): NetworkResponse<Result, Error>
 
     @POST(Routes.FAVORITE_CHALLENGE)
     suspend fun favoriteChallenge(@Body body: JsonObject?): NetworkResponse<Result, Error>

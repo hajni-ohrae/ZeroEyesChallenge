@@ -59,6 +59,7 @@ fun ParticipationScreen(
 
 
     var participationAmount by remember { mutableStateOf("") }
+    var rewards by remember { mutableStateOf("") }
 
 
     Column(
@@ -192,9 +193,9 @@ fun ParticipationScreen(
                 imeAction = ImeAction.Done
             ),
             singleLine = true,
-            value = participationAmount,
+            value = rewards,
             onValueChange = {
-                participationAmount = it
+                rewards = it
             }
         )
         Spacer(modifier = Modifier.height(12.dp))

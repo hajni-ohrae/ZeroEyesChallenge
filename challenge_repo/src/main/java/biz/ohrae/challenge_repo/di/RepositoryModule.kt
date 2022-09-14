@@ -4,6 +4,7 @@ import biz.ohrae.challenge_repo.data.remote.ApiService
 import biz.ohrae.challenge_repo.ui.detail.ChallengeDetailRepo
 import biz.ohrae.challenge_repo.ui.main.ChallengeMainRepo
 import biz.ohrae.challenge_repo.ui.main.UserRepo
+import biz.ohrae.challenge_repo.ui.participation.ParticipationRepo
 import biz.ohrae.challenge_repo.ui.register.RegisterRepo
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import com.google.gson.Gson
@@ -54,5 +55,15 @@ object RepositoryModule {
         prefs: SharedPreference
     ): ChallengeDetailRepo {
         return ChallengeDetailRepo(apiService, gson, prefs)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideParticipationRepo(
+        apiService: ApiService,
+        gson: Gson,
+        prefs: SharedPreference
+    ): ParticipationRepo {
+        return ParticipationRepo(apiService, gson, prefs)
     }
 }
