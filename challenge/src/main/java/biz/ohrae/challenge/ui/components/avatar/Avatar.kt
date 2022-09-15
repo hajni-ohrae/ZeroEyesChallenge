@@ -72,7 +72,7 @@ fun Avatar(
 fun circularAvatar(
     modifier: Modifier = Modifier,
     url: String = "https://avatars.githubusercontent.com/u/27887884?v=4",
-    backgroundColor: Color? = GrayColor7
+    backgroundColor: Color? = GrayColor7,
 ) {
     GlideImage(
         modifier = modifier
@@ -88,7 +88,7 @@ fun circularAvatar(
                 modifier = modifier.clip(CircleShape),
                 contentDescription = "avatar_fail"
             )
-        }
+        },
     )
 }
 

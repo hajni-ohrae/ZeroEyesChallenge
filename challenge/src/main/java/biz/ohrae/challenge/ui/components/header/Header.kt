@@ -35,6 +35,7 @@ private fun HeaderGallery() {
 
 @Composable
 fun Header(
+    goMyChallenge: () -> Unit = {},
 ) {
     Row(
         modifier = Modifier
@@ -44,18 +45,24 @@ fun Header(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(text = "Challenge", style = myTypography.extraBold, fontSize = dpToSp(dp = 20.dp))
-        circularAvatar(Modifier.size(48.dp))
+        IconButton(
+            modifier = Modifier,
+            onClick = {
+                goMyChallenge()
+            }
+        ) {
+            circularAvatar(Modifier.size(48.dp))
+        }
     }
 }
-
 
 
 @Composable
 fun BackButton(
     onBack: () -> Unit = {},
-    title:String  = ""
+    title: String = ""
 ) {
-    Row( modifier = Modifier.padding(16.dp,13.dp),verticalAlignment = Alignment.CenterVertically) {
+    Row(modifier = Modifier.padding(16.dp, 13.dp), verticalAlignment = Alignment.CenterVertically) {
         IconButton(
             modifier = Modifier,
             onClick = {
@@ -69,7 +76,11 @@ fun BackButton(
                 tint = TextBlack,
             )
         }
-        Text(modifier = Modifier.fillMaxWidth().align(CenterVertically), text = title,
-            textAlign = TextAlign.Center)
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(CenterVertically), text = title,
+            textAlign = TextAlign.Center
+        )
     }
 }
