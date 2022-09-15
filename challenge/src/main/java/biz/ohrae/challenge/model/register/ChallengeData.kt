@@ -1,6 +1,7 @@
 package biz.ohrae.challenge.model.register
 
 data class ChallengeData(
+    val id: String,
     val user_id: String? = null,
     var goal: String? = null,
     var subject: String? = null,
@@ -24,9 +25,17 @@ data class ChallengeData(
 //    daily | weekday | weekend | per_week
     var per_week: Int = 0,
     var image_path: String,
+    val status: String,
+    val caution: String? = null,
+    val created_date: String,
+    val inChallenge: List<Any>?,
+    val total_verification_cnt: Int,
+    val updated_date: String,
+    val verification_daily_staying_time: Int,
 ) {
     companion object {
         fun mock(id: String = "2d4033ab-244b-47f3-84e9-6af72be39d9f") = ChallengeData(
+            id = "2d4033ab-244b-47f3-84e9-6af72be39d9f",
             user_id = id,
             goal = "주 2회 자전거 타고 인증하기",
             subject = "test",
@@ -48,8 +57,13 @@ data class ChallengeData(
             period = 3,
             verification_period_type = "daily",
             per_week = 3,
-            image_path = "daily"
+            image_path = "daily",
+            status = "pending",
+            created_date = "2022-09-20",
+            updated_date = "2022-09-20",
+            inChallenge = listOf(),
+            total_verification_cnt = 0,
+            verification_daily_staying_time = 0,
         )
     }
-
 }

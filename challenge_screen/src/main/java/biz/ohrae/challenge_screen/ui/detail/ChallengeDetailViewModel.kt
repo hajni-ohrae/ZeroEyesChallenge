@@ -31,7 +31,8 @@ class ChallengeDetailViewModel @Inject constructor(
             repo.getChallenge(id).flowOn(Dispatchers.IO).collect {
                 Timber.e("result : ${gson.toJson(it.data)}")
                 if (it.data != null) {
-                    _challengeData.value = it.data as ChallengeData
+                    val challengeData = it.data as ChallengeData
+                    _challengeData.value = challengeData
                 }
             }
         }

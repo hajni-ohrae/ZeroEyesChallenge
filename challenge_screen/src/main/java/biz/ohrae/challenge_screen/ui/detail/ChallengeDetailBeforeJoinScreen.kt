@@ -34,6 +34,7 @@ import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.TextBlack
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
+import biz.ohrae.challenge.util.challengeDetailStatusMap
 import biz.ohrae.challenge_repo.util.prefs.Utils
 
 @Preview(
@@ -48,6 +49,10 @@ fun ChallengeDetailBeforeJoinScreen(
 ) {
     val scrollState = rememberScrollState()
     val challengeData by viewModel.challengeData.observeAsState()
+    val status = challengeDetailStatusMap[challengeData?.status]
+    if (challengeData == null) {
+        return
+    }
 
     Column(
         modifier = Modifier
@@ -67,12 +72,15 @@ fun ChallengeDetailBeforeJoinScreen(
                 imagePath = ""
             )
             Spacer(modifier = Modifier.height(24.dp))
-            ChallengeDetailsTitle(
-                personnel = 0,
-                detailTitle = challengeData?.subject.toString(),
-                startDay = Utils.convertDate6(challengeData?.start_date.toString()),
-                endDay = Utils.convertDate6(challengeData?.end_date.toString())
-            )
+            if (status != null) {
+                ChallengeDetailsTitle(
+                    status = status!!,
+                    personnel = 0,
+                    detailTitle = challengeData?.goal.toString(),
+                    startDay = Utils.convertDate6(challengeData?.start_date.toString()),
+                    endDay = Utils.convertDate6(challengeData?.end_date.toString())
+                )
+            }
             Spacer(modifier = Modifier.height(32.dp))
             Divider(
                 modifier = Modifier

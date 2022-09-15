@@ -1,0 +1,33 @@
+package biz.ohrae.challenge.model.register
+
+data class ChallengeDataTemp(
+    val achievement_percent: Int,
+    val apply_end_date: String,
+    val apply_start_date: String,
+    val caution: Any,
+    val created_date: String,
+    val end_date: String,
+    val free_rewards: String,
+    val free_rewards_offer_way: String,
+    val free_winners: String,
+    val goal: String,
+    val id: String,
+    val image_path: String,
+    val inChallenge: List<Any>,
+    val is_adult_only: Int,
+    val is_feed_open: Int,
+    val is_verification_checkin: Int,
+    val is_verification_photo: Int,
+    val is_verification_time: Int,
+    val min_deposit_amount: Int,
+    val per_week: Int,
+    val period: Int,
+    val rewards_percent: Int,
+    val start_date: String,
+    val status: String,
+    val subject: String,
+    val total_verification_cnt: Int,
+    val updated_date: String,
+    val verification_daily_staying_time: Int,
+    val verification_period_type: String
+)

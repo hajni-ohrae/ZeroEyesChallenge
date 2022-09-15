@@ -1,5 +1,7 @@
 package biz.ohrae.challenge.model.list_item
 
+import biz.ohrae.challenge.model.state.ChallengeDetailStatus
+
 data class ChallengeItemData(
     val title: String,
     val userName: String,
@@ -8,7 +10,8 @@ data class ChallengeItemData(
     val numberOfTimes: String,
     val personnel: Int = 0,
     val startDate: String,
-    val endDate: String
+    val endDate: String,
+    val state: ChallengeDetailStatus
 ) {
     companion object {
         fun mock() = ChallengeItemData(
@@ -19,7 +22,8 @@ data class ChallengeItemData(
             numberOfTimes = "주말만",
             personnel = 17,
             startDate = "4월11일(월)",
-            endDate = "4월24일(일)"
+            endDate = "4월24일(일)",
+            state = ChallengeDetailStatus.mock()
         )
     }
 }

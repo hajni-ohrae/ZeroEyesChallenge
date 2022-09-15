@@ -12,7 +12,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.model.list_item.ChallengeItemData
-import biz.ohrae.challenge.ui.components.avatar.Avatar
+import biz.ohrae.challenge.model.state.ChallengeDetailStatus
 import biz.ohrae.challenge.ui.components.label.ChallengeProgressStatus
 import biz.ohrae.challenge.ui.components.label.ProgressLabel
 import biz.ohrae.challenge.ui.theme.DefaultWhite
@@ -31,6 +31,7 @@ private fun ChallengeDetailsTitleGallery() {
 
     Column(modifier = Modifier.background(DefaultWhite)) {
         ChallengeDetailsTitle(
+            challengeItemData.state,
             challengeItemData.personnel,
             challengeItemData.title,
             challengeItemData.startDate,
@@ -40,13 +41,13 @@ private fun ChallengeDetailsTitleGallery() {
 }
 
 @Composable
-fun ChallengeDetailsTitle(personnel: Int, detailTitle: String, startDay: String, endDay: String) {
+fun ChallengeDetailsTitle(status : ChallengeDetailStatus, personnel: Int, detailTitle: String, startDay: String, endDay: String) {
     Column {
         Row(verticalAlignment = Alignment.CenterVertically) {
             ProgressLabel(
-                text = "모집중",
-                backgroundColor = Color(0xffebfaf1),
-                textColor = Color(0xff219653),
+                text = status.status,
+                backgroundColor = status.backgroundColor,
+                textColor = status.textColor,
             )
             Spacer(modifier = Modifier.width(8.dp))
             Icon(
