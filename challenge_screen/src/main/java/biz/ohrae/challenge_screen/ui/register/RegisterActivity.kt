@@ -59,7 +59,6 @@ class RegisterActivity : AppCompatActivity() {
             BackButton(onBack = { onBack() })
             Column(modifier = Modifier) {
                 Navigation()
-
             }
         }
     }

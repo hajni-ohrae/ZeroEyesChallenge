@@ -11,9 +11,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
+import biz.ohrae.challenge.ui.components.header.Header
 import dagger.hilt.android.AndroidEntryPoint
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailActivity
+import biz.ohrae.challenge_screen.ui.mychallenge.MyChallengeActivity
 import biz.ohrae.challenge_screen.ui.register.RegisterActivity
 import biz.ohrae.challenge_screen.ui.register.RegisterClickListener
 
@@ -38,10 +40,10 @@ class MainActivity : AppCompatActivity() {
     @Composable
     private fun BuildContent() {
         val mainScreenState by viewModel.mainScreenState.observeAsState()
-//        Header()
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
+            Header(goMyChallenge = { goMyChallenge() })
             if (mainScreenState != null) {
                 ChallengeMainScreen(
                     mainScreenState = mainScreenState,
@@ -62,7 +64,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onClickRegister() {
-                val intent = Intent(this@MainActivity,RegisterActivity::class.java)
+                val intent = Intent(this@MainActivity, RegisterActivity::class.java)
                 startActivity(intent)
             }
 
@@ -75,6 +77,11 @@ class MainActivity : AppCompatActivity() {
     private fun goDetail(id: String) {
         val intent = Intent(this, ChallengeDetailActivity::class.java)
         intent.putExtra("challengeId", id)
+        startActivity(intent)
+    }
+
+    private fun goMyChallenge() {
+        val intent = Intent(this, MyChallengeActivity::class.java)
         startActivity(intent)
     }
 }
