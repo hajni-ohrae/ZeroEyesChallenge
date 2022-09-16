@@ -17,6 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.model.list_item.ChallengeItemData
+import biz.ohrae.challenge.model.state.ChallengeDetailStatus
 import biz.ohrae.challenge.ui.components.avatar.Avatar
 import biz.ohrae.challenge.ui.components.avatar.circularAvatar
 import biz.ohrae.challenge.ui.components.label.ChallengeDurationLabel
@@ -37,7 +38,8 @@ private fun ChallengeCardItemGallery() {
             "주말만",
             17,
             "4월11일(월)",
-            "4월24일(일)"
+            "4월24일(일)",
+            state = ChallengeDetailStatus.mock()
         ),
         ChallengeItemData(
             "7월 한달 | 완벽한 스마트 학습 25회 달성하기",
@@ -47,7 +49,8 @@ private fun ChallengeCardItemGallery() {
             "주말만",
             17,
             "4월11일(월)",
-            "4월24일(일)"
+            "4월24일(일)",
+            state = ChallengeDetailStatus.mock()
         ),
         ChallengeItemData(
             "매일 6시간씩 한국사 공부",
@@ -57,7 +60,8 @@ private fun ChallengeCardItemGallery() {
             "주말만",
             17,
             "4월11일(월)",
-            "4월24일(일)"
+            "4월24일(일)",
+            state = ChallengeDetailStatus.mock()
         ),
         ChallengeItemData(
             "매일 6시간씩 한국사 공부",
@@ -67,7 +71,8 @@ private fun ChallengeCardItemGallery() {
             "주말만",
             17,
             "4월11일(월)",
-            "4월24일(일)"
+            "4월24일(일)",
+            state = ChallengeDetailStatus.mock()
         )
     )
     Column(modifier = Modifier.background(GrayColor5)) {

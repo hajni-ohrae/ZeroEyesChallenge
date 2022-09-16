@@ -3,27 +3,34 @@ package biz.ohrae.challenge_screen.ui.mychallenge
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
+import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import biz.ohrae.challenge_screen.ui.register.ChallengeRegisterNavScreen
 import biz.ohrae.challenge_screen.ui.register.RegisterAuthScreen
+import biz.ohrae.challenge_screen.ui.register.RegisterClickListener
 
 class MyChallengeActivity : AppCompatActivity() {
     private lateinit var navController: NavHostController
+    private lateinit var myChallengeClickListener: MyChallengeClickListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        initClickListener()
         setContent {
             ChallengeInTheme {
                 BuildContent()
@@ -36,12 +43,23 @@ class MyChallengeActivity : AppCompatActivity() {
         navController = rememberNavController()
 
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .background(DefaultWhite)
         ) {
-            Navigation()
+            BackButton(onBack = { onBack() })
+            Column() {
+                Navigation()
+            }
         }
     }
 
+    private fun onBack() {
+        if (navController.currentBackStackEntry?.destination?.route == MyChallengeNavScreen.MyChallenge.route) {
+            finish()
+        }
+        navController.popBackStack()
+    }
     @Composable
     private fun Navigation() {
 
@@ -50,7 +68,18 @@ class MyChallengeActivity : AppCompatActivity() {
             startDestination = MyChallengeNavScreen.MyChallenge.route
         ) {
             composable(MyChallengeNavScreen.MyChallenge.route) {
-                MyChallengeScreen()
+                MyChallengeScreen(clickListener = myChallengeClickListener)
+            }
+            composable(MyChallengeNavScreen.MyReward.route) {
+                MyRewardScreen(clickListener = myChallengeClickListener)
+            }
+        }
+    }
+
+    private fun initClickListener() {
+        myChallengeClickListener = object : MyChallengeClickListener {
+            override fun onClickReward() {
+                navController.navigate(MyChallengeNavScreen.MyReward.route)
             }
         }
     }

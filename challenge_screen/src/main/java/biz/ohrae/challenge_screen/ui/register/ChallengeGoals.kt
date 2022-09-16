@@ -131,7 +131,6 @@ fun ChallengeGoals(
 
 
         Column(modifier = Modifier.fillMaxHeight(), Arrangement.Bottom) {
-
             FlatBottomButton(
                 modifier = Modifier
                     .fillMaxWidth()
