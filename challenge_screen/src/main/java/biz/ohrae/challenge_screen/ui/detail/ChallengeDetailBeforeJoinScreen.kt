@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import biz.ohrae.challenge.ui.components.avatar.Avatar
 import biz.ohrae.challenge.ui.components.button.ArrowTextButton2
+import biz.ohrae.challenge.ui.components.button.FlatBookMarkButton
 import biz.ohrae.challenge.ui.components.button.FlatDoubleButton
 import biz.ohrae.challenge.ui.components.card.RedCardInfo
 import biz.ohrae.challenge.ui.components.detail.ChallengeDetailRefundDescription
@@ -119,7 +120,7 @@ fun ChallengeDetailBeforeJoinScreen(
             )
             Spacer(modifier = Modifier.height(96.dp))
         }
-        FlatDoubleButton(
+        FlatBookMarkButton(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(6f),

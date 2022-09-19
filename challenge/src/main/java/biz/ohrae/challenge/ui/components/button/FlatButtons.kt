@@ -57,7 +57,7 @@ private fun ButtonGallery() {
             text = "챌린저스 결과 보기",
         )
         Spacer(modifier = Modifier.height(20.dp))
-        FlatDoubleButton(
+        FlatBookMarkButton(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(6f),
@@ -70,6 +70,14 @@ private fun ButtonGallery() {
                 .aspectRatio(6f),
             text = "참여 신청"
         )
+        Spacer(modifier = Modifier.height(20.dp))
+
+        FlatDoubleButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(6f),
+        leftText = "",
+        rightText = "")
     }
 }
 
@@ -140,6 +148,59 @@ fun FlatBorderButton(
 
 @Composable
 fun FlatDoubleButton(
+    modifier: Modifier = Modifier,
+    rightText: String = "확인",
+    leftText:String = "",
+    textStyle: TextStyle = myTypography.bold,
+    enabled: Boolean = true,
+    onClick: () -> Unit = {},
+    onClickLike: () -> Unit = {}){
+    Row(
+        modifier = modifier,
+    ) {
+        Button(
+            modifier = Modifier
+                .fillMaxHeight()
+                .weight(1f),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color(0xffdedede),
+                contentColor = DefaultWhite
+            ),
+            shape = RectangleShape,
+            onClick = {
+                onClick()
+            }
+        ) {
+            Text(
+                text = leftText,
+                style = textStyle,
+                fontSize = dpToSp(dp = 18.dp),
+                color = Color(0xff121212)
+            )
+        }
+        Button(
+            modifier = Modifier
+                .fillMaxHeight()
+                .weight(1f),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color(0xff003865),
+                contentColor = DefaultWhite
+            ),
+            shape = RectangleShape,
+            onClick = {
+                onClick()
+            }
+        ) {
+            Text(
+                text = rightText,
+                style = textStyle,
+                fontSize = dpToSp(dp = 18.dp)
+            )
+        }
+    }
+}
+@Composable
+fun FlatBookMarkButton(
     modifier: Modifier = Modifier,
     text: String = "확인",
     textStyle: TextStyle = myTypography.bold,

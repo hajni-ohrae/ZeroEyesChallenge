@@ -54,6 +54,8 @@ fun MyRewardScreen(
                 content = "15,500원",
                 contentColor = Color(0xff005bad)
             )
+            Spacer(modifier = Modifier.height(18.dp))
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -90,16 +92,16 @@ fun MyRewardScreen(
                     color = Color(0xff6c6c6c)
                 )
             }
+        }
 
-            Column(modifier = Modifier.fillMaxHeight(), Arrangement.Bottom) {
-                FlatBottomButton(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(6f),
-                    text = "출금신청",
-                    onClick = { }
-                )
-            }
+        Column(modifier = Modifier.fillMaxHeight(), Arrangement.Bottom) {
+            FlatBottomButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(6f),
+                text = "출금신청",
+                onClick = { }
+            )
         }
     }
 
