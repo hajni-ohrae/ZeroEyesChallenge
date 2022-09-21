@@ -32,7 +32,6 @@ class ParticipationActivity : AppCompatActivity() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(24.dp,0.dp)
                 .background(DefaultWhite)
         ) {
             BackButton(onBack = { onBack() },"챌린지 신청")

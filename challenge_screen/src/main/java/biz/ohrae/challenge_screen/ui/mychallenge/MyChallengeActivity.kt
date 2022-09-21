@@ -73,6 +73,15 @@ class MyChallengeActivity : AppCompatActivity() {
             composable(MyChallengeNavScreen.MyReward.route) {
                 MyRewardScreen(clickListener = myChallengeClickListener)
             }
+            composable(MyChallengeNavScreen.MyPaymentDetail.route) {
+                PaymentDetailListScreen()
+            }
+            composable(MyChallengeNavScreen.SavedChallenge.route) {
+                SavedChallengeScreen()
+            }
+            composable(MyChallengeNavScreen.RedCard.route) {
+                RedCardScreen()
+            }
         }
     }
 
@@ -80,6 +89,18 @@ class MyChallengeActivity : AppCompatActivity() {
         myChallengeClickListener = object : MyChallengeClickListener {
             override fun onClickReward() {
                 navController.navigate(MyChallengeNavScreen.MyReward.route)
+            }
+
+            override fun onClickPaymentDetail() {
+                navController.navigate(MyChallengeNavScreen.MyPaymentDetail.route)
+            }
+
+            override fun onClickSavedChallenge() {
+                navController.navigate(MyChallengeNavScreen.SavedChallenge.route)
+            }
+
+            override fun onClickRedCard() {
+                navController.navigate(MyChallengeNavScreen.RedCard.route)
             }
         }
     }
@@ -89,4 +110,7 @@ class MyChallengeActivity : AppCompatActivity() {
 sealed class MyChallengeNavScreen(val route: String) {
     object MyChallenge : MyChallengeNavScreen("MyChallenge")
     object MyReward : MyChallengeNavScreen("MyReward")
+    object MyPaymentDetail : MyChallengeNavScreen("MyPaymentDetail")
+    object RedCard : MyChallengeNavScreen("RedCard")
+    object SavedChallenge : MyChallengeNavScreen("SavedChallenge")
 }

@@ -23,7 +23,7 @@ import biz.ohrae.challenge_screen.ui.main.ItemHeader
 )
 @Composable
 fun SavedChallengeScreen(
-    mainScreenState: MainScreenState? = null,
+    mainScreenState: MainScreenState? = MainScreenState.mock()
 ) {
     Column() {
         LazyColumn(

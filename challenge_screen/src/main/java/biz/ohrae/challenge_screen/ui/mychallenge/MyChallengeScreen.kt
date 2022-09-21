@@ -38,16 +38,18 @@ import biz.ohrae.challenge_screen.ui.register.RegisterClickListener
 fun MyChallengeScreen(
     challengeData: ChallengeData = ChallengeData.mock(),
     prefs: SharedPreference? = null,
-    select:Boolean = true,
+    select: Boolean = true,
     clickListener: MyChallengeClickListener? = null
 ) {
     val scrollState = rememberScrollState()
 
     Column(
-        modifier = Modifier.padding(24.dp,0.dp)
+        modifier = Modifier
+            .padding(24.dp, 0.dp)
             .fillMaxHeight()
             .background(DefaultWhite)
-            .verticalScroll(scrollState)) {
+            .verticalScroll(scrollState)
+    ) {
         Column() {
             Row {
                 circularAvatar(modifier = Modifier.size(50.dp))
@@ -78,7 +80,7 @@ fun MyChallengeScreen(
             resId = R.drawable.icon_coin,
             title = "보유 리워즈",
             description = "125,000원",
-            onClick = {clickListener?.onClickReward() }
+            onClick = { clickListener?.onClickReward() }
         )
         MenuItem(
             modifier = Modifier
@@ -86,7 +88,7 @@ fun MyChallengeScreen(
                 .aspectRatio(4.46f),
             resId = R.drawable.icon_card,
             title = "결제내역",
-            onClick = {}
+            onClick = {clickListener?.onClickPaymentDetail()}
         )
         MenuItem(
             modifier = Modifier
@@ -94,7 +96,7 @@ fun MyChallengeScreen(
                 .aspectRatio(4.46f),
             resId = R.drawable.icon_like,
             title = "저장한 챌린지",
-            onClick = {}
+            onClick = { clickListener?.onClickSavedChallenge() }
         )
         MenuItem(
             modifier = Modifier
@@ -102,7 +104,7 @@ fun MyChallengeScreen(
                 .aspectRatio(4.46f),
             resId = R.drawable.icon_note,
             title = "레드카드",
-            onClick = {}
+            onClick = { clickListener?.onClickRedCard() }
         )
         Spacer(modifier = Modifier.height(50.dp))
         Text(
@@ -120,7 +122,13 @@ fun MyChallengeScreen(
             PaidFilterCard(modifier = Modifier, text = "진행중")
             PaidFilterCard(modifier = Modifier, text = "완료")
         }
-        ChallengesInParticipationCard(title = "매일 6시간씩 한국사 공부",1,30,"완료",Color(0xffdedede), Color(0xff6c6c6c))
-
+        ChallengesInParticipationCard(
+            title = "매일 6시간씩 한국사 공부",
+            1,
+            30,
+            "완료",
+            Color(0xffdedede),
+            Color(0xff6c6c6c)
+        )
     }
 }
