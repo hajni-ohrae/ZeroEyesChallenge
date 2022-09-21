@@ -370,4 +370,8 @@ object Utils {
         }
         return times[0] + ":" + times[1]
     }
+
+    fun getRemainTimeDays(startDate: String) {
+
+    }
 }

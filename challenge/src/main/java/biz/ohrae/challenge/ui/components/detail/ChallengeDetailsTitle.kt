@@ -4,7 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -19,6 +19,9 @@ import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge_component.R
+import kotlinx.coroutines.delay
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 @Preview(
@@ -63,24 +66,81 @@ fun ChallengeDetailsTitle(status : ChallengeDetailStatus, personnel: Int, detail
             )
         }
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text = detailTitle,fontSize = dpToSp(dp = 20.dp),
-            style = myTypography.extraBold,)
-        Spacer(modifier = Modifier.height(24.dp))
-        Text(text = "챌린지 시작까지",fontSize = dpToSp(dp = 16.dp),
-            style = myTypography.bold,)
-        Spacer(modifier = Modifier.height(8.dp))
-        ChallengeProgressStatus(
-            modifier = Modifier.fillMaxWidth(),
-            textColor = Color(0xff4985f8),
-            text = "0일 00시간 00분",
-            isRemainTime = true,
-            backgroundColor = Color(0xfff3f8ff)
+        Text(
+            text = detailTitle, fontSize = dpToSp(dp = 20.dp),
+            style = myTypography.extraBold,
         )
         Spacer(modifier = Modifier.height(24.dp))
-        Text(text = "챌린지 기간",fontSize = dpToSp(dp = 16.dp),
-            style = myTypography.bold,)
+        Text(
+            text = "챌린지 시작까지", fontSize = dpToSp(dp = 16.dp),
+            style = myTypography.bold,
+        )
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text = "$startDay ~ $endDay", fontSize = dpToSp(dp = 16.dp))
+        ChallengeRemainTime(startDay = startDay)
+        Spacer(modifier = Modifier.height(24.dp))
+        Text(
+            text = "챌린지 기간", fontSize = dpToSp(dp = 16.dp),
+            style = myTypography.bold,
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(text = "${convertDate(startDay)} ~ ${convertDate(endDay)}", fontSize = dpToSp(dp = 16.dp))
     }
 }
 
+@Composable
+fun ChallengeRemainTime(startDay: String) {
+    var remainTime by remember { mutableStateOf(getRemainTime(startDay)) }
+
+    LaunchedEffect(remainTime) {
+        delay(1000 * 60)
+        remainTime = getRemainTime(startDay)
+    }
+
+    ChallengeProgressStatus(
+        modifier = Modifier.fillMaxWidth(),
+        textColor = Color(0xff4985f8),
+        text = remainTime,
+        isRemainTime = true,
+        backgroundColor = Color(0xfff3f8ff)
+    )
+}
+
+private fun convertDate(dateStr: String): String {
+    return try {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
+        val date = inputFormat.parse(dateStr)
+        val outputFormat = SimpleDateFormat("M월 d일(E)", Locale.KOREA)
+        outputFormat.timeZone = TimeZone.getTimeZone("Asia/Seoul")
+        outputFormat.format(date!!)
+    } catch (ignore: Exception) {
+        dateStr
+    }
+}
+
+private fun getRemainTime(startDay: String): String {
+    return try {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
+        val date = inputFormat.parse(startDay)
+        var remain: Long = 0
+        val result = StringBuilder()
+
+        if (date != null) {
+            remain = date.time - Date().time
+            if (remain > 0) {
+                val days = ((((remain / 1000) / 60) / 60) / 24)  % 24
+                val hours = ((((remain / 1000) / 60) / 60) % 24)
+                val minutes = (((remain / 1000) / 60) % 60)
+
+                if (days > 0) {
+                    result.append(days.toString().padStart(2, '0') + "일 ")
+                }
+                result.append(hours.toString().padStart(2, '0') + "시간 ")
+                result.append(minutes.toString().padStart(2, '0') + "분")
+            }
+        }
+        result.toString()
+    } catch (ignore: Exception) {
+        ignore.printStackTrace()
+        ""
+    }
+}

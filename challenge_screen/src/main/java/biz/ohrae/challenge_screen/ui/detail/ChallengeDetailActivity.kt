@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
@@ -16,7 +18,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import biz.ohrae.challenge.ui.components.header.NavigationHeader
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
-import biz.ohrae.challenge_screen.ui.main.MainClickListener
 import biz.ohrae.challenge_screen.ui.participation.ParticipationActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -71,8 +72,9 @@ class ChallengeDetailActivity : AppCompatActivity() {
             startDestination = ChallengeDetailNavScreen.DetailBeforeJoin.route
         ) {
             composable(ChallengeDetailNavScreen.DetailBeforeJoin.route) {
+                val challengeData by viewModel.challengeData.observeAsState()
                 ChallengeDetailBeforeJoinScreen(
-                    viewModel = viewModel,
+                    challengeData = challengeData,
                     clickListener = detailClickListener
                 )
             }

@@ -7,9 +7,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,12 +18,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import biz.ohrae.challenge.model.register.ChallengeData
 import biz.ohrae.challenge.ui.components.avatar.Avatar
 import biz.ohrae.challenge.ui.components.button.ArrowTextButton2
 import biz.ohrae.challenge.ui.components.button.FlatBookMarkButton
-import biz.ohrae.challenge.ui.components.button.FlatDoubleButton
 import biz.ohrae.challenge.ui.components.card.RedCardInfo
+import biz.ohrae.challenge.ui.components.detail.ChallengeDetailFreeDescription
 import biz.ohrae.challenge.ui.components.detail.ChallengeDetailRefundDescription
 import biz.ohrae.challenge.ui.components.detail.ChallengeDetailsTitle
 import biz.ohrae.challenge.ui.components.image.ImageBox
@@ -36,7 +34,8 @@ import biz.ohrae.challenge.ui.theme.TextBlack
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge.util.challengeDetailStatusMap
-import biz.ohrae.challenge_repo.util.prefs.Utils
+import biz.ohrae.challenge.util.challengeVerificationDayMap
+import biz.ohrae.challenge.util.challengeVerificationPeriodMap
 
 @Preview(
     showBackground = true,
@@ -45,14 +44,17 @@ import biz.ohrae.challenge_repo.util.prefs.Utils
 )
 @Composable
 fun ChallengeDetailBeforeJoinScreen(
-    viewModel: ChallengeDetailViewModel = hiltViewModel(),
+    challengeData: ChallengeData? = ChallengeData.mock(),
     clickListener: ChallengeDetailClickListener? = null
 ) {
     val scrollState = rememberScrollState()
-    val challengeData by viewModel.challengeData.observeAsState()
-    val status = challengeDetailStatusMap[challengeData?.status]
     if (challengeData == null) {
         return
+    }
+
+    var status by remember { mutableStateOf(challengeDetailStatusMap[challengeData.status]) }
+    LaunchedEffect(challengeData) {
+        status = challengeDetailStatusMap[challengeData.status]
     }
 
     Column(
@@ -77,9 +79,9 @@ fun ChallengeDetailBeforeJoinScreen(
                 ChallengeDetailsTitle(
                     status = status!!,
                     personnel = 0,
-                    detailTitle = challengeData?.goal.toString(),
-                    startDay = Utils.convertDate6(challengeData?.start_date.toString()),
-                    endDay = Utils.convertDate6(challengeData?.end_date.toString())
+                    detailTitle = challengeData.goal.toString(),
+                    startDay = challengeData.start_date.toString(),
+                    endDay = challengeData.end_date.toString()
                 )
             }
             Spacer(modifier = Modifier.height(32.dp))
@@ -90,8 +92,10 @@ fun ChallengeDetailBeforeJoinScreen(
                     .background(Color(0xffebebeb))
             )
             Spacer(modifier = Modifier.height(32.dp))
-            ChallengeDescription()
-            ChallengePhotoAuthentication()
+            ChallengeDescription(challengeData = challengeData)
+            if (challengeData.is_verification_photo == 1) {
+                ChallengePhotoAuthentication()
+            }
             Divider(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -131,39 +135,63 @@ fun ChallengeDetailBeforeJoinScreen(
 }
 
 @Composable
-fun ChallengeDescription() {
+fun ChallengeDescription(
+    challengeData: ChallengeData
+) {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
-        Text(
-            text = "왜 돈을 걸어야 하나요?",
-            style = myTypography.bold,
-            fontSize = dpToSp(dp = 18.dp)
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        val annotatedString = buildAnnotatedString {
-            append(
-                "확실한 동기부여를 위해서 돈을 걸어요\n" +
-                        "챌린지를 시작하기 전에 돈을 걸고 \n" +
-                        "내가 실천한 만큼 돌려받으면 끝까지 포기할 수가 없죠\n"
+        if (challengeData.min_deposit_amount > 0) {
+            Text(
+                text = "왜 돈을 걸어야 하나요?",
+                style = myTypography.bold,
+                fontSize = dpToSp(dp = 18.dp)
             )
-            withStyle(style = SpanStyle(fontWeight = FontWeight.ExtraBold)) {
-                append("돈을 걸기 전과 후 달라진 나의 변화를 경험")
+            Spacer(modifier = Modifier.height(16.dp))
+            val annotatedString = buildAnnotatedString {
+                append(
+                    "확실한 동기부여를 위해서 돈을 걸어요\n" +
+                            "챌린지를 시작하기 전에 돈을 걸고 \n" +
+                            "내가 실천한 만큼 돌려받으면 끝까지 포기할 수가 없죠\n"
+                )
+                withStyle(style = SpanStyle(fontWeight = FontWeight.ExtraBold)) {
+                    append("돈을 걸기 전과 후 달라진 나의 변화를 경험")
+                }
+                append("해보세요")
             }
-            append("해보세요")
+            Text(
+                text = annotatedString,
+                style = myTypography.default,
+                fontSize = dpToSp(dp = 14.dp),
+                lineHeight = dpToSp(dp = 21.dp)
+            )
+            Spacer(modifier = Modifier.height(32.dp))
+            ChallengeDetailRefundDescription(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(1.88f)
+            )
+        } else {
+            Text(
+                text = "목표 달성률 및 상금",
+                style = myTypography.bold,
+                fontSize = dpToSp(dp = 18.dp)
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = "무료로 진행되는 챌린지는 목표 달성률과 리워즈가\n" +
+                        "개설자가 정한 기준에 따라 달라질수 있습니다.",
+                style = myTypography.default,
+                fontSize = dpToSp(dp = 14.dp),
+                lineHeight = dpToSp(dp = 21.dp)
+            )
+            Spacer(modifier = Modifier.height(32.dp))
+            ChallengeDetailFreeDescription(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(1.90f)
+            )
         }
-        Text(
-            text = annotatedString,
-            style = myTypography.default,
-            fontSize = dpToSp(dp = 14.dp),
-            lineHeight = dpToSp(dp = 21.dp)
-        )
-        Spacer(modifier = Modifier.height(32.dp))
-        ChallengeDetailRefundDescription(
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(1.88f)
-        )
         Spacer(modifier = Modifier.height(32.dp))
         Text(
             text = "챌린지 진행시 꼭 확인하세요!",
@@ -171,14 +199,18 @@ fun ChallengeDescription() {
             fontSize = dpToSp(dp = 18.dp)
         )
         Spacer(modifier = Modifier.height(16.dp))
+
+        val week by remember { mutableStateOf(challengeData.period) }
+        val periodType by remember { mutableStateOf(challengeVerificationPeriodMap[challengeData.verification_period_type]) }
         MiddleDotText(
-            text = "4주 동안 매일, 이용권 사용 내역이 이용시간으로 자동 인증됩니다.",
+            text = "${week}주 동안 $periodType, 이용권 사용 내역이 이용시간으로 자동 인증됩니다.",
             fontSize = dpToSp(dp = 14.dp),
             lineHeight = dpToSp(dp = 19.6.dp),
         )
         Spacer(modifier = Modifier.height(8.dp))
+        val days by remember { mutableStateOf(challengeVerificationDayMap[challengeData.verification_period_type]) }
         MiddleDotText(
-            text = "인증 가능한 요일은 월,화,수,목,금,토,일 입니다",
+            text = "인증 가능한 요일은 $days 입니다",
             fontSize = dpToSp(dp = 14.dp),
             lineHeight = dpToSp(dp = 19.6.dp)
         )
@@ -194,6 +226,20 @@ fun ChallengeDescription() {
             fontSize = dpToSp(dp = 14.dp),
             lineHeight = dpToSp(dp = 19.6.dp)
         )
+        if (challengeData.is_verification_photo == 1) {
+            Spacer(modifier = Modifier.height(8.dp))
+            MiddleDotText(
+                text = "사진첩은 사용하실 수 없습니다",
+                fontSize = dpToSp(dp = 14.dp),
+                lineHeight = dpToSp(dp = 19.6.dp)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            MiddleDotText(
+                text = "인증샷 피드에 인증샷이 공개됩니다",
+                fontSize = dpToSp(dp = 14.dp),
+                lineHeight = dpToSp(dp = 19.6.dp)
+            )
+        }
         Spacer(modifier = Modifier.height(32.dp))
         RedCardInfo(
             modifier = Modifier
