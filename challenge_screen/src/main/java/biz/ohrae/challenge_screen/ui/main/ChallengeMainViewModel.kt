@@ -41,8 +41,9 @@ class ChallengeMainViewModel @Inject constructor(
             val response = challengeMainRepo.getChallenges()
             response.flowOn(Dispatchers.IO).collect{
                 it.data?.let { data ->
+                    val topBannerList = MainScreenState.mock().topBannerList
                     val challengeList = data as List<ChallengeData>
-                    val state = MainScreenState(challengeList)
+                    val state = MainScreenState(challengeList,topBannerList)
                     _mainScreenState.value = state
                 }
             }

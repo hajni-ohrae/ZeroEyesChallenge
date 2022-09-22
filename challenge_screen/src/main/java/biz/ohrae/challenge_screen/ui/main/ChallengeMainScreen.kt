@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -12,12 +13,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.model.MainScreenState
 import biz.ohrae.challenge.ui.components.card.ChallengeCardItem
 import biz.ohrae.challenge.ui.components.card.MainTopCard
 import biz.ohrae.challenge.ui.components.card.PaidFilterCard
+import biz.ohrae.challenge.ui.theme.DefaultWhite
+import biz.ohrae.challenge_component.R
 import timber.log.Timber
 
 @Preview(
@@ -69,10 +73,16 @@ fun ChallengeMainScreen(
                     .align(Alignment.BottomEnd)
                     .padding(16.dp),
                 onClick = { clickListener?.onClickRegister() }) {
-                Surface(modifier = Modifier.size(60.dp), color = Color(0xff005bad),
-                    shape = RoundedCornerShape(20.dp)
+                Surface(
+                    modifier = Modifier.size(60.dp), color = Color(0xff005bad),
+                    shape = RoundedCornerShape(40.dp)
                 ) {
-                    
+                    Icon(
+                        modifier = Modifier.padding(14.dp),
+                        painter = painterResource(id = R.drawable.icon_write),
+                        contentDescription = "icon",
+                        tint = DefaultWhite,
+                    )
                 }
             }
         }
@@ -87,29 +97,38 @@ fun ItemHeader(
 ) {
 
     Column {
-//        LazyRow(
-//            modifier = Modifier,
-//            horizontalArrangement = Arrangement.spacedBy(8.dp)
-//        ) {
-//            items(mainScreenState?.topBannerList!!) { item ->
-//                MainTopCard(
-//                    content = item.content
-//                )
-//            }
-//        }
+        LazyRow(
+            modifier = Modifier,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(mainScreenState?.topBannerList!!) { item ->
+                MainTopCard(
+                    content = item.content
+                )
+            }
+        }
         FilterCard(select = select)
     }
 }
 
 @Composable
 fun FilterCard(select: Boolean = true) {
-    Row(modifier = Modifier.padding(0.dp, 22.dp)) {
-        PaidFilterCard(modifier = Modifier, text = "전체", select = select)
-        Spacer(modifier = Modifier.width(4.dp))
-        PaidFilterCard(modifier = Modifier, text = "유료")
-        Spacer(modifier = Modifier.width(4.dp))
-        PaidFilterCard(modifier = Modifier, text = "무료")
-        PaidFilterCard(modifier = Modifier, text = "무료")
+    Row(
+        modifier = Modifier
+            .padding(0.dp, 22.dp)
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Row() {
+            PaidFilterCard(modifier = Modifier, text = "전체", select = select)
+            Spacer(modifier = Modifier.width(4.dp))
+            PaidFilterCard(modifier = Modifier, text = "유료")
+            Spacer(modifier = Modifier.width(4.dp))
+            PaidFilterCard(modifier = Modifier, text = "무료")
+
+        }
+        PaidFilterCard(modifier = Modifier, icon = R.drawable.icon_candle_2)
     }
 }
 
