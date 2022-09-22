@@ -28,7 +28,6 @@ class ChallengeDetailActivity : AppCompatActivity() {
     private var challengeId: String? = null
     private lateinit var detailClickListener: ChallengeDetailClickListener
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this)[ChallengeDetailViewModel::class.java]
@@ -73,7 +72,7 @@ class ChallengeDetailActivity : AppCompatActivity() {
         ) {
             composable(ChallengeDetailNavScreen.DetailBeforeJoin.route) {
                 val challengeData by viewModel.challengeData.observeAsState()
-                ChallengeDetailBeforeJoinScreen(
+                ChallengeDetailScreen(
                     challengeData = challengeData,
                     clickListener = detailClickListener
                 )
@@ -89,6 +88,7 @@ class ChallengeDetailActivity : AppCompatActivity() {
         detailClickListener = object : ChallengeDetailClickListener {
             override fun onClickParticipation() {
                 intent = Intent(this@ChallengeDetailActivity, ParticipationActivity::class.java)
+                intent.putExtra("challengeId", challengeId)
                 startActivity(intent)
             }
         }

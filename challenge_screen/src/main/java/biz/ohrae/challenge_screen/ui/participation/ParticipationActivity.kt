@@ -18,8 +18,13 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ParticipationActivity : AppCompatActivity() {
+    private var challengeId: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        challengeId = intent.getStringExtra("challengeId")
+
         setContent {
             ChallengeInTheme {
                 BuildContent()

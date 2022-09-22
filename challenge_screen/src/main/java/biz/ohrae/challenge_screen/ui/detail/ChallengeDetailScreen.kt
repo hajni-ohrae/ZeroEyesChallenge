@@ -43,7 +43,7 @@ import biz.ohrae.challenge.util.challengeVerificationPeriodMap
     heightDp = 1800
 )
 @Composable
-fun ChallengeDetailBeforeJoinScreen(
+fun ChallengeDetailScreen(
     challengeData: ChallengeData? = ChallengeData.mock(),
     clickListener: ChallengeDetailClickListener? = null
 ) {

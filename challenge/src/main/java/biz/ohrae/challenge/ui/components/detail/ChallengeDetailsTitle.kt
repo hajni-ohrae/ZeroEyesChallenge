@@ -20,7 +20,6 @@ import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge_component.R
 import kotlinx.coroutines.delay
-import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -128,7 +127,6 @@ private fun getRemainTime(startDay: String): String {
         if (date != null) {
             remain = date.time - Date().time
             if (remain > 0) {
-                Timber.e("remain: ${remain}")
                 val days = ((((remain / 1000) / 60) / 60) / 24)
                 val hours = ((((remain / 1000) / 60) / 60) % 24)
                 val minutes = (((remain / 1000) / 60) % 60)
