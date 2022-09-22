@@ -84,16 +84,16 @@ fun ItemHeader(
 ) {
 
     Column {
-        LazyRow(
-            modifier = Modifier,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-//            items(mainScreenState!!.topBannerList) { item ->
+//        LazyRow(
+//            modifier = Modifier,
+//            horizontalArrangement = Arrangement.spacedBy(8.dp)
+//        ) {
+//            items(mainScreenState?.topBannerList!!) { item ->
 //                MainTopCard(
 //                    content = item.content
 //                )
 //            }
-        }
+//        }
         FilterCard(select = select)
     }
 }

@@ -14,6 +14,7 @@ import biz.ohrae.challenge.model.register.ChallengeData
 import biz.ohrae.challenge.ui.components.card.ChallengeCardItem
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import biz.ohrae.challenge_screen.ui.main.ItemHeader
+import biz.ohrae.challenge_screen.ui.main.MainClickListener
 
 
 @Preview(
@@ -23,7 +24,8 @@ import biz.ohrae.challenge_screen.ui.main.ItemHeader
 )
 @Composable
 fun SavedChallengeScreen(
-    mainScreenState: MainScreenState? = MainScreenState.mock()
+    mainScreenState: MainScreenState? = MainScreenState.mock(),
+    clickListener:MainClickListener? = null
 ) {
     Column() {
         LazyColumn(
@@ -33,14 +35,14 @@ fun SavedChallengeScreen(
         ) {
             items(mainScreenState?.challengeList!!) { item ->
                 ChallengeCardItem(
-                    item.title,
-                    item.userName,
-                    item.dDay,
-                    item.week,
-                    item.numberOfTimes,
-                    item.personnel,
+                    item.goal!!,
+                    null,
+                    item.start_date!!,
+                    item.period.toString(),
+                    item.verification_period_type!!,
+                    null,
                     onClick = {
-//                        clickListener?.onClickChallengeItem(it)
+                        clickListener?.onClickChallengeItem(it)
                     }
                 )
             }
