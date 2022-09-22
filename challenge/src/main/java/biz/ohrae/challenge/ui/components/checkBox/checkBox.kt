@@ -10,8 +10,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import biz.ohrae.challenge.ui.components.calender.ChallengeCalendarCard
-import biz.ohrae.challenge.ui.theme.appColor
+import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.myTypography
 
 @Preview(
@@ -67,7 +66,12 @@ fun CheckBox(
                     .height(checkBoxSize),
                 checked = checked,
                 onCheckedChange = onCheckedChange,
-                colors = CheckboxDefaults.colors(appColor.PointColor)
+                colors = CheckboxDefaults.colors(
+                    checkmarkColor = DefaultWhite,
+                    checkedColor = Color(0xff003865),
+                    disabledColor = Color(0xffc7c7c7),
+                    uncheckedColor = Color(0xffc7c7c7)
+                )
             )
             Spacer(modifier = Modifier.width(checkBoxSpacing))
             Text(

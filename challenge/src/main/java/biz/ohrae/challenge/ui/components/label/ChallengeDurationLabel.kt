@@ -83,7 +83,7 @@ fun ChallengeDurationLabel2(
                 modifier = Modifier.weight(4F),
                 text = dDay,
                 textAlign = TextAlign.Center,
-                color = appColor.PointColor,
+                color = Color(0xff005bad),
                 style = myTypography.bold,
                 fontSize = dpToSp(dp = 13.dp)
             )
@@ -109,7 +109,7 @@ fun ChallengeDurationLabel(
                 modifier = Modifier.weight(5F),
                 text = dDay,
                 textAlign = TextAlign.Center,
-                color = appColor.PointColor,
+                color = Color(0xff005bad),
                 style = myTypography.bold,
                 fontSize = dpToSp(dp = 13.dp)
             )
@@ -136,6 +136,5 @@ fun ChallengeDurationLabel(
                 fontSize = dpToSp(dp = 13.dp)
             )
         }
-
     }
 }

@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalComposeUiApi::class)
-
 package biz.ohrae.challenge_screen.ui.participation
 
 import androidx.compose.foundation.BorderStroke
@@ -7,35 +5,32 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.model.register.ChallengeData
 import biz.ohrae.challenge.ui.components.button.FlatBottomButton
 import biz.ohrae.challenge.ui.components.checkBox.CheckBox
 import biz.ohrae.challenge.ui.components.dropdown.DropDownItem
 import biz.ohrae.challenge.ui.components.dropdown.MyDropDown
-import biz.ohrae.challenge.ui.components.input.LabeledTextField
 import biz.ohrae.challenge.ui.components.input.TextBox
 import biz.ohrae.challenge.ui.components.label.ChallengeDurationLabel2
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.GrayColor4
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
+import biz.ohrae.challenge.util.challengeVerificationPeriodMap
+import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.ui.register.RegisterClickListener
 
 @Preview(
@@ -59,6 +54,9 @@ fun ParticipationScreen(
     var participationAmount by remember { mutableStateOf("") }
     var rewards by remember { mutableStateOf("") }
     var availableRewards  = 3000
+    val startDate by remember { mutableStateOf(Utils.convertDate6(challengeData.start_date.toString())) }
+    val endDate by remember { mutableStateOf(Utils.convertDate6(challengeData.end_date.toString())) }
+    val authType by remember { mutableStateOf(getAuthText(challengeData)) }
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -68,12 +66,14 @@ fun ParticipationScreen(
             modifier = Modifier
                 .padding(24.dp, 0.dp)
         ) {
+            Spacer(modifier = Modifier.height(16.dp))
             Card(
                 modifier = Modifier
                     .fillMaxWidth(),
                 shape = RoundedCornerShape(10.dp),
                 border = BorderStroke(1.dp, Color(0xffeeeeee)),
                 elevation = 0.dp,
+                backgroundColor = DefaultWhite
             ) {
                 Column(
                     modifier = Modifier
@@ -81,12 +81,12 @@ fun ParticipationScreen(
                         .padding(20.dp)
                 ) {
                     Text(
-                        text = "매일 6시간씩 한국사 공부",
+                        text = challengeData.goal.toString(),
                         style = myTypography.w700,
                         fontSize = dpToSp(dp = 16.dp)
                     )
                     Spacer(modifier = Modifier.height(16.dp))
-                    ChallengeDurationLabel2(dDay = "내일부터시작", week = "4주동안", numberOfTimes = "평일만")
+                    DurationLabel(challengeData)
                     Spacer(modifier = Modifier.height(16.dp))
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -100,7 +100,7 @@ fun ParticipationScreen(
                             color = Color(0xff4f4f4f)
                         )
                         Text(
-                            text = "${challengeData.start_date} ~ ${challengeData.end_date}",
+                            text = "$startDate ~ $endDate",
                             style = myTypography.w500,
                             fontSize = dpToSp(dp = 13.dp)
                         )
@@ -118,7 +118,7 @@ fun ParticipationScreen(
                             color = Color(0xff4f4f4f)
                         )
                         Text(
-                            text = "${challengeData.start_date} ~ ${challengeData.end_date}",
+                            text = authType,
                             style = myTypography.w500,
                             fontSize = dpToSp(dp = 13.dp)
                         )
@@ -136,7 +136,7 @@ fun ParticipationScreen(
                             color = Color(0xff4f4f4f)
                         )
                         Text(
-                            text = "${challengeData.start_date} ~ ${challengeData.end_date}",
+                            text = "0명",
                             style = myTypography.bold,
                             fontSize = dpToSp(dp = 13.dp)
                         )
@@ -154,7 +154,7 @@ fun ParticipationScreen(
                             color = Color(0xff4f4f4f)
                         )
                         Text(
-                            text = "${challengeData.start_date} ~ ${challengeData.end_date}",
+                            text = "총 1,000원",
                             style = myTypography.bold,
                             fontSize = dpToSp(dp = 13.dp)
                         )
@@ -172,7 +172,7 @@ fun ParticipationScreen(
                             color = Color(0xff4f4f4f)
                         )
                         Text(
-                            text = "${challengeData.start_date} ~ ${challengeData.end_date}",
+                            text = "100원",
                             style = myTypography.w500,
                             fontSize = dpToSp(dp = 13.dp)
                         )
@@ -287,7 +287,10 @@ fun ParticipationScreen(
             }
             Spacer(modifier = Modifier.height(24.dp))
             Text(text = "결제 수단")
-            MyDropDown(label = "", list = list)
+            MyDropDown(
+                modifier = Modifier.fillMaxWidth().aspectRatio(7.1f),
+                label = "", list = list
+            )
             Spacer(modifier = Modifier.height(185.dp))
         }
         FlatBottomButton(
@@ -297,5 +300,26 @@ fun ParticipationScreen(
             text = "결제하기",
             onClick = { }
         )
+    }
+}
+
+@Composable
+private fun DurationLabel(challengeData: ChallengeData) {
+    val day by remember { mutableStateOf(Utils.getRemainTimeDays(challengeData.start_date.toString())) }
+    val dayType by remember { mutableStateOf(challengeVerificationPeriodMap[challengeData.verification_period_type]) }
+
+    ChallengeDurationLabel2(dDay = day, week = "${challengeData.period}주동안", numberOfTimes = dayType.toString())
+}
+
+
+private fun getAuthText(challengeData: ChallengeData): String {
+    return if (challengeData.is_verification_photo == 1) {
+        "사진 인증"
+    } else if(challengeData.is_verification_time == 1) {
+        "이용시간 인증"
+    } else if(challengeData.is_verification_checkin == 1) {
+        "이용권 인증"
+    } else {
+        "기타 인증"
     }
 }

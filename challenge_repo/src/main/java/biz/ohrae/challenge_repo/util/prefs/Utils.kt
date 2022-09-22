@@ -371,7 +371,31 @@ object Utils {
         return times[0] + ":" + times[1]
     }
 
-    fun getRemainTimeDays(startDate: String) {
+    fun getRemainTimeDays(startDate: String): String {
+        return try {
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
+            val date = inputFormat.parse(startDate)
+            var remain: Long = 0
+            var result = ""
 
+            if (date != null) {
+                remain = date.time - Date().time
+                if (remain > 0) {
+                    val days = ((((remain / 1000) / 60) / 60) / 24)
+
+                    result = if (days <= 0L) {
+                        "오늘부터 시작"
+                    } else if (days == 1L) {
+                        "내일부터 시작"
+                    } else {
+                        "D - $days"
+                    }
+                }
+            }
+            result
+        } catch (ignore: Exception) {
+            ignore.printStackTrace()
+            ""
+        }
     }
 }

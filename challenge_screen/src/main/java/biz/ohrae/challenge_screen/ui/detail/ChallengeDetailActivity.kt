@@ -34,13 +34,17 @@ class ChallengeDetailActivity : AppCompatActivity() {
 
         challengeId = intent.getStringExtra("challengeId")
 
-        init()
         initClickListener()
         setContent {
             ChallengeInTheme {
                 BuildContent()
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        init()
     }
 
     @Composable
@@ -96,5 +100,5 @@ class ChallengeDetailActivity : AppCompatActivity() {
 }
 
 sealed class ChallengeDetailNavScreen(val route: String) {
-    object DetailBeforeJoin : ChallengeDetailNavScreen("DetailBeforeJoin")
+    object DetailBeforeJoin : ChallengeDetailNavScreen("Detail")
 }
