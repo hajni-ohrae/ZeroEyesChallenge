@@ -114,6 +114,7 @@ dependencies {
     implementation accompanistSystemUIController
     implementation accompanistNavigationAnimation
     implementation accompanistFlowLayout
+    implementation accompanistWebView
 
     // Timber
     implementation timber

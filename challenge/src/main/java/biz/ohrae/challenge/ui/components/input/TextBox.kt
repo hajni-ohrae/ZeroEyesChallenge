@@ -70,6 +70,7 @@ fun TextBox(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     singleLine: Boolean = false,
     value: String,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
     onValueChange: (String) -> Unit,
 ) {
     Column(modifier = modifier) {
@@ -118,7 +119,7 @@ fun TextBox(
                             singleLine = false,
                             interactionSource = interactionSource,
                             value = value,
-                            visualTransformation = VisualTransformation.None,
+                            visualTransformation = visualTransformation,
                             contentPadding = PaddingValues(0.dp),
                         )
                     }

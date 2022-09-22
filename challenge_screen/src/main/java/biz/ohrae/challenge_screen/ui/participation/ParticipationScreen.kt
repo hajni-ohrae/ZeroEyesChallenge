@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
@@ -12,8 +13,10 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment.Companion.CenterVertically
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,8 +34,10 @@ import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge.util.challengeVerificationPeriodMap
 import biz.ohrae.challenge_repo.util.prefs.Utils
-import biz.ohrae.challenge_screen.ui.register.RegisterClickListener
+import java.text.NumberFormat
+import java.util.*
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Preview(
     widthDp = 360,
     heightDp = 720,
@@ -41,10 +46,10 @@ import biz.ohrae.challenge_screen.ui.register.RegisterClickListener
 @Composable
 fun ParticipationScreen(
     challengeData: ChallengeData = ChallengeData.mock(),
-    clickListener: RegisterClickListener? = null,
+    clickListener: ParticipationClickListener? = null,
 ) {
 
-//    val keyboardController = LocalSoftwareKeyboardController.current
+    val keyboardController = LocalSoftwareKeyboardController.current
     var checked by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
 
@@ -53,7 +58,7 @@ fun ParticipationScreen(
     )
     var participationAmount by remember { mutableStateOf("") }
     var rewards by remember { mutableStateOf("") }
-    var availableRewards  = 3000
+    var availableRewards = 3000
     val startDate by remember { mutableStateOf(Utils.convertDate6(challengeData.start_date.toString())) }
     val endDate by remember { mutableStateOf(Utils.convertDate6(challengeData.end_date.toString())) }
     val authType by remember { mutableStateOf(getAuthText(challengeData)) }
@@ -192,17 +197,22 @@ fun ParticipationScreen(
             TextBox(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(5f),
+                    .aspectRatio(7.1f),
                 placeholder = "숫자만 입력",
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Done
                 ),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        keyboardController?.hide()
+                    }
+                ),
                 singleLine = true,
                 value = participationAmount,
                 onValueChange = {
                     participationAmount = it
-                }
+                },
             )
             Spacer(modifier = Modifier.height(12.dp))
 
@@ -240,11 +250,16 @@ fun ParticipationScreen(
             TextBox(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(5f),
+                    .aspectRatio(7.1f),
                 placeholder = "숫자만 입력",
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        keyboardController?.hide()
+                    }
                 ),
                 singleLine = true,
                 value = rewards,
@@ -298,7 +313,9 @@ fun ParticipationScreen(
                 .fillMaxWidth()
                 .aspectRatio(6f),
             text = "결제하기",
-            onClick = { }
+            onClick = {
+                clickListener?.onClickPayment()
+            }
         )
     }
 }
@@ -311,6 +328,8 @@ private fun DurationLabel(challengeData: ChallengeData) {
     ChallengeDurationLabel2(dDay = day, week = "${challengeData.period}주동안", numberOfTimes = dayType.toString())
 }
 
+private fun Long?.formatWithComma(): String =
+    NumberFormat.getNumberInstance(Locale.US).format(this ?: 0)
 
 private fun getAuthText(challengeData: ChallengeData): String {
     return if (challengeData.is_verification_photo == 1) {

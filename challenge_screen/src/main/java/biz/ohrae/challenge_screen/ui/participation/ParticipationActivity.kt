@@ -29,19 +29,23 @@ class ParticipationActivity : AppCompatActivity() {
 
     private lateinit var navController: NavHostController
 
+    private lateinit var clickListener: ParticipationClickListener
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        detailViewModel = ViewModelProvider(this)[ChallengeDetailViewModel::class.java]
-        viewModel = ViewModelProvider(this)[ParticipationViewModel::class.java]
-
-        challengeId = intent.getStringExtra("challengeId")
 
         setContent {
             ChallengeInTheme {
                 BuildContent()
             }
         }
+
+        detailViewModel = ViewModelProvider(this)[ChallengeDetailViewModel::class.java]
+        viewModel = ViewModelProvider(this)[ParticipationViewModel::class.java]
+
+        challengeId = intent.getStringExtra("challengeId")
+
+        initClickListeners()
     }
 
     override fun onResume() {
@@ -76,14 +80,26 @@ class ParticipationActivity : AppCompatActivity() {
                 if (challengeData != null) {
                     ParticipationScreen(
                         challengeData = challengeData!!,
+                        clickListener = clickListener
                     )
                 }
+            }
+            composable(ChallengeParticipationNavScreen.ParticipationPayment.route) {
+                ParticipationPaymentScreen()
             }
         }
     }
 
     private fun init() {
         detailViewModel.getChallenge(challengeId.toString())
+    }
+
+    private fun initClickListeners() {
+        clickListener = object : ParticipationClickListener {
+            override fun onClickPayment() {
+                navController.navigate(ChallengeParticipationNavScreen.ParticipationPayment.route)
+            }
+        }
     }
 
     private fun onBack() {
@@ -93,4 +109,5 @@ class ParticipationActivity : AppCompatActivity() {
 
 sealed class ChallengeParticipationNavScreen(val route: String) {
     object Participation : ChallengeParticipationNavScreen("Participation")
+    object ParticipationPayment : ChallengeParticipationNavScreen("ParticipationPayment")
 }

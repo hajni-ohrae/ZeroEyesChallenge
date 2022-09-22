@@ -16,6 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ZeroEyesChallenge"
         android:name=".App"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
             android:name="biz.ohrae.challenge_screen.ui.main.MainActivity"
