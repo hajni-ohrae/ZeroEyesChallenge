@@ -24,7 +24,7 @@ class ChallengeMainViewModel @Inject constructor(
     private val prefs: SharedPreference,
     private val gson: Gson
 ) : ViewModel() {
-    private val _mainScreenState = MutableLiveData<ChallengeData>()
+    private val _mainScreenState = MutableLiveData<MainScreenState>()
     val mainScreenState get() = _mainScreenState
 
     init {
@@ -41,7 +41,9 @@ class ChallengeMainViewModel @Inject constructor(
             val response = challengeMainRepo.getChallenges()
             response.flowOn(Dispatchers.IO).collect{
                 it.data?.let { data ->
-                   
+                    val challengeList = data as List<ChallengeData>
+                    val state = MainScreenState(challengeList)
+                    _mainScreenState.value = state
                 }
             }
         }

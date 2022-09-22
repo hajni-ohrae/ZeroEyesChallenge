@@ -4,7 +4,7 @@ import biz.ohrae.challenge.model.list_item.ChallengeItemData
 import biz.ohrae.challenge.model.register.ChallengeData
 
 data class MainScreenState(
-    val challengeList: List<ChallengeData>? = null,
+    var challengeList: List<ChallengeData>? = null,
     val topBannerList: List<TopBannerData>? = null,
     val authCycleList: List<AuthCycle>? = null,
 ) {
