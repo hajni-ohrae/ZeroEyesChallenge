@@ -35,6 +35,7 @@ fun SavedChallengeScreen(
         ) {
             items(mainScreenState?.challengeList!!) { item ->
                 ChallengeCardItem(
+                    item.id,
                     item.goal!!,
                     null,
                     item.start_date!!,

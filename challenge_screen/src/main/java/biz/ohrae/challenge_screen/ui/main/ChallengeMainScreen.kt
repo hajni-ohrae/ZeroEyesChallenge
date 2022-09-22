@@ -18,6 +18,7 @@ import biz.ohrae.challenge.model.MainScreenState
 import biz.ohrae.challenge.ui.components.card.ChallengeCardItem
 import biz.ohrae.challenge.ui.components.card.MainTopCard
 import biz.ohrae.challenge.ui.components.card.PaidFilterCard
+import timber.log.Timber
 
 @Preview(
     widthDp = 360,
@@ -48,6 +49,7 @@ fun ChallengeMainScreen(
                 }
                 items(mainScreenState?.challengeList!!) { item ->
                     ChallengeCardItem(
+                        item.id,
                         item.goal!!,
                         null,
                         item.start_date!!,
@@ -55,6 +57,7 @@ fun ChallengeMainScreen(
                         item.verification_period_type!!,
                         null,
                         onClick = {
+                            Timber.e("chall id : ${item.id}")
                             clickListener?.onClickChallengeItem(it)
                         }
                     )

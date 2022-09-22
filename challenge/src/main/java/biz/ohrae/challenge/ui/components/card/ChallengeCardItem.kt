@@ -31,6 +31,7 @@ import biz.ohrae.challenge.ui.theme.*
 private fun ChallengeCardItemGallery() {
     val list = listOf(
         ChallengeItemData(
+            id = "1",
             "매일 6시간씩 한국사 공부",
             "하진",
             "오늘부터 시작",
@@ -42,6 +43,7 @@ private fun ChallengeCardItemGallery() {
             state = ChallengeDetailStatus.mock()
         ),
         ChallengeItemData(
+            id = "2",
             "7월 한달 | 완벽한 스마트 학습 25회 달성하기",
             "하진",
             "오늘부터 시작",
@@ -53,6 +55,7 @@ private fun ChallengeCardItemGallery() {
             state = ChallengeDetailStatus.mock()
         ),
         ChallengeItemData(
+            id = "3",
             "매일 6시간씩 한국사 공부",
             "하진",
             "오늘부터 시작",
@@ -64,6 +67,7 @@ private fun ChallengeCardItemGallery() {
             state = ChallengeDetailStatus.mock()
         ),
         ChallengeItemData(
+            id = "4",
             "매일 6시간씩 한국사 공부",
             "하진",
             "오늘부터 시작",
@@ -83,6 +87,7 @@ private fun ChallengeCardItemGallery() {
         ) {
             items(list) { item ->
                 ChallengeCardItem(
+                    item.id,
                     item.title,
                     item.userName,
                     item.dDay,
@@ -100,6 +105,7 @@ private fun ChallengeCardItemGallery() {
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ChallengeCardItem(
+    id: String,
     title: String,
     userName: String?,
     dDay: String,
@@ -115,7 +121,7 @@ fun ChallengeCardItem(
         backgroundColor = DefaultWhite,
         elevation = 0.dp,
         onClick = {
-            onClick("1ce39b40-feed-4ba3-9831-aea1bbfcec8f")
+            onClick(id)
         }
     ) {
         val time = when (numberOfTime) {
