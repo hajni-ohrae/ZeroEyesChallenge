@@ -48,12 +48,12 @@ fun ChallengeMainScreen(
                 }
                 items(mainScreenState?.challengeList!!) { item ->
                     ChallengeCardItem(
-                        item.title,
-                        item.userName,
-                        item.dDay,
-                        item.week,
-                        item.numberOfTimes,
-                        item.personnel,
+                        item.goal!!,
+                        null,
+                        item.start_date!!,
+                        item.period.toString(),
+                        item.verification_period_type!!,
+                        null,
                         onClick = {
                             clickListener?.onClickChallengeItem(it)
                         }
@@ -88,11 +88,11 @@ fun ItemHeader(
             modifier = Modifier,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(mainScreenState!!.topBannerList) { item ->
-                MainTopCard(
-                    content = item.content
-                )
-            }
+//            items(mainScreenState!!.topBannerList) { item ->
+//                MainTopCard(
+//                    content = item.content
+//                )
+//            }
         }
         FilterCard(select = select)
     }

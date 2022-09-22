@@ -101,11 +101,11 @@ private fun ChallengeCardItemGallery() {
 @Composable
 fun ChallengeCardItem(
     title: String,
-    userName: String,
+    userName: String?,
     dDay: String,
     week: String,
     numberOfTime: String,
-    personnel: Int,
+    personnel: Int?,
     onClick: (id: String) -> Unit
 ) {
     Card(
@@ -183,7 +183,7 @@ fun ChallengeCardItem(
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         modifier = Modifier.align(Alignment.CenterVertically),
-                        text = userName,
+                        text = userName.toString(),
                         textAlign = TextAlign.Center,
                         style = myTypography.bold,
                         fontSize = dpToSp(dp = 12.dp), color = DefaultBlack

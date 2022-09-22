@@ -4,12 +4,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import biz.ohrae.challenge.model.MainScreenState
+import biz.ohrae.challenge.model.register.ChallengeData
 import biz.ohrae.challenge_repo.ui.main.ChallengeMainRepo
 import biz.ohrae.challenge_repo.ui.main.UserRepo
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -22,7 +24,7 @@ class ChallengeMainViewModel @Inject constructor(
     private val prefs: SharedPreference,
     private val gson: Gson
 ) : ViewModel() {
-    private val _mainScreenState = MutableLiveData<MainScreenState>()
+    private val _mainScreenState = MutableLiveData<ChallengeData>()
     val mainScreenState get() = _mainScreenState
 
     init {
@@ -34,16 +36,26 @@ class ChallengeMainViewModel @Inject constructor(
             userRepo.login()
         }
     }
-
-    fun getChallengeList() {
-        viewModelScope.launch {
-            challengeMainRepo.getChallenges().flowOn(Dispatchers.IO).collect {
-                Timber.e("result : ${gson.toJson(it.data)}")
+    fun getChallengeList(){
+        viewModelScope.launch{
+            val response = challengeMainRepo.getChallenges()
+            response.flowOn(Dispatchers.IO).collect{
                 it.data?.let { data ->
-                    val state = data as MainScreenState
-                    _mainScreenState.value = state
+                   
                 }
             }
         }
     }
+
+//    fun getChallengeList() {
+//        viewModelScope.launch {
+//            challengeMainRepo.getChallenges().flowOn(Dispatchers.IO).collect {
+//                Timber.e("result : ${gson.toJson(it.data)}")
+//                it.data?.let { data ->
+//                    val state = data as MainScreenState
+//                    _mainScreenState.value = state
+//                }
+//            }
+//        }
+//    }
 }

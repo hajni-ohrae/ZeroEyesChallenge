@@ -1,20 +1,21 @@
 package biz.ohrae.challenge.model
 
 import biz.ohrae.challenge.model.list_item.ChallengeItemData
+import biz.ohrae.challenge.model.register.ChallengeData
 
 data class MainScreenState(
-    val challengeList: List<ChallengeItemData>,
-    val topBannerList: List<TopBannerData>,
-    val authCycleList: List<AuthCycle>,
+    val challengeList: List<ChallengeData>? = null,
+    val topBannerList: List<TopBannerData>? = null,
+    val authCycleList: List<AuthCycle>? = null,
 ) {
     companion object {
         fun mock() = MainScreenState(
             challengeList = listOf(
-                ChallengeItemData.mock(),
-                ChallengeItemData.mock(),
-                ChallengeItemData.mock(),
-                ChallengeItemData.mock(),
-                ChallengeItemData.mock()
+                ChallengeData.mock(),
+                ChallengeData.mock(),
+                ChallengeData.mock(),
+                ChallengeData.mock(),
+                ChallengeData.mock()
             ),
             topBannerList = listOf(
                 TopBannerData.mock(),

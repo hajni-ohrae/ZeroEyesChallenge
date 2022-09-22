@@ -119,7 +119,7 @@ fun ChallengeDurationLabel(
                 .background(Color(0xfffafafa)))
             Text(
                 modifier = Modifier.weight(2.5F),
-                text = week,
+                text = "${week}주동안",
                 textAlign = TextAlign.Center,
                 style = myTypography.bold,
                 fontSize = dpToSp(dp = 13.dp)

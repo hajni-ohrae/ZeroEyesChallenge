@@ -1,12 +1,11 @@
 package biz.ohrae.challenge_repo.ui.main
 
-import biz.ohrae.challenge.model.MainScreenState
-import biz.ohrae.challenge.model.register.ChallengeData
 import biz.ohrae.challenge_repo.data.remote.ApiService
 import biz.ohrae.challenge_repo.data.remote.NetworkResponse
 import biz.ohrae.challenge_repo.model.FlowResult
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import com.google.gson.Gson
+import com.google.gson.JsonElement
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -22,14 +21,16 @@ class ChallengeMainRepo @Inject constructor(
 
         when (response) {
             is NetworkResponse.Success -> {
+                val gson = Gson()
                 val isSuccess = response.body.success
                 if (isSuccess) {
                     val dataset = response.body.dataset
                     dataset?.let {
-                        val data = it[0].asJsonObject
-                        val challengeList = Gson().fromJson(data, ChallengeData::class.java)
+                        val dataSet: JsonElement = dataset?.get("array")!!.asJsonArray
+
+
                         return flow {
-                            emit(FlowResult(challengeList, "", ""))
+                            emit(FlowResult(dataSet, "", ""))
                         }
                     } ?: run {
                         return flow {
@@ -44,11 +45,10 @@ class ChallengeMainRepo @Inject constructor(
 
             }
             else -> {
+                return flow {
+                    emit(FlowResult(null,"",""))
+                }
             }
-        }
-
-        return flow {
-            emit(FlowResult(MainScreenState.mock(), "", ""))
         }
     }
 }

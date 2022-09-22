@@ -18,10 +18,10 @@ interface ApiService {
         @Header("x-access-token") accessToken: String,
         @Query("payment_type") paymentType: String,
         @Query("verification_period_type") verificationPeriodType: String,
-        @Query("per_week") perWeek: String? = null,
-        @Query("period") period: String? = null,
-        @Query("is_adult_only") isAdultOnly: String? = null,
-    ): NetworkResponse<Result, Error>
+        @Query("per_week") perWeek: String? = "",
+        @Query("period") period: String? = "",
+        @Query("is_adult_only") isAdultOnly: String? = "",
+    ): NetworkResponse<Result2, Error>
 
     @GET(Routes.GET_CHALLENGE)
     suspend fun getChallenge(

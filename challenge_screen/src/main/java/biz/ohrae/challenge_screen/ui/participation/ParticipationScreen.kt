@@ -48,6 +48,7 @@ fun ParticipationScreen(
     challengeData: ChallengeData = ChallengeData.mock(),
     clickListener: RegisterClickListener? = null,
 ) {
+
 //    val keyboardController = LocalSoftwareKeyboardController.current
     var checked by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
