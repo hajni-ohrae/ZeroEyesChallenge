@@ -4,6 +4,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.RadioButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
@@ -25,19 +26,20 @@ import biz.ohrae.challenge.ui.theme.*
 private fun RadioButtonGallery() {
     Column(
     ) {
-        RadioButton("Item","사진인증","즉석 촬영으로만 인증이 가능합니다")
+        RadioButton("Item", "사진인증", "즉석 촬영으로만 인증이 가능합니다")
     }
 }
 
 
 @Composable
 fun RadioButton(
-     label:String = "Item",
-     buttonTitle:String,
-     buttonContent:String
+    label: String = "Item",
+    buttonTitle: String,
+    buttonContent: String
 ) {
     val selectedValue = remember { mutableStateOf("") }
 //    val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[1]) }
+    val isSelectedItem: (String) -> Boolean = { selectedValue.value == it }
 
 
     Row(
@@ -46,7 +48,11 @@ fun RadioButton(
     ) {
         androidx.compose.material.RadioButton(
             selected = selectedValue.value == label,
-            onClick = { selectedValue.value = label }
+            onClick = { selectedValue.value = label },
+            colors = RadioButtonDefaults.colors(
+                selectedColor = Color(0xff005bad),
+                disabledColor = Color(0xffc7c7c7),
+            ),
         )
         Column() {
             Text(
@@ -54,7 +60,11 @@ fun RadioButton(
                 modifier = Modifier.fillMaxWidth(),
                 style = myTypography.bold,
                 fontSize = dpToSp(dp = 14.dp),
-                color = Color(0xff6c6c6c),
+                color = if (selectedValue.value == label) {
+                    DefaultBlack
+                } else {
+                    Color(0xff6c6c6c)
+                },
             )
             Spacer(modifier = Modifier.height(9.dp))
 

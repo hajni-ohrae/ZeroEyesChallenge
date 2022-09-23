@@ -21,9 +21,9 @@ class ChallengeMainRepo @Inject constructor(
     private val gson: Gson,
     private val prefs: SharedPreference
 ) {
-    suspend fun getChallenges(): Flow<FlowResult> {
+    suspend fun getChallenges(paymentType:String = "",verificationPeriodType:String = ""): Flow<FlowResult> {
         val accessToken = prefs.getUserData()?.access_token
-        val response = apiService.getAllChallenge(accessToken.toString(), "", "")
+        val response = apiService.getAllChallenge(accessToken.toString(), paymentType, verificationPeriodType)
 
         when (response) {
             is NetworkResponse.Success -> {

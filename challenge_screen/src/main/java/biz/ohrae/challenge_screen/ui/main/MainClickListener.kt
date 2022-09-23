@@ -4,4 +4,5 @@ interface MainClickListener {
     fun onClickPurchaseTicket()
     fun onClickRegister()
     fun onClickChallengeItem(id: String)
+    fun onClickFilterItem(paymentType:String)
 }

@@ -36,14 +36,15 @@ class ChallengeMainViewModel @Inject constructor(
             userRepo.login()
         }
     }
-    fun getChallengeList(){
-        viewModelScope.launch{
-            val response = challengeMainRepo.getChallenges()
-            response.flowOn(Dispatchers.IO).collect{
+
+    fun getChallengeList(paymentType: String = "", verificationPeriodType: String = "") {
+        viewModelScope.launch {
+            val response = challengeMainRepo.getChallenges(paymentType, verificationPeriodType)
+            response.flowOn(Dispatchers.IO).collect {
                 it.data?.let { data ->
                     val topBannerList = MainScreenState.mock().topBannerList
                     val challengeList = data as List<ChallengeData>
-                    val state = MainScreenState(challengeList,topBannerList)
+                    val state = MainScreenState(challengeList, topBannerList)
                     _mainScreenState.value = state
                 }
             }

@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.model.register.ChallengeData
 import biz.ohrae.challenge.ui.components.button.FlatDoubleButton
 import biz.ohrae.challenge.ui.components.label.ChallengeDurationLabel2
+import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 
@@ -37,6 +38,7 @@ fun ParticipationCompletedScreen(
                 modifier = Modifier
                     .fillMaxWidth(),
                 shape = RoundedCornerShape(10.dp),
+                backgroundColor = DefaultWhite,
                 border = BorderStroke(1.dp, Color(0xffeeeeee)) ,
                 elevation = 0.dp,) {
                 Column(
