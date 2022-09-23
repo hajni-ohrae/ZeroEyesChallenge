@@ -1,5 +1,7 @@
 package biz.ohrae.challenge_repo.model.detail
 
+import biz.ohrae.challenge_repo.model.user.User
+
 data class ChallengeData(
     val id: String,
     val user_id: String? = null,
@@ -33,6 +35,7 @@ data class ChallengeData(
     val updated_date: String,
     val verification_daily_staying_time: Int,
     val remaining_time: String? = null,
+    val user: User? = null,
 ) {
     companion object {
         fun mock(id: String = "2d4033ab-244b-47f3-84e9-6af72be39d9f") = ChallengeData(

@@ -102,7 +102,7 @@ fun ChallengeDetailScreen(
                     .height(1.dp)
                     .background(Color(0xffebebeb))
             )
-            ChallengeHost()
+            ChallengeHost(challengeData = challengeData)
             Divider(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -309,7 +309,7 @@ fun ChallengePhotoAuthentication() {
 }
 
 @Composable
-fun ChallengeHost() {
+fun ChallengeHost(challengeData: ChallengeData) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Spacer(modifier = Modifier.height(32.dp))
         Text(
@@ -327,7 +327,7 @@ fun ChallengeHost() {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "박보검",
+                text = challengeData.user?.nick_name.toString(),
                 style = myTypography.extraBold,
                 fontSize = dpToSp(dp = 20.dp)
             )
