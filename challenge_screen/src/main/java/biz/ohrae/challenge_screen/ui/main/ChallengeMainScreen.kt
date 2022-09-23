@@ -10,6 +10,9 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,11 +20,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.model.MainScreenState
+import biz.ohrae.challenge.model.register.ChallengeData
 import biz.ohrae.challenge.ui.components.card.ChallengeCardItem
 import biz.ohrae.challenge.ui.components.card.MainTopCard
 import biz.ohrae.challenge.ui.components.card.PaidFilterCard
 import biz.ohrae.challenge.ui.theme.DefaultWhite
+import biz.ohrae.challenge.util.challengeVerificationPeriodMap
 import biz.ohrae.challenge_component.R
+import biz.ohrae.challenge_repo.util.prefs.Utils
 import timber.log.Timber
 
 @Preview(
@@ -33,8 +39,9 @@ import timber.log.Timber
 fun ChallengeMainScreen(
     select: Boolean = true,
     mainScreenState: MainScreenState? = null,
-    clickListener: MainClickListener? = null
+    clickListener: MainClickListener? = null,
 ) {
+
     Spacer(modifier = Modifier.height(16.dp))
     Column(
         modifier = Modifier
@@ -49,21 +56,27 @@ fun ChallengeMainScreen(
                 item {
                     ItemHeader(
                         mainScreenState = mainScreenState,
+                        clickListener = clickListener
                     )
                 }
                 items(mainScreenState?.challengeList!!) { item ->
+                    val startDay = Utils.getRemainTimeDays(item.start_date.toString())
+                    val type = challengeVerificationPeriodMap[item.verification_period_type]
                     ChallengeCardItem(
                         item.id,
                         item.goal!!,
                         null,
-                        item.start_date!!,
+                        startDay!!,
                         item.period.toString(),
-                        item.verification_period_type!!,
+                        type!!,
                         null,
+                        getAuthType(item),
+                        getOpenType(item),
+                        item.is_adult_only,
                         onClick = {
                             Timber.e("chall id : ${item.id}")
                             clickListener?.onClickChallengeItem(it)
-                        }
+                        },
                     )
                 }
             }
@@ -94,6 +107,7 @@ fun ChallengeMainScreen(
 fun ItemHeader(
     select: Boolean = true,
     mainScreenState: MainScreenState? = null,
+    clickListener: MainClickListener?
 ) {
 
     Column {
@@ -107,12 +121,12 @@ fun ItemHeader(
                 )
             }
         }
-        FilterCard(select = select)
+        FilterCard(select = select, clickListener = clickListener)
     }
 }
 
 @Composable
-fun FilterCard(select: Boolean = true) {
+fun FilterCard(select: Boolean = true, clickListener: MainClickListener?) {
     Row(
         modifier = Modifier
             .padding(0.dp, 22.dp)
@@ -121,14 +135,38 @@ fun FilterCard(select: Boolean = true) {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Row() {
-            PaidFilterCard(modifier = Modifier, text = "전체", select = select)
+            PaidFilterCard(
+                modifier = Modifier,
+                text = "전체",
+                select = select,
+                onClick = { clickListener?.onClickFilterItem("all") })
             Spacer(modifier = Modifier.width(4.dp))
-            PaidFilterCard(modifier = Modifier, text = "유료")
+            PaidFilterCard(modifier = Modifier, text = "유료",
+                onClick = { clickListener?.onClickFilterItem("paid") })
             Spacer(modifier = Modifier.width(4.dp))
-            PaidFilterCard(modifier = Modifier, text = "무료")
-
+            PaidFilterCard(modifier = Modifier, text = "무료",
+                onClick = { clickListener?.onClickFilterItem("free") })
         }
-        PaidFilterCard(modifier = Modifier, icon = R.drawable.icon_candle_2)
+        PaidFilterCard(modifier = Modifier, icon = R.drawable.icon_candle_2,
+            onClick = { clickListener?.onClickFilterItem("filter") })
+    }
+}
+
+
+private fun getAuthType(challengeData: ChallengeData): String {
+    return if (challengeData!!.is_verification_photo == 1) {
+        "사진인증"
+    } else if (challengeData.is_verification_time == 1) {
+        "시간인증"
+    } else {
+        "출석인증"
+    }
+}
+private fun getOpenType(challengeData: ChallengeData): String {
+    return if (challengeData.is_feed_open == 1) {
+        "무료"
+    } else {
+        "유료"
     }
 }
 

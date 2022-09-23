@@ -71,7 +71,24 @@ class MainActivity : AppCompatActivity() {
             override fun onClickChallengeItem(id: String) {
                 goDetail(id)
             }
+
+            override fun onClickFilterItem(paymentType: String) {
+                if (paymentType == "filter") {
+
+                } else {
+                    viewModel.getChallengeList(paymentType)
+                }
+            }
         }
+    }
+
+    private fun observeViewModel() {
+//        viewModel.isChallengeCreate.observe(this) {
+//            if (it) {
+//                val intent = Intent(this@RegisterActivity, MainActivity::class.java)
+//                startActivity(intent)
+//            }
+//        }
     }
 
     private fun goDetail(id: String) {

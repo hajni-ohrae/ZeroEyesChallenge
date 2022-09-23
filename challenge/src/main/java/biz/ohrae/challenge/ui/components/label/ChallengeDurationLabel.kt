@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import biz.ohrae.challenge.ui.theme.DefaultBlack
 import biz.ohrae.challenge.ui.theme.appColor
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
@@ -62,7 +63,8 @@ fun ChallengeDurationLabel2(
                 text = week,
                 textAlign = TextAlign.Center,
                 style = myTypography.bold,
-                fontSize = dpToSp(dp = 13.dp)
+                fontSize = dpToSp(dp = 13.dp),
+                color = DefaultBlack
             )
             Divider(modifier = Modifier
                 .height(12.dp)
@@ -73,7 +75,8 @@ fun ChallengeDurationLabel2(
                 text = numberOfTimes,
                 textAlign = TextAlign.Center,
                 style = myTypography.bold,
-                fontSize = dpToSp(dp = 13.dp)
+                fontSize = dpToSp(dp = 13.dp),
+                color = DefaultBlack
             )
             Divider(modifier = Modifier
                 .height(12.dp)
@@ -122,7 +125,8 @@ fun ChallengeDurationLabel(
                 text = "${week}주동안",
                 textAlign = TextAlign.Center,
                 style = myTypography.bold,
-                fontSize = dpToSp(dp = 13.dp)
+                fontSize = dpToSp(dp = 13.dp),
+                color = DefaultBlack
             )
             Divider(modifier = Modifier
                 .height(12.dp)
@@ -133,7 +137,8 @@ fun ChallengeDurationLabel(
                 text = numberOfTimes,
                 textAlign = TextAlign.Center,
                 style = myTypography.bold,
-                fontSize = dpToSp(dp = 13.dp)
+                fontSize = dpToSp(dp = 13.dp),
+                color = DefaultBlack
             )
         }
     }

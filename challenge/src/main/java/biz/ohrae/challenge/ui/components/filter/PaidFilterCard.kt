@@ -14,6 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import biz.ohrae.challenge.ui.components.dropdown.DropDownItem
 import biz.ohrae.challenge.ui.theme.*
 import biz.ohrae.challenge_component.R
 
@@ -35,13 +36,15 @@ private fun CategorySurFaceGallery() {
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun PaidFilterCard(
     modifier: Modifier = Modifier,
     text: String? = null,
     textStyle: TextStyle = myTypography.w700,
     select: Boolean = false,
-    icon: Int = R.drawable.icon_candle_2
+    icon: Int = R.drawable.icon_candle_2,
+    onClick: () -> Unit = {}
 ) {
     Card(
         modifier = modifier,
@@ -50,7 +53,9 @@ fun PaidFilterCard(
         border = if (select) BorderStroke(1.dp, Color(0xff005bad)) else BorderStroke(
             1.dp,
             GrayColor5
-        )
+        ),
+
+        onClick = { onClick() }
     ) {
         if (text?.isNotEmpty() == true) {
             Text(
@@ -66,5 +71,6 @@ fun PaidFilterCard(
                 contentDescription = "icon"
             )
         }
+
     }
 }
