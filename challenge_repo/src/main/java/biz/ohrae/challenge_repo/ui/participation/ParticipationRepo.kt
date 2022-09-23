@@ -16,15 +16,17 @@ class ParticipationRepo @Inject constructor(
     private val gson: Gson,
     private val prefs: SharedPreference
 ) {
-    suspend fun registerChallenge(): Flow<FlowResult> {
+    suspend fun registerChallenge(challengeData: ChallengeData, paidAmount: Int, rewardsAmount: Int, depositAmount: Int): Flow<FlowResult> {
         val accessToken = prefs.getUserData()?.access_token
         val userId = prefs.getUserData()?.id
         val jsonObject = JsonObject()
         jsonObject.addProperty("user_id", userId)
-        jsonObject.addProperty("challenge_id", userId)
-        jsonObject.addProperty("paid_amount", userId)
-        jsonObject.addProperty("rewards_amount", userId)
-        jsonObject.addProperty("reward_amount", userId)
+        jsonObject.addProperty("challenge_id", challengeData.id)
+        jsonObject.addProperty("verification_type", challengeData.verification_period_type)
+        jsonObject.addProperty("paid_amount", paidAmount)
+        jsonObject.addProperty("reward_amount", rewardsAmount)
+        jsonObject.addProperty("deposit_amount", depositAmount)
+
         val response = apiService.registerChallenge(accessToken.toString(),jsonObject)
         when (response) {
             is NetworkResponse.Success -> {

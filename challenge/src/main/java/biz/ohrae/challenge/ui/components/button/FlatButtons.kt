@@ -153,8 +153,9 @@ fun FlatDoubleButton(
     leftText:String = "",
     textStyle: TextStyle = myTypography.bold,
     enabled: Boolean = true,
-    onClick: () -> Unit = {},
-    onClickLike: () -> Unit = {}){
+    onClickRight: () -> Unit = {},
+    onClickLeft: () -> Unit = {}
+) {
     Row(
         modifier = modifier,
     ) {
@@ -168,7 +169,7 @@ fun FlatDoubleButton(
             ),
             shape = RectangleShape,
             onClick = {
-                onClick()
+                onClickLeft()
             }
         ) {
             Text(
@@ -188,7 +189,7 @@ fun FlatDoubleButton(
             ),
             shape = RectangleShape,
             onClick = {
-                onClick()
+                onClickRight()
             }
         ) {
             Text(

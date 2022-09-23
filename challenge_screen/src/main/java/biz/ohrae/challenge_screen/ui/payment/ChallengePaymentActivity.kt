@@ -73,7 +73,7 @@ class ChallengePaymentActivity : AppCompatActivity() {
         postData += "&paid_amount=0"
         postData += "&rewards_amount=0"
         postData += "&pay_method=card"
-        postData += "&pg=1"
+        postData += "&pg=nice"
         val url = Routes.HOST_NAME.dropLast(1) + Routes.REQUEST_PAYMENT
         Timber.e("url : $url")
         binding.webView.postUrl(url, postData.toByteArray())

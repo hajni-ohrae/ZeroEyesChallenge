@@ -1,6 +1,5 @@
 package biz.ohrae.challenge_screen.ui.participation
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
@@ -20,7 +19,6 @@ import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailViewModel
-import biz.ohrae.challenge_screen.ui.payment.ChallengePaymentActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -89,6 +87,15 @@ class ParticipationActivity : AppCompatActivity() {
             composable(ChallengeParticipationNavScreen.ParticipationPayment.route) {
                 ParticipationPaymentScreen()
             }
+            composable(ChallengeParticipationNavScreen.ParticipationFinish.route) {
+                val challengeData by detailViewModel.challengeData.observeAsState()
+                if (challengeData != null) {
+                    ParticipationFinishScreen(
+                        challengeData = challengeData!!,
+                        clickListener = clickListener
+                    )
+                }
+            }
         }
     }
 
@@ -99,9 +106,15 @@ class ParticipationActivity : AppCompatActivity() {
     private fun initClickListeners() {
         clickListener = object : ParticipationClickListener {
             override fun onClickPayment() {
-                navController.navigate(ChallengeParticipationNavScreen.ParticipationPayment.route)
-                val intent = Intent(this@ParticipationActivity, ChallengePaymentActivity::class.java)
-                startActivity(intent)
+//                navController.navigate(ChallengeParticipationNavScreen.ParticipationPayment.route)
+//                val intent = Intent(this@ParticipationActivity, ChallengePaymentActivity::class.java)
+//                startActivity(intent)
+                detailViewModel.challengeData.value?.let {
+                    viewModel.registerChallenge(challengeData = it)
+                }
+            }
+
+            override fun onClickCancelParticipation() {
             }
         }
     }
@@ -113,5 +126,6 @@ class ParticipationActivity : AppCompatActivity() {
 
 sealed class ChallengeParticipationNavScreen(val route: String) {
     object Participation : ChallengeParticipationNavScreen("Participation")
+    object ParticipationFinish : ChallengeParticipationNavScreen("ParticipationFinish")
     object ParticipationPayment : ChallengeParticipationNavScreen("ParticipationPayment")
 }

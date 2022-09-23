@@ -59,9 +59,6 @@ fun ParticipationScreen(
     var participationAmount by remember { mutableStateOf("") }
     var rewards by remember { mutableStateOf("") }
     var availableRewards = 3000
-    val startDate by remember { mutableStateOf(Utils.convertDate6(challengeData.start_date.toString())) }
-    val endDate by remember { mutableStateOf(Utils.convertDate6(challengeData.end_date.toString())) }
-    val authType by remember { mutableStateOf(getAuthText(challengeData)) }
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -72,118 +69,7 @@ fun ParticipationScreen(
                 .padding(24.dp, 0.dp)
         ) {
             Spacer(modifier = Modifier.height(16.dp))
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                shape = RoundedCornerShape(10.dp),
-                border = BorderStroke(1.dp, Color(0xffeeeeee)),
-                elevation = 0.dp,
-                backgroundColor = DefaultWhite
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(20.dp)
-                ) {
-                    Text(
-                        text = challengeData.goal.toString(),
-                        style = myTypography.w700,
-                        fontSize = dpToSp(dp = 16.dp)
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
-                    DurationLabel(challengeData)
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = CenterVertically
-                    ) {
-                        Text(
-                            text = "챌린지 기간",
-                            style = myTypography.w500,
-                            fontSize = dpToSp(dp = 13.dp),
-                            color = Color(0xff4f4f4f)
-                        )
-                        Text(
-                            text = "$startDate ~ $endDate",
-                            style = myTypography.w500,
-                            fontSize = dpToSp(dp = 13.dp)
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = CenterVertically
-                    ) {
-                        Text(
-                            text = "인증방식",
-                            style = myTypography.w500,
-                            fontSize = dpToSp(dp = 13.dp),
-                            color = Color(0xff4f4f4f)
-                        )
-                        Text(
-                            text = authType,
-                            style = myTypography.w500,
-                            fontSize = dpToSp(dp = 13.dp)
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = CenterVertically
-                    ) {
-                        Text(
-                            text = "참가인원",
-                            style = myTypography.w500,
-                            fontSize = dpToSp(dp = 13.dp),
-                            color = Color(0xff4f4f4f)
-                        )
-                        Text(
-                            text = "0명",
-                            style = myTypography.bold,
-                            fontSize = dpToSp(dp = 13.dp)
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = CenterVertically
-                    ) {
-                        Text(
-                            text = "누적 참여금",
-                            style = myTypography.w500,
-                            fontSize = dpToSp(dp = 13.dp),
-                            color = Color(0xff4f4f4f)
-                        )
-                        Text(
-                            text = "총 1,000원",
-                            style = myTypography.bold,
-                            fontSize = dpToSp(dp = 13.dp)
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = CenterVertically
-                    ) {
-                        Text(
-                            text = "평균 참여금",
-                            style = myTypography.w500,
-                            fontSize = dpToSp(dp = 13.dp),
-                            color = Color(0xff4f4f4f)
-                        )
-                        Text(
-                            text = "100원",
-                            style = myTypography.w500,
-                            fontSize = dpToSp(dp = 13.dp)
-                        )
-                    }
-                }
-            }
+            ParticipationDetailCard(challengeData = challengeData)
             Spacer(modifier = Modifier.height(24.dp))
             Text(
                 text = "습관에 돈을 걸고 의지를 유지하세요",
@@ -317,6 +203,126 @@ fun ParticipationScreen(
                 clickListener?.onClickPayment()
             }
         )
+    }
+}
+
+@Composable
+fun ParticipationDetailCard(challengeData: ChallengeData) {
+    val startDate by remember { mutableStateOf(Utils.convertDate6(challengeData.start_date.toString())) }
+    val endDate by remember { mutableStateOf(Utils.convertDate6(challengeData.end_date.toString())) }
+    val authType by remember { mutableStateOf(getAuthText(challengeData)) }
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(10.dp),
+        border = BorderStroke(1.dp, Color(0xffeeeeee)),
+        elevation = 0.dp,
+        backgroundColor = DefaultWhite
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp)
+        ) {
+            Text(
+                text = challengeData.goal.toString(),
+                style = myTypography.w700,
+                fontSize = dpToSp(dp = 16.dp)
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            DurationLabel(challengeData)
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = CenterVertically
+            ) {
+                Text(
+                    text = "챌린지 기간",
+                    style = myTypography.w500,
+                    fontSize = dpToSp(dp = 13.dp),
+                    color = Color(0xff4f4f4f)
+                )
+                Text(
+                    text = "$startDate ~ $endDate",
+                    style = myTypography.w500,
+                    fontSize = dpToSp(dp = 13.dp)
+                )
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = CenterVertically
+            ) {
+                Text(
+                    text = "인증방식",
+                    style = myTypography.w500,
+                    fontSize = dpToSp(dp = 13.dp),
+                    color = Color(0xff4f4f4f)
+                )
+                Text(
+                    text = authType,
+                    style = myTypography.w500,
+                    fontSize = dpToSp(dp = 13.dp)
+                )
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = CenterVertically
+            ) {
+                Text(
+                    text = "참가인원",
+                    style = myTypography.w500,
+                    fontSize = dpToSp(dp = 13.dp),
+                    color = Color(0xff4f4f4f)
+                )
+                Text(
+                    text = "0명",
+                    style = myTypography.bold,
+                    fontSize = dpToSp(dp = 13.dp)
+                )
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = CenterVertically
+            ) {
+                Text(
+                    text = "누적 참여금",
+                    style = myTypography.w500,
+                    fontSize = dpToSp(dp = 13.dp),
+                    color = Color(0xff4f4f4f)
+                )
+                Text(
+                    text = "총 1,000원",
+                    style = myTypography.bold,
+                    fontSize = dpToSp(dp = 13.dp)
+                )
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = CenterVertically
+            ) {
+                Text(
+                    text = "평균 참여금",
+                    style = myTypography.w500,
+                    fontSize = dpToSp(dp = 13.dp),
+                    color = Color(0xff4f4f4f)
+                )
+                Text(
+                    text = "100원",
+                    style = myTypography.w500,
+                    fontSize = dpToSp(dp = 13.dp)
+                )
+            }
+        }
     }
 }
 
