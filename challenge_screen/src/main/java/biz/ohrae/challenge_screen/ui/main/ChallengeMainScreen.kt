@@ -8,26 +8,22 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import biz.ohrae.challenge.model.MainScreenState
-import biz.ohrae.challenge.model.register.ChallengeData
 import biz.ohrae.challenge.ui.components.card.ChallengeCardItem
 import biz.ohrae.challenge.ui.components.card.MainTopCard
 import biz.ohrae.challenge.ui.components.card.PaidFilterCard
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.util.challengeVerificationPeriodMap
 import biz.ohrae.challenge_component.R
+import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.util.prefs.Utils
+import biz.ohrae.challenge_screen.model.main.MainScreenState
 import timber.log.Timber
 
 @Preview(

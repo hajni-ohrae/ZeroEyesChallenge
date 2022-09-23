@@ -1,9 +1,9 @@
 package biz.ohrae.challenge_repo.ui.participation
 
-import biz.ohrae.challenge.model.register.ChallengeData
 import biz.ohrae.challenge_repo.data.remote.ApiService
 import biz.ohrae.challenge_repo.data.remote.NetworkResponse
 import biz.ohrae.challenge_repo.model.FlowResult
+import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import com.google.gson.Gson
 import com.google.gson.JsonObject

@@ -6,5 +6,11 @@ data class User(
     val id: String,
     val nick_name: String,
     val phone_number: String,
-    val refresh_token: String
+    val refresh_token: String,
+    val type: String,
+    val name: String,
+    val birth_date: String? = null,
+    val image_path: String? = null,
+    val is_blocked: Int,
+    val rewards_amount: Int,
 )

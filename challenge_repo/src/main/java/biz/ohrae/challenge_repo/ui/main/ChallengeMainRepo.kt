@@ -1,18 +1,15 @@
 package biz.ohrae.challenge_repo.ui.main
 
-import biz.ohrae.challenge.model.register.ChallengeData
 import biz.ohrae.challenge_repo.data.remote.ApiService
 import biz.ohrae.challenge_repo.data.remote.NetworkResponse
 import biz.ohrae.challenge_repo.model.FlowResult
+import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import okhttp3.Challenge
-import org.json.JSONArray
-import org.json.JSONObject
 import javax.inject.Inject
 
 

@@ -9,11 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import biz.ohrae.challenge.model.MainScreenState
-import biz.ohrae.challenge.model.register.ChallengeData
 import biz.ohrae.challenge.ui.components.card.ChallengeCardItem
-import biz.ohrae.challenge_repo.util.prefs.SharedPreference
-import biz.ohrae.challenge_screen.ui.main.ItemHeader
+import biz.ohrae.challenge_screen.model.main.MainScreenState
 import biz.ohrae.challenge_screen.ui.main.MainClickListener
 
 

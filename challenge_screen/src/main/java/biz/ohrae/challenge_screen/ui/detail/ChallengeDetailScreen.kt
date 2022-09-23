@@ -18,7 +18,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import biz.ohrae.challenge.model.register.ChallengeData
 import biz.ohrae.challenge.ui.components.avatar.Avatar
 import biz.ohrae.challenge.ui.components.button.ArrowTextButton2
 import biz.ohrae.challenge.ui.components.button.FlatBookMarkButton
@@ -36,6 +35,7 @@ import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge.util.challengeDetailStatusMap
 import biz.ohrae.challenge.util.challengeVerificationDayMap
 import biz.ohrae.challenge.util.challengeVerificationPeriodMap
+import biz.ohrae.challenge_repo.model.detail.ChallengeData
 
 @Preview(
     showBackground = true,

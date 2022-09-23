@@ -3,14 +3,11 @@ package biz.ohrae.challenge_screen.ui.mychallenge
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import biz.ohrae.challenge.model.register.ChallengeData
 import biz.ohrae.challenge.ui.components.banner.FlatBanner
-import biz.ohrae.challenge.ui.components.button.ArrowTextButton
 import biz.ohrae.challenge.ui.components.button.FlatBottomButton
 import biz.ohrae.challenge.ui.components.dropdown.DropDownItem
 import biz.ohrae.challenge.ui.components.dropdown.MyDropDown
@@ -18,7 +15,6 @@ import biz.ohrae.challenge.ui.components.input.LabeledTextField
 import biz.ohrae.challenge.ui.theme.TextBlack
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
-import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 
 
 @Preview(

@@ -21,7 +21,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import biz.ohrae.challenge.model.register.ChallengeData
 import biz.ohrae.challenge.ui.components.button.FlatBottomButton
 import biz.ohrae.challenge.ui.components.checkBox.CheckBox
 import biz.ohrae.challenge.ui.components.dropdown.DropDownItem
@@ -33,6 +32,7 @@ import biz.ohrae.challenge.ui.theme.GrayColor4
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge.util.challengeVerificationPeriodMap
+import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.util.prefs.Utils
 import java.text.NumberFormat
 import java.util.*

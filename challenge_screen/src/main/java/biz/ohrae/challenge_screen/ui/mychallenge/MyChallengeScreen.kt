@@ -1,19 +1,15 @@
 package biz.ohrae.challenge_screen.ui.mychallenge
 
-import android.service.autofill.UserData
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import biz.ohrae.challenge.model.register.ChallengeData
-import biz.ohrae.challenge.ui.components.avatar.Avatar
 import biz.ohrae.challenge.ui.components.avatar.circularAvatar
 import biz.ohrae.challenge.ui.components.card.ChallengesInParticipationCard
 import biz.ohrae.challenge.ui.components.card.MyChallengeIngoBox
@@ -24,9 +20,8 @@ import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge_component.R
-import biz.ohrae.challenge_repo.model.user.User
+import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
-import biz.ohrae.challenge_screen.ui.register.RegisterClickListener
 
 
 @Preview(

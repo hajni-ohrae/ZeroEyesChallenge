@@ -7,12 +7,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import biz.ohrae.challenge.model.MainScreenState
 import biz.ohrae.challenge.ui.components.banner.FlatBanner
 import biz.ohrae.challenge.ui.components.button.ArrowTextButton
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
-import biz.ohrae.challenge_screen.ui.main.MainClickListener
 
 
 @Preview(

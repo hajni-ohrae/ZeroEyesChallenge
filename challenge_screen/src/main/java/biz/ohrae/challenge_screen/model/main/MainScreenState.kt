@@ -1,7 +1,6 @@
-package biz.ohrae.challenge.model
+package biz.ohrae.challenge_screen.model.main
 
-import biz.ohrae.challenge.model.list_item.ChallengeItemData
-import biz.ohrae.challenge.model.register.ChallengeData
+import biz.ohrae.challenge_repo.model.detail.ChallengeData
 
 data class MainScreenState(
     val challengeList: List<ChallengeData>? = null,

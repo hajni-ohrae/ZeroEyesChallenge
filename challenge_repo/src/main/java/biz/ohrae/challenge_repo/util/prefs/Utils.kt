@@ -180,8 +180,9 @@ object Utils {
 
     fun convertDate6(dateStr: String): String {
         return try {
-            val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
-            val date = inputFormat.parse(dateStr)
+            val dateString = dateStr.replace("T", " ").replace("Z", "")
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.KOREA)
+            val date = inputFormat.parse(dateString)
             val outputFormat = SimpleDateFormat("M월 d일(E)", Locale.KOREA)
             outputFormat.timeZone = TimeZone.getTimeZone("Asia/Seoul")
             outputFormat.format(date!!)
