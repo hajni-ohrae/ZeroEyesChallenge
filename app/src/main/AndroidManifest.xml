@@ -45,5 +45,9 @@
             android:name="biz.ohrae.challenge_screen.ui.mychallenge.MyChallengeActivity"
             android:exported="true">
         </activity>
+        <activity
+            android:name="biz.ohrae.challenge_screen.ui.payment.ChallengePaymentActivity"
+            android:exported="true">
+        </activity>
     </application>
 </manifest>

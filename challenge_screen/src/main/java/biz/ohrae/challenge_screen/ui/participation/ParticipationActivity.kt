@@ -1,5 +1,6 @@
 package biz.ohrae.challenge_screen.ui.participation
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +20,7 @@ import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailViewModel
+import biz.ohrae.challenge_screen.ui.payment.ChallengePaymentActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -98,6 +100,8 @@ class ParticipationActivity : AppCompatActivity() {
         clickListener = object : ParticipationClickListener {
             override fun onClickPayment() {
                 navController.navigate(ChallengeParticipationNavScreen.ParticipationPayment.route)
+                val intent = Intent(this@ParticipationActivity, ChallengePaymentActivity::class.java)
+                startActivity(intent)
             }
         }
     }
