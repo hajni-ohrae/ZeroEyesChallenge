@@ -18,6 +18,7 @@ import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge_component.R
+import com.skydoves.landscapist.glide.GlideImage
 
 @Preview(
     showBackground = true,
@@ -44,6 +45,7 @@ private fun UploadPhotoBoxGallery() {
 @Composable
 fun UploadPhotoBox(
     modifier: Modifier = Modifier,
+    imageUri: String? = null,
     onclick: () -> Unit
 ) {
     Card(
@@ -54,25 +56,31 @@ fun UploadPhotoBox(
         }
     ) {
         Column(
-            modifier = Modifier.fillMaxSize().background(Color(0xfff8f8f8)),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(0xfff8f8f8)),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.icon_camera),
-                    contentDescription = "icon_camera",
-                    tint = Color.Unspecified
-                )
-                Spacer(modifier = Modifier.height(12.dp))
-                Text(
-                    text = "사진업로드",
-                    style = myTypography.bold,
-                    color = Color(0xff003865),
-                    fontSize = dpToSp(dp = 18.dp)
-                )
+            if (imageUri != null) {
+                GlideImage(imageModel = imageUri)
+            } else {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.icon_camera),
+                        contentDescription = "icon_camera",
+                        tint = Color.Unspecified
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Text(
+                        text = "사진업로드",
+                        style = myTypography.bold,
+                        color = Color(0xff003865),
+                        fontSize = dpToSp(dp = 18.dp)
+                    )
+                }
             }
         }
     }

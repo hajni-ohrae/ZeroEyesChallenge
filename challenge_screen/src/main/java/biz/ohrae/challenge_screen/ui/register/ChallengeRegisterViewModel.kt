@@ -7,6 +7,7 @@ import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.ui.main.UserRepo
 import biz.ohrae.challenge_repo.ui.register.RegisterRepo
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
+import biz.ohrae.challenge_screen.model.register.ChallengeOpenState
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -23,10 +24,11 @@ class ChallengeRegisterViewModel @Inject constructor(
 ) : ViewModel() {
     private val _challengeData = MutableLiveData<ChallengeData>()
     private val _isChallengeCreate = MutableLiveData(false)
+    private val _challengeImageUri = MutableLiveData<String?>(null)
 
     val challengeData get() = _challengeData
     val isChallengeCreate get() = _isChallengeCreate
-
+    val challengeImageUri get() = _challengeImageUri
 
     fun createChallenge(challengeData: ChallengeData) {
         viewModelScope.launch {
@@ -108,5 +110,9 @@ class ChallengeRegisterViewModel @Inject constructor(
             it.verification_period_type = item
             _challengeData.value = it
         }
+    }
+
+    fun setChallengeImage(uri: String) {
+        _challengeImageUri.value = uri
     }
 }

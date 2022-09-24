@@ -2,17 +2,14 @@ package biz.ohrae.challenge_screen.ui.register
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Checkbox
-import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import biz.ohrae.challenge.model.register.ChallengeOpenState
+import biz.ohrae.challenge_screen.model.register.ChallengeOpenState
 import biz.ohrae.challenge.ui.components.button.FlatBottomButton
-import biz.ohrae.challenge.ui.components.button.FlatDoubleButton
 import biz.ohrae.challenge.ui.components.card.ChallengeStartEndDateCard
 import biz.ohrae.challenge.ui.components.checkBox.CheckBox
 import biz.ohrae.challenge.ui.components.dropdown.MyDropDown

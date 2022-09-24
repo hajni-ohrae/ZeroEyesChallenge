@@ -9,5 +9,6 @@ interface RegisterClickListener {
     fun onClickPeriod(item:String)
     fun onClickPeriodType(item:String)
     fun onClickPhotoBox()
-    fun onClickCameraButton()
+    fun onClickReTakePhoto()
+    fun onClickUsePhoto()
 }

@@ -3,20 +3,13 @@ package biz.ohrae.challenge_screen.ui.register
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import biz.ohrae.challenge.model.register.ChallengeOpenState
 import biz.ohrae.challenge.ui.components.button.FlatBottomButton
 import biz.ohrae.challenge.ui.components.input.TextBox
 import biz.ohrae.challenge.ui.components.input.UploadPhotoBox
@@ -24,7 +17,7 @@ import biz.ohrae.challenge.ui.theme.DefaultBlack
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
-
+import biz.ohrae.challenge_screen.model.register.ChallengeOpenState
 
 @Preview(
     widthDp = 360,
@@ -34,6 +27,7 @@ import biz.ohrae.challenge.ui.theme.myTypography
 @Composable
 fun ChallengeGoals(
     challengeOpenState: ChallengeOpenState = ChallengeOpenState.mock(),
+    challengeImageUri: String? = null,
     clickListener: RegisterClickListener? = null,
 ) {
     val scrollState = rememberScrollState()
@@ -99,6 +93,7 @@ fun ChallengeGoals(
                     .background(Color(0xfff8f8f8))
                     .fillMaxWidth()
                     .aspectRatio(1.316f),
+                imageUri = challengeImageUri,
                 onclick = {
                     clickListener?.onClickPhotoBox()
                 }
@@ -130,7 +125,6 @@ fun ChallengeGoals(
             )
         }
         Spacer(modifier = Modifier.height(53.dp))
-
 
         Column(modifier = Modifier.fillMaxHeight(), Arrangement.Bottom) {
             FlatBottomButton(

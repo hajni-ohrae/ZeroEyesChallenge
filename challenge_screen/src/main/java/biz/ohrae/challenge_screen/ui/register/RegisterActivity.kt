@@ -72,6 +72,7 @@ class RegisterActivity : AppCompatActivity() {
     @Composable
     private fun Navigation() {
         val challengeDataState by viewModel.challengeData.observeAsState()
+        val challengeImageUri by viewModel.challengeImageUri.observeAsState()
 
         NavHost(
             navController = navController,
@@ -82,7 +83,10 @@ class RegisterActivity : AppCompatActivity() {
             }
 
             composable(ChallengeRegisterNavScreen.ChallengeGoals.route) {
-                ChallengeGoals(clickListener = registerClickListener)
+                ChallengeGoals(
+                    challengeImageUri = challengeImageUri,
+                    clickListener = registerClickListener
+                )
             }
 
             composable(ChallengeRegisterNavScreen.ChallengeOpen.route) {
@@ -99,6 +103,13 @@ class RegisterActivity : AppCompatActivity() {
 
             composable(ChallengeRegisterNavScreen.ChallengerCameraPreview.route) {
                 ChallengeCameraScreen(capturedCallback = capturedCallback)
+            }
+
+            composable(ChallengeRegisterNavScreen.ChallengerCameraResult.route) {
+                ChallengerCameraResultScreen(
+                    imageUri = challengeImageUri,
+                    clickListener = registerClickListener
+                )
             }
         }
     }
@@ -177,8 +188,12 @@ class RegisterActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onClickCameraButton() {
-                Timber.e("click camera Button!")
+            override fun onClickReTakePhoto() {
+                navController.navigate(ChallengeRegisterNavScreen.ChallengerCameraPreview.route)
+            }
+
+            override fun onClickUsePhoto() {
+                navController.navigate(ChallengeRegisterNavScreen.ChallengeGoals.route)
             }
         }
 
@@ -186,6 +201,8 @@ class RegisterActivity : AppCompatActivity() {
         capturedCallback = object : ImageCapture.OnImageSavedCallback {
             override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                 Timber.e("onCaptureSuccess : ${outputFileResults.savedUri}")
+                viewModel.setChallengeImage(outputFileResults.savedUri.toString())
+                navController.navigate(ChallengeRegisterNavScreen.ChallengerCameraResult.route)
             }
 
             override fun onError(exception: ImageCaptureException) {

@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import biz.ohrae.challenge.model.register.ChallengeOpenState
+import biz.ohrae.challenge_screen.model.register.ChallengeOpenState
 import biz.ohrae.challenge.ui.components.button.FlatBottomButton
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
@@ -27,7 +27,7 @@ fun RegisterAuthScreen(
     challengeOpenState: ChallengeOpenState = ChallengeOpenState.mock(),
     clickListener: RegisterClickListener? = null,
 
-) {
+    ) {
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(challengeOpenState.challengeRadioOptions[0].radioTitleEn) }
 
     Column(modifier = Modifier.padding(24.dp, 0.dp)) {
