@@ -11,8 +11,7 @@ import androidx.camera.core.ImageCaptureException
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
@@ -57,12 +56,22 @@ class RegisterActivity : AppCompatActivity() {
     @Composable
     private fun BuildContent() {
         navController = rememberNavController()
+        var isDark by remember { mutableStateOf(false) }
+
+        LaunchedEffect(navController.currentBackStackEntry?.destination?.route) {
+            isDark = (navController.currentBackStackEntry?.destination?.route == ChallengeRegisterNavScreen.ChallengerCameraPreview.route
+                    || navController.currentBackStackEntry?.destination?.route == ChallengeRegisterNavScreen.ChallengerCameraResult.route)
+        }
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(DefaultWhite)
         ) {
-            BackButton(onBack = { onBack() })
+            BackButton(
+                isDark = isDark,
+                onBack = { onBack() }
+            )
             Column(modifier = Modifier) {
                 Navigation()
             }
