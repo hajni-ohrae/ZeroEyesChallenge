@@ -1,9 +1,13 @@
 package biz.ohrae.challenge_screen.ui.register
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.camera.core.ImageCapture
+import androidx.camera.core.ImageCaptureException
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -21,7 +27,9 @@ import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_screen.ui.main.MainActivity
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class RegisterActivity : AppCompatActivity() {
@@ -30,6 +38,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var navController: NavHostController
     private lateinit var registerClickListener: RegisterClickListener
     private lateinit var challengeData: ChallengeData
+    private lateinit var capturedCallback: ImageCapture.OnImageSavedCallback
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,6 +96,10 @@ class RegisterActivity : AppCompatActivity() {
             composable(ChallengeRegisterNavScreen.ChallengerRecruitment.route) {
                 ChallengerRecruitment(clickListener = registerClickListener)
             }
+
+            composable(ChallengeRegisterNavScreen.ChallengerCameraPreview.route) {
+                ChallengeCameraScreen(capturedCallback = capturedCallback)
+            }
         }
     }
 
@@ -129,7 +142,6 @@ class RegisterActivity : AppCompatActivity() {
                 }
                 viewModel.verificationPeriodType(startDay, week, type)
                 navController.navigate(ChallengeRegisterNavScreen.ChallengerRecruitment.route)
-
             }
 
             override fun onClickRecruitmentNext() {
@@ -153,6 +165,32 @@ class RegisterActivity : AppCompatActivity() {
                 viewModel.selectPeriodType(item)
             }
 
+            override fun onClickPhotoBox() {
+                val permission = Manifest.permission.CAMERA
+                if(ContextCompat.checkSelfPermission(this@RegisterActivity, permission)
+                    != PackageManager.PERMISSION_GRANTED)
+                {
+                    // Permission is not granted
+                    ActivityCompat.requestPermissions(this@RegisterActivity, arrayOf(permission), 100)
+                } else {
+                    navController.navigate(ChallengeRegisterNavScreen.ChallengerCameraPreview.route)
+                }
+            }
+
+            override fun onClickCameraButton() {
+                Timber.e("click camera Button!")
+            }
+        }
+
+        // camera capture callback
+        capturedCallback = object : ImageCapture.OnImageSavedCallback {
+            override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+                Timber.e("onCaptureSuccess : ${outputFileResults.savedUri}")
+            }
+
+            override fun onError(exception: ImageCaptureException) {
+                Timber.e("onCaptureError")
+            }
         }
     }
 
@@ -164,6 +202,21 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
     }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 100) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                navController.navigate(ChallengeRegisterNavScreen.ChallengerCameraPreview.route)
+            } else {
+                Snackbar.make(window.decorView, "Camera Permission Denied", Snackbar.LENGTH_SHORT).show()
+            }
+        }
+    }
 }
 
 sealed class ChallengeRegisterNavScreen(val route: String) {
@@ -171,4 +224,6 @@ sealed class ChallengeRegisterNavScreen(val route: String) {
     object ChallengeGoals : ChallengeRegisterNavScreen("ChallengeGoals")
     object ChallengeOpen : ChallengeRegisterNavScreen("ChallengeOpen")
     object ChallengerRecruitment : ChallengeRegisterNavScreen("ChallengerRecruitment")
+    object ChallengerCameraPreview : ChallengeRegisterNavScreen("ChallengerCameraPreview")
+    object ChallengerCameraResult : ChallengeRegisterNavScreen("ChallengerCameraResult")
 }

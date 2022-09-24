@@ -84,6 +84,7 @@ dependencies {
     implementation composeUIToolingPreView
     implementation composeRuntimeLiveData
     implementation composeUITooling
+    implementation composeConstraint
     debugImplementation composeUITooling
     runtimeOnly composeRuntime
     debugImplementation customView
@@ -95,6 +96,15 @@ dependencies {
     implementation lifecycleViewModelKtx
     implementation androidXActivityCompose
     implementation androidXWindow
+
+    // camerax
+    implementation cameraCore
+    implementation camera2
+    implementation cameraLifeCycle
+    implementation cameraVideo
+    implementation cameraView
+    implementation cameraMLKit
+    implementation cameraExtension
 
     // hilt
     implementation hiltAndroid

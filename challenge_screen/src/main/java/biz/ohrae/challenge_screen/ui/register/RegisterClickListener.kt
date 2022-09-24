@@ -8,4 +8,6 @@ interface RegisterClickListener {
     fun onClickSelectedAuth(auth: String)
     fun onClickPeriod(item:String)
     fun onClickPeriodType(item:String)
+    fun onClickPhotoBox()
+    fun onClickCameraButton()
 }

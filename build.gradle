@@ -31,12 +31,24 @@ buildscript {
         composeRuntime = "androidx.compose.runtime:runtime:$compose_version"
         customView = "androidx.customview:customview:1.2.0-alpha01"
         customViewPoolingContainer = "androidx.customview:customview-poolingcontainer:1.0.0"
+        composeConstraint = "androidx.constraintlayout:constraintlayout-compose:1.0.1"
 
         /** lifecycle **/
         lifecycle_version = '2.5.1'
         lifecycleRuntimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
         lifecycleViewModelCompose = "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
         lifecycleViewModelKtx = "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+
+        /** cameraX **/
+        // CameraX core library using the camera2 implementation
+        camerax_version = '1.2.0-beta02'
+        cameraCore = "androidx.camera:camera-core:$camerax_version"
+        camera2 = "androidx.camera:camera-camera2:$camerax_version"
+        cameraLifeCycle = "androidx.camera:camera-lifecycle:$camerax_version"
+        cameraVideo = "androidx.camera:camera-video:$camerax_version"
+        cameraView = "androidx.camera:camera-view:$camerax_version"
+        cameraMLKit = "androidx.camera:camera-mlkit-vision:$camerax_version"
+        cameraExtension = "androidx.camera:camera-extensions:$camerax_version"
 
         /** hilt **/
         hilt_version = '2.42'

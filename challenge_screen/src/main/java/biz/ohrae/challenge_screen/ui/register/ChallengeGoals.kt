@@ -99,7 +99,9 @@ fun ChallengeGoals(
                     .background(Color(0xfff8f8f8))
                     .fillMaxWidth()
                     .aspectRatio(1.316f),
-                onclick = {}
+                onclick = {
+                    clickListener?.onClickPhotoBox()
+                }
             )
             Spacer(modifier = Modifier.height(28.dp))
             Text(
