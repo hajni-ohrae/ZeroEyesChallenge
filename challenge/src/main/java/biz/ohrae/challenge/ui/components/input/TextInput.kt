@@ -3,20 +3,25 @@ package biz.ohrae.challenge.ui.components.input
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.Divider
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Text
+import androidx.compose.material.TextFieldDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import biz.ohrae.challenge.ui.theme.*
+import biz.ohrae.challenge.ui.theme.DefaultWhite
+import biz.ohrae.challenge.ui.theme.TextBlack
+import biz.ohrae.challenge.ui.theme.dpToSp
+import biz.ohrae.challenge.ui.theme.myTypography
 
 @Preview(
     showBackground = true,
@@ -51,6 +56,22 @@ private fun TextFieldGallery() {
             value = "",
             onValueChange = {}
         )
+        Spacer(modifier = Modifier.height(10.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(0.7f)
+        ) {
+            LabeledTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(9f),
+                label = "인증번호",
+                placeholder = "숫자 3자리 입력",
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                maxLength = 3,
+                value = "",
+                onValueChange = {}
+            )
+        }
     }
 }
 
@@ -65,16 +86,19 @@ fun LabeledTextField(
     maxLength: Int = Int.MAX_VALUE,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     value: String,
+    visibleDivider: Boolean = true,
     onValueChange: (String) -> Unit,
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
-        Text(
-            text = label,
-            style = myTypography.default,
-            fontSize = dpToSp(dp = 10.dp),
-            color = Color(0xff6c6c6c)
-        )
-        Spacer(modifier = Modifier.height(8.dp))
+        if (label.isNotEmpty()) {
+            Text(
+                text = label,
+                style = myTypography.default,
+                fontSize = dpToSp(dp = 10.dp),
+                color = Color(0xff6c6c6c)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+        }
         BasicTextField(
             modifier = modifier,
             value = value,
@@ -113,11 +137,13 @@ fun LabeledTextField(
                 )
             }
         )
-        Divider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp)
-                .background(Color(0xffc7c7c7))
-        )
+        if (visibleDivider) {
+            Divider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(Color(0xffc7c7c7))
+            )
+        }
     }
 }

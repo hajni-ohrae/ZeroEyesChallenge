@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import biz.ohrae.challenge.ui.components.dropdown.ColoredDropDown
 import biz.ohrae.challenge.ui.components.dropdown.DropDownItem
 import biz.ohrae.challenge.ui.components.dropdown.MyDropDown
 
@@ -17,6 +18,13 @@ fun TestDropdownScreen() {
         DropDownItem(label = "카카오뱅크", value = "카카오뱅크"),
     )
 
+    val list2 = listOf(
+        DropDownItem(label = "SK", value = "SK"),
+        DropDownItem(label = "KT", value = "KT"),
+        DropDownItem(label = "LG", value = "LG"),
+        DropDownItem(label = "KT 알뜰폰", value = "KT 알뜰폰"),
+    )
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -28,6 +36,16 @@ fun TestDropdownScreen() {
                 .aspectRatio(7.1f),
             label = "은행명",
             list = list
+        )
+        
+        Spacer(modifier = Modifier.height(30.dp))
+        ColoredDropDown(
+            modifier = Modifier
+                .fillMaxWidth(0.3f)
+                .aspectRatio(3.2f),
+            horizontalPadding = 8.dp,
+            label = "휴대폰번호",
+            list = list2
         )
     }
 }
