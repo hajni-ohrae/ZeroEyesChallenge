@@ -36,6 +36,7 @@ data class ChallengeData(
     val verification_daily_staying_time: Int,
     val remaining_time: String? = null,
     val user: User? = null,
+    val summary:Summary? = null
 ) {
     companion object {
         fun mock(id: String = "2d4033ab-244b-47f3-84e9-6af72be39d9f") = ChallengeData(
@@ -71,3 +72,7 @@ data class ChallengeData(
         )
     }
 }
+
+data class Summary(
+    val total_user_cnt: Int = 0,
+)

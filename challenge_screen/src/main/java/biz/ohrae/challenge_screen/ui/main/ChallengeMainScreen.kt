@@ -66,11 +66,11 @@ fun ChallengeMainScreen(
                     ChallengeCardItem(
                         item.id,
                         item.goal!!,
-                        null,
+                        item.user?.name,
                         startDay!!,
                         item.period.toString(),
                         type!!,
-                        null,
+                        item.summary?.total_user_cnt,
                         getAuthType(item),
                         getOpenType(item),
                         item.is_adult_only,

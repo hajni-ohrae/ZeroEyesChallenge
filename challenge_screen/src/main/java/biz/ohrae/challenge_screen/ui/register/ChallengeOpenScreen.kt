@@ -17,6 +17,7 @@ import biz.ohrae.challenge.ui.theme.DefaultBlack
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
+import biz.ohrae.challenge_component.R
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -48,7 +49,7 @@ fun ChallengeOpenScreen(
             .padding(24.dp, 0.dp)
     ) {
         Text(
-            text = "챌린저 모집",
+            text = "챌린지 개설",
             style = myTypography.w500,
             fontSize = dpToSp(dp = 20.dp),
             color = DefaultBlack
@@ -75,7 +76,10 @@ fun ChallengeOpenScreen(
             color = DefaultBlack
         )
         Spacer(modifier = Modifier.height(16.dp))
-        ChallengeCalendarCard(today)
+        ChallengeCalendarCard(
+            today,
+            R.drawable.calander,
+            onClick = { clickListener?.onClickCalendar() })
         Spacer(modifier = Modifier.height(28.dp))
         Text(
             text = "인증 빈도",
@@ -97,7 +101,7 @@ fun ChallengeOpenScreen(
                 .aspectRatio(7.1f),
             label = "",
             list = challengeOpenState.authCycleList,
-            onSelectItem = {clickListener?.onClickPeriod(it.value)}
+            onSelectItem = { clickListener?.onClickPeriod(it.value) }
         )
 
         MyDropDown(
@@ -106,7 +110,7 @@ fun ChallengeOpenScreen(
                 .aspectRatio(7.1f),
             label = "",
             list = challengeOpenState.authFrequencyList,
-            onSelectItem = {clickListener?.onClickPeriodType(it.value)}
+            onSelectItem = { clickListener?.onClickPeriodType(it.value) }
         )
 
         if (challengeAuth == 1) {

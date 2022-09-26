@@ -204,6 +204,10 @@ class RegisterActivity : AppCompatActivity() {
             override fun onClickUsePhoto() {
                 navController.navigate(ChallengeRegisterNavScreen.ChallengeGoals.route)
             }
+
+            override fun onClickCalendar() {
+                TODO("Not yet implemented")
+            }
         }
 
         // camera capture callback

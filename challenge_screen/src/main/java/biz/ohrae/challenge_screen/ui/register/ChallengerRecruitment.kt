@@ -2,6 +2,8 @@ package biz.ohrae.challenge_screen.ui.register
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -30,9 +32,11 @@ fun ChallengerRecruitment(
     clickListener: RegisterClickListener? = null,
     viewModel: ChallengeRegisterViewModel? = null
 ) {
+    val scrollState = rememberScrollState()
     var checked by remember { mutableStateOf(false) }
     Column(modifier = Modifier
         .background(DefaultWhite)
+        .verticalScroll(scrollState)
         .padding(24.dp, 0.dp)) {
         Text(
             text = "챌린저 모집",

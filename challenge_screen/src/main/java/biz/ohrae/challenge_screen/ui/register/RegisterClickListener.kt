@@ -11,4 +11,5 @@ interface RegisterClickListener {
     fun onClickPhotoBox()
     fun onClickReTakePhoto()
     fun onClickUsePhoto()
+    fun onClickCalendar()
 }

@@ -3,6 +3,7 @@ package biz.ohrae.challenge_screen.ui.register
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.RadioButton
+import androidx.compose.material.RadioButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -13,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge_screen.model.register.ChallengeOpenState
 import biz.ohrae.challenge.ui.components.button.FlatBottomButton
+import biz.ohrae.challenge.ui.theme.DefaultBlack
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 
@@ -48,7 +50,11 @@ fun RegisterAuthScreen(
                 ) {
                     RadioButton(
                         selected = (radioOption.radioTitleEn == selectedOption),
-                        onClick = { onOptionSelected(radioOption.radioTitleEn) }
+                        onClick = { onOptionSelected(radioOption.radioTitleEn) },
+                        colors = RadioButtonDefaults.colors(
+                            selectedColor = Color(0xff005bad),
+                            unselectedColor = Color(0xffc7c7c7),
+                        )
                     )
                     Column() {
                         Text(
@@ -56,7 +62,9 @@ fun RegisterAuthScreen(
                             modifier = Modifier.fillMaxWidth(),
                             style = myTypography.bold,
                             fontSize = dpToSp(dp = 14.dp),
-                            color = Color(0xff6c6c6c),
+                            color = if (radioOption.radioTitleEn == selectedOption) DefaultBlack else Color(
+                                0xff6c6c6c
+                            ),
                         )
                         Spacer(modifier = Modifier.height(9.dp))
 
@@ -85,7 +93,6 @@ fun RegisterAuthScreen(
             onClick = { clickListener?.onClickAuthNext(selectedOption) }
         )
     }
-
 }
 
 
