@@ -1,5 +1,6 @@
 package biz.ohrae.challenge_screen.model.main
 
+import biz.ohrae.challenge.model.filter.FilterItem
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 
 data class MainScreenState(
@@ -26,7 +27,7 @@ data class MainScreenState(
                 AuthCycle("2주동안"),
                 AuthCycle("3주동안"),
                 AuthCycle("4주동안")
-            )
+            ),
         )
     }
 }

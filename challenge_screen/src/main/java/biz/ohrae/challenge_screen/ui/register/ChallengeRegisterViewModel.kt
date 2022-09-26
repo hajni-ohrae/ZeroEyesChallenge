@@ -7,7 +7,6 @@ import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.ui.main.UserRepo
 import biz.ohrae.challenge_repo.ui.register.RegisterRepo
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
-import biz.ohrae.challenge_screen.model.register.ChallengeOpenState
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -25,10 +24,12 @@ class ChallengeRegisterViewModel @Inject constructor(
     private val _challengeData = MutableLiveData<ChallengeData>()
     private val _isChallengeCreate = MutableLiveData(false)
     private val _challengeImageUri = MutableLiveData<String?>(null)
+    private val _checkAdultOnly = MutableLiveData<Int?>(0)
 
     val challengeData get() = _challengeData
     val isChallengeCreate get() = _isChallengeCreate
     val challengeImageUri get() = _challengeImageUri
+    val checkAdultOnly get() = _checkAdultOnly
 
     fun createChallenge(challengeData: ChallengeData) {
         viewModelScope.launch {
@@ -108,6 +109,18 @@ class ChallengeRegisterViewModel @Inject constructor(
         val state = _challengeData.value?.copy()
         state?.let {
             it.verification_period_type = item
+            _challengeData.value = it
+        }
+    }
+
+    fun checkAdultOnly(checked: Boolean) {
+        val state = _challengeData.value?.copy()
+        state?.let {
+            if (checked){
+                _checkAdultOnly.value = 1
+            }else {
+                _checkAdultOnly.value = 0
+            }
             _challengeData.value = it
         }
     }

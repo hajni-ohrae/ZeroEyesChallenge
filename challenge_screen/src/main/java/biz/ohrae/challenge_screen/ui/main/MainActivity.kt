@@ -15,6 +15,8 @@ import biz.ohrae.challenge.ui.components.header.Header
 import dagger.hilt.android.AndroidEntryPoint
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailActivity
+import biz.ohrae.challenge_screen.ui.dialog.CustomDialogListener
+import biz.ohrae.challenge_screen.ui.dialog.FilterDialog
 import biz.ohrae.challenge_screen.ui.mychallenge.MyChallengeActivity
 import biz.ohrae.challenge_screen.ui.register.RegisterActivity
 import biz.ohrae.challenge_screen.ui.register.RegisterClickListener
@@ -40,6 +42,7 @@ class MainActivity : AppCompatActivity() {
     @Composable
     private fun BuildContent() {
         val mainScreenState by viewModel.mainScreenState.observeAsState()
+        val filterState by viewModel.filterState.observeAsState()
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
@@ -47,6 +50,7 @@ class MainActivity : AppCompatActivity() {
             if (mainScreenState != null) {
                 ChallengeMainScreen(
                     mainScreenState = mainScreenState,
+                    filterState = filterState!!,
                     clickListener = mainClickListener
                 )
             }
@@ -72,11 +76,24 @@ class MainActivity : AppCompatActivity() {
                 goDetail(id)
             }
 
-            override fun onClickFilterItem(paymentType: String) {
-                if (paymentType == "filter") {
+            override fun onClickFilterType(filterType: String) {
+                if (filterType == "filter") {
+                    val dialog = FilterDialog()
+                    dialog.setListener(object : CustomDialogListener {
+                        override fun clickPositive() {
+                            dialog.dismiss()
+                        }
+
+                        override fun clickNegative() {
+                            dialog.dismiss()
+                        }
+                    })
+                    dialog.isCancelable = false
+                    dialog.show(supportFragmentManager, "FilterDialog")
 
                 } else {
-                    viewModel.getChallengeList(paymentType)
+                    viewModel.selectFilter(filterType)
+                    viewModel.getChallengeList(filterType)
                 }
             }
         }

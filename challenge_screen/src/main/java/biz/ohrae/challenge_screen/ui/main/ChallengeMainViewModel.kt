@@ -7,6 +7,7 @@ import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.ui.main.ChallengeMainRepo
 import biz.ohrae.challenge_repo.ui.main.UserRepo
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
+import biz.ohrae.challenge_screen.model.main.FilterState
 import biz.ohrae.challenge_screen.model.main.MainScreenState
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,10 +24,13 @@ class ChallengeMainViewModel @Inject constructor(
     private val gson: Gson
 ) : ViewModel() {
     private val _mainScreenState = MutableLiveData<MainScreenState>()
+    private val _filterState = MutableLiveData<FilterState>()
     val mainScreenState get() = _mainScreenState
+    val filterState get() = _filterState
 
     init {
         login()
+        selectFilter("all")
     }
 
     private fun login() {
@@ -42,9 +46,19 @@ class ChallengeMainViewModel @Inject constructor(
                 it.data?.let { data ->
                     val topBannerList = MainScreenState.mock().topBannerList
                     val challengeList = data as List<ChallengeData>
-                    val state = MainScreenState(challengeList, topBannerList)
+                    val state = MainScreenState(challengeList, topBannerList, )
                     _mainScreenState.value = state
                 }
+            }
+        }
+    }
+
+    fun selectFilter(filterNameEn: String) {
+        viewModelScope.launch {
+            val filterState = FilterState.mock().copy()
+            filterState?.let {
+                it.selectFilterType = filterNameEn
+                _filterState.value = it
             }
         }
     }

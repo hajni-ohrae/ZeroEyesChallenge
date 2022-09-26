@@ -107,6 +107,7 @@ fun ChallengerRecruitment(
             },
             onCheckedChange = {
                 checked = !checked
+                viewModel?.checkAdultOnly(checked)
             },
             checked = checked,
         )
