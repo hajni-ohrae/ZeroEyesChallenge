@@ -310,6 +310,14 @@ fun ChallengePhotoAuthentication() {
 
 @Composable
 fun ChallengeHost(challengeData: ChallengeData) {
+    val name by remember {
+        if (challengeData.user?.nick_name.isNullOrEmpty()) {
+            mutableStateOf(challengeData.user?.name)
+        } else {
+            mutableStateOf(challengeData.user?.nick_name)
+        }
+    }
+
     Column(modifier = Modifier.fillMaxWidth()) {
         Spacer(modifier = Modifier.height(32.dp))
         Text(
@@ -327,7 +335,7 @@ fun ChallengeHost(challengeData: ChallengeData) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = challengeData.user?.nick_name.toString(),
+                text = name.toString(),
                 style = myTypography.extraBold,
                 fontSize = dpToSp(dp = 20.dp)
             )

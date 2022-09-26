@@ -10,8 +10,6 @@ import java.io.File
 import java.io.FileOutputStream
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.regex.Pattern
 
@@ -191,6 +189,19 @@ object Utils {
         }
     }
 
+    fun convertDate7(dateStr: String): String {
+        return try {
+            val dateString = dateStr.replace("T", " ").replace("Z", "")
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
+            val date = inputFormat.parse(dateString)
+            val outputFormat = SimpleDateFormat("yyyy.MM.dd E요일", Locale.KOREA)
+            outputFormat.timeZone = TimeZone.getTimeZone("Asia/Seoul")
+            outputFormat.format(date!!)
+        } catch (ignore: Exception) {
+            dateStr
+        }
+    }
+
     fun minutesToString(min: Int): String {
         val days = min / (24 * 60)
         val hours = min % (24 * 60) / 60
@@ -352,6 +363,36 @@ object Utils {
             calendar.add(Calendar.MINUTE, minute)
         }
         return calendar
+    }
+
+    fun addDays(calendar: Calendar, days: Int): Calendar? {
+        calendar.add(Calendar.DAY_OF_MONTH, days)
+        return calendar
+    }
+
+    fun addWeeks(timeFormat: String, weeks: Int): String? {
+        val calendarText = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
+        val date = calendarText.parse(timeFormat)
+
+        if (date != null) {
+            val calendar = Calendar.getInstance()
+            calendar.time = date
+            calendar.add(Calendar.WEEK_OF_MONTH, weeks)
+            return calendarText.format(calendar.time)
+        } else {
+            return null
+        }
+    }
+
+    fun getDefaultChallengeDate(): String {
+        var date = Date()
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        calendar.add(Calendar.WEEK_OF_MONTH, 1)
+        date = calendar.time
+
+        val calendarText = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
+        return calendarText.format(date)
     }
 
     fun hexToColor(hex: String?): Color? {

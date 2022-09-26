@@ -107,7 +107,10 @@ class RegisterActivity : AppCompatActivity() {
             }
 
             composable(ChallengeRegisterNavScreen.ChallengerRecruitment.route) {
-                ChallengerRecruitment(clickListener = registerClickListener)
+                ChallengerRecruitment(
+                    challengeData = challengeDataState,
+                    clickListener = registerClickListener
+                )
             }
 
             composable(ChallengeRegisterNavScreen.ChallengerCameraPreview.route) {

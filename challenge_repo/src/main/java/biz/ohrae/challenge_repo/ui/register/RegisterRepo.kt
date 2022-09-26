@@ -18,7 +18,6 @@ class RegisterRepo @Inject constructor(
 ) {
     suspend fun createChallenge(userId: String, challengeData: ChallengeData): Flow<FlowResult> {
         val jsonObject = JsonObject()
-        val response = apiService.createChallenge(jsonObject)
         jsonObject.addProperty("user_id", userId)
         jsonObject.addProperty("goal", challengeData.goal)
         jsonObject.addProperty("subject", challengeData.subject)
@@ -40,6 +39,8 @@ class RegisterRepo @Inject constructor(
         jsonObject.addProperty("verification_period_type", challengeData.verification_period_type)
         jsonObject.addProperty("per_week", challengeData.per_week)
         jsonObject.addProperty("image_path", challengeData.image_path)
+
+        val response = apiService.createChallenge(jsonObject)
         when (response) {
             is NetworkResponse.Success -> {
                 val isSuccess = response.body.success

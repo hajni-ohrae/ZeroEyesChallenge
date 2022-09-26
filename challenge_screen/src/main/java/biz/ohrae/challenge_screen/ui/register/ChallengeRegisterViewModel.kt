@@ -7,6 +7,7 @@ import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.ui.main.UserRepo
 import biz.ohrae.challenge_repo.ui.register.RegisterRepo
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
+import biz.ohrae.challenge_repo.util.prefs.Utils
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -74,9 +75,13 @@ class ChallengeRegisterViewModel @Inject constructor(
         viewModelScope.launch {
             val state = _challengeData.value?.copy()
             state?.let {
+                val applyStartDate = Utils.addWeeks(startDay, -1)
+
                 it.start_date = startDay
                 it.per_week = perWeek.toInt()
                 it.verification_period_type = verificationPeriodType
+                it.apply_start_date = applyStartDate
+                it.apply_end_date = startDay
 
                 _challengeData.value = it
             }

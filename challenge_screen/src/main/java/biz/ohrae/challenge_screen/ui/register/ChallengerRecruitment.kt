@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import biz.ohrae.challenge_screen.model.register.ChallengeOpenState
 import biz.ohrae.challenge.ui.components.button.FlatBottomButton
 import biz.ohrae.challenge.ui.components.card.ChallengeStartEndDateCard
 import biz.ohrae.challenge.ui.components.checkBox.CheckBox
@@ -19,6 +18,9 @@ import biz.ohrae.challenge.ui.theme.DefaultBlack
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
+import biz.ohrae.challenge_repo.model.detail.ChallengeData
+import biz.ohrae.challenge_repo.util.prefs.Utils
+import biz.ohrae.challenge_screen.model.register.ChallengeOpenState
 
 
 @Preview(
@@ -28,6 +30,7 @@ import biz.ohrae.challenge.ui.theme.myTypography
 )
 @Composable
 fun ChallengerRecruitment(
+    challengeData: ChallengeData? = ChallengeData.mock(),
     challengeOpenState: ChallengeOpenState = ChallengeOpenState.mock(),
     clickListener: RegisterClickListener? = null,
     viewModel: ChallengeRegisterViewModel? = null
@@ -58,7 +61,10 @@ fun ChallengerRecruitment(
             color = Color(0xff005bad)
         )
         Spacer(modifier = Modifier.height(28.dp))
-        ChallengeStartEndDateCard("챌린지 시작일")
+        ChallengeStartEndDateCard(
+            title = "챌린지 시작일",
+            day = Utils.convertDate7(challengeData?.start_date.toString())
+        )
         Spacer(modifier = Modifier.height(28.dp))
         Text(
             text = "모집 기한",

@@ -2,13 +2,15 @@ package biz.ohrae.challenge_screen.ui.register
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import biz.ohrae.challenge_screen.model.register.ChallengeOpenState
 import biz.ohrae.challenge.ui.components.button.FlatBottomButton
 import biz.ohrae.challenge.ui.components.calender.ChallengeCalendarCard
 import biz.ohrae.challenge.ui.components.card.ChallengeStartEndDateCard
@@ -18,8 +20,8 @@ import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge_component.R
-import java.text.SimpleDateFormat
-import java.util.*
+import biz.ohrae.challenge_repo.util.prefs.Utils
+import biz.ohrae.challenge_screen.model.register.ChallengeOpenState
 
 
 @Preview(
@@ -34,14 +36,7 @@ fun ChallengeOpenScreen(
     challengeAuth: Int? = 0,
     viewModel: ChallengeRegisterViewModel? = null
 ) {
-    val nowTime = System.currentTimeMillis()
-    val tDate = Date(nowTime)
-    val tDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale("ko", "KR"))
-    val calendarText = SimpleDateFormat("MM월dd일 (E)", Locale("ko", "KR"))
-    val today = calendarText.format(tDate)
-
-    val day = tDateFormat.format(tDate)
-
+    val startDay by remember { mutableStateOf(Utils.getDefaultChallengeDate()) }
 
     Column(
         modifier = Modifier
@@ -77,7 +72,7 @@ fun ChallengeOpenScreen(
         )
         Spacer(modifier = Modifier.height(16.dp))
         ChallengeCalendarCard(
-            today,
+            Utils.convertDate7(startDay),
             R.drawable.calander,
             onClick = { clickListener?.onClickCalendar() })
         Spacer(modifier = Modifier.height(28.dp))
@@ -133,9 +128,7 @@ fun ChallengeOpenScreen(
                 .fillMaxWidth()
                 .aspectRatio(6f),
             text = "다음",
-            onClick = { clickListener?.onClickOpenNext(day, "1주동안", "매일인증") }
+            onClick = { clickListener?.onClickOpenNext(startDay, "1주동안", "매일인증") }
         )
     }
-
-
 }
