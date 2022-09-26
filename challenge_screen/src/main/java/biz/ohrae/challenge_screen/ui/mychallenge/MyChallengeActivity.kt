@@ -73,6 +73,12 @@ class MyChallengeActivity : AppCompatActivity() {
             composable(MyChallengeNavScreen.MyReward.route) {
                 MyRewardScreen(clickListener = myChallengeClickListener)
             }
+            composable(MyChallengeNavScreen.Withdraw.route) {
+                WithdrawScreen(clickListener = myChallengeClickListener)
+            }
+            composable(MyChallengeNavScreen.PhoneAuth.route) {
+                PhoneAuthScreenWebView()
+            }
             composable(MyChallengeNavScreen.MyPaymentDetail.route) {
                 PaymentDetailListScreen()
             }
@@ -102,6 +108,14 @@ class MyChallengeActivity : AppCompatActivity() {
             override fun onClickRedCard() {
                 navController.navigate(MyChallengeNavScreen.RedCard.route)
             }
+
+            override fun onClickApplyWithdraw() {
+                navController.navigate(MyChallengeNavScreen.Withdraw.route)
+            }
+
+            override fun onClickApplyWithdrawDetail() {
+                navController.navigate(MyChallengeNavScreen.PhoneAuth.route)
+            }
         }
     }
 }
@@ -110,7 +124,9 @@ class MyChallengeActivity : AppCompatActivity() {
 sealed class MyChallengeNavScreen(val route: String) {
     object MyChallenge : MyChallengeNavScreen("MyChallenge")
     object MyReward : MyChallengeNavScreen("MyReward")
+    object Withdraw : MyChallengeNavScreen("Withdraw")
     object MyPaymentDetail : MyChallengeNavScreen("MyPaymentDetail")
     object RedCard : MyChallengeNavScreen("RedCard")
     object SavedChallenge : MyChallengeNavScreen("SavedChallenge")
+    object PhoneAuth : MyChallengeNavScreen("PhoneAuth")
 }

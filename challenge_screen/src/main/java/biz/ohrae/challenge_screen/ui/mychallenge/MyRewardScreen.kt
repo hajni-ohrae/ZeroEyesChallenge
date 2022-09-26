@@ -99,7 +99,9 @@ fun MyRewardScreen(
                     .fillMaxWidth()
                     .aspectRatio(6f),
                 text = "출금신청",
-                onClick = { }
+                onClick = {
+                    clickListener?.onClickApplyWithdraw()
+                }
             )
         }
     }

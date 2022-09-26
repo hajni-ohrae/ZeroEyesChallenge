@@ -5,4 +5,6 @@ interface MyChallengeClickListener {
     fun onClickPaymentDetail()
     fun onClickSavedChallenge()
     fun onClickRedCard()
+    fun onClickApplyWithdraw()
+    fun onClickApplyWithdrawDetail()
 }

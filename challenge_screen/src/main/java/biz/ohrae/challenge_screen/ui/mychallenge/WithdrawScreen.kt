@@ -24,8 +24,9 @@ import biz.ohrae.challenge.ui.theme.myTypography
 )
 @Composable
 fun WithdrawScreen(
+    clickListener: MyChallengeClickListener? = null
 ) {
-    Column() {
+    Column {
         Column(modifier = Modifier.padding(24.dp,0.dp)) {
             Text(text = "출금 신청", style = myTypography.w700, fontSize = dpToSp(dp = 20.dp))
             Text(
@@ -54,16 +55,17 @@ fun WithdrawScreen(
                 value = "",
                 onValueChange = {}
             )
-            Column(modifier = Modifier.fillMaxHeight(), Arrangement.Bottom) {
-                FlatBottomButton(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(6f),
-                    text = "출금신청",
-                    onClick = { }
-                )
-            }
         }
+        Spacer(modifier = Modifier.weight(1f))
+        FlatBottomButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(6f),
+            text = "출금신청",
+            onClick = {
+                clickListener?.onClickApplyWithdrawDetail()
+            }
+        )
     }
 }
 

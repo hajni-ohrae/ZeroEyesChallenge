@@ -1,5 +1,7 @@
 package biz.ohrae.challenge_screen.ui.mychallenge
 
+import android.webkit.CookieManager
+import android.webkit.WebSettings
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -19,6 +21,31 @@ import biz.ohrae.challenge.ui.components.dropdown.DropDownItem
 import biz.ohrae.challenge.ui.components.input.LabeledTextField
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
+import biz.ohrae.challenge_repo.data.remote.Routes
+import com.google.accompanist.web.WebView
+import com.google.accompanist.web.rememberWebViewState
+import timber.log.Timber
+
+
+@Composable
+fun PhoneAuthScreenWebView() {
+    Column(modifier = Modifier.fillMaxSize()) {
+        val state = rememberWebViewState(Routes.HOST_NAME.dropLast(1) + "/api/challenge/views/checkplus/main/" + "3a6ce792-d0cb-4567-8dd6-f08cb64a1039")
+        WebView(
+            state = state,
+            onCreated = {
+                it.settings.javaScriptEnabled = true
+                it.settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+                val cookieManager = CookieManager.getInstance()
+                cookieManager.setAcceptCookie(true)
+                cookieManager.setAcceptThirdPartyCookies(it, true)
+                val url = Routes.HOST_NAME.dropLast(1) + "/api/challenge/views/checkplus/main/" + "3a6ce792-d0cb-4567-8dd6-f08cb64a1039"
+                Timber.e("url : $url")
+                it.postUrl(url, byteArrayOf())
+            }
+        )
+    }
+}
 
 
 @Preview(
