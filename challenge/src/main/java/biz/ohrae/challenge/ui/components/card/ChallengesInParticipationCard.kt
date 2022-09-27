@@ -76,8 +76,7 @@ fun ChallengesInParticipationCard(
 ) {
     val achievementRate = (count.toDouble() / maxPeople.toDouble() * 100.0).roundToInt()
     Card(
-        modifier = Modifier
-            .fillMaxWidth(),
+        modifier = modifier,
         shape = RoundedCornerShape(10.dp),
         elevation = 0.dp,
         backgroundColor = DefaultWhite,

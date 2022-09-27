@@ -13,16 +13,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import biz.ohrae.challenge.model.filter.FilterItem
 import biz.ohrae.challenge.ui.components.card.ChallengeCardItem
 import biz.ohrae.challenge.ui.components.card.ChallengesInParticipationCard
 import biz.ohrae.challenge.ui.components.card.MainTopCard
 import biz.ohrae.challenge.ui.components.card.PaidFilterCard
-import biz.ohrae.challenge.ui.components.image.ImageBoxWithExampleTitle
 import biz.ohrae.challenge.ui.theme.DefaultBlack
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.dpToSp
@@ -145,7 +142,18 @@ fun ItemHeader(
         ) {
             item {
                 ChallengesInParticipationCard(
-                    modifier = Modifier,
+                    modifier = Modifier.fillParentMaxSize(),
+                    title = "매일 6시간씩 한국사 공부",
+                    1,
+                    30,
+                    "완료",
+                    Color(0xffdedede),
+                    Color(0xff6c6c6c)
+                )
+            }
+            item {
+                ChallengesInParticipationCard(
+                    modifier = Modifier.fillParentMaxSize(),
                     title = "매일 6시간씩 한국사 공부",
                     1,
                     30,
