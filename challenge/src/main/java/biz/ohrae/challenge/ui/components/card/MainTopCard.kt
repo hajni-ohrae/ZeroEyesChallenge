@@ -22,12 +22,12 @@ import biz.ohrae.challenge.ui.theme.myTypography
 @Composable
 private fun MainTopCardGallery() {
     Column() {
-        MainTopCard("챌린지 이렇게\n이용해보세요")
+        MainTopCard(Modifier,"챌린지 이렇게\n이용해보세요")
     }
 }
 
 @Composable
-fun MainTopCard(content: String) {
+fun MainTopCard(modifier: Modifier,content: String) {
     Card(
         modifier = Modifier
             .fillMaxWidth()

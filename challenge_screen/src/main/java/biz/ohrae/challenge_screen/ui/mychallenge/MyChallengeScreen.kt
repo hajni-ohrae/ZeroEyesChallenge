@@ -118,6 +118,7 @@ fun MyChallengeScreen(
             PaidFilterCard(modifier = Modifier, text = "완료")
         }
         ChallengesInParticipationCard(
+            Modifier,
             title = "매일 6시간씩 한국사 공부",
             1,
             30,

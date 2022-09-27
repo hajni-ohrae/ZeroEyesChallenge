@@ -123,6 +123,9 @@ fun ItemHeader(
         ) {
             items(mainScreenState?.topBannerList!!) { item ->
                 MainTopCard(
+                    modifier = Modifier
+                        .fillParentMaxSize()
+                        .fillParentMaxWidth(),
                     content = item.content
                 )
             }
@@ -135,19 +138,25 @@ fun ItemHeader(
             color = DefaultBlack
         )
         Spacer(modifier = Modifier.height(10.dp))
-        LazyRow(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(24.dp),
-        ) {
-            item {
-                ChallengesInParticipationCard(
-                    title = "매일 6시간씩 한국사 공부",
-                    1,
-                    30,
-                    "완료",
-                    Color(0xffdedede),
-                    Color(0xff6c6c6c)
-                )
+        BoxWithConstraints {
+
+            LazyRow(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(24.dp),
+            ) {
+                item {
+                    ChallengesInParticipationCard(
+                        modifier = Modifier
+                            .fillParentMaxSize()
+                            .fillParentMaxWidth(),
+                        title = "매일 6시간씩 한국사 공부",
+                        1,
+                        30,
+                        "완료",
+                        Color(0xffdedede),
+                        Color(0xff6c6c6c)
+                    )
+                }
             }
         }
         FilterCard(clickListener = clickListener, filterState, filterState.selectFilterType)

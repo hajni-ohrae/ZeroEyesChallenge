@@ -33,6 +33,7 @@ private fun ChallengesInParticipationCardGallery() {
             .fillMaxWidth()
     ) {
         ChallengesInParticipationCard(
+            Modifier,
             title = "매일 6시간씩 한국사 공부",
             1,
             30,
@@ -42,6 +43,7 @@ private fun ChallengesInParticipationCardGallery() {
         )
         Spacer(modifier = Modifier.height(20.dp))
         ChallengesInParticipationCard(
+            Modifier,
             title = "매일 6시간씩 한국사 공부",
             1,
             30,
@@ -51,6 +53,7 @@ private fun ChallengesInParticipationCardGallery() {
         )
         Spacer(modifier = Modifier.height(20.dp))
         ChallengesInParticipationCard(
+            Modifier,
             title = "매일 6시간씩 한국사 공부",
             1,
             30,
@@ -63,6 +66,7 @@ private fun ChallengesInParticipationCardGallery() {
 
 @Composable
 fun ChallengesInParticipationCard(
+    modifier: Modifier,
     title: String,
     count: Int,
     maxPeople: Int,
