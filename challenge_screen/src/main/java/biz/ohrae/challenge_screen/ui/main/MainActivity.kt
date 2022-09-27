@@ -12,14 +12,14 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
 import biz.ohrae.challenge.ui.components.header.Header
-import dagger.hilt.android.AndroidEntryPoint
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailActivity
 import biz.ohrae.challenge_screen.ui.dialog.CustomDialogListener
 import biz.ohrae.challenge_screen.ui.dialog.FilterDialog
+import biz.ohrae.challenge_screen.ui.login.LoginActivity
 import biz.ohrae.challenge_screen.ui.mychallenge.MyChallengeActivity
 import biz.ohrae.challenge_screen.ui.register.RegisterActivity
-import biz.ohrae.challenge_screen.ui.register.RegisterClickListener
+import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -30,13 +30,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this)[ChallengeMainViewModel::class.java]
 
-        init()
-        initClickListener()
         setContent {
             ChallengeInTheme {
                 BuildContent()
             }
         }
+
+        initClickListener()
+        observeViewModel()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        init()
     }
 
     @Composable
@@ -106,6 +112,13 @@ class MainActivity : AppCompatActivity() {
 //                startActivity(intent)
 //            }
 //        }
+
+        viewModel.tokenValid.observe(this) {
+            if (!it) {
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+            }
+        }
     }
 
     private fun goDetail(id: String) {

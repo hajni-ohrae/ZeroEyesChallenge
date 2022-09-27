@@ -8,7 +8,9 @@ interface ApiService {
     suspend fun login(@Body body: JsonObject?): NetworkResponse<Result2, Error>
 
     @GET(Routes.AUTH_TOKEN_CHECK)
-    suspend fun authTokenCheck(): NetworkResponse<Result, Error>
+    suspend fun authTokenCheck(
+        @Header("x-access-token") accessToken: String,
+    ): NetworkResponse<Result, Error>
 
     @GET(Routes.AUTH_TOKEN_REFRESH)
     suspend fun authTokenRefresh(): NetworkResponse<Result, Error>

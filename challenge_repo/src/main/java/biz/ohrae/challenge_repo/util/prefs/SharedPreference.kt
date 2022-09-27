@@ -2,7 +2,9 @@ package biz.ohrae.challenge_repo.util.prefs
 
 import android.content.Context
 import biz.ohrae.challenge_repo.model.user.User
+import biz.ohrae.challenge_repo.model.user.ZeCustomer
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -80,20 +82,33 @@ class SharedPreference @Inject constructor(@ApplicationContext context: Context,
         setString("uid", uid)
     }
 
-    fun setZeCustomerId(customerId: String) {
-        setString("zeCustomerId", customerId)
+    fun setZeCustomer(customer: ZeCustomer) {
+        return setString("zeCustomer", gson.toJson(customer))
     }
 
-    fun getZeCustomerId(): String {
-        return getString("zeCustomerId", "")
+    fun getZeCustomer(): ZeCustomer? {
+        val jsonString = getString("zeCustomer", "")
+        if (jsonString.isEmpty()) {
+            return null
+        }
+        return gson.fromJson(jsonString, ZeCustomer::class.java)
     }
 
-    fun setZeAccessToken(accessToken: String) {
-        setString("zeAccessToken", accessToken)
+    fun setZeServiceIds(serviceIds: List<String>?) {
+        if (serviceIds != null) {
+            setString("zeServiceIds", gson.toJson(serviceIds))
+        } else {
+            setString("zeServiceIds", "")
+        }
     }
 
-    fun getZeAccessToken(): String {
-        return getString("zeAccessToken", "")
-    }
+    fun getZeServiceIds(): List<String>? {
+        val listString = getString("zeServiceIds", "")
+        if (listString.isEmpty()) {
+            return null
+        }
 
+        val listType = object : TypeToken<ArrayList<String?>?>() {}.type
+        return gson.fromJson(listString, listType)
+    }
 }

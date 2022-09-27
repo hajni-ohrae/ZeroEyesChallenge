@@ -12,6 +12,7 @@ import biz.ohrae.challenge_screen.model.main.MainScreenState
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,17 +26,33 @@ class ChallengeMainViewModel @Inject constructor(
 ) : ViewModel() {
     private val _mainScreenState = MutableLiveData<MainScreenState>()
     private val _filterState = MutableLiveData<FilterState>()
-    val mainScreenState get() = _mainScreenState
+    private val _tokenValid = MutableLiveData<Boolean>()
+
     val filterState get() = _filterState
+    val mainScreenState get() = _mainScreenState
+    val tokenValid get() = _tokenValid
 
     init {
-        login()
+//        login()
+        tokenCheck()
         selectFilter("all")
     }
 
     private fun login() {
         viewModelScope.launch {
             userRepo.login()
+        }
+    }
+
+    private fun tokenCheck() {
+        viewModelScope.launch {
+            val response = userRepo.tokenCheck()
+            response.flowOn(Dispatchers.IO).collect { result ->
+                result.data?.let {
+                    val success = it as Boolean
+                    _tokenValid.value = success
+                }
+            }
         }
     }
 

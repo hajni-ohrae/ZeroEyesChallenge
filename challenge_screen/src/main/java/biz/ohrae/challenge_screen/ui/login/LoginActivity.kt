@@ -1,5 +1,6 @@
 package biz.ohrae.challenge_screen.ui.login
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import biz.ohrae.challenge_screen.databinding.ActivityLoginBinding
+import biz.ohrae.challenge_screen.ui.main.MainActivity
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
@@ -147,7 +149,13 @@ class LoginActivity: AppCompatActivity() {
 
         viewModel.relatedServiceIds.observe(this) {
             if (it.isNotEmpty()) {
-                Timber.e("get service Ids!!")
+                viewModel.login()
+            }
+        }
+
+        viewModel.loginSuccess.observe(this) {
+            if (it) {
+                finish()
             }
         }
     }

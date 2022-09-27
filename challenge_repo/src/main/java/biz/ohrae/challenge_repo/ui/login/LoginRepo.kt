@@ -4,6 +4,7 @@ import biz.ohrae.challenge_repo.data.remote.ApiServiceForBase
 import biz.ohrae.challenge_repo.data.remote.NetworkResponse
 import biz.ohrae.challenge_repo.model.FlowResult
 import biz.ohrae.challenge_repo.model.login.Auth
+import biz.ohrae.challenge_repo.model.user.ZeCustomer
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -61,17 +62,10 @@ class LoginRepo @Inject constructor(
                     flow {
                         val dataSet = response.body.dataset
                         if (dataSet != null && dataSet.size() > 0) {
-                            val jsonObject = dataSet[0].asJsonObject
-                            val customerId = jsonObject.get("id")
-                            val accessToken = jsonObject.get("access_token")
-
-                            Timber.e("customerId : $customerId")
-                            Timber.e("accessToken : $accessToken")
-                            if (customerId != null) {
-                                prefs.setZeCustomerId(customerId.asString)
-                            }
-                            if (accessToken != null) {
-                                prefs.setZeAccessToken(accessToken.asString)
+                            val customer = gson.fromJson(dataSet[0], ZeCustomer::class.java)
+                            Timber.e("customer : ${gson.toJson(customer)}")
+                            if (customer != null) {
+                                prefs.setZeCustomer(customer)
                             }
                         }
 
@@ -92,8 +86,10 @@ class LoginRepo @Inject constructor(
     }
 
     suspend fun relate(): Flow<FlowResult> {
-        val customerId = prefs.getZeCustomerId()
-        val accessToken = prefs.getZeAccessToken()
+        val customer = prefs.getZeCustomer()
+        val customerId = customer?.id.toString()
+        val accessToken = customer?.access_token.toString()
+
         val response = apiService.relate("mooin", access_token = accessToken, customer_id = customerId)
 
         when (response) {
