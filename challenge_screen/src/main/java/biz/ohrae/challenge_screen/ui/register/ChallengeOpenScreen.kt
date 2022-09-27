@@ -127,7 +127,7 @@ fun ChallengeOpenScreen(
                 .fillMaxWidth()
                 .aspectRatio(6f),
             text = "다음",
-            onClick = { clickListener?.onClickOpenNext(day) }
+            onClick = { clickListener?.onClickOpenNext(startDay) }
         )
     }
 }
