@@ -1,10 +1,7 @@
 package biz.ohrae.challenge_repo.di
 
 import android.content.Context
-import biz.ohrae.challenge_repo.data.remote.ApiService
-import biz.ohrae.challenge_repo.data.remote.NetworkResponseAdapterFactory
-import biz.ohrae.challenge_repo.data.remote.RetrofitSender
-import biz.ohrae.challenge_repo.data.remote.Routes
+import biz.ohrae.challenge_repo.data.remote.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -54,5 +51,11 @@ object NetworkModule {
     @Singleton
     fun provideApiService(retrofit: Retrofit): ApiService {
         return retrofit.create(ApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideApiServiceForBase(retrofit: Retrofit): ApiServiceForBase {
+        return retrofit.create(ApiServiceForBase::class.java)
     }
 }

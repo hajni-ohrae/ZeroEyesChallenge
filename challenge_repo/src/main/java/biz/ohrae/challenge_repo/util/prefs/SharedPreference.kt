@@ -71,4 +71,29 @@ class SharedPreference @Inject constructor(@ApplicationContext context: Context,
             null
         }
     }
+
+    fun getUid(): String {
+        return getString("uid", "")
+    }
+
+    fun setUid(uid: String) {
+        setString("uid", uid)
+    }
+
+    fun setZeCustomerId(customerId: String) {
+        setString("zeCustomerId", customerId)
+    }
+
+    fun getZeCustomerId(): String {
+        return getString("zeCustomerId", "")
+    }
+
+    fun setZeAccessToken(accessToken: String) {
+        setString("zeAccessToken", accessToken)
+    }
+
+    fun getZeAccessToken(): String {
+        return getString("zeAccessToken", "")
+    }
+
 }
