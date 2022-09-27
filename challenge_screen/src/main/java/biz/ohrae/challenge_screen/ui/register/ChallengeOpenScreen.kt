@@ -127,7 +127,7 @@ fun ChallengeOpenScreen(
                 .fillMaxWidth()
                 .aspectRatio(6f),
             text = "다음",
-            onClick = { clickListener?.onClickOpenNext(startDay) }
+            onClick = { clickListener?.onClickOpenNext(startDay, "1주동안", "매일인증") }
         )
     }
 }
