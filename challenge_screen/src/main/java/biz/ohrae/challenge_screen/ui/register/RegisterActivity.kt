@@ -32,6 +32,11 @@ import timber.log.Timber
 
 @AndroidEntryPoint
 class RegisterActivity : AppCompatActivity() {
+    companion object {
+        const val AUTH: Int = 1
+        const val OPEN: Int = 2
+        const val CHALLENGER: Int = 3
+    }
     private lateinit var viewModel: ChallengeRegisterViewModel
 
     private lateinit var navController: NavHostController

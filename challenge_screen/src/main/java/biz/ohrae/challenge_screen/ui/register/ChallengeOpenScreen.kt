@@ -22,6 +22,8 @@ import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge_component.R
 import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.model.register.ChallengeOpenState
+import biz.ohrae.challenge_screen.ui.register.RegisterActivity.Companion.AUTH
+import biz.ohrae.challenge_screen.ui.register.RegisterActivity.Companion.OPEN
 
 
 @Preview(
@@ -125,7 +127,7 @@ fun ChallengeOpenScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(6f),
-            text = "다음(2/4)",
+            text = "다음(${OPEN}/4)",
             onClick = { clickListener?.onClickOpenNext(startDay, "1주동안", "매일인증") }
         )
     }

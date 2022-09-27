@@ -133,7 +133,7 @@ fun ChallengerRecruitment(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(6f),
-            text = "다음(3/4)",
+            text = "다음(${RegisterActivity.CHALLENGER}/4)",
             onClick = { clickListener?.onClickRecruitmentNext() }
         )
     }
