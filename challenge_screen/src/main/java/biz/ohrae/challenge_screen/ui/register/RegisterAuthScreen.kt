@@ -8,6 +8,10 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
+import androidx.compose.ui.Alignment.Companion.Start
+import androidx.compose.ui.Alignment.Companion.Top
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,30 +37,38 @@ fun RegisterAuthScreen(
     ) {
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(challengeOpenState.challengeRadioOptions[0].radioTitleEn) }
 
-    Column(modifier = Modifier.padding(24.dp, 0.dp)) {
-        Text(text = "챌린지 인증", style = myTypography.w700, fontSize = dpToSp(dp = 20.dp))
+    Column() {
         Spacer(modifier = Modifier.height(16.dp))
-        Column {
+        Text(
+            modifier = Modifier.padding(24.dp, 0.dp),
+            text = "챌린지 인증",
+            style = myTypography.w700,
+            fontSize = dpToSp(dp = 20.dp)
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Column(modifier = Modifier.padding(10.dp, 0.dp)) {
             challengeOpenState.challengeRadioOptions.forEach { radioOption ->
                 Row(
-                    Modifier
+                    modifier = Modifier
                         .fillMaxWidth()
                         .selectable(
                             selected = (radioOption.radioTitleEn == selectedOption),
                             onClick = {
                                 onOptionSelected(radioOption.radioTitleEn)
                                 clickListener?.onClickSelectedAuth(radioOption.radioTitleEn)
-                            }
-                        )
+                            }),
+                    verticalAlignment = CenterVertically
                 ) {
                     RadioButton(
+                        modifier = Modifier.size(20.dp).align(Top),
                         selected = (radioOption.radioTitleEn == selectedOption),
                         onClick = { onOptionSelected(radioOption.radioTitleEn) },
                         colors = RadioButtonDefaults.colors(
                             selectedColor = Color(0xff005bad),
                             unselectedColor = Color(0xffc7c7c7),
-                        )
+                        ),
                     )
+                    Spacer(modifier = Modifier.width(5.dp))
                     Column() {
                         Text(
                             text = radioOption.radioTitle,
@@ -72,7 +84,7 @@ fun RegisterAuthScreen(
                         Text(
                             text = radioOption.radioContent,
                             modifier = Modifier.fillMaxWidth(),
-                            style = myTypography.w700,
+                            style = myTypography.w500,
                             fontSize = dpToSp(dp = 12.dp),
                             color = Color(0xff6c6c6c)
                         )

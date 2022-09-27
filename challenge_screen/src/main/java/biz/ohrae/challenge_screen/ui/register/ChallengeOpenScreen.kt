@@ -54,7 +54,7 @@ fun ChallengeOpenScreen(
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = "인증은 24시간(1일) 이내에 한번만 가능합니다",
-            style = myTypography.w700,
+            style = myTypography.w500,
             fontSize = dpToSp(dp = 12.dp),
             color = Color(0xff005bad)
         )
@@ -68,7 +68,7 @@ fun ChallengeOpenScreen(
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = "인증을 시작할 날짜를 선택하세요",
-            style = myTypography.w700,
+            style = myTypography.w500,
             fontSize = dpToSp(dp = 14.dp),
             color = DefaultBlack
         )
@@ -87,7 +87,7 @@ fun ChallengeOpenScreen(
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = "인증할 주기와 횟수를 선택하세요",
-            style = myTypography.w700,
+            style = myTypography.w500,
             fontSize = dpToSp(dp = 14.dp),
             color = DefaultBlack
         )

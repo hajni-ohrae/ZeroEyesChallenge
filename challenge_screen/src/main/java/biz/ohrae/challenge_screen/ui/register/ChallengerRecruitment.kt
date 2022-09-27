@@ -50,14 +50,14 @@ fun ChallengerRecruitment(
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = "챌린지를 함께할 챌린저를 모집할 기간을 선택하세요",
-            style = myTypography.w700,
+            style = myTypography.w500,
             fontSize = dpToSp(dp = 12.dp),
             color = Color(0xff828282)
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = "챌린지 기간에는 챌린저 모집이 불가합니다",
-            style = myTypography.w700,
+            style = myTypography.w500,
             fontSize = dpToSp(dp = 12.dp),
             color = Color(0xff005bad)
         )
@@ -76,7 +76,7 @@ fun ChallengerRecruitment(
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = "챌린지 시작전 최대 14일동안 모집 가능합니다",
-            style = myTypography.w700,
+            style = myTypography.w500,
             fontSize = dpToSp(dp = 14.dp),
             color = DefaultBlack
         )
@@ -97,14 +97,14 @@ fun ChallengerRecruitment(
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = "성인이 아닌 회원에게는 챌린지가 노출되지 않습니다",
-            style = myTypography.w700,
+            style = myTypography.w500,
             fontSize = dpToSp(dp = 12.dp),
             color = Color(0xff828282)
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = "제한 나이 : 18세 미만",
-            style = myTypography.w700,
+            style = myTypography.w500,
             fontSize = dpToSp(dp = 12.dp),
             color = Color(0xff005bad)
         )
