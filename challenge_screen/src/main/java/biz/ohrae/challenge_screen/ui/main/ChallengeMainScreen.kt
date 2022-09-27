@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -49,12 +50,14 @@ fun ChallengeMainScreen(
     Spacer(modifier = Modifier.height(16.dp))
     Column(
         modifier = Modifier
+            .fillMaxWidth()
             .fillMaxSize(),
     ) {
-        Box(modifier = Modifier.fillMaxSize()) {
+        Box(modifier = Modifier.fillMaxSize().fillMaxWidth()) {
             LazyColumn(
                 modifier = Modifier
                     .padding(24.dp, 0.dp)
+                    .fillMaxWidth()
                     .fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
@@ -115,7 +118,6 @@ fun ItemHeader(
     clickListener: MainClickListener?,
     filterState: FilterState = FilterState.mock()
 ) {
-
     Column(Modifier.fillMaxWidth()) {
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
@@ -123,9 +125,7 @@ fun ItemHeader(
         ) {
             items(mainScreenState?.topBannerList!!) { item ->
                 MainTopCard(
-                    modifier = Modifier
-                        .fillParentMaxSize()
-                        .fillParentMaxWidth(),
+                    modifier = Modifier,
                     content = item.content
                 )
             }
@@ -138,25 +138,21 @@ fun ItemHeader(
             color = DefaultBlack
         )
         Spacer(modifier = Modifier.height(10.dp))
-        BoxWithConstraints {
 
-            LazyRow(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(24.dp),
-            ) {
-                item {
-                    ChallengesInParticipationCard(
-                        modifier = Modifier
-                            .fillParentMaxSize()
-                            .fillParentMaxWidth(),
-                        title = "매일 6시간씩 한국사 공부",
-                        1,
-                        30,
-                        "완료",
-                        Color(0xffdedede),
-                        Color(0xff6c6c6c)
-                    )
-                }
+        LazyRow(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(24.dp),
+        ) {
+            item {
+                ChallengesInParticipationCard(
+                    modifier = Modifier,
+                    title = "매일 6시간씩 한국사 공부",
+                    1,
+                    30,
+                    "완료",
+                    Color(0xffdedede),
+                    Color(0xff6c6c6c)
+                )
             }
         }
         FilterCard(clickListener = clickListener, filterState, filterState.selectFilterType)
