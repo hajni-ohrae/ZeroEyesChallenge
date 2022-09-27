@@ -37,16 +37,15 @@ fun RegisterAuthScreen(
     ) {
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(challengeOpenState.challengeRadioOptions[0].radioTitleEn) }
 
-    Column() {
+    Column(modifier = Modifier.padding(24.dp, 0.dp)) {
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            modifier = Modifier.padding(24.dp, 0.dp),
             text = "챌린지 인증",
             style = myTypography.w700,
             fontSize = dpToSp(dp = 20.dp)
         )
         Spacer(modifier = Modifier.height(16.dp))
-        Column(modifier = Modifier.padding(10.dp, 0.dp)) {
+        Column() {
             challengeOpenState.challengeRadioOptions.forEach { radioOption ->
                 Row(
                     modifier = Modifier
