@@ -54,6 +54,7 @@ fun ChallengerRecruitment(
             fontSize = dpToSp(dp = 12.dp),
             color = Color(0xff828282)
         )
+        Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = "챌린지 기간에는 챌린저 모집이 불가합니다",
             style = myTypography.w700,
@@ -100,6 +101,7 @@ fun ChallengerRecruitment(
             fontSize = dpToSp(dp = 12.dp),
             color = Color(0xff828282)
         )
+        Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = "제한 나이 : 18세 미만",
             style = myTypography.w700,
@@ -131,7 +133,7 @@ fun ChallengerRecruitment(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(6f),
-            text = "다음",
+            text = "다음(3/4)",
             onClick = { clickListener?.onClickRecruitmentNext() }
         )
     }

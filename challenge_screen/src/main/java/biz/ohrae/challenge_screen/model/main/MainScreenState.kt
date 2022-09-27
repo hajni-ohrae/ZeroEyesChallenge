@@ -37,7 +37,7 @@ data class TopBannerData(
 ) {
     companion object {
         fun mock() = TopBannerData(
-            content = "챌린지에 참여하면 더욱 재미있는\n공부 경험을 할 수 있습니다",
+            content = "챌린지 이렇게\n이용해보세요",
         )
     }
 }

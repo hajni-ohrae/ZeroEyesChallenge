@@ -32,34 +32,58 @@ private fun ChallengesInParticipationCardGallery() {
         modifier = Modifier
             .fillMaxWidth()
     ) {
-        ChallengesInParticipationCard(title = "매일 6시간씩 한국사 공부",1,30,"진행중",Color(0x335c94ff), Color(0xff5c94ff))
+        ChallengesInParticipationCard(
+            title = "매일 6시간씩 한국사 공부",
+            1,
+            30,
+            "진행중",
+            Color(0x335c94ff),
+            Color(0xff5c94ff)
+        )
         Spacer(modifier = Modifier.height(20.dp))
-        ChallengesInParticipationCard(title = "매일 6시간씩 한국사 공부",1,30,"모집중",Color(0xffebfaf1), Color(0xff219653))
+        ChallengesInParticipationCard(
+            title = "매일 6시간씩 한국사 공부",
+            1,
+            30,
+            "모집중",
+            Color(0xffebfaf1),
+            Color(0xff219653)
+        )
         Spacer(modifier = Modifier.height(20.dp))
-        ChallengesInParticipationCard(title = "매일 6시간씩 한국사 공부",1,30,"완료",Color(0xffdedede), Color(0xff6c6c6c))
+        ChallengesInParticipationCard(
+            title = "매일 6시간씩 한국사 공부",
+            1,
+            30,
+            "완료",
+            Color(0xffdedede),
+            Color(0xff6c6c6c)
+        )
     }
 }
 
 @Composable
 fun ChallengesInParticipationCard(
     title: String,
-    count:Int,
-    maxPeople:Int,
-    progressStatus:String,
-    background :Color,
+    count: Int,
+    maxPeople: Int,
+    progressStatus: String,
+    background: Color,
     textColor: Color
 ) {
     val achievementRate = (count.toDouble() / maxPeople.toDouble() * 100.0).roundToInt()
     Card(
         modifier = Modifier
-//            .aspectRatio(1f)
             .fillMaxWidth(),
         shape = RoundedCornerShape(10.dp),
         elevation = 0.dp,
         backgroundColor = DefaultWhite,
         border = BorderStroke(1.dp, Color(0xffebebeb))
     ) {
-        Column(modifier = Modifier.padding(20.dp, 0.dp,20.dp,20.dp)) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp, 0.dp, 20.dp, 20.dp)
+        ) {
             Row(
                 modifier = Modifier.padding(0.dp, 15.dp, 0.dp, 19.dp),
                 verticalAlignment = Alignment.CenterVertically
@@ -70,7 +94,6 @@ fun ChallengesInParticipationCard(
                     textColor = textColor
                 )
                 Spacer(modifier = Modifier.width(10.dp))
-
                 Text(
                     text = title,
                     style = myTypography.default,
@@ -84,7 +107,9 @@ fun ChallengesInParticipationCard(
                     .height(1.dp)
                     .background(Color(0xfffafafa))
             )
-            Row(modifier = Modifier.fillMaxWidth().padding(0.dp,16.dp),Arrangement.SpaceBetween) {
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .padding(0.dp, 16.dp), Arrangement.SpaceBetween) {
                 Text(
                     text = "인증현황",
                     style = myTypography.default,
@@ -101,7 +126,9 @@ fun ChallengesInParticipationCard(
 
             }
             FlatButton(
-                modifier = Modifier.fillMaxWidth().aspectRatio(6.5f),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(6.5f),
                 text = "인증하기",
                 backgroundColor = appColor.AlertSuccessColor
             )

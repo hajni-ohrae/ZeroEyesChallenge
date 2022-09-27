@@ -1,9 +1,7 @@
 package biz.ohrae.challenge.ui.components.card
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
@@ -31,12 +29,19 @@ private fun MainTopCardGallery() {
 @Composable
 fun MainTopCard(content: String) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(16f / 9F),
         shape = RoundedCornerShape(10.dp),
         backgroundColor = Color(0xffed5f2a)
-        ) {
-        Column(modifier = Modifier.padding(24.dp)) {
-            Text(text = content, style = myTypography.extraBold, fontSize = dpToSp(dp = 20.dp), color = DefaultWhite)
+    ) {
+        Column(modifier = Modifier.fillMaxSize().padding(24.dp)) {
+            Text(
+                text = content,
+                style = myTypography.extraBold,
+                fontSize = dpToSp(dp = 20.dp),
+                color = DefaultWhite
+            )
         }
     }
 }

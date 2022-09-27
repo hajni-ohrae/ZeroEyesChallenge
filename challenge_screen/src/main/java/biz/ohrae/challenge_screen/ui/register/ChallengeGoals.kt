@@ -50,13 +50,15 @@ fun ChallengeGoals(
                 fontSize = dpToSp(dp = 20.dp),
                 color = DefaultBlack
             )
+            Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = "달성하고자 하는 목표를 간단 명료하게 작성해주세요\n" +
                         "타인에게 불쾌감을 주는 단어나 이미지를 사용할 경우 계정이 \n" +
                         "영구정지 될 수 있습니다",
                 style = myTypography.w500,
                 fontSize = dpToSp(dp = 12.dp),
-                color = Color(0xff828282)
+                color = Color(0xff828282),
+                lineHeight = dpToSp(dp = 17.dp)
             )
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -105,12 +107,14 @@ fun ChallengeGoals(
                 fontSize = dpToSp(dp = 16.dp),
                 color = DefaultBlack
             )
+            Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "인증시 주의해야 할 사항이 있다면 작성해주세요",
                 style = myTypography.w500,
                 fontSize = dpToSp(dp = 12.dp),
                 color = Color(0xff828282)
             )
+            Spacer(modifier = Modifier.height(16.dp))
             TextBox(
                 modifier = Modifier
                     .fillMaxWidth()

@@ -108,7 +108,6 @@ fun ChallengeOpenScreen(
         )
 
         if (challengeAuth == 1) {
-
             MyDropDown(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -126,7 +125,7 @@ fun ChallengeOpenScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(6f),
-            text = "다음",
+            text = "다음(2/4)",
             onClick = { clickListener?.onClickOpenNext(startDay, "1주동안", "매일인증") }
         )
     }
