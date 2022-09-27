@@ -73,7 +73,7 @@ fun RegisterAuthScreen(
                         Text(
                             text = radioOption.radioTitle,
                             modifier = Modifier.fillMaxWidth(),
-                            style = myTypography.bold,
+                            style = if (radioOption.radioTitleEn == selectedOption) myTypography.bold else myTypography.w500,
                             fontSize = dpToSp(dp = 14.dp),
                             color = if (radioOption.radioTitleEn == selectedOption) DefaultBlack else Color(
                                 0xff6c6c6c
