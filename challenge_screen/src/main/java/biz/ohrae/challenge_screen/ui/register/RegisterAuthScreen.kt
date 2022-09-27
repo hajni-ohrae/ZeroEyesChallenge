@@ -41,7 +41,7 @@ fun RegisterAuthScreen(
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = "챌린지 인증",
-            style = myTypography.w700,
+            style = myTypography.w500,
             fontSize = dpToSp(dp = 20.dp)
         )
         Spacer(modifier = Modifier.height(16.dp))
