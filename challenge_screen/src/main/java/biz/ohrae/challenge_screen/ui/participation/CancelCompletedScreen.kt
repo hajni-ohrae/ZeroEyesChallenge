@@ -22,11 +22,11 @@ import biz.ohrae.challenge.ui.theme.myTypography
 @Composable
 fun CancelCompletedScreen(
 ) {
-    Column() {
-        Column(modifier = Modifier.padding(24.dp, 0.dp)) {
+    Column(modifier = Modifier.padding(24.dp, 0.dp)) {
+        Column() {
             Text(
                 text = "챌린지 참여금이 정상적으로 \n환불 요청 되었습니다",
-                style = myTypography.w700,
+                style = myTypography.w500,
                 fontSize = dpToSp(dp = 20.dp)
             )
             Spacer(modifier = Modifier.height(24.dp))
@@ -41,7 +41,7 @@ fun CancelCompletedScreen(
             ) {
                 Text(
                     text = "결제 수단",
-                    style = myTypography.w700,
+                    style = myTypography.w500,
                     fontSize = dpToSp(dp = 14.dp),
                     color = Color(0xff707070)
                 )
@@ -66,23 +66,26 @@ fun CancelCompletedScreen(
                 )
                 Text(
                     text = "원",
-                    style = myTypography.extraBold,
+                    style = myTypography.w500,
                     fontSize = dpToSp(dp = 14.dp),
                     color = Color(0xff4985f8)
                 )
             }
         }
+        Spacer(modifier = Modifier.height(16.dp))
         Divider(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(1.dp)
                 .background(Color(0xfffafafa))
         )
+        Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = "카드사 사정에 따라 환불 요청 후\n영업일 기준 최대 4-5일이 소요될 수 있습니다",
-            style = myTypography.w700,
+            style = myTypography.w500,
             fontSize = dpToSp(dp = 14.dp),
-            color = Color(0xff828282)
+            color = Color(0xff828282),
+            lineHeight = dpToSp(dp = 22.dp)
         )
     }
     Column(modifier = Modifier.fillMaxHeight(), Arrangement.Bottom) {
@@ -94,5 +97,4 @@ fun CancelCompletedScreen(
             rightText = "홈으로"
         )
     }
-
 }

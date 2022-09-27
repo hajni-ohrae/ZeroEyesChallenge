@@ -1,6 +1,7 @@
 package biz.ohrae.challenge_screen.ui.participation
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -26,11 +27,11 @@ import biz.ohrae.challenge_repo.model.detail.ChallengeData
 @Composable
 fun ParticipationCompletedScreen(
     challengeData: ChallengeData = ChallengeData.mock(),) {
-    Column() {
+    Column(Modifier.background(DefaultWhite)) {
         Column(modifier = Modifier.padding(24.dp, 0.dp)) {
             Text(
                 text = "챌린지 참여가 완료되었습니다",
-                style = myTypography.w700,
+                style = myTypography.w500,
                 fontSize = dpToSp(dp = 20.dp)
             )
             Spacer(modifier = Modifier.height(24.dp))
@@ -93,28 +94,29 @@ fun ParticipationCompletedScreen(
                         Text(text = "평균 참여금",style = myTypography.w500, fontSize = dpToSp(dp = 13.dp), color = Color(0xff4f4f4f))
                         Text(text = "${challengeData.start_date} ~ ${challengeData.end_date}",style = myTypography.w500, fontSize = dpToSp(dp = 13.dp))
                     }
-                    Spacer(modifier = Modifier.height(24.dp))
-                    Text(text = "결제내역", style = myTypography.bold, fontSize = dpToSp(dp = 18.dp))
-
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(text = "결제수단",style = myTypography.w500, fontSize = dpToSp(dp = 13.dp), color = Color(0xff4f4f4f))
-                        Text(text = "",style = myTypography.w500, fontSize = dpToSp(dp = 13.dp))
-                    }
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(text = "총 결제 금액",style = myTypography.w500, fontSize = dpToSp(dp = 13.dp), color = Color(0xff4f4f4f))
-                        Text(text = "원",style = myTypography.w500, fontSize = dpToSp(dp = 13.dp))
-                    }
                 }
+
+            }
+            Spacer(modifier = Modifier.height(24.dp))
+            Text(text = "결제내역", style = myTypography.bold, fontSize = dpToSp(dp = 18.dp))
+
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(text = "결제 수단",style = myTypography.w500, fontSize = dpToSp(dp = 13.dp), color = Color(0xff4f4f4f))
+                Text(text = "현대카드 (신용카드)",style = myTypography.w500, fontSize = dpToSp(dp = 13.dp))
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(text = "총 결제 금액",style = myTypography.w500, fontSize = dpToSp(dp = 13.dp), color = Color(0xff4f4f4f))
+                Text(text = "원",style = myTypography.bold, fontSize = dpToSp(dp = 13.dp), color = Color(0xff4985f8))
             }
         }
         Column(modifier = Modifier.fillMaxHeight(), Arrangement.Bottom) {

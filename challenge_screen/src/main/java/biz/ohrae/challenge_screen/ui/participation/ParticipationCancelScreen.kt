@@ -1,6 +1,7 @@
 package biz.ohrae.challenge_screen.ui.participation
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -13,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.ui.components.button.FlatBottomButton
 import biz.ohrae.challenge.ui.components.label.ChallengeDurationLabel2
+import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
@@ -28,15 +30,17 @@ fun ParticipationCancelScreen(
     challengeData: ChallengeData = ChallengeData.mock(),
 
     ) {
-    Column() {
-        Text(text = "챌린지 참여 취소하시겠습니까?", style = myTypography.w700, fontSize = dpToSp(dp = 20.dp))
+    Column(Modifier.background(DefaultWhite).padding(24.dp,0.dp)) {
+        Text(text = "챌린지 참여 취소하시겠습니까?", style = myTypography.w500, fontSize = dpToSp(dp = 20.dp))
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = "챌린지 참여를 취소하면 참여금이 환불되고 해당 챌린지에 참여할 수 없습니다",
-            style = myTypography.w700,
+            style = myTypography.w500,
             fontSize = dpToSp(dp = 16.dp),
-            color = Color(0xff828282)
+            color = Color(0xff828282),
+            lineHeight = dpToSp(dp = 22.dp)
         )
+        Spacer(modifier = Modifier.height(24.dp))
         Card(
             modifier = Modifier
                 .fillMaxWidth(),
