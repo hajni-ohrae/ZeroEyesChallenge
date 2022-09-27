@@ -89,7 +89,6 @@ fun ChallengeOpenScreen(
             fontSize = dpToSp(dp = 14.dp),
             color = DefaultBlack
         )
-
         MyDropDown(
             modifier = Modifier
                 .fillMaxWidth()
@@ -128,7 +127,7 @@ fun ChallengeOpenScreen(
                 .fillMaxWidth()
                 .aspectRatio(6f),
             text = "다음",
-            onClick = { clickListener?.onClickOpenNext(startDay, "1주동안", "매일인증") }
+            onClick = { clickListener?.onClickOpenNext(day) }
         )
     }
 }

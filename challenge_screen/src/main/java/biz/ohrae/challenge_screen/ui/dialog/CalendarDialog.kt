@@ -1,39 +1,16 @@
 package biz.ohrae.challenge_screen.ui.dialog
 
 
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.CalendarView
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Divider
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.fragment.app.DialogFragment
 import androidx.window.layout.WindowMetricsCalculator
-import biz.ohrae.challenge.ui.components.button.FlatDoubleButton
-import biz.ohrae.challenge.ui.components.filter.ChallengeFilterItem
-import biz.ohrae.challenge.ui.theme.DefaultBlack
-import biz.ohrae.challenge.ui.theme.DefaultWhite
-import biz.ohrae.challenge.ui.theme.dpToSp
-import biz.ohrae.challenge.ui.theme.myTypography
-import com.google.accompanist.flowlayout.MainAxisAlignment
-import java.util.*
 
 class CalendarDialog() :
     DialogFragment() {
