@@ -8,19 +8,25 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.model.filter.FilterItem
 import biz.ohrae.challenge.ui.components.card.ChallengeCardItem
+import biz.ohrae.challenge.ui.components.card.ChallengesInParticipationCard
 import biz.ohrae.challenge.ui.components.card.MainTopCard
 import biz.ohrae.challenge.ui.components.card.PaidFilterCard
 import biz.ohrae.challenge.ui.components.image.ImageBoxWithExampleTitle
+import biz.ohrae.challenge.ui.theme.DefaultBlack
 import biz.ohrae.challenge.ui.theme.DefaultWhite
+import biz.ohrae.challenge.ui.theme.dpToSp
+import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge.util.challengeVerificationPeriodMap
 import biz.ohrae.challenge_component.R
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
@@ -44,12 +50,14 @@ fun ChallengeMainScreen(
     Spacer(modifier = Modifier.height(16.dp))
     Column(
         modifier = Modifier
+            .fillMaxWidth()
             .fillMaxSize(),
     ) {
-        Box(modifier = Modifier.fillMaxSize()) {
+        Box(modifier = Modifier.fillMaxSize().fillMaxWidth()) {
             LazyColumn(
                 modifier = Modifier
                     .padding(24.dp, 0.dp)
+                    .fillMaxWidth()
                     .fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
@@ -110,15 +118,40 @@ fun ItemHeader(
     clickListener: MainClickListener?,
     filterState: FilterState = FilterState.mock()
 ) {
-
-    Column {
+    Column(Modifier.fillMaxWidth()) {
         LazyRow(
-            modifier = Modifier,
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(mainScreenState?.topBannerList!!) { item ->
                 MainTopCard(
+                    modifier = Modifier,
                     content = item.content
+                )
+            }
+        }
+        Spacer(modifier = Modifier.height(30.dp))
+        Text(
+            text = "참여중인 챌린지",
+            style = myTypography.bold,
+            fontSize = dpToSp(dp = 16.dp),
+            color = DefaultBlack
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+
+        LazyRow(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(24.dp),
+        ) {
+            item {
+                ChallengesInParticipationCard(
+                    modifier = Modifier,
+                    title = "매일 6시간씩 한국사 공부",
+                    1,
+                    30,
+                    "완료",
+                    Color(0xffdedede),
+                    Color(0xff6c6c6c)
                 )
             }
         }

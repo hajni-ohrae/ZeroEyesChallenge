@@ -17,6 +17,7 @@ import biz.ohrae.challenge.ui.components.button.FlatBottomButton
 import biz.ohrae.challenge.ui.theme.DefaultBlack
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
+import biz.ohrae.challenge_screen.ui.register.RegisterActivity.Companion.AUTH
 
 
 @Preview(
@@ -89,7 +90,7 @@ fun RegisterAuthScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(6f),
-            text = "다음",
+            text = "다음(${AUTH}/4)",
             onClick = { clickListener?.onClickAuthNext(selectedOption) }
         )
     }
