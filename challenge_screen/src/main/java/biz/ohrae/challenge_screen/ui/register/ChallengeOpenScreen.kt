@@ -78,7 +78,7 @@ fun ChallengeOpenScreen(
         ChallengeCalendarCard(
             Utils.convertDate7(startDay),
             R.drawable.calander,
-            onClick = { })
+            onClick = { clickListener?.onClickCalendar() })
         Spacer(modifier = Modifier.height(28.dp))
         Text(
             text = "인증 빈도",

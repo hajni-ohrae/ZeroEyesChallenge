@@ -6,11 +6,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.fragment.app.DialogFragment
 import androidx.window.layout.WindowMetricsCalculator
+import biz.ohrae.challenge.ui.theme.DefaultWhite
+import com.himanshoe.kalendar.common.KalendarKonfig
+import com.himanshoe.kalendar.common.KalendarSelector
+import com.himanshoe.kalendar.common.KalendarStyle
+import com.himanshoe.kalendar.ui.Kalendar
+import com.himanshoe.kalendar.ui.KalendarType
+import java.time.LocalDate
+import java.util.*
 
 class CalendarDialog() :
     DialogFragment() {
@@ -80,6 +94,19 @@ fun CalendarDialog(
     positiveBtnName: String = "확인",
     negativeBtnName: String = "취소",
 ) {
+    Column() {
+        Text(text = "닫기")
+        Kalendar(
+            kalendarType = KalendarType.Firey(),
+            kalendarKonfig = KalendarKonfig(weekCharacters = 1, locale = Locale.KOREA),
+            onCurrentDayClick = { day, event ->
+                //handle the date click listener
+            },
+            errorMessage = {
+                //Handle the error if any
+            }, kalendarStyle = KalendarStyle(kalendarSelector = KalendarSelector.Circle())
+        )
 
+    }
 }
 

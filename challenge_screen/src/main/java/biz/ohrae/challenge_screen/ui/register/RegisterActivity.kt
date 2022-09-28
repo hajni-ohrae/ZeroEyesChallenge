@@ -26,6 +26,10 @@ import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
+import biz.ohrae.challenge_screen.ui.dialog.CalendarDialog
+import biz.ohrae.challenge_screen.ui.dialog.CustomDialogListener
+import biz.ohrae.challenge_screen.ui.dialog.FilterDialog
+import biz.ohrae.challenge_screen.ui.dialog.FilterDialogListener
 import biz.ohrae.challenge_screen.ui.main.MainActivity
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -216,7 +220,18 @@ class RegisterActivity : AppCompatActivity() {
             }
 
             override fun onClickCalendar() {
+                val dialog = CalendarDialog()
+                dialog.setListener(object : CustomDialogListener {
+                    override fun clickPositive() {
+                        dialog.dismiss()
+                    }
 
+                    override fun clickNegative() {
+                        dialog.dismiss()
+                    }
+                })
+                dialog.isCancelable = false
+                dialog.show(supportFragmentManager, "FilterDialog")
             }
         }
 

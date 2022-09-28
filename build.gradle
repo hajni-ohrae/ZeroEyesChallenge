@@ -105,7 +105,7 @@ buildscript {
         glideCompiler = 'com.github.bumptech.glide:compiler:4.13.0'
 
         /** kalendar **/
-        kalendar = 'com.himanshoe:kalendar:1.1.0'
+        kalendar = 'com.himanshoe:kalendar:1.0.0-RC5'
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.2.2'
