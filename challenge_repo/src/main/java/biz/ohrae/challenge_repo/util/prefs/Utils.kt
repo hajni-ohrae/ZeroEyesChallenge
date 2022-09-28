@@ -388,11 +388,25 @@ object Utils {
         }
     }
 
+    fun addDays(timeFormat: String, days: Int): String? {
+        val calendarText = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
+        val date = calendarText.parse(timeFormat)
+
+        if (date != null) {
+            val calendar = Calendar.getInstance()
+            calendar.time = date
+            calendar.add(Calendar.DAY_OF_MONTH, days)
+            return calendarText.format(calendar.time)
+        } else {
+            return null
+        }
+    }
+
     fun getDefaultChallengeDate(): String {
         var date = Date()
         val calendar = Calendar.getInstance()
         calendar.time = date
-        calendar.add(Calendar.WEEK_OF_MONTH, 1)
+        calendar.add(Calendar.DAY_OF_MONTH, 2)
         date = calendar.time
 
         val calendarText = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)

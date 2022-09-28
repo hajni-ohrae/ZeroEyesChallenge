@@ -75,7 +75,7 @@ class ChallengeRegisterViewModel @Inject constructor(
         viewModelScope.launch {
             val state = _challengeData.value?.copy()
             state?.let {
-                val applyStartDate = Utils.addWeeks(startDay, -1)
+                val applyStartDate = Utils.addDays(startDay, -2)
 
                 it.start_date = startDay
                 it.per_week = perWeek.toInt()

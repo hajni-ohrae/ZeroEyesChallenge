@@ -1,6 +1,7 @@
 package biz.ohrae.challenge_repo.data.remote
 
 import com.google.gson.JsonObject
+import okhttp3.MultipartBody
 import retrofit2.http.*
 
 interface ApiService {
@@ -108,4 +109,7 @@ interface ApiService {
 
     @POST(Routes.CREATE_REPORT)
     suspend fun createReport(@Body body: JsonObject?): NetworkResponse<Result, Error>
+
+    @POST(Routes.CHALLENGE_UPLOAD_IMAGE)
+    suspend fun uploadChallengeImage(@Part body: MultipartBody.Part): NetworkResponse<Result, Error>
 }

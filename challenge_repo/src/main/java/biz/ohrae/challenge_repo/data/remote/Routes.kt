@@ -49,4 +49,7 @@ object Routes {
     const val REGISTER_REPORT = "${CHALLENGE}/api/verification/report/register/code"
     // 신고
     const val CREATE_REPORT = "${CHALLENGE}/api/verification/report/create"
+
+    // 이미지 업로드
+    const val CHALLENGE_UPLOAD_IMAGE = "${CHALLENGE}/api/challenge/upload/image/{challenge_id}"
 }
