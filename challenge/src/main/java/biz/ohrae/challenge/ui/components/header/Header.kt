@@ -31,12 +31,16 @@ import biz.ohrae.challenge_component.R
 private fun HeaderGallery() {
     Column {
         Header()
-        Spacer(modifier = Modifier.height(30.dp))
+        Spacer(modifier = Modifier.height(10.dp))
         BackButton()
-        Spacer(modifier = Modifier.height(30.dp))
+        Spacer(modifier = Modifier.height(10.dp))
         BackButton(isDark = true)
-        Spacer(modifier = Modifier.height(30.dp))
+        Spacer(modifier = Modifier.height(10.dp))
         BackButton(isShare = true)
+        Spacer(modifier = Modifier.height(10.dp))
+        BackButton(title = "챌린지 신청")
+        Spacer(modifier = Modifier.height(10.dp))
+        BackButton(title = "챌린지 신청", isShare = true)
     }
 }
 
@@ -114,6 +118,18 @@ fun BackButton(
                 text = title,
                 textAlign = TextAlign.Center
             )
+            if (!isShare) {
+                IconButton(
+                    modifier = Modifier,
+                    onClick = {}
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.icon_back),
+                        contentDescription = "icon_back",
+                        tint = if (isDark) TextBlack else DefaultWhite,
+                    )
+                }
+            }
         }
         if (isShare) {
             IconButton(
