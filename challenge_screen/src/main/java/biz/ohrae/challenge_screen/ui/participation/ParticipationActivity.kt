@@ -2,7 +2,6 @@ package biz.ohrae.challenge_screen.ui.participation
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,11 +17,12 @@ import androidx.navigation.compose.rememberNavController
 import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge.ui.theme.DefaultWhite
+import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ParticipationActivity : AppCompatActivity() {
+class ParticipationActivity : BaseActivity() {
     private var challengeId: String? = null
     private lateinit var detailViewModel: ChallengeDetailViewModel
     private lateinit var viewModel: ParticipationViewModel
@@ -46,6 +46,7 @@ class ParticipationActivity : AppCompatActivity() {
         challengeId = intent.getStringExtra("challengeId")
 
         initClickListeners()
+        observeViewModels()
     }
 
     override fun onResume() {
@@ -103,7 +104,7 @@ class ParticipationActivity : AppCompatActivity() {
         detailViewModel.getChallenge(challengeId.toString())
     }
 
-    private fun initClickListeners() {
+    override fun initClickListeners() {
         clickListener = object : ParticipationClickListener {
             override fun onClickPayment() {
 //                navController.navigate(ChallengeParticipationNavScreen.ParticipationPayment.route)
@@ -115,6 +116,17 @@ class ParticipationActivity : AppCompatActivity() {
             }
 
             override fun onClickCancelParticipation() {
+            }
+        }
+    }
+
+    override fun observeViewModels() {
+        viewModel.registerResult.observe(this) { result ->
+            result.data?.let {
+                finish()
+            } ?: run {
+                val message = "code : ${result.errorCode}, message : ${result.errorMessage}"
+                showSnackBar(message)
             }
         }
     }

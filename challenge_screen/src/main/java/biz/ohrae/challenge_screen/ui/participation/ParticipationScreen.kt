@@ -58,12 +58,17 @@ fun ParticipationScreen(
     )
     var participationAmount by remember { mutableStateOf("") }
     var rewards by remember { mutableStateOf("") }
-    var availableRewards = 3000
+    val availableRewards by remember {
+        mutableStateOf(challengeData.user?.rewards_amount ?: 0)
+    }
+    var totalAmount by remember { mutableStateOf(0) }
 
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .verticalScroll(scrollState)
-        .background(DefaultWhite)) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(scrollState)
+            .background(DefaultWhite)
+    ) {
         Column(
             modifier = Modifier
                 .padding(24.dp, 0.dp)
@@ -97,7 +102,9 @@ fun ParticipationScreen(
                 singleLine = true,
                 value = participationAmount,
                 onValueChange = {
-                    participationAmount = it
+                    val price = numberToString(it)
+                    participationAmount = price
+                    totalAmount = calculateTotalAmount(participationAmount, rewards)
                 },
             )
             Spacer(modifier = Modifier.height(12.dp))
@@ -126,9 +133,17 @@ fun ParticipationScreen(
                     labelStyle = myTypography.w700,
                     onClick = {
                         checked = !checked
+                        if (checked) {
+                            rewards = (challengeData.user?.rewards_amount ?: 0).toString()
+                            totalAmount = calculateTotalAmount(participationAmount, rewards)
+                        }
                     },
                     onCheckedChange = {
                         checked = !checked
+                        if (checked) {
+                            rewards = (challengeData.user?.rewards_amount ?: 0).toString()
+                            totalAmount = calculateTotalAmount(participationAmount, rewards)
+                        }
                     },
                     checked = checked,
                 )
@@ -150,7 +165,8 @@ fun ParticipationScreen(
                 singleLine = true,
                 value = rewards,
                 onValueChange = {
-                    rewards = it
+                    rewards = numberToString(it)
+                    totalAmount = calculateTotalAmount(participationAmount, rewards)
                 }
             )
             Spacer(modifier = Modifier.height(12.dp))
@@ -164,7 +180,11 @@ fun ParticipationScreen(
                     fontSize = dpToSp(dp = 14.dp),
                     color = Color(0xff6c6c6c)
                 )
-                Text(text = "${availableRewards}원", style = myTypography.bold, fontSize = dpToSp(dp = 14.dp))
+                Text(
+                    text = "${numberToString(availableRewards.toString())}원",
+                    style = myTypography.bold,
+                    fontSize = dpToSp(dp = 14.dp)
+                )
             }
             Spacer(modifier = Modifier.height(24.dp))
             Divider(
@@ -180,7 +200,7 @@ fun ParticipationScreen(
             ) {
                 Text(text = "최종 결제 금액", style = myTypography.bold, fontSize = dpToSp(dp = 16.dp))
                 Text(
-                    text = "3,000원",
+                    text = "${Utils.numberFormat(totalAmount)}원",
                     style = myTypography.bold,
                     fontSize = dpToSp(dp = 18.dp),
                     color = Color(0xff4985f8)
@@ -189,7 +209,9 @@ fun ParticipationScreen(
             Spacer(modifier = Modifier.height(24.dp))
             Text(text = "결제 수단")
             MyDropDown(
-                modifier = Modifier.fillMaxWidth().aspectRatio(7.1f),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(7.1f),
                 label = "", list = list
             )
             Spacer(modifier = Modifier.height(185.dp))
@@ -331,7 +353,11 @@ private fun DurationLabel(challengeData: ChallengeData) {
     val day by remember { mutableStateOf(Utils.getRemainTimeDays(challengeData.start_date.toString())) }
     val dayType by remember { mutableStateOf(challengeVerificationPeriodMap[challengeData.verification_period_type]) }
 
-    ChallengeDurationLabel2(dDay = day, week = "${challengeData.period}주동안", numberOfTimes = dayType.toString())
+    ChallengeDurationLabel2(
+        dDay = day,
+        week = "${challengeData.period}주동안",
+        numberOfTimes = dayType.toString()
+    )
 }
 
 private fun Long?.formatWithComma(): String =
@@ -340,11 +366,43 @@ private fun Long?.formatWithComma(): String =
 private fun getAuthText(challengeData: ChallengeData): String {
     return if (challengeData.is_verification_photo == 1) {
         "사진 인증"
-    } else if(challengeData.is_verification_time == 1) {
+    } else if (challengeData.is_verification_time == 1) {
         "이용시간 인증"
-    } else if(challengeData.is_verification_checkin == 1) {
+    } else if (challengeData.is_verification_checkin == 1) {
         "이용권 인증"
     } else {
         "기타 인증"
     }
+}
+
+private fun numberToString(text: String): String {
+    return if (text.isEmpty()) {
+        text
+    } else {
+        val price = text.replace("[^\\d]".toRegex(), "")
+        if (price.isEmpty()) {
+            price
+        } else {
+            Utils.numberFormat(price.toInt())
+        }
+    }
+}
+
+private fun calculateTotalAmount(priceText: String, rewardsText: String): Int {
+    val price = priceText.replace("[^\\d]".toRegex(), "")
+    val rewards = rewardsText.replace("[^\\d]".toRegex(), "")
+
+    val priceNumber = if (price.isEmpty()) {
+        0
+    } else {
+        price.toInt()
+    }
+
+    val rewardsNumber = if (rewards.isEmpty()) {
+        0
+    } else {
+        rewards.toInt()
+    }
+
+    return priceNumber - rewardsNumber
 }

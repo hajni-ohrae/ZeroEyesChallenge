@@ -113,7 +113,11 @@ object Utils {
     }
     
     fun numberFormat(price: Int): String {
-        return DecimalFormat("###,###").format(price)
+        try {
+            return DecimalFormat("###,###").format(price)
+        } catch (ignore: Exception) {
+            return price.toString()
+        }
     }
 
     fun convertDate(dateStr: String): String {

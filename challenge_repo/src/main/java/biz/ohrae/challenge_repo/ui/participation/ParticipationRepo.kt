@@ -31,14 +31,14 @@ class ParticipationRepo @Inject constructor(
         when (response) {
             is NetworkResponse.Success -> {
                 return if (response.body.success) {
-                    val challengeData =
+                    val resultChallengeData =
                         gson.fromJson(response.body.dataset, ChallengeData::class.java)
                     flow {
-                        emit(FlowResult(challengeData, "", ""))
+                        emit(FlowResult(resultChallengeData, "", ""))
                     }
                 } else {
                     flow {
-                        emit(FlowResult(null, "", ""))
+                        emit(FlowResult(null, response.body.code, response.body.message))
                     }
                 }
             }
