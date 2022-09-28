@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,7 +34,7 @@ import com.google.accompanist.flowlayout.MainAxisAlignment
 
 class FilterDialog() :
     DialogFragment() {
-    private lateinit var customDialogListener: CustomDialogListener
+    private lateinit var filterDialogListener: FilterDialogListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +48,9 @@ class FilterDialog() :
         return ComposeView(requireContext()).apply {
             setContent {
                 Filter(
+                    listener = filterDialogListener,
+                    "초기화",
+                    "100개 챌린지 보기"
                 )
             }
         }
@@ -84,8 +88,8 @@ class FilterDialog() :
                     or View.SYSTEM_UI_FLAG_FULLSCREEN)
     }
 
-    fun setListener(listener: CustomDialogListener) {
-        this.customDialogListener = listener
+    fun setListener(listener: FilterDialogListener) {
+        this.filterDialogListener = listener
     }
 }
 
@@ -95,7 +99,7 @@ class FilterDialog() :
 )
 @Composable
 fun Filter(
-    listener: CustomDialogListener? = null,
+    listener: FilterDialogListener? = null,
     positiveBtnName: String = "확인",
     negativeBtnName: String = "취소",
 ) {
@@ -104,7 +108,7 @@ fun Filter(
     val etcList = listOf("18세 미만 참여불가")
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(10.dp),
+        shape = RectangleShape,
         backgroundColor = DefaultWhite
     ) {
         Column(
@@ -128,7 +132,7 @@ fun Filter(
                         fontSize = dpToSp(dp = 20.dp),
                         color = DefaultBlack
                     )
-                    TextButton(onClick = { /*TODO*/ }) {
+                    TextButton(onClick = { listener?.clickInitialization() }) {
                         Text(
                             text = "취소",
                             color = Color(0xff747474),

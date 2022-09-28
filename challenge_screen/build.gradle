@@ -137,6 +137,9 @@ dependencies {
     implementation glideAnnotations
     kapt glideCompiler
 
+    // kalendar
+    implementation kalendar
+
     implementation project(':challenge')
     implementation project(':challenge_repo')
 }

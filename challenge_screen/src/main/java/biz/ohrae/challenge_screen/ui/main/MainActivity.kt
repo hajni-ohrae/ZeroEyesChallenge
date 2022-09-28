@@ -16,6 +16,7 @@ import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailActivity
 import biz.ohrae.challenge_screen.ui.dialog.CustomDialogListener
 import biz.ohrae.challenge_screen.ui.dialog.FilterDialog
+import biz.ohrae.challenge_screen.ui.dialog.FilterDialogListener
 import biz.ohrae.challenge_screen.ui.login.LoginActivity
 import biz.ohrae.challenge_screen.ui.mychallenge.MyChallengeActivity
 import biz.ohrae.challenge_screen.ui.register.RegisterActivity
@@ -85,12 +86,16 @@ class MainActivity : AppCompatActivity() {
             override fun onClickFilterType(filterType: String) {
                 if (filterType == "filter") {
                     val dialog = FilterDialog()
-                    dialog.setListener(object : CustomDialogListener {
+                    dialog.setListener(object : FilterDialogListener {
                         override fun clickPositive() {
                             dialog.dismiss()
                         }
 
                         override fun clickNegative() {
+                            dialog.dismiss()
+                        }
+
+                        override fun clickInitialization() {
                             dialog.dismiss()
                         }
                     })
