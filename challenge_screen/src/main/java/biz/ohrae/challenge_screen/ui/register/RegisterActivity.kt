@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -143,6 +144,7 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun initClickListener() {
         registerClickListener = object : RegisterClickListener {
+
             override fun onClickAuthNext(auth: String) {
                 viewModel.selectAuth(auth)
                 navController.navigate(ChallengeRegisterNavScreen.ChallengeOpen.route)
@@ -214,7 +216,7 @@ class RegisterActivity : AppCompatActivity() {
             }
 
             override fun onClickCalendar() {
-                TODO("Not yet implemented")
+
             }
         }
 

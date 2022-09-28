@@ -93,7 +93,7 @@ class ChallengeRegisterViewModel @Inject constructor(
             val state = _challengeData.value?.copy()
             state?.let {
                 it.goal = goal
-                it.subject = precautions
+                it.caution = precautions
                 it.image_path = imgUrl
 
                 _challengeData.value = it

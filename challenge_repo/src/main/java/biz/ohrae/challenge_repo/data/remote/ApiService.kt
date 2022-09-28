@@ -33,7 +33,7 @@ interface ApiService {
     ): NetworkResponse<Result2, Error>
 
     @POST(Routes.CREATE_CHALLENGE)
-    suspend fun createChallenge(@Body body: JsonObject?): NetworkResponse<Result, Error>
+    suspend fun createChallenge(@Body body: JsonObject?): NetworkResponse<Result2, Error>
 
     @POST(Routes.REGISTER_CHALLENGE)
     suspend fun registerChallenge(

@@ -28,7 +28,7 @@ data class ChallengeData(
     var per_week: Int = 0,
     var image_path: String,
     val status: String,
-    val caution: String? = null,
+    var caution: String? = null,
     val created_date: String,
     val inChallenge: List<Any>?,
     val total_verification_cnt: Int,
@@ -36,7 +36,8 @@ data class ChallengeData(
     val verification_daily_staying_time: Int,
     val remaining_time: String? = null,
     val user: User? = null,
-    val summary:Summary? = null
+    val summary:Summary? = null,
+
 ) {
     companion object {
         fun mock(id: String = "2d4033ab-244b-47f3-84e9-6af72be39d9f") = ChallengeData(

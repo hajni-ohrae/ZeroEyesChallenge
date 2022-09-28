@@ -22,8 +22,10 @@ import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge_component.R
 import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.model.register.ChallengeOpenState
-import biz.ohrae.challenge_screen.ui.register.RegisterActivity.Companion.AUTH
 import biz.ohrae.challenge_screen.ui.register.RegisterActivity.Companion.OPEN
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 @Preview(
@@ -76,7 +78,7 @@ fun ChallengeOpenScreen(
         ChallengeCalendarCard(
             Utils.convertDate7(startDay),
             R.drawable.calander,
-            onClick = { clickListener?.onClickCalendar() })
+            onClick = { })
         Spacer(modifier = Modifier.height(28.dp))
         Text(
             text = "인증 빈도",
@@ -119,7 +121,13 @@ fun ChallengeOpenScreen(
             )
         }
         Spacer(modifier = Modifier.height(28.dp))
-        ChallengeStartEndDateCard("챌린지 종료일")
+        val cal = Calendar.getInstance()
+        val df: DateFormat = SimpleDateFormat("yyyy-MM-dd")
+        val date:Date = df.parse(startDay)
+        cal.time = date
+        cal.add(Calendar.DATE, (7*1))
+        val outputFormat = SimpleDateFormat("yyyy.MM.dd E요일", Locale.KOREA)
+        ChallengeStartEndDateCard("챌린지 종료일",outputFormat.format(cal.time))
     }
     Column(modifier = Modifier.fillMaxHeight(), Arrangement.Bottom) {
 

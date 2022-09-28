@@ -8,6 +8,7 @@ import androidx.compose.ui.graphics.Color
 import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
+import java.text.DateFormat
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -31,16 +32,22 @@ object Utils {
 
     fun generatePhoneNumber(phoneNumber: String): String {
         var result = ""
-        if(phoneNumber.length >= 4) {
+        if (phoneNumber.length >= 4) {
             when {
                 phoneNumber.length in 4..6 -> {
                     result = phoneNumber.substring(0, 3) + "-" + phoneNumber.substring(3)
                 }
                 phoneNumber.length in 7..10 -> {
-                    result = phoneNumber.substring(0, 3) + "-" + phoneNumber.substring(3, 6) + "-" + phoneNumber.substring(6)
+                    result = phoneNumber.substring(0, 3) + "-" + phoneNumber.substring(
+                        3,
+                        6
+                    ) + "-" + phoneNumber.substring(6)
                 }
                 phoneNumber.length >= 11 -> {
-                    result = phoneNumber.substring(0, 3) + "-" + phoneNumber.substring(3, 7) + "-" + phoneNumber.substring(7)
+                    result = phoneNumber.substring(0, 3) + "-" + phoneNumber.substring(
+                        3,
+                        7
+                    ) + "-" + phoneNumber.substring(7)
                 }
             }
         } else {
@@ -51,13 +58,16 @@ object Utils {
 
     fun generateBirthDate(phoneNumber: String): String {
         var result = ""
-        if(phoneNumber.length >= 5) {
+        if (phoneNumber.length >= 5) {
             when {
                 phoneNumber.length in 4..6 -> {
                     result = phoneNumber.substring(0, 4) + "-" + phoneNumber.substring(4)
                 }
                 phoneNumber.length >= 7 -> {
-                    result = phoneNumber.substring(0, 4) + "-" + phoneNumber.substring(4, 6) + "-" + phoneNumber.substring(6)
+                    result = phoneNumber.substring(0, 4) + "-" + phoneNumber.substring(
+                        4,
+                        6
+                    ) + "-" + phoneNumber.substring(6)
                 }
             }
         } else {
@@ -71,7 +81,7 @@ object Utils {
             seconds.toString()
         } else {
             val timeFormat = DateUtils.formatElapsedTime(seconds.toLong())
-            if(timeFormat.length == 7) {
+            if (timeFormat.length == 7) {
                 "0$timeFormat"
             } else {
                 timeFormat
@@ -81,7 +91,7 @@ object Utils {
 
     fun convertSecToString2(seconds: Int): String {
         val timeFormat = DateUtils.formatElapsedTime(seconds.toLong())
-        return if(timeFormat.length == 7) {
+        return if (timeFormat.length == 7) {
             "0$timeFormat"
         } else {
             timeFormat
@@ -111,7 +121,7 @@ object Utils {
         }
         return result.trim { it <= ' ' }
     }
-    
+
     fun numberFormat(price: Int): String {
         try {
             return DecimalFormat("###,###").format(price)
@@ -206,6 +216,21 @@ object Utils {
         }
     }
 
+    fun endDateCalculation(startDate: String, week: Int): String {
+        return try {
+            val cal = Calendar.getInstance()
+            val df: DateFormat = SimpleDateFormat("yyyy-MM-dd")
+            val date: Date = df.parse(startDate)
+            cal.time = date
+            cal.add(Calendar.DATE, week * 7)
+            val outputFormat = SimpleDateFormat("yyyy.MM.dd E요일", Locale.KOREA)
+            outputFormat.timeZone = TimeZone.getTimeZone("Asia/Seoul")
+            outputFormat.format(cal!!)
+        } catch (ignore: Exception) {
+            startDate
+        }
+    }
+
     fun minutesToString(min: Int): String {
         val days = min / (24 * 60)
         val hours = min % (24 * 60) / 60
@@ -237,7 +262,7 @@ object Utils {
     }
 
     fun sdf(): SimpleDateFormat {
-        if(sdf == null) {
+        if (sdf == null) {
             sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
             sdf?.timeZone = TimeZone.getTimeZone("Asia/Seoul")
         }
@@ -245,7 +270,7 @@ object Utils {
     }
 
     fun sdf2(): SimpleDateFormat {
-        if(sdf2 == null) {
+        if (sdf2 == null) {
             sdf2 = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA)
             sdf2?.timeZone = TimeZone.getTimeZone("Asia/Seoul")
         }
@@ -253,7 +278,7 @@ object Utils {
     }
 
     fun sdfDiffDay(): SimpleDateFormat? {
-        if(sdfDiffDay == null) {
+        if (sdfDiffDay == null) {
             sdfDiffDay = SimpleDateFormat("yy.MM.dd HH:mm", Locale.KOREA)
             sdfDiffDay?.timeZone = TimeZone.getTimeZone("Asia/Seoul")
         }
@@ -261,7 +286,7 @@ object Utils {
     }
 
     fun sdfSameDay(): SimpleDateFormat? {
-        if(sdfSameDay == null) {
+        if (sdfSameDay == null) {
             sdfSameDay = SimpleDateFormat("HH:mm", Locale.KOREA)
             sdfSameDay?.timeZone = TimeZone.getTimeZone("Asia/Seoul")
         }
@@ -283,7 +308,7 @@ object Utils {
     }
 
     fun getEndIndexForPager(startIndex: Int, itemCount: Int, listSize: Int): Int {
-        return if(startIndex + itemCount >= listSize) {
+        return if (startIndex + itemCount >= listSize) {
             listSize
         } else {
             startIndex + itemCount
@@ -299,7 +324,7 @@ object Utils {
         }
     }
 
-    fun timeDaysToMinutes(timeDays :Float): Int {
+    fun timeDaysToMinutes(timeDays: Float): Int {
         val hour = timeDays.toInt()
         val minute = (60.0 * (timeDays - hour)).toInt()
 
