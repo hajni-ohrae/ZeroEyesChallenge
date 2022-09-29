@@ -96,8 +96,8 @@ class ChallengeRegisterViewModel @Inject constructor(
             state?.let {
                 val applyStartDate = Utils.addDays(it.start_date.toString(), -2)
 
-                it.per_week = perWeek.toInt()
-                it.verification_period_type = verificationPeriodType
+//                it.per_week = perWeek.toInt()
+//                it.verification_period_type = verificationPeriodType
                 it.apply_start_date = applyStartDate
 
                 val remainDays = Utils.getDifferenceDays(
@@ -150,7 +150,12 @@ class ChallengeRegisterViewModel @Inject constructor(
     fun selectPeriodType(item: String) {
         val state = _challengeData.value?.copy()
         state?.let {
-            it.verification_period_type = item
+            if (item.length == 1){
+                it.verification_period_type = "per_week"
+                it.per_week == item.toInt()
+            } else {
+                it.verification_period_type = item
+            }
             _challengeData.value = it
         }
     }
