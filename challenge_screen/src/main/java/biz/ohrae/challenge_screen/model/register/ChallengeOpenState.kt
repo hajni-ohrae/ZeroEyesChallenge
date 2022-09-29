@@ -3,7 +3,7 @@ package biz.ohrae.challenge_screen.model.register
 import biz.ohrae.challenge.ui.components.dropdown.DropDownItem
 
 data class ChallengeOpenState(
-    val authCycleList: List<DropDownItem>,
+    var authCycleList: List<DropDownItem>,
     val authFrequencyList: List<DropDownItem>,
     val challengeRadioOptions: List<RadioOptions>,
 ) {

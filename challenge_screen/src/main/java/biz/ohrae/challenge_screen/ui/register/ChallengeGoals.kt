@@ -6,6 +6,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -69,7 +70,6 @@ fun ChallengeGoals(
                 color = DefaultBlack
             )
             Spacer(modifier = Modifier.height(16.dp))
-
             TextBox(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -80,7 +80,7 @@ fun ChallengeGoals(
                 value = authTitle,
                 onValueChange = {
                     authTitle = it
-                }
+                },
             )
             Spacer(modifier = Modifier.height(28.dp))
             Text(
@@ -125,7 +125,7 @@ fun ChallengeGoals(
                         "- 손은 어떤 제스처든 모두 가능해요",
                 maxLength = 1000,
                 value = precautions,
-                onValueChange = { precautions = it }
+                onValueChange = { precautions = it },
             )
         }
         Spacer(modifier = Modifier.height(53.dp))

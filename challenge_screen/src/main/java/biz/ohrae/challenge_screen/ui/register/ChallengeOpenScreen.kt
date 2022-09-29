@@ -4,9 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,12 +17,10 @@ import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge_component.R
+import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.model.register.ChallengeOpenState
 import biz.ohrae.challenge_screen.ui.register.RegisterActivity.Companion.OPEN
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.*
 
 
 @Preview(
@@ -35,12 +30,14 @@ import java.util.*
 )
 @Composable
 fun ChallengeOpenScreen(
-    challengeOpenState: ChallengeOpenState = ChallengeOpenState.mock(),
+    challengeOpenState: ChallengeOpenState? = ChallengeOpenState.mock(),
+    challengeData: ChallengeData? = ChallengeData.mock(),
     clickListener: RegisterClickListener? = null,
-    challengeAuth: Int? = 0,
     viewModel: ChallengeRegisterViewModel? = null
 ) {
-    val startDay by remember { mutableStateOf(Utils.getDefaultChallengeDate()) }
+    if (challengeOpenState == null) {
+        return
+    }
 
     Column(
         modifier = Modifier
@@ -76,7 +73,7 @@ fun ChallengeOpenScreen(
         )
         Spacer(modifier = Modifier.height(16.dp))
         ChallengeCalendarCard(
-            Utils.convertDate7(startDay),
+            Utils.convertDate7(challengeData?.start_date.toString()),
             R.drawable.calander,
             onClick = { clickListener?.onClickCalendar() })
         Spacer(modifier = Modifier.height(28.dp))
@@ -99,7 +96,7 @@ fun ChallengeOpenScreen(
                 .aspectRatio(7.1f),
             label = "",
             list = challengeOpenState.authCycleList,
-            onSelectItem = { clickListener?.onClickPeriod(it.value) }
+            onSelectItem = { clickListener?.onClickPeriod(it) }
         )
 
         MyDropDown(
@@ -111,7 +108,7 @@ fun ChallengeOpenScreen(
             onSelectItem = { clickListener?.onClickPeriodType(it.value) }
         )
 
-        if (challengeAuth == 1) {
+        if (challengeData?.is_verification_time == 1) {
             MyDropDown(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -121,22 +118,15 @@ fun ChallengeOpenScreen(
             )
         }
         Spacer(modifier = Modifier.height(28.dp))
-        val cal = Calendar.getInstance()
-        val df: DateFormat = SimpleDateFormat("yyyy-MM-dd")
-        val date:Date = df.parse(startDay)
-        cal.time = date
-        cal.add(Calendar.DATE, (7*1))
-        val outputFormat = SimpleDateFormat("yyyy.MM.dd E요일", Locale.KOREA)
-        ChallengeStartEndDateCard("챌린지 종료일",outputFormat.format(cal.time))
+        ChallengeStartEndDateCard("챌린지 종료일", Utils.convertDate7(challengeData?.end_date.toString()))
     }
     Column(modifier = Modifier.fillMaxHeight(), Arrangement.Bottom) {
-
         FlatBottomButton(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(6f),
             text = "다음(${OPEN}/4)",
-            onClick = { clickListener?.onClickOpenNext(startDay, "1주동안", "매일인증") }
+            onClick = { clickListener?.onClickOpenNext( "1주동안", "매일인증") }
         )
     }
 }

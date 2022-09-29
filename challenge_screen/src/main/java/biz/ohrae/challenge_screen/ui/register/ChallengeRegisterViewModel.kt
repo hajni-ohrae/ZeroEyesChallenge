@@ -3,11 +3,13 @@ package biz.ohrae.challenge_screen.ui.register
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import biz.ohrae.challenge.ui.components.dropdown.DropDownItem
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.ui.main.UserRepo
 import biz.ohrae.challenge_repo.ui.register.RegisterRepo
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import biz.ohrae.challenge_repo.util.prefs.Utils
+import biz.ohrae.challenge_screen.model.register.ChallengeOpenState
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -26,11 +28,17 @@ class ChallengeRegisterViewModel @Inject constructor(
     private val _isChallengeCreate = MutableLiveData(false)
     private val _challengeImageUri = MutableLiveData<String?>(null)
     private val _checkAdultOnly = MutableLiveData<Int?>(0)
+    private val _screenState = MutableLiveData<ChallengeOpenState>()
 
     val challengeData get() = _challengeData
     val isChallengeCreate get() = _isChallengeCreate
     val challengeImageUri get() = _challengeImageUri
     val checkAdultOnly get() = _checkAdultOnly
+    val screenState get() = _screenState
+
+    init {
+        _screenState.value = ChallengeOpenState.mock()
+    }
 
     fun createChallenge(challengeData: ChallengeData) {
         viewModelScope.launch {
@@ -50,7 +58,7 @@ class ChallengeRegisterViewModel @Inject constructor(
     fun selectAuth(auth: String) {
         viewModelScope.launch {
             val state = ChallengeData.mock().copy()
-            state?.let {
+            state.let {
                 when (auth) {
                     "photo" -> {
                         it.is_verification_photo = 1
@@ -62,26 +70,46 @@ class ChallengeRegisterViewModel @Inject constructor(
                         it.is_verification_time = 1
                     }
                 }
+
+                it.start_date = Utils.getDefaultChallengeDate()
+                it.end_date = Utils.addWeeks(it.start_date.toString(), 1)
                 _challengeData.value = it
             }
         }
     }
 
     fun verificationPeriodType(
-        startDay: String,
         perWeek: String,
         verificationPeriodType: String
     ) {
         viewModelScope.launch {
             val state = _challengeData.value?.copy()
             state?.let {
-                val applyStartDate = Utils.addDays(startDay, -2)
+                val applyStartDate = Utils.addDays(it.start_date.toString(), -2)
 
-                it.start_date = startDay
                 it.per_week = perWeek.toInt()
                 it.verification_period_type = verificationPeriodType
                 it.apply_start_date = applyStartDate
-                it.apply_end_date = startDay
+
+                val remainDays = Utils.getDifferenceDays(
+                    it.apply_start_date.toString(),
+                    it.start_date.toString()
+                )
+
+                val list = mutableListOf<DropDownItem>()
+                loop@ for(i in 1..remainDays) {
+                    if (i >= 15) {
+                        break@loop
+                    }
+                    list.add(DropDownItem("${i}일", i.toString()))
+                }
+                it.apply_end_date = Utils.addDays(it.apply_start_date.toString(), list.size - 1)
+
+                val state2 = _screenState.value?.copy()
+                state2?.let { screenState ->
+                    screenState.authCycleList = list
+                    _screenState.value = screenState
+                }
 
                 _challengeData.value = it
             }
@@ -102,15 +130,15 @@ class ChallengeRegisterViewModel @Inject constructor(
         }
     }
 
-    fun selectPeriod(item:String){
+    fun selectPeriod(weeks: Int) {
         val state = _challengeData.value?.copy()
         state?.let {
-            it.period = item.toInt()
+            it.end_date = Utils.addWeeks(it.start_date.toString(), weeks)
             _challengeData.value = it
         }
     }
 
-    fun selectPeriodType(item:String){
+    fun selectPeriodType(item: String) {
         val state = _challengeData.value?.copy()
         state?.let {
             it.verification_period_type = item
@@ -121,9 +149,9 @@ class ChallengeRegisterViewModel @Inject constructor(
     fun checkAdultOnly(checked: Boolean) {
         val state = _challengeData.value?.copy()
         state?.let {
-            if (checked){
+            if (checked) {
                 _checkAdultOnly.value = 1
-            }else {
+            } else {
                 _checkAdultOnly.value = 0
             }
             _challengeData.value = it
@@ -132,5 +160,13 @@ class ChallengeRegisterViewModel @Inject constructor(
 
     fun setChallengeImage(uri: String) {
         _challengeImageUri.value = uri
+    }
+
+    fun setRecruitDays(days: Int) {
+        val state = _challengeData.value?.copy()
+        state?.let {
+            it.apply_end_date = Utils.addDays(it.apply_start_date.toString(), days - 1)
+            _challengeData.value = it
+        }
     }
 }

@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -22,14 +21,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import biz.ohrae.challenge.ui.components.dropdown.DropDownItem
 import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_screen.ui.dialog.CalendarDialog
 import biz.ohrae.challenge_screen.ui.dialog.CustomDialogListener
-import biz.ohrae.challenge_screen.ui.dialog.FilterDialog
-import biz.ohrae.challenge_screen.ui.dialog.FilterDialogListener
 import biz.ohrae.challenge_screen.ui.main.MainActivity
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -90,6 +88,7 @@ class RegisterActivity : AppCompatActivity() {
 
     @Composable
     private fun Navigation() {
+        val screenState by viewModel.screenState.observeAsState()
         val challengeDataState by viewModel.challengeData.observeAsState()
         val challengeImageUri by viewModel.challengeImageUri.observeAsState()
 
@@ -98,27 +97,31 @@ class RegisterActivity : AppCompatActivity() {
             startDestination = ChallengeRegisterNavScreen.RegisterAuth.route
         ) {
             composable(ChallengeRegisterNavScreen.RegisterAuth.route) {
-                RegisterAuthScreen(clickListener = registerClickListener)
-            }
-
-            composable(ChallengeRegisterNavScreen.ChallengeGoals.route) {
-                ChallengeGoals(
-                    challengeImageUri = challengeImageUri,
+                RegisterAuthScreen(
                     clickListener = registerClickListener
                 )
             }
 
             composable(ChallengeRegisterNavScreen.ChallengeOpen.route) {
                 ChallengeOpenScreen(
+                    challengeOpenState = screenState,
                     clickListener = registerClickListener,
-                    challengeAuth = challengeDataState?.is_verification_time,
+                    challengeData = challengeDataState,
                     viewModel = viewModel
                 )
             }
 
             composable(ChallengeRegisterNavScreen.ChallengerRecruitment.route) {
                 ChallengerRecruitment(
+                    challengeOpenState = screenState,
                     challengeData = challengeDataState,
+                    clickListener = registerClickListener
+                )
+            }
+
+            composable(ChallengeRegisterNavScreen.ChallengeGoals.route) {
+                ChallengeGoals(
+                    challengeImageUri = challengeImageUri,
                     clickListener = registerClickListener
                 )
             }
@@ -148,14 +151,12 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun initClickListener() {
         registerClickListener = object : RegisterClickListener {
-
             override fun onClickAuthNext(auth: String) {
                 viewModel.selectAuth(auth)
                 navController.navigate(ChallengeRegisterNavScreen.ChallengeOpen.route)
             }
 
             override fun onClickOpenNext(
-                startDay: String,
                 perWeek: String,
                 verificationPeriodType: String
             ) {
@@ -174,7 +175,7 @@ class RegisterActivity : AppCompatActivity() {
                         "per_week"
                     }
                 }
-                viewModel.verificationPeriodType(startDay, week, type)
+                viewModel.verificationPeriodType(week, type)
                 navController.navigate(ChallengeRegisterNavScreen.ChallengerRecruitment.route)
             }
 
@@ -191,8 +192,8 @@ class RegisterActivity : AppCompatActivity() {
 
             }
 
-            override fun onClickPeriod(item: String) {
-                viewModel.selectPeriod(item)
+            override fun onClickPeriod(item: DropDownItem) {
+                viewModel.selectPeriod(item.value.toInt())
             }
 
             override fun onClickPeriodType(item: String) {
@@ -232,6 +233,10 @@ class RegisterActivity : AppCompatActivity() {
                 })
                 dialog.isCancelable = false
                 dialog.show(supportFragmentManager, "FilterDialog")
+            }
+
+            override fun onClickRecruitDays(item: DropDownItem) {
+                viewModel.setRecruitDays(item.value.toInt())
             }
         }
 

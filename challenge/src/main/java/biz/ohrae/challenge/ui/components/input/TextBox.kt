@@ -1,6 +1,7 @@
 package biz.ohrae.challenge.ui.components.input
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
@@ -12,8 +13,12 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -59,7 +64,7 @@ private fun TextBoxGallery() {
 }
 
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun TextBox(
     modifier: Modifier = Modifier,
@@ -74,12 +79,19 @@ fun TextBox(
     onValueChange: (String) -> Unit,
 ) {
     Column(modifier = modifier) {
+        val keyboardController = LocalSoftwareKeyboardController.current
+        val focusRequester = remember { FocusRequester() }
+
         Card(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
             backgroundColor = Color(0xfff8f8f8),
-            elevation = 0.dp
+            elevation = 0.dp,
+            onClick = {
+                focusRequester.requestFocus()
+                keyboardController?.show()
+            }
         ) {
             Column(modifier = Modifier
                 .fillMaxSize()
@@ -87,6 +99,7 @@ fun TextBox(
                 verticalArrangement = if (singleLine) Arrangement.Center else Arrangement.Top
             ) {
                 BasicTextField(
+                    modifier = Modifier.focusRequester(focusRequester),
                     value = value,
                     onValueChange = {
                         if (it.length <= maxLength) {
@@ -94,7 +107,11 @@ fun TextBox(
                         }
                     },
                     singleLine = singleLine,
-                    keyboardActions = keyboardActions,
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            keyboardController?.hide()
+                        }
+                    ),
                     keyboardOptions = keyboardOptions,
                     decorationBox = @Composable { innerTextField ->
                         TextFieldDefaults.TextFieldDecorationBox(

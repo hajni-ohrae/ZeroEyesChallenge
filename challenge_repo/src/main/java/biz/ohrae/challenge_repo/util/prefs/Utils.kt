@@ -12,11 +12,13 @@ import java.text.DateFormat
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 import java.util.regex.Pattern
 
 object Utils {
     var sdf: SimpleDateFormat? = null
     var sdf2: SimpleDateFormat? = null
+    var sdf3: SimpleDateFormat? = null
     var sdfDiffDay: SimpleDateFormat? = null
     var sdfSameDay: SimpleDateFormat? = null
 
@@ -277,6 +279,14 @@ object Utils {
         return sdf2!!
     }
 
+    fun sdf3(): SimpleDateFormat {
+        if (sdf3 == null) {
+            sdf3 = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
+            sdf3?.timeZone = TimeZone.getTimeZone("Asia/Seoul")
+        }
+        return sdf3!!
+    }
+
     fun sdfDiffDay(): SimpleDateFormat? {
         if (sdfDiffDay == null) {
             sdfDiffDay = SimpleDateFormat("yy.MM.dd HH:mm", Locale.KOREA)
@@ -425,6 +435,14 @@ object Utils {
         } else {
             return null
         }
+    }
+
+    fun getDifferenceDays(startDate: String, endDate: String): Int {
+        val startTime = sdf3().parse(startDate)?.time ?: 0
+        val endTime = sdf3().parse(endDate)?.time ?: 0
+
+        val delay = endTime - startTime
+        return TimeUnit.MILLISECONDS.toDays(delay).toInt()
     }
 
     fun getDefaultChallengeDate(): String {

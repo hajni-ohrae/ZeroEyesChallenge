@@ -56,10 +56,19 @@ fun MyDropDown(
     modifier: Modifier = Modifier,
     label: String,
     list: List<DropDownItem>,
+    selectedPosition: Int? = null,
     onSelectItem: (item: DropDownItem) -> Unit = {},
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedItem by remember { mutableStateOf(list[0]) }
+    var selectedItem by remember {
+        mutableStateOf(
+            if (selectedPosition == null) {
+                list[0]
+            } else {
+                list[selectedPosition]
+            }
+        )
+    }
     var cardWidth by remember { mutableStateOf(Size.Zero) }
 
     Column(modifier = Modifier.fillMaxWidth()) {

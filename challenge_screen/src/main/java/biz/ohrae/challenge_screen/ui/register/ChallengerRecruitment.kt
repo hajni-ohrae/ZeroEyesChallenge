@@ -31,16 +31,24 @@ import biz.ohrae.challenge_screen.model.register.ChallengeOpenState
 @Composable
 fun ChallengerRecruitment(
     challengeData: ChallengeData? = ChallengeData.mock(),
-    challengeOpenState: ChallengeOpenState = ChallengeOpenState.mock(),
+    challengeOpenState: ChallengeOpenState? = ChallengeOpenState.mock(),
     clickListener: RegisterClickListener? = null,
     viewModel: ChallengeRegisterViewModel? = null
 ) {
+    if (challengeOpenState == null) {
+        return
+    }
+
     val scrollState = rememberScrollState()
     var checked by remember { mutableStateOf(false) }
-    Column(modifier = Modifier
-        .background(DefaultWhite)
-        .verticalScroll(scrollState)
-        .padding(24.dp, 0.dp)) {
+    var selectedDaysPosition by remember { mutableStateOf(challengeOpenState.authCycleList.size - 1) }
+
+    Column(
+        modifier = Modifier
+            .background(DefaultWhite)
+            .verticalScroll(scrollState)
+            .padding(24.dp, 0.dp)
+    ) {
         Text(
             text = "챌린저 모집",
             style = myTypography.w500,
@@ -66,6 +74,21 @@ fun ChallengerRecruitment(
             title = "챌린지 시작일",
             day = Utils.convertDate7(challengeData?.start_date.toString())
         )
+        Spacer(modifier = Modifier.height(12.dp))
+        ChallengeStartEndDateCard(
+            title = "챌린지 종료일",
+            day = Utils.convertDate7(challengeData?.end_date.toString())
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        ChallengeStartEndDateCard(
+            title = "모집 시작일",
+            day = Utils.convertDate7(challengeData?.apply_start_date.toString())
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        ChallengeStartEndDateCard(
+            title = "모집 종료일",
+            day = Utils.convertDate7(challengeData?.apply_end_date.toString())
+        )
         Spacer(modifier = Modifier.height(28.dp))
         Text(
             text = "모집 기한",
@@ -86,6 +109,10 @@ fun ChallengerRecruitment(
                 .aspectRatio(7.1f),
             label = "",
             list = challengeOpenState.authCycleList,
+            selectedPosition = selectedDaysPosition,
+            onSelectItem = {
+                clickListener?.onClickRecruitDays(it)
+            }
         )
         Spacer(modifier = Modifier.height(28.dp))
         Text(
@@ -108,7 +135,6 @@ fun ChallengerRecruitment(
             fontSize = dpToSp(dp = 12.dp),
             color = Color(0xff005bad)
         )
-
         CheckBox(
             checkBoxSize = 20.dp,
             checkBoxSpacing = 4.dp,
@@ -123,12 +149,8 @@ fun ChallengerRecruitment(
             },
             checked = checked,
         )
-
     }
-
-
     Column(modifier = Modifier.fillMaxHeight(), Arrangement.Bottom) {
-
         FlatBottomButton(
             modifier = Modifier
                 .fillMaxWidth()
