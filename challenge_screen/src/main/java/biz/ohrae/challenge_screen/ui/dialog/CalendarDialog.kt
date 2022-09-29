@@ -8,15 +8,22 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.DialogFragment
 import androidx.window.layout.WindowMetricsCalculator
+import biz.ohrae.challenge.ui.components.button.FlatDoubleButton
+import biz.ohrae.challenge.ui.theme.DefaultBlack
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import com.himanshoe.kalendar.common.KalendarKonfig
 import com.himanshoe.kalendar.common.KalendarSelector
@@ -41,7 +48,10 @@ class CalendarDialog() :
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                CalendarDialog(
+                Calendar(
+                    listener = customDialogListener,
+                    "선택",
+                    "취소"
                 )
             }
         }
@@ -89,24 +99,49 @@ class CalendarDialog() :
     showBackground = true
 )
 @Composable
-fun CalendarDialog(
+fun Calendar(
     listener: CustomDialogListener? = null,
-    positiveBtnName: String = "확인",
-    negativeBtnName: String = "취소",
+    positiveBtnName: String = "",
+    negativeBtnName: String = "",
 ) {
-    Column() {
-        Text(text = "닫기")
-        Kalendar(
-            kalendarType = KalendarType.Firey(),
-            kalendarKonfig = KalendarKonfig(weekCharacters = 1, locale = Locale.KOREA),
-            onCurrentDayClick = { day, event ->
-                //handle the date click listener
-            },
-            errorMessage = {
-                //Handle the error if any
-            }, kalendarStyle = KalendarStyle(kalendarSelector = KalendarSelector.Circle())
-        )
-
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RectangleShape,
+        backgroundColor = DefaultWhite
+    ) {
+        Column() {
+            Kalendar(
+                kalendarType = KalendarType.Firey(),
+                kalendarKonfig = KalendarKonfig(weekCharacters = 1, locale = Locale.KOREA),
+                onCurrentDayClick = { day, event ->
+                    //handle the date click listener
+                },
+                errorMessage = {
+                    //Handle the error if any
+                },
+                kalendarStyle = KalendarStyle(
+                    kalendarSelector = KalendarSelector.Circle(
+                        selectedColor = Color(0xff005bad),
+                        todayColor = Color.Transparent
+                    ),
+                    kalendarBackgroundColor = DefaultWhite,
+                    elevation = 0.dp,
+                ),
+            )
+            FlatDoubleButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(6f),
+                rightText = positiveBtnName,
+                leftText = negativeBtnName,
+                onClickRight = {
+                    listener?.clickPositive()
+                },
+                onClickLeft = {
+                    listener?.clickPositive()
+                }
+            )
+        }
     }
 }
 
