@@ -29,12 +29,18 @@ class ChallengeRegisterViewModel @Inject constructor(
     private val _challengeImageUri = MutableLiveData<String?>(null)
     private val _checkAdultOnly = MutableLiveData<Int?>(0)
     private val _screenState = MutableLiveData<ChallengeOpenState>()
+    private val _selectDay = MutableLiveData<String?>(null)
+    private val _startDay = MutableLiveData<String?>(null)
+    private val _endDay = MutableLiveData<String?>(null)
 
     val challengeData get() = _challengeData
     val isChallengeCreate get() = _isChallengeCreate
     val challengeImageUri get() = _challengeImageUri
     val checkAdultOnly get() = _checkAdultOnly
     val screenState get() = _screenState
+    val selectDay get() = _selectDay
+    val startDay get() = _startDay
+    val endDay get() = _endDay
 
     init {
         _screenState.value = ChallengeOpenState.mock()
@@ -169,4 +175,15 @@ class ChallengeRegisterViewModel @Inject constructor(
             _challengeData.value = it
         }
     }
+    fun selectDay(day:String){
+        _selectDay.value = day
+    }
+
+    fun setStartDay(day:String){
+        if (_startDay.value == null){
+            _startDay.value = Utils.getDefaultChallengeDate()
+        }
+        _startDay.value = day
+    }
+
 }

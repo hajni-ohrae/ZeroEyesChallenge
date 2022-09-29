@@ -4,6 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,6 +37,7 @@ fun ChallengeOpenScreen(
     clickListener: RegisterClickListener? = null,
     viewModel: ChallengeRegisterViewModel? = null
 ) {
+    val startDay by viewModel?.startDay!!.observeAsState()
     if (challengeOpenState == null) {
         return
     }
@@ -73,7 +76,7 @@ fun ChallengeOpenScreen(
         )
         Spacer(modifier = Modifier.height(16.dp))
         ChallengeCalendarCard(
-            Utils.convertDate7(challengeData?.start_date.toString()),
+            Utils.convertDate7(startDay.toString()),
             R.drawable.calander,
             onClick = { clickListener?.onClickCalendar() })
         Spacer(modifier = Modifier.height(28.dp))
