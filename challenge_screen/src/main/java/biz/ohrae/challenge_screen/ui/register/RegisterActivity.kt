@@ -28,6 +28,7 @@ import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.ui.dialog.CalendarDialog
+import biz.ohrae.challenge_screen.ui.dialog.CalendarDialogListener
 import biz.ohrae.challenge_screen.ui.dialog.CustomDialogListener
 import biz.ohrae.challenge_screen.ui.main.MainActivity
 import com.google.android.material.snackbar.Snackbar
@@ -224,7 +225,7 @@ class RegisterActivity : AppCompatActivity() {
 
             override fun onClickCalendar() {
                 val dialog = CalendarDialog(viewModel)
-                dialog.setListener(object : CustomDialogListener {
+                dialog.setListener(object : CalendarDialogListener {
                     override fun clickPositive() {
                         viewModel.setStartDay(viewModel.selectDay.value.toString())
                         dialog.dismiss()
@@ -232,6 +233,10 @@ class RegisterActivity : AppCompatActivity() {
 
                     override fun clickNegative() {
                         dialog.dismiss()
+                    }
+
+                    override fun clickDay(day: String) {
+                        viewModel?.selectDay(day)
                     }
                 })
                 dialog.isCancelable = false

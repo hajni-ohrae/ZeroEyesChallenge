@@ -13,3 +13,8 @@ interface FilterDialogListener {
     fun clickNegative()
     fun clickInitialization()
 }
+interface CalendarDialogListener {
+    fun clickPositive()
+    fun clickNegative()
+    fun clickDay(day:String)
+}

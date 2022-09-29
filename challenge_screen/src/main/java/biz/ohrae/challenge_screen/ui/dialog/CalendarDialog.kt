@@ -38,7 +38,7 @@ import java.util.*
 
 class CalendarDialog(private val challengeRegisterViewModel: ChallengeRegisterViewModel) :
     DialogFragment() {
-    private lateinit var customDialogListener: CustomDialogListener
+    private lateinit var calendarDialogListener: CalendarDialogListener
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +53,7 @@ class CalendarDialog(private val challengeRegisterViewModel: ChallengeRegisterVi
         return ComposeView(requireContext()).apply {
             setContent {
                 Calendar(
-                    listener = customDialogListener,
+                    listener = calendarDialogListener,
                     "선택",
                     "취소",
                     viewModel = challengeRegisterViewModel
@@ -94,8 +94,8 @@ class CalendarDialog(private val challengeRegisterViewModel: ChallengeRegisterVi
                     or View.SYSTEM_UI_FLAG_FULLSCREEN)
     }
 
-    fun setListener(listener: CustomDialogListener) {
-        this.customDialogListener = listener
+    fun setListener(listener: CalendarDialogListener) {
+        this.calendarDialogListener = listener
     }
 }
 
@@ -105,7 +105,7 @@ class CalendarDialog(private val challengeRegisterViewModel: ChallengeRegisterVi
 )
 @Composable
 fun Calendar(
-    listener: CustomDialogListener? = null,
+    listener: CalendarDialogListener? = null,
     positiveBtnName: String = "",
     negativeBtnName: String = "",
     viewModel: ChallengeRegisterViewModel? = null
@@ -120,7 +120,7 @@ fun Calendar(
                 kalendarType = KalendarType.Firey(),
                 kalendarKonfig = KalendarKonfig(weekCharacters = 1, locale = Locale.KOREA),
                 onCurrentDayClick = { day, event ->
-                    viewModel?.selectDay(day.toString())
+                    listener?.clickDay(day.toString())
                 },
                 errorMessage = {
                     //Handle the error if any
