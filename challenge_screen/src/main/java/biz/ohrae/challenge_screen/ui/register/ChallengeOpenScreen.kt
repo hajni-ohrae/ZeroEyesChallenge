@@ -37,7 +37,6 @@ fun ChallengeOpenScreen(
     clickListener: RegisterClickListener? = null,
     viewModel: ChallengeRegisterViewModel? = null
 ) {
-    val startDay by viewModel?.startDay!!.observeAsState()
     if (challengeOpenState == null) {
         return
     }
@@ -76,7 +75,7 @@ fun ChallengeOpenScreen(
         )
         Spacer(modifier = Modifier.height(16.dp))
         ChallengeCalendarCard(
-            Utils.convertDate7(startDay.toString()),
+            Utils.convertDate7(challengeData?.start_date.toString()),
             R.drawable.calander,
             onClick = { clickListener?.onClickCalendar() })
         Spacer(modifier = Modifier.height(28.dp))

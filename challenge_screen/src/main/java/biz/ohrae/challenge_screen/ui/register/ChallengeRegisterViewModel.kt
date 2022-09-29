@@ -15,6 +15,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -180,10 +183,11 @@ class ChallengeRegisterViewModel @Inject constructor(
     }
 
     fun setStartDay(day:String){
-        if (_startDay.value == null){
-            _startDay.value = Utils.getDefaultChallengeDate()
+        val state = _challengeData.value?.copy()
+        state?.let {
+            it.start_date = day
+            _challengeData.value = it
         }
-        _startDay.value = day
     }
 
 }
