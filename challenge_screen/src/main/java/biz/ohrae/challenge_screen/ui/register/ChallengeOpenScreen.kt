@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -40,7 +41,7 @@ fun ChallengeOpenScreen(
     challengeAuth: Int? = 0,
     viewModel: ChallengeRegisterViewModel? = null
 ) {
-    val startDay by remember { mutableStateOf(Utils.getDefaultChallengeDate()) }
+    val startDay1 by viewModel?.startDay!!.observeAsState()
 
     Column(
         modifier = Modifier
@@ -76,7 +77,7 @@ fun ChallengeOpenScreen(
         )
         Spacer(modifier = Modifier.height(16.dp))
         ChallengeCalendarCard(
-            Utils.convertDate7(startDay),
+            Utils.convertDate7(startDay1.toString()),
             R.drawable.calander,
             onClick = { clickListener?.onClickCalendar() })
         Spacer(modifier = Modifier.height(28.dp))
@@ -123,7 +124,7 @@ fun ChallengeOpenScreen(
         Spacer(modifier = Modifier.height(28.dp))
         val cal = Calendar.getInstance()
         val df: DateFormat = SimpleDateFormat("yyyy-MM-dd")
-        val date:Date = df.parse(startDay)
+        val date:Date = df.parse(startDay1)
         cal.time = date
         cal.add(Calendar.DATE, (7*1))
         val outputFormat = SimpleDateFormat("yyyy.MM.dd E요일", Locale.KOREA)
@@ -136,7 +137,7 @@ fun ChallengeOpenScreen(
                 .fillMaxWidth()
                 .aspectRatio(6f),
             text = "다음(${OPEN}/4)",
-            onClick = { clickListener?.onClickOpenNext(startDay, "1주동안", "매일인증") }
+            onClick = { clickListener?.onClickOpenNext(startDay1!!, "1주동안", "매일인증") }
         )
     }
 }

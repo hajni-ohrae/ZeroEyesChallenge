@@ -26,6 +26,7 @@ import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
+import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.ui.dialog.CalendarDialog
 import biz.ohrae.challenge_screen.ui.dialog.CustomDialogListener
 import biz.ohrae.challenge_screen.ui.dialog.FilterDialog
@@ -137,6 +138,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun init() {
+        viewModel?.setStartDay(Utils.getDefaultChallengeDate())
     }
 
     private fun onBack() {
@@ -220,9 +222,10 @@ class RegisterActivity : AppCompatActivity() {
             }
 
             override fun onClickCalendar() {
-                val dialog = CalendarDialog()
+                val dialog = CalendarDialog(viewModel)
                 dialog.setListener(object : CustomDialogListener {
                     override fun clickPositive() {
+                        viewModel.setStartDay(viewModel.selectDay.value.toString())
                         dialog.dismiss()
                     }
 

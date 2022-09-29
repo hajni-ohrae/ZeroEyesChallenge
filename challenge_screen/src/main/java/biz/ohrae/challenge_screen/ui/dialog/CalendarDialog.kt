@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Card
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,17 +26,20 @@ import androidx.window.layout.WindowMetricsCalculator
 import biz.ohrae.challenge.ui.components.button.FlatDoubleButton
 import biz.ohrae.challenge.ui.theme.DefaultBlack
 import biz.ohrae.challenge.ui.theme.DefaultWhite
+import biz.ohrae.challenge_screen.ui.register.ChallengeRegisterViewModel
 import com.himanshoe.kalendar.common.KalendarKonfig
 import com.himanshoe.kalendar.common.KalendarSelector
 import com.himanshoe.kalendar.common.KalendarStyle
+import com.himanshoe.kalendar.common.data.KalendarEvent
 import com.himanshoe.kalendar.ui.Kalendar
 import com.himanshoe.kalendar.ui.KalendarType
 import java.time.LocalDate
 import java.util.*
 
-class CalendarDialog() :
+class CalendarDialog(private val challengeRegisterViewModel: ChallengeRegisterViewModel) :
     DialogFragment() {
     private lateinit var customDialogListener: CustomDialogListener
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +55,8 @@ class CalendarDialog() :
                 Calendar(
                     listener = customDialogListener,
                     "선택",
-                    "취소"
+                    "취소",
+                    viewModel = challengeRegisterViewModel
                 )
             }
         }
@@ -103,6 +108,7 @@ fun Calendar(
     listener: CustomDialogListener? = null,
     positiveBtnName: String = "",
     negativeBtnName: String = "",
+    viewModel: ChallengeRegisterViewModel? = null
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -114,7 +120,7 @@ fun Calendar(
                 kalendarType = KalendarType.Firey(),
                 kalendarKonfig = KalendarKonfig(weekCharacters = 1, locale = Locale.KOREA),
                 onCurrentDayClick = { day, event ->
-                    //handle the date click listener
+                    viewModel?.selectDay(day.toString())
                 },
                 errorMessage = {
                     //Handle the error if any
@@ -122,7 +128,7 @@ fun Calendar(
                 kalendarStyle = KalendarStyle(
                     kalendarSelector = KalendarSelector.Circle(
                         selectedColor = Color(0xff005bad),
-                        todayColor = Color.Transparent
+                        todayColor = Color(0x26005bad)
                     ),
                     kalendarBackgroundColor = DefaultWhite,
                     elevation = 0.dp,
@@ -138,7 +144,7 @@ fun Calendar(
                     listener?.clickPositive()
                 },
                 onClickLeft = {
-                    listener?.clickPositive()
+                    listener?.clickNegative()
                 }
             )
         }

@@ -26,11 +26,15 @@ class ChallengeRegisterViewModel @Inject constructor(
     private val _isChallengeCreate = MutableLiveData(false)
     private val _challengeImageUri = MutableLiveData<String?>(null)
     private val _checkAdultOnly = MutableLiveData<Int?>(0)
+    private val _selectDay = MutableLiveData<String?>(null)
+    private val _startDay = MutableLiveData<String?>(null)
 
     val challengeData get() = _challengeData
     val isChallengeCreate get() = _isChallengeCreate
     val challengeImageUri get() = _challengeImageUri
     val checkAdultOnly get() = _checkAdultOnly
+    val selectDay get() = _selectDay
+    val startDay get() = _startDay
 
     fun createChallenge(challengeData: ChallengeData) {
         viewModelScope.launch {
@@ -132,5 +136,16 @@ class ChallengeRegisterViewModel @Inject constructor(
 
     fun setChallengeImage(uri: String) {
         _challengeImageUri.value = uri
+    }
+
+    fun selectDay(day:String){
+        _selectDay.value = day
+    }
+
+    fun setStartDay(day:String){
+        if (_startDay.value == null){
+            _startDay.value = Utils.getDefaultChallengeDate()
+        }
+        _startDay.value = day
     }
 }
