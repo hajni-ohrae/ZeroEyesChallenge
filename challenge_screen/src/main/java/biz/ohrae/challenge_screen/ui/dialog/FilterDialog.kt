@@ -152,7 +152,7 @@ fun Filter(
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(6f),
-                rightText = "홈으로",
+                rightText = "",
                 leftText = "챌린지 알람 설정",
                 onClickRight = {
                 },
