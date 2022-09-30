@@ -62,12 +62,12 @@ class ChallengeMainRepo @Inject constructor(
         }
     }
 
-    suspend fun userChallengeList(
-        paymentType: String = "",
-        verificationPeriodType: String = ""
-    ): Flow<FlowResult> {
-        val response =
-            apiService.g(accessToken.toString(), paymentType, verificationPeriodType)
-
-    }
+//    suspend fun userChallengeList(
+//        paymentType: String = "",
+//        verificationPeriodType: String = ""
+//    ): Flow<FlowResult> {
+//        val response =
+//            apiService.getUserChallengeList(accessToken.toString(), paymentType, verificationPeriodType)
+//
+//    }
 }
