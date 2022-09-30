@@ -1,6 +1,6 @@
 package biz.ohrae.challenge_screen.ui.participation
 
 interface ParticipationClickListener {
-    fun onClickPayment()
+    fun onClickPayment(paidAmount: Int, rewardAmount: Int, depositAmount: Int)
     fun onClickCancelParticipation()
 }

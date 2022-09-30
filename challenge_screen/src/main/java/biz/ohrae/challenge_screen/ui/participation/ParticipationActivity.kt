@@ -106,12 +106,12 @@ class ParticipationActivity : BaseActivity() {
 
     override fun initClickListeners() {
         clickListener = object : ParticipationClickListener {
-            override fun onClickPayment() {
+            override fun onClickPayment(paidAmount: Int, rewardAmount: Int, depositAmount: Int) {
 //                navController.navigate(ChallengeParticipationNavScreen.ParticipationPayment.route)
 //                val intent = Intent(this@ParticipationActivity, ChallengePaymentActivity::class.java)
 //                startActivity(intent)
                 detailViewModel.challengeData.value?.let {
-                    viewModel.registerChallenge(challengeData = it)
+                    viewModel.registerChallenge(challengeData = it, paidAmount, rewardAmount, depositAmount)
                 }
             }
 
@@ -123,6 +123,7 @@ class ParticipationActivity : BaseActivity() {
     override fun observeViewModels() {
         viewModel.registerResult.observe(this) { result ->
             result.data?.let {
+                setResult(RESULT_OK)
                 finish()
             } ?: run {
                 val message = "code : ${result.errorCode}, message : ${result.errorMessage}"

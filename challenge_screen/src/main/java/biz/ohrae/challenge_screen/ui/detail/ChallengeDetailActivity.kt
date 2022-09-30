@@ -3,6 +3,8 @@ package biz.ohrae.challenge_screen.ui.detail
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,16 +30,24 @@ class ChallengeDetailActivity : AppCompatActivity() {
     private var challengeId: String? = null
     private lateinit var detailClickListener: ChallengeDetailClickListener
 
+    private lateinit var launcher: ActivityResultLauncher<Intent>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this)[ChallengeDetailViewModel::class.java]
 
         challengeId = intent.getStringExtra("challengeId")
 
-        initClickListener()
         setContent {
             ChallengeInTheme {
                 BuildContent()
+            }
+        }
+
+        initClickListener()
+        launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                finish()
             }
         }
     }
@@ -93,7 +103,7 @@ class ChallengeDetailActivity : AppCompatActivity() {
             override fun onClickParticipation() {
                 intent = Intent(this@ChallengeDetailActivity, ParticipationActivity::class.java)
                 intent.putExtra("challengeId", challengeId)
-                startActivity(intent)
+                launcher.launch(intent)
             }
         }
     }

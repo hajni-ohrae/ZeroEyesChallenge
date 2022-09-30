@@ -39,7 +39,7 @@ interface ApiService {
     suspend fun registerChallenge(
         @Header("x-access-token") accessToken: String,
         @Body body: JsonObject?
-    ): NetworkResponse<Result, Error>
+    ): NetworkResponse<Result2, Error>
 
     @POST(Routes.FAVORITE_CHALLENGE)
     suspend fun favoriteChallenge(@Body body: JsonObject?): NetworkResponse<Result, Error>

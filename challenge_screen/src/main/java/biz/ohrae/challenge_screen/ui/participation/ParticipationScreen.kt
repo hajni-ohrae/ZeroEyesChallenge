@@ -222,7 +222,22 @@ fun ParticipationScreen(
                 .aspectRatio(6f),
             text = "결제하기",
             onClick = {
-                clickListener?.onClickPayment()
+                val paidAmount = if (participationAmount.isEmpty()) {
+                    0
+                } else {
+                    participationAmount.replace(",", "").toInt()
+                }
+                val rewardAmount = if (rewards.isEmpty()) {
+                    0
+                } else {
+                    rewards.replace(",", "").toInt()
+                }
+
+                clickListener?.onClickPayment(
+                    paidAmount = paidAmount,
+                    rewardAmount = rewardAmount,
+                    depositAmount = totalAmount
+                )
             }
         )
     }

@@ -26,9 +26,9 @@ class ParticipationViewModel @Inject constructor(
 
     val registerResult get() = _registerResult
 
-    fun registerChallenge(challengeData: ChallengeData) {
+    fun registerChallenge(challengeData: ChallengeData, paidAmount: Int, rewardsAmount: Int, depositAmount: Int) {
         viewModelScope.launch {
-            val response = participationRepo.registerChallenge(challengeData, 0, 0, 0)
+            val response = participationRepo.registerChallenge(challengeData, paidAmount, rewardsAmount, depositAmount)
 
             response.flowOn(Dispatchers.IO).collect { result ->
                 _registerResult.value = result
