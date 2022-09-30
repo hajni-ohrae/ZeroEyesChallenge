@@ -26,10 +26,10 @@ class ParticipationActivity : BaseActivity() {
     private var challengeId: String? = null
     private lateinit var detailViewModel: ChallengeDetailViewModel
     private lateinit var viewModel: ParticipationViewModel
-
     private lateinit var navController: NavHostController
-
     private lateinit var clickListener: ParticipationClickListener
+
+    private var isCancelChallenge = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +44,7 @@ class ParticipationActivity : BaseActivity() {
         viewModel = ViewModelProvider(this)[ParticipationViewModel::class.java]
 
         challengeId = intent.getStringExtra("challengeId")
+        isCancelChallenge = intent.getBooleanExtra("isCancel", false)
 
         initClickListeners()
         observeViewModels()
@@ -61,7 +62,7 @@ class ParticipationActivity : BaseActivity() {
                 .fillMaxSize()
                 .background(DefaultWhite)
         ) {
-            BackButton(onBack = { onBack() },"챌린지 신청")
+            BackButton(onBack = { onBack() },"챌린지 참여")
             Column(modifier = Modifier) {
                 Navigation()
             }
@@ -71,10 +72,15 @@ class ParticipationActivity : BaseActivity() {
     @Composable
     private fun Navigation() {
         navController = rememberNavController()
+        val startDestination = if (isCancelChallenge) {
+            ChallengeParticipationNavScreen.ParticipationCancelRequest.route
+        } else {
+            ChallengeParticipationNavScreen.Participation.route
+        }
 
         NavHost(
             navController = navController,
-            startDestination = ChallengeParticipationNavScreen.Participation.route
+            startDestination = startDestination
         ) {
             composable(ChallengeParticipationNavScreen.Participation.route) {
                 val challengeData by detailViewModel.challengeData.observeAsState()
@@ -92,6 +98,24 @@ class ParticipationActivity : BaseActivity() {
                 val challengeData by detailViewModel.challengeData.observeAsState()
                 if (challengeData != null) {
                     ParticipationFinishScreen(
+                        challengeData = challengeData!!,
+                        clickListener = clickListener
+                    )
+                }
+            }
+            composable(ChallengeParticipationNavScreen.ParticipationCancelRequest.route) {
+                val challengeData by detailViewModel.challengeData.observeAsState()
+                if (challengeData != null) {
+                    ParticipationCancelRequestScreen(
+                        challengeData = challengeData!!,
+                        clickListener = clickListener
+                    )
+                }
+            }
+            composable(ChallengeParticipationNavScreen.ParticipationCancelResult.route) {
+                val challengeData by detailViewModel.challengeData.observeAsState()
+                if (challengeData != null) {
+                    ParticipationCancelResultScreen(
                         challengeData = challengeData!!,
                         clickListener = clickListener
                     )
@@ -115,7 +139,21 @@ class ParticipationActivity : BaseActivity() {
                 }
             }
 
+            // 챌린지 참여 취소
             override fun onClickCancelParticipation() {
+                navController.navigate(ChallengeParticipationNavScreen.ParticipationCancelResult.route)
+            }
+
+            // 챌린지 취소 후 확인
+            override fun onClickCancelResult() {
+                setResult(RESULT_OK)
+                finish()
+            }
+
+            // 챌린지 취소 후 결제상세 보기
+            override fun onClickPaymentDetail() {
+                setResult(RESULT_OK)
+                finish()
             }
         }
     }
@@ -141,4 +179,6 @@ sealed class ChallengeParticipationNavScreen(val route: String) {
     object Participation : ChallengeParticipationNavScreen("Participation")
     object ParticipationFinish : ChallengeParticipationNavScreen("ParticipationFinish")
     object ParticipationPayment : ChallengeParticipationNavScreen("ParticipationPayment")
+    object ParticipationCancelRequest : ChallengeParticipationNavScreen("ParticipationCancelRequest")
+    object ParticipationCancelResult : ChallengeParticipationNavScreen("ParticipationCancelResult")
 }

@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.ui.components.avatar.Avatar
 import biz.ohrae.challenge.ui.components.button.ArrowTextButton2
 import biz.ohrae.challenge.ui.components.button.FlatBookMarkButton
-import biz.ohrae.challenge.ui.components.card.ChallengesInParticipationCard
 import biz.ohrae.challenge.ui.components.card.RedCardInfo
 import biz.ohrae.challenge.ui.components.detail.ChallengeDetailFreeDescription
 import biz.ohrae.challenge.ui.components.detail.ChallengeDetailRefundDescription
@@ -48,14 +47,23 @@ fun ChallengeDetailScreen(
     challengeData: ChallengeData? = ChallengeData.mock(),
     clickListener: ChallengeDetailClickListener? = null
 ) {
-    val scrollState = rememberScrollState()
     if (challengeData == null) {
         return
     }
 
+    val scrollState = rememberScrollState()
     var status by remember { mutableStateOf(challengeDetailStatusMap[challengeData.status]) }
     LaunchedEffect(challengeData) {
         status = challengeDetailStatusMap[challengeData.status]
+    }
+    val bottomBtnName by remember {
+        mutableStateOf(
+            if (challengeData.inChallenge.isNullOrEmpty()) {
+                "참여 신청"
+            } else {
+                "참여 취소"
+            }
+        )
     }
 
     Column(
@@ -129,7 +137,7 @@ fun ChallengeDetailScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(6f),
-            text = "참여 신청",
+            text = bottomBtnName,
             onClick = { clickListener?.onClickParticipation() }
         )
     }

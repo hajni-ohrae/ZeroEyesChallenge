@@ -103,6 +103,7 @@ class ChallengeDetailActivity : AppCompatActivity() {
             override fun onClickParticipation() {
                 intent = Intent(this@ChallengeDetailActivity, ParticipationActivity::class.java)
                 intent.putExtra("challengeId", challengeId)
+                intent.putExtra("isCancel", !viewModel.challengeData.value?.inChallenge.isNullOrEmpty())
                 launcher.launch(intent)
             }
         }

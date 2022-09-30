@@ -476,8 +476,9 @@ object Utils {
 
     fun getRemainTimeDays(startDate: String): String {
         return try {
+            val dateString = startDate.replace("T", " ").replace("Z", "")
             val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
-            val date = inputFormat.parse(startDate)
+            val date = inputFormat.parse(dateString)
             var remain: Long = 0
             var result = ""
 

@@ -38,9 +38,9 @@ private fun HeaderGallery() {
         Spacer(modifier = Modifier.height(10.dp))
         BackButton(isShare = true)
         Spacer(modifier = Modifier.height(10.dp))
-        BackButton(title = "챌린지 신청")
+        BackButton(title = "챌린지 참여")
         Spacer(modifier = Modifier.height(10.dp))
-        BackButton(title = "챌린지 신청", isShare = true)
+        BackButton(title = "챌린지 참여", isShare = true)
     }
 }
 
