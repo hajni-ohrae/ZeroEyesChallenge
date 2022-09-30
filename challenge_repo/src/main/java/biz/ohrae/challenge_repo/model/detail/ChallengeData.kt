@@ -26,7 +26,7 @@ data class ChallengeData(
     var verification_period_type: String? = null,
 //    daily | weekday | weekend | per_week
     var per_week: Int = 0,
-    var image_path: String,
+    var image_path: String?,
     val status: String,
     var caution: String? = null,
     val created_date: String,

@@ -9,7 +9,12 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
 import javax.inject.Inject
+
 
 class RegisterRepo @Inject constructor(
     private val apiService: ApiService,
@@ -41,6 +46,34 @@ class RegisterRepo @Inject constructor(
         jsonObject.addProperty("image_path", challengeData.image_path)
 
         val response = apiService.createChallenge(jsonObject)
+        when (response) {
+            is NetworkResponse.Success -> {
+                val isSuccess = response.body.success
+                return if (isSuccess) {
+                    flow {
+                        emit(FlowResult(true, "", ""))
+                    }
+                } else {
+                    flow {
+                        emit(FlowResult(false, response.body.code, response.body.message))
+                    }
+                }
+            }
+            else -> {
+                return flow {
+                    emit(FlowResult(null, "", ""))
+                }
+            }
+        }
+    }
+
+    suspend fun uploadImage(challengeData: ChallengeData): Flow<FlowResult> {
+        val file = File(challengeData.image_path.toString())
+        val mediaType = "multipart/form-data".toMediaTypeOrNull()
+        val requestFile = RequestBody.create(mediaType, file)
+        val body = MultipartBody.Part.createFormData("image", file.name, requestFile)
+
+        val response = apiService.uploadChallengeImage(body)
         when (response) {
             is NetworkResponse.Success -> {
                 val isSuccess = response.body.success

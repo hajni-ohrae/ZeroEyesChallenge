@@ -15,9 +15,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -56,9 +53,22 @@ class ChallengeRegisterViewModel @Inject constructor(
             response.flowOn(Dispatchers.IO).collect { it ->
                 it.data?.let { data ->
                     _isChallengeCreate.value = data as Boolean
-                    if (!data) {
-
+                    if (challengeData.image_path == null) {
+                        _isChallengeCreate.value = data as Boolean
+                    } else {
+                        uploadChallengeImage(challengeData)
                     }
+                }
+            }
+        }
+    }
+
+    fun uploadChallengeImage(challengeData: ChallengeData) {
+        viewModelScope.launch {
+            val response = registerRepo.uploadImage(challengeData)
+            response.flowOn(Dispatchers.IO).collect { it ->
+                it.data?.let { data ->
+                    _isChallengeCreate.value = data as Boolean
                 }
             }
         }
@@ -152,7 +162,7 @@ class ChallengeRegisterViewModel @Inject constructor(
         state?.let {
             if (item.length == 1){
                 it.verification_period_type = "per_week"
-                it.per_week == item.toInt()
+                it.per_week = item.toInt()
             } else {
                 it.verification_period_type = item
             }
@@ -194,5 +204,4 @@ class ChallengeRegisterViewModel @Inject constructor(
             _challengeData.value = it
         }
     }
-
 }
