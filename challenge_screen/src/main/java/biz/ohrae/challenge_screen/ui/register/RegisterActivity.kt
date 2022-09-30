@@ -1,9 +1,12 @@
 package biz.ohrae.challenge_screen.ui.register
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.ImageCapture
@@ -16,6 +19,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -29,11 +33,11 @@ import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.ui.dialog.CalendarDialog
 import biz.ohrae.challenge_screen.ui.dialog.CalendarDialogListener
-import biz.ohrae.challenge_screen.ui.dialog.CustomDialogListener
 import biz.ohrae.challenge_screen.ui.main.MainActivity
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+
 
 @AndroidEntryPoint
 class RegisterActivity : AppCompatActivity() {
@@ -186,9 +190,10 @@ class RegisterActivity : AppCompatActivity() {
                 navController.navigate(ChallengeRegisterNavScreen.ChallengeGoals.route)
             }
 
-            override fun onClickChallengeCreate(auth: String, precautions: String, imgUrl: String) {
+            override fun onClickChallengeCreate(auth: String, precautions: String, imgUrl: String?) {
 //                viewModel.createChallenge(challengeData)
-                viewModel.challengeGoals(auth, precautions, imgUrl)
+                val imagePath = uriToFilePath(imgUrl.toString().toUri())
+                viewModel.challengeGoals(auth, precautions, imagePath)
             }
 
             override fun onClickSelectedAuth(auth: String) {
@@ -284,6 +289,22 @@ class RegisterActivity : AppCompatActivity() {
                 Snackbar.make(window.decorView, "Camera Permission Denied", Snackbar.LENGTH_SHORT).show()
             }
         }
+    }
+
+    @SuppressLint("Range")
+    private fun uriToFilePath(contentUri: Uri): String {
+        val proj = arrayOf(MediaStore.Images.Media.DATA)
+        var path = ""
+
+        val cursor = contentResolver.query(contentUri, proj, null, null, null)
+        if (cursor != null) {
+            cursor.moveToNext()
+            path = cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DATA))
+
+            cursor.close()
+        }
+
+        return path
     }
 }
 

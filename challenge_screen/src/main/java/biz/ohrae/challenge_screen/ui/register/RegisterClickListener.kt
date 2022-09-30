@@ -6,7 +6,7 @@ interface RegisterClickListener {
     fun onClickAuthNext(auth: String)
     fun onClickOpenNext(perWeek: String, verificationPeriodType: String)
     fun onClickRecruitmentNext()
-    fun onClickChallengeCreate(auth: String, precautions: String, imgUrl: String = "")
+    fun onClickChallengeCreate(auth: String, precautions: String, imgUrl: String?)
     fun onClickSelectedAuth(auth: String)
     fun onClickPeriod(item: DropDownItem)
     fun onClickPeriodType(item: String)

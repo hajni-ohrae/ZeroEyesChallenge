@@ -53,7 +53,7 @@ class ChallengeRegisterViewModel @Inject constructor(
             response.flowOn(Dispatchers.IO).collect { it ->
                 it.data?.let { data ->
                     _isChallengeCreate.value = data as Boolean
-                    if (challengeData.image_path == null) {
+                    if (challengeData.image_path.isNullOrEmpty()) {
                         _isChallengeCreate.value = data as Boolean
                     } else {
                         uploadChallengeImage(challengeData)
@@ -135,7 +135,7 @@ class ChallengeRegisterViewModel @Inject constructor(
         }
     }
 
-    fun challengeGoals(goal: String, precautions: String, imgUrl: String) {
+    fun challengeGoals(goal: String, precautions: String, imgUrl: String?) {
         viewModelScope.launch {
             val state = _challengeData.value?.copy()
             state?.let {

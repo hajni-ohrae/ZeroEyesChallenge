@@ -110,6 +110,7 @@ interface ApiService {
     @POST(Routes.CREATE_REPORT)
     suspend fun createReport(@Body body: JsonObject?): NetworkResponse<Result, Error>
 
+    @Multipart
     @POST(Routes.CHALLENGE_UPLOAD_IMAGE)
-    suspend fun uploadChallengeImage(@Part body: MultipartBody.Part): NetworkResponse<Result, Error>
+    suspend fun uploadChallengeImage(@Part body: MultipartBody.Part, @Path("challenge_id") ChallengeId: String): NetworkResponse<Result, Error>
 }
