@@ -9,12 +9,14 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import biz.ohrae.challenge.model.filter.FilterItem
+import biz.ohrae.challenge.ui.components.checkBox.MyCheckBox
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.myTypography
 
@@ -24,7 +26,11 @@ import biz.ohrae.challenge.ui.theme.myTypography
 )
 @Composable
 private fun ChallengeFilterItemGallery() {
-    val list = listOf("매일", "평일만", "주말만", "주1회", "주2회", "주3회", "주4회", "주5회", "주6회")
+    val list = listOf(
+        FilterItem("전체", "all"),
+        FilterItem("유료", "paid"),
+        FilterItem("무료", "free"),
+    )
     Column(
         modifier = Modifier
             .background(DefaultWhite)
@@ -37,7 +43,7 @@ private fun ChallengeFilterItemGallery() {
 fun ChallengeFilterItem(
     modifier: Modifier = Modifier,
     title: String = "",
-    list: List<String>,
+    list: List<FilterItem>,
     textStyle: TextStyle = myTypography.w700,
 ) {
     Column(
@@ -46,7 +52,8 @@ fun ChallengeFilterItem(
     ) {
         Text(
             modifier = Modifier
-                .padding(0.dp,19.dp),text = title, style = textStyle)
+                .padding(0.dp, 19.dp), text = title, style = textStyle
+        )
         LazyVerticalGrid(
             userScrollEnabled = false,
             columns = GridCells.Fixed(2),
@@ -54,7 +61,7 @@ fun ChallengeFilterItem(
             horizontalArrangement = Arrangement.spacedBy(3.5.dp),
         ) {
             items(list) {
-                ChallengeFilterItem(modifier = Modifier, text = it)
+                ChallengeFilterItem(modifier = Modifier, text = it.name)
             }
         }
     }
@@ -65,18 +72,20 @@ fun ChallengeFilterItem(
     modifier: Modifier = Modifier,
     text: String = "",
 ) {
+    var checked by remember { mutableStateOf(false) }
+
     Row() {
-        Surface(
-            modifier = modifier
-                .width(20.dp)
-                .height(20.dp)
-                .aspectRatio(1f),
-            shape = RoundedCornerShape(4.dp),
-            border = BorderStroke(1.dp, Color(0xffc7c7c7)),
-        ){
-        }
-        Spacer(modifier = Modifier.width(4.dp))
-        Text(text = text, color = Color(0xff6c6c6c))
+        MyCheckBox(
+            checkBoxSize = 20.dp,
+            label = text,
+            labelStyle = myTypography.w700,
+            onClick = {
+                checked = !checked
+            },
+            onChecked = {
+                checked = !checked
+            }
+        )
     }
 }
 

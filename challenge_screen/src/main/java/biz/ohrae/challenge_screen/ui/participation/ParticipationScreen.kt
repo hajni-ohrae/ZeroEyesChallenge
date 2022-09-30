@@ -22,7 +22,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.ui.components.button.FlatBottomButton
-import biz.ohrae.challenge.ui.components.checkBox.CheckBox
+import biz.ohrae.challenge.ui.components.checkBox.MyCheckBox
 import biz.ohrae.challenge.ui.components.dropdown.DropDownItem
 import biz.ohrae.challenge.ui.components.dropdown.MyDropDown
 import biz.ohrae.challenge.ui.components.input.TextBox
@@ -126,9 +126,8 @@ fun ParticipationScreen(
                 verticalAlignment = CenterVertically
             ) {
                 Text(text = "리워즈 사용", style = myTypography.bold, fontSize = dpToSp(dp = 14.dp))
-                CheckBox(
+                MyCheckBox(
                     checkBoxSize = 20.dp,
-                    checkBoxSpacing = 4.dp,
                     label = "리워즈 전액 사용",
                     labelStyle = myTypography.w700,
                     onClick = {
@@ -138,7 +137,7 @@ fun ParticipationScreen(
                             totalAmount = calculateTotalAmount(participationAmount, rewards)
                         }
                     },
-                    onCheckedChange = {
+                    onChecked = {
                         checked = !checked
                         if (checked) {
                             rewards = (challengeData.user?.rewards_amount ?: 0).toString()
@@ -148,6 +147,7 @@ fun ParticipationScreen(
                     checked = checked,
                 )
             }
+            Spacer(modifier = Modifier.height(12.dp))
             TextBox(
                 modifier = Modifier
                     .fillMaxWidth()

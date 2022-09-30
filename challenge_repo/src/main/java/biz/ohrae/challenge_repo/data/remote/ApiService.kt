@@ -112,5 +112,8 @@ interface ApiService {
 
     @Multipart
     @POST(Routes.CHALLENGE_UPLOAD_IMAGE)
-    suspend fun uploadChallengeImage(@Part body: MultipartBody.Part, @Path("challenge_id") ChallengeId: String): NetworkResponse<Result, Error>
+    suspend fun uploadChallengeImage(@Part body: MultipartBody.Part): NetworkResponse<Result, Error>
+
+    @POST(Routes.USER_CHALLENGE_LIST)
+    suspend fun getUserChallengeList(@Part body: MultipartBody.Part): NetworkResponse<Result, Error>
 }

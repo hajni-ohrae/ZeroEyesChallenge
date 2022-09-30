@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import biz.ohrae.challenge.model.filter.FilterItem
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 
 @Preview(
@@ -17,9 +18,25 @@ import biz.ohrae.challenge.ui.theme.DefaultWhite
 )
 @Composable
 private fun ChallengeFilterGallery() {
-    val certifiedList = listOf("매일", "평일만", "주말만", "주1회", "주2회", "주3회", "주4회", "주5회", "주6회")
-    val periodList = listOf("1주","2주","3주")
-    val etcList = listOf("18세 미만 참여불가")
+    val certifiedList = listOf(
+        FilterItem("매일","daily"),
+        FilterItem("평일만","weekend"),
+        FilterItem("주말만","weekday"),
+        FilterItem("주1회","1"),
+        FilterItem("주2회","2"),
+        FilterItem("주3회","3"),
+        FilterItem("주4회","4"),
+        FilterItem("주5회","5"),
+        FilterItem("주6회","6"),
+    )
+    val periodList = listOf(
+        FilterItem("주1회","1"),
+        FilterItem("주2회","2"),
+        FilterItem("주3회","3"),
+    )
+    val etcList = listOf(
+        FilterItem("18세 미만 참여불가 ","1"),
+    )
 
     Column(
         modifier = Modifier

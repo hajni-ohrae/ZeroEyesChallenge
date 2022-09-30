@@ -16,6 +16,7 @@ object Routes {
     const val CREATE_CHALLENGE = "${CHALLENGE}/api/challenge/create"
     const val REGISTER_CHALLENGE = "${CHALLENGE}/api/challenge/register"
     const val FAVORITE_CHALLENGE = "${CHALLENGE}/api/challenge/favorite"
+    const val GET_USER_CHALLENGE_LIST = "${CHALLENGE}/api/challenge/user/get/all"
 
     // 결제
     const val REQUEST_PAYMENT = "${CHALLENGE}/api/payment/request"

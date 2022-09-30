@@ -4,9 +4,12 @@ import biz.ohrae.challenge.model.filter.FilterItem
 
 data class FilterState(
     val filterItem: List<FilterItem>,
-    var selectFilterType: String = ""
-) {
+    var selectFilterType: String = "",
+    val certifiedList: List<FilterItem>,
+    val periodList: List<FilterItem>,
+    val etcList: List<FilterItem>,
 
+) {
     companion object {
         fun mock() = FilterState(
             filterItem = listOf(
@@ -15,6 +18,25 @@ data class FilterState(
                 FilterItem("무료", "free"),
             ),
             selectFilterType = "all",
+            certifiedList = listOf(
+                FilterItem("매일","daily"),
+                FilterItem("평일만","weekend"),
+                FilterItem("주말만","weekday"),
+                FilterItem("주1회","1"),
+                FilterItem("주2회","2"),
+                FilterItem("주3회","3"),
+                FilterItem("주4회","4"),
+                FilterItem("주5회","5"),
+                FilterItem("주6회","6"),
+            ),
+            periodList = listOf(
+                FilterItem("주1회","1"),
+                FilterItem("주2회","2"),
+                FilterItem("주3회","3"),
+            ),
+            etcList = listOf(
+                FilterItem("18세 미만 참여불가 ","1"),
+            )
         )
     }
 }
