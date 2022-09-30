@@ -12,7 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.ui.components.button.FlatBottomButton
 import biz.ohrae.challenge.ui.components.card.ChallengeStartEndDateCard
-import biz.ohrae.challenge.ui.components.checkBox.CheckBox
+import biz.ohrae.challenge.ui.components.checkBox.MyCheckBox
 import biz.ohrae.challenge.ui.components.dropdown.MyDropDown
 import biz.ohrae.challenge.ui.theme.DefaultBlack
 import biz.ohrae.challenge.ui.theme.DefaultWhite
@@ -135,17 +135,17 @@ fun ChallengerRecruitment(
             fontSize = dpToSp(dp = 12.dp),
             color = Color(0xff005bad)
         )
-        CheckBox(
+        Spacer(modifier = Modifier.height(16.dp))
+        MyCheckBox(
             checkBoxSize = 20.dp,
-            checkBoxSpacing = 4.dp,
             label = "이용제한",
             labelStyle = myTypography.w700,
             onClick = {
                 checked = !checked
-            },
-            onCheckedChange = {
-                checked = !checked
                 viewModel?.checkAdultOnly(checked)
+            },
+            onChecked = {
+                checked = !checked
             },
             checked = checked,
         )

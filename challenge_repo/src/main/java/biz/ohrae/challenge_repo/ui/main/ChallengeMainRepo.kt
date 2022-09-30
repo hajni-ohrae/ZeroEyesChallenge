@@ -18,9 +18,13 @@ class ChallengeMainRepo @Inject constructor(
     private val gson: Gson,
     private val prefs: SharedPreference
 ) {
-    suspend fun getChallenges(paymentType:String = "",verificationPeriodType:String = ""): Flow<FlowResult> {
+    suspend fun getChallenges(
+        paymentType: String = "",
+        verificationPeriodType: String = ""
+    ): Flow<FlowResult> {
         val accessToken = prefs.getUserData()?.access_token
-        val response = apiService.getAllChallenge(accessToken.toString(), paymentType, verificationPeriodType)
+        val response =
+            apiService.getAllChallenge(accessToken.toString(), paymentType, verificationPeriodType)
 
         when (response) {
             is NetworkResponse.Success -> {
@@ -52,9 +56,18 @@ class ChallengeMainRepo @Inject constructor(
             }
             else -> {
                 return flow {
-                    emit(FlowResult(null,"",""))
+                    emit(FlowResult(null, "", ""))
                 }
             }
         }
+    }
+
+    suspend fun userChallengeList(
+        paymentType: String = "",
+        verificationPeriodType: String = ""
+    ): Flow<FlowResult> {
+        val response =
+            apiService.g(accessToken.toString(), paymentType, verificationPeriodType)
+
     }
 }

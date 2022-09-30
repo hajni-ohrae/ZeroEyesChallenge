@@ -1,17 +1,27 @@
 package biz.ohrae.challenge.ui.components.checkBox
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.modifier.modifierLocalConsumer
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.myTypography
+import biz.ohrae.challenge_component.R
 
 @Preview(
     showBackground = true,
@@ -23,15 +33,11 @@ private fun ChallengeCalendarCardGallery() {
     var checked by remember { mutableStateOf(false) }
 
     Column() {
-        CheckBox(
+        MyCheckBox(
             checkBoxSize = 20.dp,
-            checkBoxSpacing = 4.dp,
             label = "이용제한",
             labelStyle = myTypography.w700,
             onClick = {
-                checked = !checked
-            },
-            onCheckedChange = {
                 checked = !checked
             },
             checked = checked,
@@ -39,46 +45,45 @@ private fun ChallengeCalendarCardGallery() {
     }
 
 }
+
 @Composable
-fun CheckBox(
-    checkBoxSize: Dp,
-    checkBoxSpacing: Dp,
+fun MyCheckBox(
+    checkBoxSize: Dp = 20.dp,
     label: String,
     labelStyle: TextStyle,
     onClick: () -> Unit,
-    onCheckedChange: ((Boolean) -> Unit)?,
+    onChecked: () -> Unit = {},
     checked: Boolean = false
 ) {
-    TextButton(
-        colors = ButtonDefaults.buttonColors(
-            contentColor = labelStyle.color,
-            backgroundColor = Color.Transparent
-        ),
-        onClick = onClick
+    Row(
+        modifier = Modifier.clickable(onClick = onClick),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
+        Surface(
+            modifier = Modifier
+                .width(checkBoxSize)
+                .height(checkBoxSize)
+                .aspectRatio(1f)
+                .clickable { onChecked() },
+            shape = RoundedCornerShape(4.dp),
+            border = if (checked) BorderStroke(0.dp, Color(0xffc7c7c7)) else BorderStroke(1.dp, Color(0xffc7c7c7)),
+            color = if (checked) Color(0xff005bad) else DefaultWhite
         ) {
-            Checkbox(
-                modifier = Modifier
-                    .width(checkBoxSize)
-                    .height(checkBoxSize),
-                checked = checked,
-                onCheckedChange = onCheckedChange,
-                colors = CheckboxDefaults.colors(
-                    checkmarkColor = DefaultWhite,
-                    checkedColor = Color(0xff003865),
-                    disabledColor = Color(0xffc7c7c7),
-                    uncheckedColor = Color(0xffc7c7c7)
+            if (checked) {
+                Icon(
+                    painter = painterResource(id = R.drawable.check_empty),
+                    contentDescription = "check_empty",
+                    tint = DefaultWhite
                 )
-            )
-            Spacer(modifier = Modifier.width(checkBoxSpacing))
-            Text(
-                text = label,
-                style = labelStyle,
-                color =  Color(0xff6c6c6c)
-            )
+            }
         }
+
+        Spacer(modifier = Modifier.width(4.dp))
+        Text(
+            text = label,
+            style = labelStyle, color = Color(0xff6c6c6c)
+        )
     }
 }
+

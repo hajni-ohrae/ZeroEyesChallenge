@@ -14,11 +14,10 @@ import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,6 +29,7 @@ import biz.ohrae.challenge.ui.theme.DefaultBlack
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
+import biz.ohrae.challenge_screen.model.main.FilterState
 import com.google.accompanist.flowlayout.MainAxisAlignment
 
 class FilterDialog() :
@@ -102,13 +102,11 @@ fun Filter(
     listener: FilterDialogListener? = null,
     positiveBtnName: String = "확인",
     negativeBtnName: String = "취소",
+    filterState: FilterState = FilterState.mock()
 ) {
-    val certifiedList = listOf("매일", "평일만", "주말만", "주1회", "주2회", "주3회", "주4회", "주5회", "주6회")
-    val periodList = listOf("1주", "2주", "3주")
-    val etcList = listOf("18세 미만 참여불가")
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RectangleShape,
+        shape = RoundedCornerShape(10.dp),
         backgroundColor = DefaultWhite
     ) {
         Column(
@@ -142,9 +140,9 @@ fun Filter(
                     }
                 }
 
-                ChallengeFilterItem(modifier = Modifier, title = "인증빈도", list = certifiedList)
-                ChallengeFilterItem(modifier = Modifier, title = "챌린지 기간", list = periodList)
-                ChallengeFilterItem(modifier = Modifier, title = "기타", list = etcList)
+                ChallengeFilterItem(modifier = Modifier, title = "인증빈도", list = filterState.certifiedList)
+                ChallengeFilterItem(modifier = Modifier, title = "챌린지 기간", list = filterState.periodList)
+                ChallengeFilterItem(modifier = Modifier, title = "기타", list = filterState.etcList)
             }
 
 
@@ -152,7 +150,7 @@ fun Filter(
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(6f),
-                rightText = "",
+                rightText = "홈으로",
                 leftText = "챌린지 알람 설정",
                 onClickRight = {
                 },
