@@ -58,7 +58,8 @@ class MainActivity : AppCompatActivity() {
                 ChallengeMainScreen(
                     mainScreenState = mainScreenState,
                     filterState = filterState!!,
-                    clickListener = mainClickListener
+                    clickListener = mainClickListener,
+                    viewModel = viewModel
                 )
             }
         }
@@ -66,6 +67,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun init() {
         viewModel.getChallengeList()
+        viewModel.getUserChallengeList()
     }
 
     private fun initClickListener() {

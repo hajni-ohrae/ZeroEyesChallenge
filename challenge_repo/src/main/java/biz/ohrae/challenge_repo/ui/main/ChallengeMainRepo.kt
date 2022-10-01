@@ -62,12 +62,42 @@ class ChallengeMainRepo @Inject constructor(
         }
     }
 
-//    suspend fun userChallengeList(
-//        paymentType: String = "",
-//        verificationPeriodType: String = ""
-//    ): Flow<FlowResult> {
-//        val response =
-//            apiService.getUserChallengeList(accessToken.toString(), paymentType, verificationPeriodType)
-//
-//    }
+    suspend fun getUserChallengeList(): Flow<FlowResult> {
+        val accessToken = prefs.getUserData()?.access_token
+        val response =
+            apiService.getUserChallengeList(accessToken.toString())
+        when (response) {
+            is NetworkResponse.Success -> {
+                val gson = Gson()
+                val isSuccess = response.body.success
+                if (isSuccess) {
+                    val dataset = response.body.dataset
+                    dataset?.let {
+
+                        val dataSet: JsonElement = dataset?.getAsJsonArray("array")!!.asJsonArray
+
+                        val listType = object : TypeToken<List<ChallengeData?>?>() {}.type
+                        val userChallengeList = gson.fromJson<List<ChallengeData>>(dataSet, listType)
+                        return flow {
+                            emit(FlowResult(userChallengeList, "", ""))
+                        }
+                    } ?: run {
+                        return flow {
+                            emit(FlowResult(null, "", ""))
+                        }
+                    }
+                } else {
+                    return flow {
+                        emit(FlowResult(null, response.body.code, response.body.message))
+                    }
+                }
+
+            }
+            else -> {
+                return flow {
+                    emit(FlowResult(null, "", ""))
+                }
+            }
+        }
+    }
 }

@@ -118,5 +118,7 @@ interface ApiService {
     ): NetworkResponse<Result, Error>
 
     @POST(Routes.GET_USER_CHALLENGE_LIST)
-    suspend fun getUserChallengeList(@Part body: MultipartBody.Part): NetworkResponse<Result, Error>
+    suspend fun getUserChallengeList(
+        @Header("x-access-token") accessToken: String
+    ): NetworkResponse<Result2, Error>
 }

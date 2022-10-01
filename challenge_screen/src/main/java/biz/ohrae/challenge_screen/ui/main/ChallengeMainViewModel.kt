@@ -9,6 +9,7 @@ import biz.ohrae.challenge_repo.ui.main.UserRepo
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import biz.ohrae.challenge_screen.model.main.FilterState
 import biz.ohrae.challenge_screen.model.main.MainScreenState
+import biz.ohrae.challenge_screen.model.user.UserChallengeListState
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -25,12 +26,14 @@ class ChallengeMainViewModel @Inject constructor(
     private val gson: Gson
 ) : ViewModel() {
     private val _mainScreenState = MutableLiveData<MainScreenState>()
+    private val _userChallengeListState = MutableLiveData<UserChallengeListState>()
     private val _filterState = MutableLiveData<FilterState>()
     private val _tokenValid = MutableLiveData<Boolean>()
 
     val filterState get() = _filterState
     val mainScreenState get() = _mainScreenState
     val tokenValid get() = _tokenValid
+    val userChallengeListState get() = _userChallengeListState
 
     init {
 //        login()
@@ -80,15 +83,16 @@ class ChallengeMainViewModel @Inject constructor(
         }
     }
 
-//    fun getChallengeList() {
-//        viewModelScope.launch {
-//            challengeMainRepo.getChallenges().flowOn(Dispatchers.IO).collect {
-//                Timber.e("result : ${gson.toJson(it.data)}")
-//                it.data?.let { data ->
-//                    val state = data as MainScreenState
-//                    _mainScreenState.value = state
-//                }
-//            }
-//        }
-//    }
+    fun getUserChallengeList() {
+        viewModelScope.launch {
+            val response = challengeMainRepo.getUserChallengeList()
+            response.flowOn(Dispatchers.IO).collect {
+                it.data?.let { data ->
+                    val userChallengeList = data as List<ChallengeData>
+                    val state = UserChallengeListState(userChallengeList)
+                    _userChallengeListState.value = state
+                }
+            }
+        }
+    }
 }

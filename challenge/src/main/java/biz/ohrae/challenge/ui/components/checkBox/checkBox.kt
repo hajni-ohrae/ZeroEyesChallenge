@@ -57,7 +57,7 @@ fun MyCheckBox(
 ) {
     Row(
         modifier = Modifier.clickable(onClick = onClick),
-        horizontalArrangement = Arrangement.Center,
+        horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Surface(

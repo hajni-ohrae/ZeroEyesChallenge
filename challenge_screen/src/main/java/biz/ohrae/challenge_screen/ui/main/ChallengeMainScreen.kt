@@ -10,6 +10,8 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,8 +43,10 @@ import timber.log.Timber
 fun ChallengeMainScreen(
     mainScreenState: MainScreenState? = null,
     clickListener: MainClickListener? = null,
-    filterState: FilterState = FilterState.mock()
+    filterState: FilterState = FilterState.mock(),
+    viewModel: ChallengeMainViewModel? = null
 ) {
+//    val state by viewModel.welcomeScreenState.observeAsState()
 
     Spacer(modifier = Modifier.height(16.dp))
     Column(
@@ -50,7 +54,9 @@ fun ChallengeMainScreen(
             .fillMaxWidth()
             .fillMaxSize(),
     ) {
-        Box(modifier = Modifier.fillMaxSize().fillMaxWidth()) {
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .fillMaxWidth()) {
             LazyColumn(
                 modifier = Modifier
                     .padding(24.dp, 0.dp)
@@ -62,7 +68,8 @@ fun ChallengeMainScreen(
                     ItemHeader(
                         mainScreenState = mainScreenState,
                         clickListener = clickListener,
-                        filterState = filterState
+                        filterState = filterState,
+                        viewModel = viewModel
                     )
                 }
                 items(mainScreenState?.challengeList!!) { item ->
@@ -113,8 +120,10 @@ fun ChallengeMainScreen(
 fun ItemHeader(
     mainScreenState: MainScreenState? = null,
     clickListener: MainClickListener?,
-    filterState: FilterState = FilterState.mock()
+    filterState: FilterState = FilterState.mock(),
+    viewModel: ChallengeMainViewModel? = null
 ) {
+    val state by viewModel!!.userChallengeListState.observeAsState()
     Column(Modifier.fillMaxWidth()) {
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
@@ -127,40 +136,42 @@ fun ItemHeader(
                 )
             }
         }
-        Spacer(modifier = Modifier.height(30.dp))
-        Text(
-            text = "참여중인 챌린지",
-            style = myTypography.bold,
-            fontSize = dpToSp(dp = 16.dp),
-            color = DefaultBlack
-        )
-        Spacer(modifier = Modifier.height(10.dp))
 
-        LazyRow(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(24.dp),
-        ) {
-            item {
-                ChallengesInParticipationCard(
-                    modifier = Modifier.fillParentMaxSize(),
-                    title = "매일 6시간씩 한국사 공부",
-                    1,
-                    30,
-                    "완료",
-                    Color(0xffdedede),
-                    Color(0xff6c6c6c)
-                )
-            }
-            item {
-                ChallengesInParticipationCard(
-                    modifier = Modifier.fillParentMaxSize(),
-                    title = "매일 6시간씩 한국사 공부",
-                    1,
-                    30,
-                    "완료",
-                    Color(0xffdedede),
-                    Color(0xff6c6c6c)
-                )
+        if (state != null) {
+            Spacer(modifier = Modifier.height(30.dp))
+            Text(
+                text = "참여중인 챌린지",
+                style = myTypography.bold,
+                fontSize = dpToSp(dp = 16.dp),
+                color = DefaultBlack
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            LazyRow(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(24.dp),
+            ) {
+                item {
+                    ChallengesInParticipationCard(
+                        modifier = Modifier.fillParentMaxSize(),
+                        title = "매일 6시간씩 한국사 공부",
+                        1,
+                        30,
+                        "완료",
+                        Color(0xffdedede),
+                        Color(0xff6c6c6c)
+                    )
+                }
+                item {
+                    ChallengesInParticipationCard(
+                        modifier = Modifier.fillParentMaxSize(),
+                        title = "매일 6시간씩 한국사 공부",
+                        1,
+                        30,
+                        "완료",
+                        Color(0xffdedede),
+                        Color(0xff6c6c6c)
+                    )
+                }
             }
         }
         FilterCard(clickListener = clickListener, filterState, filterState.selectFilterType)

@@ -1,17 +1,13 @@
 package biz.ohrae.challenge.ui.components.filter
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,17 +31,20 @@ private fun ChallengeFilterItemGallery() {
         modifier = Modifier
             .background(DefaultWhite)
     ) {
-        ChallengeFilterItem(modifier = Modifier, title = "인증빈도", list = list)
+        ChallengeFilterItemList(modifier = Modifier, title = "인증빈도", list = list)
     }
 }
 
 @Composable
-fun ChallengeFilterItem(
+fun ChallengeFilterItemList(
     modifier: Modifier = Modifier,
     title: String = "",
     list: List<FilterItem>,
     textStyle: TextStyle = myTypography.w700,
+    select: Boolean = true
 ) {
+    var checked by remember { mutableStateOf(select) }
+
     Column(
         modifier = Modifier
             .background(DefaultWhite)
@@ -61,31 +60,18 @@ fun ChallengeFilterItem(
             horizontalArrangement = Arrangement.spacedBy(3.5.dp),
         ) {
             items(list) {
-                ChallengeFilterItem(modifier = Modifier, text = it.name)
+                MyCheckBox(
+                    checkBoxSize = 20.dp,
+                    label = it.name,
+                    labelStyle = myTypography.w700,
+                    onClick = {
+                        checked = !checked
+                    },
+                    onChecked = {
+                        checked = !checked
+                    }
+                )
             }
         }
     }
 }
-
-@Composable
-fun ChallengeFilterItem(
-    modifier: Modifier = Modifier,
-    text: String = "",
-) {
-    var checked by remember { mutableStateOf(false) }
-
-    Row() {
-        MyCheckBox(
-            checkBoxSize = 20.dp,
-            label = text,
-            labelStyle = myTypography.w700,
-            onClick = {
-                checked = !checked
-            },
-            onChecked = {
-                checked = !checked
-            }
-        )
-    }
-}
-

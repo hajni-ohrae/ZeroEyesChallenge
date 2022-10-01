@@ -1,17 +1,17 @@
 package biz.ohrae.challenge_screen.ui.dialog
 
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.*
@@ -24,13 +24,12 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.DialogFragment
 import androidx.window.layout.WindowMetricsCalculator
 import biz.ohrae.challenge.ui.components.button.FlatDoubleButton
-import biz.ohrae.challenge.ui.components.filter.ChallengeFilterItem
+import biz.ohrae.challenge.ui.components.filter.ChallengeFilterItemList
 import biz.ohrae.challenge.ui.theme.DefaultBlack
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge_screen.model.main.FilterState
-import com.google.accompanist.flowlayout.MainAxisAlignment
 
 class FilterDialog() :
     DialogFragment() {
@@ -104,6 +103,8 @@ fun Filter(
     negativeBtnName: String = "취소",
     filterState: FilterState = FilterState.mock()
 ) {
+    val isChecked = remember { mutableStateOf(false) }
+
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(10.dp),
@@ -139,10 +140,9 @@ fun Filter(
                         )
                     }
                 }
-
-                ChallengeFilterItem(modifier = Modifier, title = "인증빈도", list = filterState.certifiedList)
-                ChallengeFilterItem(modifier = Modifier, title = "챌린지 기간", list = filterState.periodList)
-                ChallengeFilterItem(modifier = Modifier, title = "기타", list = filterState.etcList)
+                ChallengeFilterItemList(modifier = Modifier, title = "인증빈도", list = filterState.certifiedList, select = true)
+                ChallengeFilterItemList(modifier = Modifier, title = "챌린지 기간", list = filterState.periodList)
+                ChallengeFilterItemList(modifier = Modifier, title = "기타", list = filterState.etcList)
             }
 
 

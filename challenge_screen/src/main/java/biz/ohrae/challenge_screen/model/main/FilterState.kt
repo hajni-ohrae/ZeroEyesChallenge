@@ -4,12 +4,17 @@ import biz.ohrae.challenge.model.filter.FilterItem
 
 data class FilterState(
     val filterItem: List<FilterItem>,
-    var selectFilterType: String = "",
     val certifiedList: List<FilterItem>,
     val periodList: List<FilterItem>,
     val etcList: List<FilterItem>,
+    var selectFilterType: String = "",
 
-) {
+    var selectPeriodtype:String ="",
+    var selectPerWeek:String ="",
+    var selectPeriod:String ="",
+    var selectIsAdultOnly:String ="",
+
+    ) {
     companion object {
         fun mock() = FilterState(
             filterItem = listOf(
