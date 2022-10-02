@@ -23,8 +23,10 @@ class ChallengeDetailViewModel @Inject constructor(
     private val gson: Gson
 ) : ViewModel() {
     private val _challengeData = MutableLiveData<ChallengeData>()
+    private val _isJoined = MutableLiveData<Boolean>()
 
     val challengeData get() = _challengeData
+    val isJoined get() = _isJoined
 
     fun getChallenge(id: String) {
         viewModelScope.launch {
@@ -33,6 +35,7 @@ class ChallengeDetailViewModel @Inject constructor(
                 if (it.data != null) {
                     val challengeData = it.data as ChallengeData
                     _challengeData.value = challengeData
+                    _isJoined.value = challengeData.inChallenge.isNullOrEmpty() == false
                 }
             }
         }

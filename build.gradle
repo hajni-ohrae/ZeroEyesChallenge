@@ -69,6 +69,7 @@ buildscript {
         /** accompanist **/
         accompanist = '0.24.11-rc'
         accompanistPager = "com.google.accompanist:accompanist-pager:$accompanist"
+        accompanistPagerIndicators = "com.google.accompanist:accompanist-pager-indicators:$accompanist"
         accompanistTheme = "com.google.accompanist:accompanist-appcompat-theme:$accompanist"
         accompanistPermissions = "com.google.accompanist:accompanist-permissions:$accompanist"
         accompanistSystemUIController = "com.google.accompanist:accompanist-systemuicontroller:$accompanist"

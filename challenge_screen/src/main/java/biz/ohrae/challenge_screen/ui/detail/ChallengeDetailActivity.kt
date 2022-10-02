@@ -79,14 +79,25 @@ class ChallengeDetailActivity : AppCompatActivity() {
     @Composable
     private fun Navigation() {
         navController = rememberNavController()
+        val isJoined by viewModel.isJoined.observeAsState()
+        val challengeData by viewModel.challengeData.observeAsState()
+
+        if (isJoined == null || challengeData == null) {
+            return
+        }
 
         NavHost(
             navController = navController,
-            startDestination = ChallengeDetailNavScreen.DetailBeforeJoin.route
+            startDestination = if (isJoined == true) ChallengeDetailNavScreen.JoinedDetail.route else ChallengeDetailNavScreen.Detail.route
         ) {
-            composable(ChallengeDetailNavScreen.DetailBeforeJoin.route) {
-                val challengeData by viewModel.challengeData.observeAsState()
+            composable(ChallengeDetailNavScreen.Detail.route) {
                 ChallengeDetailScreen(
+                    challengeData = challengeData,
+                    clickListener = detailClickListener
+                )
+            }
+            composable(ChallengeDetailNavScreen.JoinedDetail.route) {
+                ChallengeJoinedDetailScreen(
                     challengeData = challengeData,
                     clickListener = detailClickListener
                 )
@@ -103,7 +114,10 @@ class ChallengeDetailActivity : AppCompatActivity() {
             override fun onClickParticipation() {
                 intent = Intent(this@ChallengeDetailActivity, ParticipationActivity::class.java)
                 intent.putExtra("challengeId", challengeId)
-                intent.putExtra("isCancel", !viewModel.challengeData.value?.inChallenge.isNullOrEmpty())
+                intent.putExtra(
+                    "isCancel",
+                    !viewModel.challengeData.value?.inChallenge.isNullOrEmpty()
+                )
                 launcher.launch(intent)
             }
         }
@@ -111,5 +125,6 @@ class ChallengeDetailActivity : AppCompatActivity() {
 }
 
 sealed class ChallengeDetailNavScreen(val route: String) {
-    object DetailBeforeJoin : ChallengeDetailNavScreen("Detail")
+    object Detail : ChallengeDetailNavScreen("Detail")
+    object JoinedDetail : ChallengeDetailNavScreen("JoinedDetail")
 }

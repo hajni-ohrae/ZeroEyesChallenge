@@ -13,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.model.list_item.ChallengeItemData
 import biz.ohrae.challenge.model.state.ChallengeDetailStatus
+import biz.ohrae.challenge.ui.components.card.CategorySurFace
 import biz.ohrae.challenge.ui.components.label.ChallengeProgressStatus
 import biz.ohrae.challenge.ui.components.label.ProgressLabel
 import biz.ohrae.challenge.ui.theme.DefaultWhite
@@ -40,11 +41,28 @@ private fun ChallengeDetailsTitleGallery() {
             challengeItemData.startDate,
             challengeItemData.endDate
         )
+        Spacer(modifier = Modifier.height(10.dp))
+        ChallengeJoinedDetailsTitle(
+            challengeItemData.state,
+            challengeItemData.personnel,
+            challengeItemData.title,
+            isFree = true,
+            isAdult = true,
+            isPhoto = true,
+            challengeItemData.startDate,
+            challengeItemData.endDate
+        )
     }
 }
 
 @Composable
-fun ChallengeDetailsTitle(status : ChallengeDetailStatus, personnel: Int, detailTitle: String, startDay: String, endDay: String) {
+fun ChallengeDetailsTitle(
+    status: ChallengeDetailStatus,
+    personnel: Int,
+    detailTitle: String,
+    startDay: String,
+    endDay: String
+) {
     Column {
         Row(verticalAlignment = Alignment.CenterVertically) {
             ProgressLabel(
@@ -83,7 +101,63 @@ fun ChallengeDetailsTitle(status : ChallengeDetailStatus, personnel: Int, detail
             style = myTypography.bold,
         )
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text = "${convertDate(startDay)} ~ ${convertDate(endDay)}", fontSize = dpToSp(dp = 16.dp))
+        Text(
+            text = "${convertDate(startDay)} ~ ${convertDate(endDay)}",
+            fontSize = dpToSp(dp = 16.dp)
+        )
+    }
+}
+
+@Composable
+fun ChallengeJoinedDetailsTitle(
+    status: ChallengeDetailStatus,
+    personnel: Int,
+    detailTitle: String,
+    isFree: Boolean,
+    isAdult: Boolean,
+    isPhoto: Boolean,
+    startDay: String,
+    endDay: String
+) {
+    Column {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            CategorySurFace(
+                text = if (isFree) "무료" else "유료",
+                backgroundColor = Color(0x335c94ff),
+                textColor = Color(0xff5c94ff)
+            )
+            if (isPhoto) {
+                Spacer(modifier = Modifier.width(4.dp))
+                CategorySurFace(
+                    text = "사진인증",
+                    backgroundColor = Color(0xffdedede),
+                    textColor = Color(0xff7c7c7c)
+                )
+            }
+            if (isAdult) {
+                Spacer(modifier = Modifier.width(4.dp))
+                CategorySurFace(
+                    text = "18세미만 참여불가",
+                    backgroundColor = Color(0x33c27247),
+                    textColor = Color(0xffc27247)
+                )
+            }
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = detailTitle, fontSize = dpToSp(dp = 20.dp),
+            style = myTypography.extraBold,
+        )
+        Spacer(modifier = Modifier.height(24.dp))
+        Text(
+            text = "챌린지 기간", fontSize = dpToSp(dp = 16.dp),
+            style = myTypography.bold,
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = "${convertDate(startDay)} ~ ${convertDate(endDay)}",
+            fontSize = dpToSp(dp = 16.dp)
+        )
     }
 }
 
