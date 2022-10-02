@@ -141,7 +141,9 @@ class ParticipationActivity : BaseActivity() {
 
             // 챌린지 참여 취소
             override fun onClickCancelParticipation() {
-                navController.navigate(ChallengeParticipationNavScreen.ParticipationCancelResult.route)
+                detailViewModel.challengeData.value?.let {
+                    viewModel.cancelChallenge(it)
+                }
             }
 
             // 챌린지 취소 후 확인
@@ -163,6 +165,15 @@ class ParticipationActivity : BaseActivity() {
             result.data?.let {
                 setResult(RESULT_OK)
                 finish()
+            } ?: run {
+                val message = "code : ${result.errorCode}, message : ${result.errorMessage}"
+                showSnackBar(message)
+            }
+        }
+
+        viewModel.cancelResult.observe(this) { result ->
+            result.data?.let {
+                navController.navigate(ChallengeParticipationNavScreen.ParticipationCancelResult.route)
             } ?: run {
                 val message = "code : ${result.errorCode}, message : ${result.errorMessage}"
                 showSnackBar(message)

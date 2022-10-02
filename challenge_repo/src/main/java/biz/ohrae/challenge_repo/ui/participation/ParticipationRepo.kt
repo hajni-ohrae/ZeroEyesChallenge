@@ -47,7 +47,9 @@ class ParticipationRepo @Inject constructor(
                 }
             }
         }
-    }suspend fun requestPayment(): Flow<FlowResult> {
+    }
+
+    suspend fun requestPayment(): Flow<FlowResult> {
         val userId = prefs.getUserData()?.id
         val jsonObject = JsonObject()
         jsonObject.addProperty("user_id", userId)
@@ -69,6 +71,34 @@ class ParticipationRepo @Inject constructor(
                 } else {
                     flow {
                         emit(FlowResult(null, "", ""))
+                    }
+                }
+            }
+            else -> {
+                return flow {
+                    emit(FlowResult(null, "", ""))
+                }
+            }
+        }
+    }
+
+    suspend fun cancelChallenge(challengeData: ChallengeData): Flow<FlowResult> {
+        val user = prefs.getUserData()
+        val challengeId = challengeData.id
+        val userId = user?.id.toString()
+        val accessToken = user?.access_token.toString()
+
+        val response = apiService.cancelChallenge(accessToken, challengeId, userId)
+        when (response) {
+            is NetworkResponse.Success -> {
+                return if (response.body.success) {
+                    val resultObject = response.body.dataset?.asJsonObject
+                    flow {
+                        emit(FlowResult(resultObject, "", ""))
+                    }
+                } else {
+                    flow {
+                        emit(FlowResult(null, response.body.code, response.body.message))
                     }
                 }
             }

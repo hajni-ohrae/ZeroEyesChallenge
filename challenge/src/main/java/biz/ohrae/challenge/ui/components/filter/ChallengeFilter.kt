@@ -43,9 +43,9 @@ private fun ChallengeFilterGallery() {
             .background(DefaultWhite)
     ) {
         ChallengeFilter()
-        ChallengeFilterItem(modifier = Modifier, title = "인증빈도", list = certifiedList)
-        ChallengeFilterItem(modifier = Modifier, title = "챌린지 기간", list = periodList)
-        ChallengeFilterItem(modifier = Modifier, title = "기타", list = etcList)
+//        ChallengeFilterItem(modifier = Modifier, title = "인증빈도", list = certifiedList)
+//        ChallengeFilterItem(modifier = Modifier, title = "챌린지 기간", list = periodList)
+//        ChallengeFilterItem(modifier = Modifier, title = "기타", list = etcList)
     }
 
 }

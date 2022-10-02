@@ -23,8 +23,10 @@ class ParticipationViewModel @Inject constructor(
     private val gson: Gson
 ) : ViewModel() {
     private val _registerResult = MutableLiveData<FlowResult>()
+    private val _cancelResult = MutableLiveData<FlowResult>()
 
     val registerResult get() = _registerResult
+    val cancelResult get() = _cancelResult
 
     fun registerChallenge(challengeData: ChallengeData, paidAmount: Int, rewardsAmount: Int, depositAmount: Int) {
         viewModelScope.launch {
@@ -32,6 +34,16 @@ class ParticipationViewModel @Inject constructor(
 
             response.flowOn(Dispatchers.IO).collect { result ->
                 _registerResult.value = result
+            }
+        }
+    }
+
+    fun cancelChallenge(challengeData: ChallengeData) {
+        viewModelScope.launch {
+            val response = participationRepo.cancelChallenge(challengeData)
+
+            response.flowOn(Dispatchers.IO).collect { result ->
+                _cancelResult.value = result
             }
         }
     }
