@@ -51,6 +51,14 @@ interface ApiService {
         @Path("user_id") userId: String,
     ): NetworkResponse<Result, Error>
 
+    @GET(Routes.GET_USERS_BY_CHALLENGE)
+    suspend fun getUsersByChallenge(
+        @Header("x-access-token") accessToken: String,
+        @Header("page") page: Int,
+        @Header("per_page") count: Int,
+        @Path("challenge_id") challengeId: String,
+    ): NetworkResponse<Result, Error>
+
     @POST(Routes.REQUEST_PAYMENT)
     suspend fun requestPayment(@Body body: JsonObject?): NetworkResponse<Result, Error>
 

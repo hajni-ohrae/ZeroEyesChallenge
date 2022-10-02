@@ -97,8 +97,10 @@ class ChallengeDetailActivity : AppCompatActivity() {
                 )
             }
             composable(ChallengeDetailNavScreen.JoinedDetail.route) {
+                val challengers by viewModel.challengers.observeAsState()
                 ChallengeJoinedDetailScreen(
                     challengeData = challengeData,
+                    challengers = challengers,
                     clickListener = detailClickListener
                 )
             }
@@ -107,6 +109,7 @@ class ChallengeDetailActivity : AppCompatActivity() {
 
     private fun init() {
         viewModel.getChallenge(challengeId.toString())
+        viewModel.getUserByChallenge(challengeId.toString(), 1, 10)
     }
 
     private fun initClickListener() {

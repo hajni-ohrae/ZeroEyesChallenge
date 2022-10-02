@@ -32,6 +32,7 @@ import biz.ohrae.challenge.util.challengeDetailStatusMap
 import biz.ohrae.challenge.util.challengeVerificationDayMap
 import biz.ohrae.challenge.util.challengeVerificationPeriodMap
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
+import biz.ohrae.challenge_repo.model.user.User
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -47,6 +48,7 @@ import timber.log.Timber
 @Composable
 fun ChallengeJoinedDetailScreen(
     challengeData: ChallengeData? = ChallengeData.mock(),
+    challengers: List<User>? = null,
     clickListener: ChallengeDetailClickListener? = null
 ) {
     if (challengeData == null) {

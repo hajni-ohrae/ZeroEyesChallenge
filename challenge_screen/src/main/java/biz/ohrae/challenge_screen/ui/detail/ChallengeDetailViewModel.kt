@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
+import biz.ohrae.challenge_repo.model.user.User
 import biz.ohrae.challenge_repo.ui.detail.ChallengeDetailRepo
 import biz.ohrae.challenge_repo.ui.main.UserRepo
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
@@ -23,9 +24,11 @@ class ChallengeDetailViewModel @Inject constructor(
     private val gson: Gson
 ) : ViewModel() {
     private val _challengeData = MutableLiveData<ChallengeData>()
+    private val _challengers = MutableLiveData<List<User>>()
     private val _isJoined = MutableLiveData<Boolean>()
 
     val challengeData get() = _challengeData
+    val challengers get() = _challengers
     val isJoined get() = _isJoined
 
     fun getChallenge(id: String) {
@@ -36,6 +39,18 @@ class ChallengeDetailViewModel @Inject constructor(
                     val challengeData = it.data as ChallengeData
                     _challengeData.value = challengeData
                     _isJoined.value = challengeData.inChallenge.isNullOrEmpty() == false
+                }
+            }
+        }
+    }
+
+    fun getUserByChallenge(id: String, page: Int = 1, count: Int = 10) {
+        viewModelScope.launch {
+            repo.getUserByChallenge(id, page, count).flowOn(Dispatchers.IO).collect {
+                Timber.e("result : ${gson.toJson(it.data)}")
+                if (it.data != null) {
+                    val challengers = it.data as List<User>
+                    _challengers.value = challengers
                 }
             }
         }
