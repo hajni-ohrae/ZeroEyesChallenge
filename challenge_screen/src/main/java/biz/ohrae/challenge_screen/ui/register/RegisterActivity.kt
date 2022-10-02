@@ -164,25 +164,23 @@ class RegisterActivity : AppCompatActivity() {
             }
 
             override fun onClickOpenNext(
-                perWeek: String,
-                verificationPeriodType: String
             ) {
-                val week = perWeek.replace("[^0-9]".toRegex(), "")
-                val type: String = when (verificationPeriodType) {
-                    "매일인증" -> {
-                        "daily"
-                    }
-                    "평일만 인증(월,화,수,목,금)" -> {
-                        "weekday"
-                    }
-                    "주말만 인증 (토,일)" -> {
-                        "weekend"
-                    }
-                    else -> {
-                        "per_week"
-                    }
-                }
-                viewModel.verificationPeriodType(week, type)
+//                val week = perWeek.replace("[^0-9]".toRegex(), "")
+//                val type: String = when (verificationPeriodType) {
+//                    "매일인증" -> {
+//                        "daily"
+//                    }
+//                    "평일만 인증(월,화,수,목,금)" -> {
+//                        "weekday"
+//                    }
+//                    "주말만 인증 (토,일)" -> {
+//                        "weekend"
+//                    }
+//                    else -> {
+//                        "per_week"
+//                    }
+//                }
+                viewModel.verificationPeriodType()
                 navController.navigate(ChallengeRegisterNavScreen.ChallengerRecruitment.route)
             }
 

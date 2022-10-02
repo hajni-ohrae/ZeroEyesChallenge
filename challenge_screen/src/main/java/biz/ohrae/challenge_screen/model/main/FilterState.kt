@@ -9,8 +9,7 @@ data class FilterState(
     val etcList: List<FilterItem>,
     var selectFilterType: String = "",
 
-    var selectPeriodtype:String ="",
-    var selectPerWeek:String ="",
+    var selectVerificationPeriodType:String ="",
     var selectPeriod:String ="",
     var selectIsAdultOnly:String ="",
 
@@ -40,7 +39,7 @@ data class FilterState(
                 FilterItem("주3회","3"),
             ),
             etcList = listOf(
-                FilterItem("18세 미만 참여불가 ","1"),
+                FilterItem("18세 미만 참여불가","1"),
             )
         )
     }

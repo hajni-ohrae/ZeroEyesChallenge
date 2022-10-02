@@ -9,12 +9,22 @@ interface CustomDialogListener {
 }
 
 interface FilterDialogListener {
-    fun clickPositive()
+    fun clickPositive(
+        periodType: String = "",
+        perWeek: String = "",
+        period: String = "",
+        isAdultOnly: String = ""
+    )
+
     fun clickNegative()
     fun clickInitialization()
+    fun selectVerificationPeriodType(item: String)
+    fun selectPeriod(item: String)
+    fun selectIsAdultOnly(item: String)
 }
+
 interface CalendarDialogListener {
     fun clickPositive()
     fun clickNegative()
-    fun clickDay(day:String)
+    fun clickDay(day: String)
 }

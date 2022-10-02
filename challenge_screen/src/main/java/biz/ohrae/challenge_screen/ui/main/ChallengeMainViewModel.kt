@@ -59,14 +59,26 @@ class ChallengeMainViewModel @Inject constructor(
         }
     }
 
-    fun getChallengeList(paymentType: String = "", verificationPeriodType: String = "") {
+    fun getChallengeList(
+        paymentType: String = "",
+        verificationPeriodType: String = "",
+        per_week: String = "",
+        period: String = "",
+        is_adult_only: String = ""
+    ) {
         viewModelScope.launch {
-            val response = challengeMainRepo.getChallenges(paymentType, verificationPeriodType)
+            val response = challengeMainRepo.getChallenges(
+                paymentType,
+                verificationPeriodType,
+                per_week,
+                period,
+                is_adult_only
+            )
             response.flowOn(Dispatchers.IO).collect {
                 it.data?.let { data ->
                     val topBannerList = MainScreenState.mock().topBannerList
                     val challengeList = data as List<ChallengeData>
-                    val state = MainScreenState(challengeList, topBannerList, )
+                    val state = MainScreenState(challengeList, topBannerList)
                     _mainScreenState.value = state
                 }
             }
@@ -76,8 +88,42 @@ class ChallengeMainViewModel @Inject constructor(
     fun selectFilter(filterNameEn: String) {
         viewModelScope.launch {
             val filterState = FilterState.mock().copy()
+
             filterState?.let {
                 it.selectFilterType = filterNameEn
+                _filterState.value = it
+            }
+        }
+    }
+
+    fun selectPeriodType(item: String) {
+        viewModelScope.launch {
+            val filterState = _filterState.value?.copy()
+
+            filterState?.let {
+                it.selectVerificationPeriodType = item
+                _filterState.value = it
+            }
+        }
+    }
+
+    fun selectPeriod(item: String) {
+        viewModelScope.launch {
+            val filterState = _filterState.value?.copy()
+
+            filterState?.let {
+                it.selectPeriod = item
+                _filterState.value = it
+            }
+        }
+    }
+
+    fun selectIsAdultOnly(item: String) {
+        viewModelScope.launch {
+            val filterState = _filterState.value?.copy()
+
+            filterState?.let {
+                it.selectIsAdultOnly = item
                 _filterState.value = it
             }
         }

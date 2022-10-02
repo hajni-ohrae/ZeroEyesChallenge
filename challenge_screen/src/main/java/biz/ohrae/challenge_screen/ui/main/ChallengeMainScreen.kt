@@ -46,8 +46,6 @@ fun ChallengeMainScreen(
     filterState: FilterState = FilterState.mock(),
     viewModel: ChallengeMainViewModel? = null
 ) {
-//    val state by viewModel.welcomeScreenState.observeAsState()
-
     Spacer(modifier = Modifier.height(16.dp))
     Column(
         modifier = Modifier

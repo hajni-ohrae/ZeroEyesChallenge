@@ -98,8 +98,6 @@ class ChallengeRegisterViewModel @Inject constructor(
     }
 
     fun verificationPeriodType(
-        perWeek: String,
-        verificationPeriodType: String
     ) {
         viewModelScope.launch {
             val state = _challengeData.value?.copy()

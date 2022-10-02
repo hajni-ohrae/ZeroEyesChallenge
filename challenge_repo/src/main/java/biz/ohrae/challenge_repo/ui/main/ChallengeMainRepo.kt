@@ -10,6 +10,8 @@ import com.google.gson.JsonElement
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import retrofit2.http.Header
+import retrofit2.http.Query
 import javax.inject.Inject
 
 
@@ -20,11 +22,21 @@ class ChallengeMainRepo @Inject constructor(
 ) {
     suspend fun getChallenges(
         paymentType: String = "",
-        verificationPeriodType: String = ""
+        verificationPeriodType: String = "",
+        per_week: String = "",
+        period: String = "",
+        is_adult_only: String = ""
     ): Flow<FlowResult> {
         val accessToken = prefs.getUserData()?.access_token
         val response =
-            apiService.getAllChallenge(accessToken.toString(), paymentType, verificationPeriodType)
+            apiService.getAllChallenge(
+                accessToken.toString(),
+                paymentType,
+                verificationPeriodType,
+                per_week,
+                period,
+                is_adult_only
+            )
 
         when (response) {
             is NetworkResponse.Success -> {
@@ -77,7 +89,8 @@ class ChallengeMainRepo @Inject constructor(
                         val dataSet: JsonElement = dataset?.getAsJsonArray("array")!!.asJsonArray
 
                         val listType = object : TypeToken<List<ChallengeData?>?>() {}.type
-                        val userChallengeList = gson.fromJson<List<ChallengeData>>(dataSet, listType)
+                        val userChallengeList =
+                            gson.fromJson<List<ChallengeData>>(dataSet, listType)
                         return flow {
                             emit(FlowResult(userChallengeList, "", ""))
                         }

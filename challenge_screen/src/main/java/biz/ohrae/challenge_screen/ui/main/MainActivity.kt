@@ -87,9 +87,20 @@ class MainActivity : AppCompatActivity() {
 
             override fun onClickFilterType(filterType: String) {
                 if (filterType == "filter") {
-                    val dialog = FilterDialog()
+                    val dialog = FilterDialog(viewModel)
                     dialog.setListener(object : FilterDialogListener {
-                        override fun clickPositive() {
+                        override fun clickPositive(
+                            verificationPeriodType: String,
+                            perWeek: String,
+                            period: String,
+                            isAdultOnly: String
+                        ) {
+                            viewModel.getChallengeList(
+                                verificationPeriodType,
+                                perWeek,
+                                period,
+                                isAdultOnly
+                            )
                             dialog.dismiss()
                         }
 
@@ -99,6 +110,18 @@ class MainActivity : AppCompatActivity() {
 
                         override fun clickInitialization() {
                             dialog.dismiss()
+                        }
+
+                        override fun selectVerificationPeriodType(item: String) {
+                            viewModel.selectPeriodType(item)
+                        }
+
+                        override fun selectPeriod(item: String) {
+                            viewModel.selectPeriod(item)
+                        }
+
+                        override fun selectIsAdultOnly(item: String) {
+                            viewModel.selectIsAdultOnly(item)
                         }
                     })
                     dialog.isCancelable = false
