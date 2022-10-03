@@ -18,6 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge.ui.theme.DefaultWhite
+import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import biz.ohrae.challenge_screen.ui.main.ChallengeMainViewModel
 import biz.ohrae.challenge_screen.ui.register.ChallengeRegisterNavScreen
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,7 +34,10 @@ class MyChallengeActivity : AppCompatActivity() {
     private lateinit var challengeMainViewModel: ChallengeMainViewModel
     private lateinit var navController: NavHostController
     private lateinit var myChallengeClickListener: MyChallengeClickListener
+    private lateinit var prefs: SharedPreference
+
     private var policyScreenType: String = ""
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,13 +76,14 @@ class MyChallengeActivity : AppCompatActivity() {
     @Composable
     private fun Navigation() {
         val state by challengeMainViewModel.userChallengeListState.observeAsState()
+        val userData by challengeMainViewModel.userData.observeAsState()
 
         NavHost(
             navController = navController,
             startDestination = MyChallengeNavScreen.MyChallenge.route
         ) {
             composable(MyChallengeNavScreen.MyChallenge.route) {
-                MyChallengeScreen(clickListener = myChallengeClickListener, userChallengeListState = state)
+                MyChallengeScreen(user = userData,clickListener = myChallengeClickListener, userChallengeListState = state)
             }
             composable(MyChallengeNavScreen.MyReward.route) {
                 MyRewardScreen(clickListener = myChallengeClickListener)

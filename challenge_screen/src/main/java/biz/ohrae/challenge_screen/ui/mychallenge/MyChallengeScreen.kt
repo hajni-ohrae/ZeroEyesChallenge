@@ -26,6 +26,7 @@ import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge_component.R
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
+import biz.ohrae.challenge_repo.model.user.User
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.model.user.UserChallengeListState
@@ -40,7 +41,7 @@ import org.json.JSONObject.numberToString
 @Composable
 fun MyChallengeScreen(
     challengeData: ChallengeData = ChallengeData.mock(),
-    prefs: SharedPreference? = null,
+    user: User? = null,
     select: Boolean = true,
     clickListener: MyChallengeClickListener? = null,
     userChallengeListState: UserChallengeListState? = null
@@ -62,13 +63,13 @@ fun MyChallengeScreen(
                 Spacer(modifier = Modifier.width(16.dp))
                 Column() {
                     Text(
-                        text = "박보검",
+                        text = user?.nick_name ?: "",
                         style = myTypography.w700,
                         fontSize = dpToSp(dp = 16.dp)
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = "010-0000-0000",
+                        text = user!!.phone_number,
                         style = myTypography.w700,
                         fontSize = dpToSp(dp = 16.dp),
                         color = Color(0xff4f4f4f)

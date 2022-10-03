@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
+import biz.ohrae.challenge_repo.model.user.User
 import biz.ohrae.challenge_repo.ui.main.ChallengeMainRepo
 import biz.ohrae.challenge_repo.ui.main.UserRepo
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
@@ -29,14 +30,17 @@ class ChallengeMainViewModel @Inject constructor(
     private val _userChallengeListState = MutableLiveData<UserChallengeListState>()
     private val _filterState = MutableLiveData<FilterState>()
     private val _tokenValid = MutableLiveData<Boolean>()
+    private val _userData = MutableLiveData<User>()
 
     val filterState get() = _filterState
     val mainScreenState get() = _mainScreenState
     val tokenValid get() = _tokenValid
     val userChallengeListState get() = _userChallengeListState
+    val userData get() = _userData
 
     init {
 //        login()
+        userData()
         tokenCheck()
         selectFilter("all")
     }
@@ -44,6 +48,12 @@ class ChallengeMainViewModel @Inject constructor(
     private fun login() {
         viewModelScope.launch {
             userRepo.login()
+        }
+    }
+
+    private fun userData() {
+        viewModelScope.launch {
+            _userData.value = prefs.getUserData()
         }
     }
 
@@ -60,11 +70,11 @@ class ChallengeMainViewModel @Inject constructor(
     }
 
     fun getChallengeList(
-        paymentType: String = "",
-        verificationPeriodType: String = "",
-        per_week: String = "",
-        period: String = "",
-        is_adult_only: String = ""
+        paymentType: String,
+        verificationPeriodType: String,
+        per_week: String,
+        period: String,
+        is_adult_only: String
     ) {
         viewModelScope.launch {
             val response = challengeMainRepo.getChallenges(

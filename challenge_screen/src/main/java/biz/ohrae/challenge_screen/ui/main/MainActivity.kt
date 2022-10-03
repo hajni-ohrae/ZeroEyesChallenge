@@ -67,8 +67,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun init() {
-        viewModel.getChallengeList()
+        viewModel.getChallengeList("","","","","")
         viewModel.getUserChallengeList()
+        viewModel.selectPeriodType("")
+        viewModel.selectPeriod("")
+        viewModel.selectIsAdultOnly("")
     }
 
     private fun initClickListener() {
@@ -96,15 +99,8 @@ class MainActivity : AppCompatActivity() {
                             period: String,
                             isAdultOnly: String
                         ) {
-                            viewModel.getChallengeList(
-                                verificationPeriodType,
-                                perWeek,
-                                period,
-                                isAdultOnly
-                            )
-                            viewModel.selectPeriodType("")
-                            viewModel.selectPeriod("")
-                            viewModel.selectIsAdultOnly("")
+                            val filterType = viewModel.filterState.value?.selectFilterType
+                            viewModel.getChallengeList(filterType.toString(),verificationPeriodType, perWeek, period, isAdultOnly)
                             dialog.dismiss()
                         }
 
@@ -133,7 +129,7 @@ class MainActivity : AppCompatActivity() {
 
                 } else {
                     viewModel.selectFilter(filterType)
-                    viewModel.getChallengeList(filterType)
+                    viewModel.getChallengeList(paymentType = filterType,"","","","")
                 }
             }
         }
