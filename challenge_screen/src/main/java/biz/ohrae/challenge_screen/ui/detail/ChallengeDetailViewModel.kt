@@ -58,6 +58,21 @@ class ChallengeDetailViewModel @Inject constructor(
         }
     }
 
+    fun verifyChallenge(content: String) {
+        viewModelScope.launch {
+            val id = challengeData.value?.id.toString()
+            val type = ""
+
+            repo.verifyChallenge(id, type, content).flowOn(Dispatchers.IO).collect {
+                Timber.e("verifyChallenge result : ${gson.toJson(it.data)}")
+                if (it.data != null) {
+                    val challengers = it.data as List<User>
+                    _challengers.value = challengers
+                }
+            }
+        }
+    }
+
     fun setChallengeAuthImage(uri: String) {
         _challengeAuthImageUri.value = uri
     }

@@ -3,7 +3,9 @@ package biz.ohrae.challenge_screen.ui.detail
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -58,6 +60,11 @@ class ChallengeDetailActivity : AppCompatActivity() {
             if (it.resultCode == RESULT_OK) {
                 finish()
             }
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        } else {
+            window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN or WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         }
     }
 
@@ -119,8 +126,16 @@ class ChallengeDetailActivity : AppCompatActivity() {
                 )
             }
             composable(ChallengeDetailNavScreen.AuthCameraResult.route) {
-                ChallengeCameraScreen(
-                    capturedCallback = capturedCallback
+                val challengeAuthImageUri by viewModel.challengeAuthImageUri.observeAsState()
+
+                ChallengeDetailAuthCameraResultScreen(
+                    imageUri = challengeAuthImageUri,
+                    clickListener = detailClickListener
+                )
+            }
+            composable(ChallengeDetailNavScreen.AuthWrite.route) {
+                ChallengeDetailAuthWriteScreen(
+                    clickListener = detailClickListener
                 )
             }
         }
@@ -173,7 +188,12 @@ class ChallengeDetailActivity : AppCompatActivity() {
             }
 
             override fun onClickUsePhoto() {
-                navController.navigate(ChallengeDetailNavScreen.AuthCameraResult.route)
+                navController.navigate(ChallengeDetailNavScreen.AuthWrite.route)
+            }
+
+            override fun onDone(content: String) {
+                viewModel.verifyChallenge(content)
+                navController.navigate(ChallengeDetailNavScreen.JoinedDetail.route)
             }
         }
     }
@@ -184,4 +204,5 @@ sealed class ChallengeDetailNavScreen(val route: String) {
     object JoinedDetail : ChallengeDetailNavScreen("JoinedDetail")
     object AuthCameraPreview : ChallengeDetailNavScreen("AuthCameraPreview")
     object AuthCameraResult : ChallengeDetailNavScreen("AuthCameraResult")
+    object AuthWrite : ChallengeDetailNavScreen("AuthWrite")
 }

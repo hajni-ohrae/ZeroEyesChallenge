@@ -113,7 +113,10 @@ interface ApiService {
     suspend fun uploadUserProfile(@Body body: JsonObject?): NetworkResponse<Result, Error>
 
     @POST(Routes.VERIFY)
-    suspend fun verify(@Body body: JsonObject?): NetworkResponse<Result, Error>
+    suspend fun verify(
+        @Header("x-access-token") accessToken: String,
+        @Body body: JsonObject?
+    ): NetworkResponse<Result, Error>
 
     @POST(Routes.SERVICE_VERIFY)
     suspend fun serviceVerify(@Body body: JsonObject?): NetworkResponse<Result, Error>

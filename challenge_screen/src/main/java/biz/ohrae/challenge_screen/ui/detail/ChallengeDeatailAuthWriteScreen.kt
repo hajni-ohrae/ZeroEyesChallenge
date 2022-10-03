@@ -2,28 +2,28 @@ package biz.ohrae.challenge_screen.ui.detail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import biz.ohrae.challenge.ui.components.button.FlatDoubleButton
-import biz.ohrae.challenge.ui.theme.TextBlack
-import biz.ohrae.challenge_component.R
-import com.skydoves.landscapist.glide.GlideImage
+import biz.ohrae.challenge.ui.components.input.TextBox
+import biz.ohrae.challenge.ui.theme.DefaultWhite
 
 @Preview(
     showBackground = true,
     widthDp = 360
 )
 @Composable
-fun ChallengeDetailAuthCameraResultScreen(
-    imageUri: String? = null,
+fun ChallengeDetailAuthWriteScreen(
     clickListener: ChallengeDetailClickListener? = null,
 ) {
+    var content by remember { mutableStateOf("") }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(TextBlack)
+            .background(DefaultWhite)
     ) {
         Column(modifier = Modifier
             .fillMaxWidth()
@@ -31,25 +31,28 @@ fun ChallengeDetailAuthCameraResultScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-           GlideImage(
-               imageModel = imageUri,
-               failure = {
-
-               },
-               previewPlaceholder = R.drawable.img_example,
-           )
+            TextBox(
+                modifier = Modifier.fillMaxSize(),
+                placeholder = "내용을입력하세요",
+                maxLength = 1000,
+                singleLine = false,
+                value = content,
+                onValueChange = {
+                    content = it
+                },
+            )
         }
         FlatDoubleButton(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(6f),
             leftText = "재촬영",
-            rightText = "인증샷 사용",
+            rightText = "완료",
             onClickLeft = {
                 clickListener?.onClickReTakePhoto()
             },
             onClickRight = {
-                clickListener?.onClickUsePhoto()
+                clickListener?.onDone(content)
             }
         )
     }
