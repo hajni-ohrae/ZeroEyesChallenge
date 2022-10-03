@@ -49,6 +49,7 @@
             android:name="biz.ohrae.challenge_screen.ui.participation.ParticipationActivity"
             android:exported="true">
         </activity>
+<!--        zz-->
         <activity
             android:name="biz.ohrae.challenge_screen.ui.mychallenge.MyChallengeActivity"
             android:exported="true">

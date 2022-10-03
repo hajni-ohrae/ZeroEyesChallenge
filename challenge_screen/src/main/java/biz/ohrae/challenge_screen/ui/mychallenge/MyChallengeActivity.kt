@@ -6,12 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -19,17 +15,16 @@ import androidx.navigation.compose.rememberNavController
 import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge.ui.theme.DefaultWhite
-import biz.ohrae.challenge_repo.util.prefs.SharedPreference
-import biz.ohrae.challenge_screen.ui.register.ChallengeRegisterNavScreen
-import biz.ohrae.challenge_screen.ui.register.RegisterAuthScreen
-import biz.ohrae.challenge_screen.ui.register.RegisterClickListener
 
 class MyChallengeActivity : AppCompatActivity() {
+//    private lateinit var challengeMainViewModel: ChallengeMainViewModel
     private lateinit var navController: NavHostController
     private lateinit var myChallengeClickListener: MyChallengeClickListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+//        challengeMainViewModel = ViewModelProvider(this)[ChallengeMainViewModel::class.java]
+
         initClickListener()
         setContent {
             ChallengeInTheme {
@@ -62,6 +57,7 @@ class MyChallengeActivity : AppCompatActivity() {
     }
     @Composable
     private fun Navigation() {
+//        val state by challengeMainViewModel.userChallengeListState.observeAsState()
 
         NavHost(
             navController = navController,

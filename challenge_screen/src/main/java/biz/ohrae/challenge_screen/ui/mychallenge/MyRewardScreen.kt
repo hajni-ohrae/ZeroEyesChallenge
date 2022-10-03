@@ -3,7 +3,6 @@ package biz.ohrae.challenge_screen.ui.mychallenge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -15,7 +14,6 @@ import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.ui.components.banner.FlatBanner
 import biz.ohrae.challenge.ui.components.button.ArrowTextButton
 import biz.ohrae.challenge.ui.components.button.FlatBottomButton
-import biz.ohrae.challenge.ui.components.card.ChallengesInParticipationCard
 import biz.ohrae.challenge.ui.components.list_item.RewardHistoryItem
 import biz.ohrae.challenge.ui.theme.TextBlack
 import biz.ohrae.challenge.ui.theme.dpToSp

@@ -12,7 +12,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.ui.components.button.ArrowTextButton
 import biz.ohrae.challenge.ui.components.list_item.PaidHistoryItem
-import biz.ohrae.challenge.ui.components.list_item.RewardHistoryItem
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 

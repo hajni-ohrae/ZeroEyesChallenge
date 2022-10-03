@@ -172,6 +172,7 @@ fun Filter(
                                 },
                                 onChecked = {
                                     checked = !checked
+                                    listener?.selectVerificationPeriodType(it.name_en)
                                 },
                                 checked = it.name_en == filterState.selectVerificationPeriodType,
                             )
@@ -203,6 +204,7 @@ fun Filter(
                                 },
                                 onChecked = {
                                     checked = !checked
+                                    listener?.selectPeriod(it.name_en)
                                 },
                                 checked = it.name_en == filterState.selectPeriod,
                             )
@@ -235,6 +237,7 @@ fun Filter(
                                 },
                                 onChecked = {
                                     checked = !checked
+                                    listener?.selectIsAdultOnly(it.name_en)
                                 },
                                 checked = it.name_en == filterState.selectIsAdultOnly,
                             )

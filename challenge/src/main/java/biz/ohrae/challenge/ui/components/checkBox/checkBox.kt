@@ -65,15 +65,9 @@ fun MyCheckBox(
                 .width(checkBoxSize)
                 .height(checkBoxSize)
                 .aspectRatio(1f)
-                .clickable {
-                    onChecked()
-                    onClick()
-                },
+                .clickable (onClick = onChecked ),
             shape = RoundedCornerShape(4.dp),
-            border = if (checked) BorderStroke(0.dp, Color(0xffc7c7c7)) else BorderStroke(
-                1.dp,
-                Color(0xffc7c7c7)
-            ),
+            border = if (checked) BorderStroke(0.dp, Color(0xffc7c7c7)) else BorderStroke(1.dp, Color(0xffc7c7c7)),
             color = if (checked) Color(0xff005bad) else DefaultWhite
         ) {
             if (checked) {

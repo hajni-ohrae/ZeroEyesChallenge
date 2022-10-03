@@ -81,7 +81,9 @@ interface ApiService {
     ): NetworkResponse<Result, Error>
 
     @GET(Routes.GET_ALL_BLOCK)
-    suspend fun getAllBlock(): NetworkResponse<Result, Error>
+    suspend fun getAllBlock(
+        @Header("x-access-token") accessToken: String
+    ): NetworkResponse<Result, Error>
 
     @POST(Routes.SET_BLOCK_USER)
     suspend fun setBlockUser(

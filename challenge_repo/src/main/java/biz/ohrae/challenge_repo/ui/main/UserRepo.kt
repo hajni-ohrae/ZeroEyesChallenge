@@ -3,6 +3,8 @@ package biz.ohrae.challenge_repo.ui.main
 import biz.ohrae.challenge_repo.data.remote.ApiService
 import biz.ohrae.challenge_repo.data.remote.NetworkResponse
 import biz.ohrae.challenge_repo.model.FlowResult
+import biz.ohrae.challenge_repo.model.detail.ChallengeData
+import biz.ohrae.challenge_repo.model.user.RedCardState
 import biz.ohrae.challenge_repo.model.user.User
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import com.google.gson.Gson
@@ -129,5 +131,26 @@ class UserRepo @Inject constructor(
                 }
             }
         }
+    }
+
+    suspend fun getAllBlock(): Flow<FlowResult> {
+        val accessToken = prefs.getUserData()?.access_token
+        val response = apiService.getAllBlock(accessToken.toString())
+
+        when (response) {
+            is NetworkResponse.Success -> {
+                val redCardData =
+                    gson.fromJson(response.body.dataset, RedCardState::class.java)
+                return flow {
+                    emit(FlowResult(redCardData, "", ""))
+                }
+            }
+            else -> {
+                return flow {
+                    emit(FlowResult(null, "", ""))
+                }
+            }
+        }
+
     }
 }

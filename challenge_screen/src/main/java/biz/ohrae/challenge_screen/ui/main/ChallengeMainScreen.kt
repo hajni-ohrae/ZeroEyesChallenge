@@ -32,6 +32,7 @@ import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.model.main.FilterState
 import biz.ohrae.challenge_screen.model.main.MainScreenState
+import biz.ohrae.challenge_screen.model.user.UserChallengeListState
 import timber.log.Timber
 
 @Preview(
@@ -44,7 +45,8 @@ fun ChallengeMainScreen(
     mainScreenState: MainScreenState? = null,
     clickListener: MainClickListener? = null,
     filterState: FilterState = FilterState.mock(),
-    viewModel: ChallengeMainViewModel? = null
+    userChallengeListState: UserChallengeListState? = null
+
 ) {
     Spacer(modifier = Modifier.height(16.dp))
     Column(
@@ -67,7 +69,7 @@ fun ChallengeMainScreen(
                         mainScreenState = mainScreenState,
                         clickListener = clickListener,
                         filterState = filterState,
-                        viewModel = viewModel
+                        userChallengeListState = userChallengeListState
                     )
                 }
                 items(mainScreenState?.challengeList!!) { item ->
@@ -119,9 +121,9 @@ fun ItemHeader(
     mainScreenState: MainScreenState? = null,
     clickListener: MainClickListener?,
     filterState: FilterState = FilterState.mock(),
-    viewModel: ChallengeMainViewModel? = null
+    userChallengeListState: UserChallengeListState? = null
 ) {
-    val state by viewModel!!.userChallengeListState.observeAsState()
+
     Column(Modifier.fillMaxWidth()) {
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
@@ -135,7 +137,7 @@ fun ItemHeader(
             }
         }
 
-        if (state != null) {
+        if (userChallengeListState != null) {
             Spacer(modifier = Modifier.height(30.dp))
             Text(
                 text = "참여중인 챌린지",
@@ -148,21 +150,10 @@ fun ItemHeader(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(24.dp),
             ) {
-                item {
+                items(userChallengeListState?.userChallengeList!!) { item ->
                     ChallengesInParticipationCard(
                         modifier = Modifier.fillParentMaxSize(),
-                        title = "매일 6시간씩 한국사 공부",
-                        1,
-                        30,
-                        "완료",
-                        Color(0xffdedede),
-                        Color(0xff6c6c6c)
-                    )
-                }
-                item {
-                    ChallengesInParticipationCard(
-                        modifier = Modifier.fillParentMaxSize(),
-                        title = "매일 6시간씩 한국사 공부",
+                        title = item.goal.toString(),
                         1,
                         30,
                         "완료",

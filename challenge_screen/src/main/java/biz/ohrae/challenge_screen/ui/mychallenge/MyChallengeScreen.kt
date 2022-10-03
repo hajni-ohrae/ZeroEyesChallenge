@@ -2,6 +2,8 @@ package biz.ohrae.challenge_screen.ui.mychallenge
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
@@ -22,6 +24,7 @@ import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge_component.R
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
+import biz.ohrae.challenge_screen.model.user.UserChallengeListState
 
 
 @Preview(
@@ -34,7 +37,8 @@ fun MyChallengeScreen(
     challengeData: ChallengeData = ChallengeData.mock(),
     prefs: SharedPreference? = null,
     select: Boolean = true,
-    clickListener: MyChallengeClickListener? = null
+    clickListener: MyChallengeClickListener? = null,
+//    userChallengeListState: UserChallengeListState? = null
 ) {
     val scrollState = rememberScrollState()
 
@@ -117,6 +121,22 @@ fun MyChallengeScreen(
             PaidFilterCard(modifier = Modifier, text = "진행중")
             PaidFilterCard(modifier = Modifier, text = "완료")
         }
+//        LazyColumn(
+//            modifier = Modifier.fillMaxWidth(),
+//            verticalArrangement = Arrangement.spacedBy(17.dp),
+//        ) {
+//            items(userChallengeListState?.userChallengeList!!) { item ->
+//                ChallengesInParticipationCard(
+//                    modifier = Modifier.fillParentMaxSize(),
+//                    title = item.goal.toString(),
+//                    1,
+//                    30,
+//                    "완료",
+//                    Color(0xffdedede),
+//                    Color(0xff6c6c6c)
+//                )
+//            }
+//        }
         ChallengesInParticipationCard(
             Modifier,
             title = "매일 6시간씩 한국사 공부",

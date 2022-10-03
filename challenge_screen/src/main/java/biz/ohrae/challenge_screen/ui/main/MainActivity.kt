@@ -14,7 +14,6 @@ import androidx.lifecycle.ViewModelProvider
 import biz.ohrae.challenge.ui.components.header.Header
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailActivity
-import biz.ohrae.challenge_screen.ui.dialog.CustomDialogListener
 import biz.ohrae.challenge_screen.ui.dialog.FilterDialog
 import biz.ohrae.challenge_screen.ui.dialog.FilterDialogListener
 import biz.ohrae.challenge_screen.ui.login.LoginActivity
@@ -50,6 +49,8 @@ class MainActivity : AppCompatActivity() {
     private fun BuildContent() {
         val mainScreenState by viewModel.mainScreenState.observeAsState()
         val filterState by viewModel.filterState.observeAsState()
+        val state by viewModel.userChallengeListState.observeAsState()
+
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
@@ -59,7 +60,7 @@ class MainActivity : AppCompatActivity() {
                     mainScreenState = mainScreenState,
                     filterState = filterState!!,
                     clickListener = mainClickListener,
-                    viewModel = viewModel
+                    userChallengeListState = state
                 )
             }
         }
@@ -101,6 +102,9 @@ class MainActivity : AppCompatActivity() {
                                 period,
                                 isAdultOnly
                             )
+                            viewModel.selectPeriodType("")
+                            viewModel.selectPeriod("")
+                            viewModel.selectIsAdultOnly("")
                             dialog.dismiss()
                         }
 
