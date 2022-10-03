@@ -2,6 +2,8 @@ package biz.ohrae.challenge_screen.ui.mychallenge
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
@@ -22,6 +24,7 @@ import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge_component.R
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
+import biz.ohrae.challenge_screen.model.user.UserChallengeListState
 
 
 @Preview(
@@ -34,7 +37,8 @@ fun MyChallengeScreen(
     challengeData: ChallengeData = ChallengeData.mock(),
     prefs: SharedPreference? = null,
     select: Boolean = true,
-    clickListener: MyChallengeClickListener? = null
+    clickListener: MyChallengeClickListener? = null,
+    userChallengeListState: UserChallengeListState? = null
 ) {
     val scrollState = rememberScrollState()
 
@@ -83,7 +87,7 @@ fun MyChallengeScreen(
                 .aspectRatio(4.46f),
             resId = R.drawable.icon_card,
             title = "결제내역",
-            onClick = {clickListener?.onClickPaymentDetail()}
+            onClick = { clickListener?.onClickPaymentDetail() }
         )
         MenuItem(
             modifier = Modifier
@@ -109,22 +113,39 @@ fun MyChallengeScreen(
             color = DefaultBlack
         )
         Spacer(modifier = Modifier.height(17.dp))
-        Row(modifier = Modifier.padding(0.dp, 22.dp)) {
-            PaidFilterCard(modifier = Modifier, text = "전체", select = select)
-            Spacer(modifier = Modifier.width(4.dp))
-            PaidFilterCard(modifier = Modifier, text = "모집중")
-            Spacer(modifier = Modifier.width(4.dp))
-            PaidFilterCard(modifier = Modifier, text = "진행중")
-            PaidFilterCard(modifier = Modifier, text = "완료")
+
+        if (userChallengeListState != null) {
+            Row(modifier = Modifier.padding(0.dp, 22.dp)) {
+                PaidFilterCard(modifier = Modifier, text = "전체", select = select)
+                Spacer(modifier = Modifier.width(4.dp))
+                PaidFilterCard(modifier = Modifier, text = "모집중")
+                Spacer(modifier = Modifier.width(4.dp))
+                PaidFilterCard(modifier = Modifier, text = "진행중")
+                PaidFilterCard(modifier = Modifier, text = "완료")
+            }
+            LazyColumn(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(17.dp),
+            ) {
+                items(userChallengeListState?.userChallengeList!!) { item ->
+                    ChallengesInParticipationCard(
+                        modifier = Modifier.fillParentMaxSize(),
+                        title = item.goal.toString(),
+                        1,
+                        30,
+                        "완료",
+                        Color(0xffdedede),
+                        Color(0xff6c6c6c)
+                    )
+                }
+            }
+        } else {
+            Text(
+                text = "참여중인 챌린지 없음",
+                style = myTypography.bold,
+                fontSize = dpToSp(dp = 16.dp),
+                color = DefaultBlack
+            )
         }
-        ChallengesInParticipationCard(
-            Modifier,
-            title = "매일 6시간씩 한국사 공부",
-            1,
-            30,
-            "완료",
-            Color(0xffdedede),
-            Color(0xff6c6c6c)
-        )
     }
 }
