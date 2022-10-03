@@ -6,6 +6,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,6 +23,8 @@ import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
+import biz.ohrae.challenge_repo.util.prefs.Utils
+import biz.ohrae.challenge_screen.ui.mychallenge.MyChallengeActivity.Companion.REWARD
 
 
 @Preview(
@@ -31,11 +36,14 @@ import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 fun MyRewardScreen(
     challengeData: ChallengeData = ChallengeData.mock(),
     prefs: SharedPreference? = null,
-    select:Boolean = true,
+    select: Boolean = true,
     clickListener: MyChallengeClickListener? = null
 ) {
+    val availableRewards by remember {
+        mutableStateOf(challengeData.user?.rewards_amount ?: 0)
+    }
     Column() {
-        Column(modifier = Modifier.padding(24.dp,0.dp)) {
+        Column(modifier = Modifier.padding(24.dp, 0.dp)) {
             Text(text = "보유 리워즈", style = myTypography.w700, fontSize = dpToSp(dp = 20.dp))
             Spacer(modifier = Modifier.height(8.dp))
             Text(
@@ -48,6 +56,7 @@ fun MyRewardScreen(
             )
             ArrowTextButton(
                 text = "리워즈 정책 보러가기",
+                onClick = { clickListener?.onClickPolicy(REWARD) }
             )
             FlatBanner(
                 modifier = Modifier
@@ -56,7 +65,7 @@ fun MyRewardScreen(
                 backgroundColor = Color(0xfff3f8ff),
                 title = "보유 리워즈",
                 titleColor = TextBlack,
-                content = "15,500원",
+                content = "${Utils.numberToString(availableRewards.toString())}원",
                 contentColor = Color(0xff005bad)
             )
             Spacer(modifier = Modifier.height(18.dp))
@@ -65,7 +74,8 @@ fun MyRewardScreen(
                 modifier = Modifier
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween) {
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
                 Text(
                     text = "소멸 예정 리워즈",
                     style = myTypography.w700,
@@ -84,7 +94,8 @@ fun MyRewardScreen(
                 modifier = Modifier
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween) {
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
                 Text(
                     text = "소멸 일시",
                     style = myTypography.w700,
@@ -99,10 +110,12 @@ fun MyRewardScreen(
                 )
             }
             Spacer(modifier = Modifier.height(18.dp))
-            Divider(modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp)
-                .background(Color(0xfffafafa)))
+            Divider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(Color(0xfffafafa))
+            )
             LazyColumn(
                 modifier = Modifier.fillMaxWidth(),
             ) {

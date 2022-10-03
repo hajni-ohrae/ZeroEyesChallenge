@@ -29,8 +29,7 @@ private fun MainTopCardGallery() {
 @Composable
 fun MainTopCard(modifier: Modifier,content: String) {
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = modifier
             .aspectRatio(16f / 9F),
         shape = RoundedCornerShape(10.dp),
         backgroundColor = Color(0xffed5f2a)

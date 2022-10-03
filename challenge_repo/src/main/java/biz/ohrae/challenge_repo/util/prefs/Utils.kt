@@ -474,6 +474,18 @@ object Utils {
         return times[0] + ":" + times[1]
     }
 
+    fun numberToString(text: String): String {
+        return if (text.isEmpty()) {
+            text
+        } else {
+            val price = text.replace("[^\\d]".toRegex(), "")
+            if (price.isEmpty()) {
+                price
+            } else {
+                Utils.numberFormat(price.toInt())
+            }
+        }
+    }
     fun getRemainTimeDays(startDate: String): String {
         return try {
             val dateString = startDate.replace("T", " ").replace("Z", "")

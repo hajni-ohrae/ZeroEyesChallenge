@@ -7,4 +7,5 @@ interface MyChallengeClickListener {
     fun onClickRedCard()
     fun onClickApplyWithdraw()
     fun onClickApplyWithdrawDetail()
+    fun onClickPolicy(screen:String)
 }

@@ -18,14 +18,19 @@ import biz.ohrae.challenge.ui.theme.myTypography
 )
 @Composable
 fun PolicyScreen(
+    screen:String=""
 ) {
-    Column() {
-        RewardScreen()
+    Column(modifier = Modifier.padding(24.dp, 0.dp)) {
+        if (screen == "reward"){
+            RewardPolicyScreen()
+        } else {
+            RedCardPolicyScreen()
+        }
     }
 }
 
 @Composable
-fun RewardScreen() {
+fun RewardPolicyScreen() {
     Column() {
         Spacer(modifier = Modifier.height(16.dp))
         Text(text = "리워즈의 정정, 취소 및 소멸", style = myTypography.w700, fontSize = dpToSp(dp = 20.dp))
@@ -55,7 +60,7 @@ fun RewardScreen() {
 }
 
 @Composable
-fun ReaCardScreen() {
+fun RedCardPolicyScreen() {
     Column() {
         Spacer(modifier = Modifier.height(16.dp))
         Text(text = "레드카드 발급", style = myTypography.w700, fontSize = dpToSp(dp = 20.dp))

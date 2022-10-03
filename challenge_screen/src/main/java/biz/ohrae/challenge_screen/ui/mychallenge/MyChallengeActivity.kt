@@ -19,13 +19,21 @@ import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge_screen.ui.main.ChallengeMainViewModel
+import biz.ohrae.challenge_screen.ui.register.ChallengeRegisterNavScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MyChallengeActivity : AppCompatActivity() {
+
+    companion object {
+        const val REWARD: String = "reward"
+        const val RED_CARD: String = "redCard"
+    }
+
     private lateinit var challengeMainViewModel: ChallengeMainViewModel
     private lateinit var navController: NavHostController
     private lateinit var myChallengeClickListener: MyChallengeClickListener
+    private var policyScreenType: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,7 +96,10 @@ class MyChallengeActivity : AppCompatActivity() {
                 SavedChallengeScreen()
             }
             composable(MyChallengeNavScreen.RedCard.route) {
-                RedCardScreen()
+                RedCardScreen(clickListener = myChallengeClickListener)
+            }
+            composable(MyChallengeNavScreen.Policy.route) {
+                PolicyScreen(policyScreenType)
             }
         }
     }
@@ -118,6 +129,11 @@ class MyChallengeActivity : AppCompatActivity() {
             override fun onClickApplyWithdrawDetail() {
                 navController.navigate(MyChallengeNavScreen.PhoneAuth.route)
             }
+
+            override fun onClickPolicy(screen: String) {
+                policyScreenType = screen
+                navController.navigate(MyChallengeNavScreen.Policy.route)
+            }
         }
     }
 }
@@ -131,4 +147,5 @@ sealed class MyChallengeNavScreen(val route: String) {
     object RedCard : MyChallengeNavScreen("RedCard")
     object SavedChallenge : MyChallengeNavScreen("SavedChallenge")
     object PhoneAuth : MyChallengeNavScreen("PhoneAuth")
+    object Policy : MyChallengeNavScreen("Policy")
 }

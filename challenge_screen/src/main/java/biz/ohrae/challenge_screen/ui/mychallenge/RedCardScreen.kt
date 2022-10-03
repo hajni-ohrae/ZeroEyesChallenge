@@ -25,6 +25,7 @@ import biz.ohrae.challenge.ui.theme.myTypography
 )
 @Composable
 fun RedCardScreen(
+    clickListener: MyChallengeClickListener? = null
 ) {
     Column(modifier = Modifier.background(DefaultWhite)) {
         Column(modifier = Modifier.padding(24.dp, 0.dp)) {
@@ -41,6 +42,8 @@ fun RedCardScreen(
             Spacer(modifier = Modifier.height(8.dp))
             ArrowTextButton(
                 text = "레드카드 정책 보러가기",
+                onClick = { clickListener?.onClickPolicy(MyChallengeActivity.RED_CARD) }
+
             )
             Spacer(modifier = Modifier.height(16.dp))
 
