@@ -182,7 +182,7 @@ fun ChallengeJoinedDetailScreen(
                         .fillMaxWidth()
                         .aspectRatio(6f),
                     text = "인증하기",
-                    onClick = { clickListener?.onClickParticipation() }
+                    onClick = { clickListener?.onClickAuth() }
                 )
             }
         }

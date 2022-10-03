@@ -26,10 +26,12 @@ class ChallengeDetailViewModel @Inject constructor(
     private val _challengeData = MutableLiveData<ChallengeData>()
     private val _challengers = MutableLiveData<List<User>>()
     private val _isJoined = MutableLiveData<Boolean>()
+    private val _challengeAuthImageUri = MutableLiveData<String?>(null)
 
     val challengeData get() = _challengeData
     val challengers get() = _challengers
     val isJoined get() = _isJoined
+    val challengeAuthImageUri get() = _challengeAuthImageUri
 
     fun getChallenge(id: String) {
         viewModelScope.launch {
@@ -54,5 +56,9 @@ class ChallengeDetailViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun setChallengeAuthImage(uri: String) {
+        _challengeAuthImageUri.value = uri
     }
 }

@@ -1,11 +1,15 @@
 package biz.ohrae.challenge_screen.ui.detail
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.camera.core.ImageCapture
+import androidx.camera.core.ImageCaptureException
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,6 +17,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -21,7 +27,9 @@ import androidx.navigation.compose.rememberNavController
 import biz.ohrae.challenge.ui.components.header.NavigationHeader
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge_screen.ui.participation.ParticipationActivity
+import biz.ohrae.challenge_screen.ui.register.ChallengeCameraScreen
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class ChallengeDetailActivity : AppCompatActivity() {
@@ -29,6 +37,7 @@ class ChallengeDetailActivity : AppCompatActivity() {
     private lateinit var navController: NavHostController
     private var challengeId: String? = null
     private lateinit var detailClickListener: ChallengeDetailClickListener
+    private lateinit var capturedCallback: ImageCapture.OnImageSavedCallback
 
     private lateinit var launcher: ActivityResultLauncher<Intent>
 
@@ -104,6 +113,16 @@ class ChallengeDetailActivity : AppCompatActivity() {
                     clickListener = detailClickListener
                 )
             }
+            composable(ChallengeDetailNavScreen.AuthCameraPreview.route) {
+                ChallengeCameraScreen(
+                    capturedCallback = capturedCallback
+                )
+            }
+            composable(ChallengeDetailNavScreen.AuthCameraResult.route) {
+                ChallengeCameraScreen(
+                    capturedCallback = capturedCallback
+                )
+            }
         }
     }
 
@@ -113,6 +132,19 @@ class ChallengeDetailActivity : AppCompatActivity() {
     }
 
     private fun initClickListener() {
+        // camera capture callback
+        capturedCallback = object : ImageCapture.OnImageSavedCallback {
+            override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+                Timber.e("onCaptureSuccess : ${outputFileResults.savedUri}")
+                viewModel.setChallengeAuthImage(outputFileResults.savedUri.toString())
+                navController.navigate(ChallengeDetailNavScreen.AuthCameraResult.route)
+            }
+
+            override fun onError(exception: ImageCaptureException) {
+                Timber.e("onCaptureError")
+            }
+        }
+
         detailClickListener = object : ChallengeDetailClickListener {
             override fun onClickParticipation() {
                 intent = Intent(this@ChallengeDetailActivity, ParticipationActivity::class.java)
@@ -123,6 +155,26 @@ class ChallengeDetailActivity : AppCompatActivity() {
                 )
                 launcher.launch(intent)
             }
+
+            override fun onClickAuth() {
+                val permission = Manifest.permission.CAMERA
+                if(ContextCompat.checkSelfPermission(this@ChallengeDetailActivity, permission)
+                    != PackageManager.PERMISSION_GRANTED)
+                {
+                    // Permission is not granted
+                    ActivityCompat.requestPermissions(this@ChallengeDetailActivity, arrayOf(permission), 100)
+                } else {
+                    navController.navigate(ChallengeDetailNavScreen.AuthCameraPreview.route)
+                }
+            }
+
+            override fun onClickReTakePhoto() {
+                navController.navigate(ChallengeDetailNavScreen.AuthCameraPreview.route)
+            }
+
+            override fun onClickUsePhoto() {
+                navController.navigate(ChallengeDetailNavScreen.AuthCameraResult.route)
+            }
         }
     }
 }
@@ -130,4 +182,6 @@ class ChallengeDetailActivity : AppCompatActivity() {
 sealed class ChallengeDetailNavScreen(val route: String) {
     object Detail : ChallengeDetailNavScreen("Detail")
     object JoinedDetail : ChallengeDetailNavScreen("JoinedDetail")
+    object AuthCameraPreview : ChallengeDetailNavScreen("AuthCameraPreview")
+    object AuthCameraResult : ChallengeDetailNavScreen("AuthCameraResult")
 }
