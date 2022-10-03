@@ -8,6 +8,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,7 +27,9 @@ import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge_component.R
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
+import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.model.user.UserChallengeListState
+import org.json.JSONObject.numberToString
 
 
 @Preview(
@@ -41,7 +46,9 @@ fun MyChallengeScreen(
     userChallengeListState: UserChallengeListState? = null
 ) {
     val scrollState = rememberScrollState()
-
+    val availableRewards by remember {
+        mutableStateOf(challengeData.user?.rewards_amount ?: 0)
+    }
     Column(
         modifier = Modifier
             .padding(24.dp, 0.dp)
@@ -78,7 +85,7 @@ fun MyChallengeScreen(
                 .aspectRatio(4.46f),
             resId = R.drawable.icon_coin,
             title = "보유 리워즈",
-            description = "125,000원",
+            description = "${Utils.numberToString(availableRewards.toString())}원",
             onClick = { clickListener?.onClickReward() }
         )
         MenuItem(

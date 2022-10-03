@@ -34,6 +34,7 @@ import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge.util.challengeVerificationPeriodMap
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.util.prefs.Utils
+import biz.ohrae.challenge_repo.util.prefs.Utils.numberToString
 import java.text.NumberFormat
 import java.util.*
 
@@ -390,18 +391,6 @@ private fun getAuthText(challengeData: ChallengeData): String {
     }
 }
 
-private fun numberToString(text: String): String {
-    return if (text.isEmpty()) {
-        text
-    } else {
-        val price = text.replace("[^\\d]".toRegex(), "")
-        if (price.isEmpty()) {
-            price
-        } else {
-            Utils.numberFormat(price.toInt())
-        }
-    }
-}
 
 private fun calculateTotalAmount(priceText: String, rewardsText: String): Int {
     val price = priceText.replace("[^\\d]".toRegex(), "")

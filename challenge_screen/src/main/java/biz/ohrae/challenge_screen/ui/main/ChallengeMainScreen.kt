@@ -131,7 +131,7 @@ fun ItemHeader(
         ) {
             items(mainScreenState?.topBannerList!!) { item ->
                 MainTopCard(
-                    modifier = Modifier,
+                    modifier = Modifier.fillParentMaxSize(),
                     content = item.content
                 )
             }
@@ -152,7 +152,7 @@ fun ItemHeader(
             ) {
                 items(userChallengeListState?.userChallengeList!!) { item ->
                     ChallengesInParticipationCard(
-                        modifier = Modifier.fillParentMaxSize(),
+                        modifier = Modifier,
                         title = item.goal.toString(),
                         1,
                         30,
