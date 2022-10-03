@@ -2,14 +2,14 @@ package biz.ohrae.challenge_screen.ui.detail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -17,11 +17,13 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.ui.components.button.FlatBookMarkButton
+import biz.ohrae.challenge.ui.components.button.FlatBorderButton
 import biz.ohrae.challenge.ui.components.card.RedCardInfo
 import biz.ohrae.challenge.ui.components.detail.ChallengeDetailFreeDescription
 import biz.ohrae.challenge.ui.components.detail.ChallengeDetailRefundDescription
 import biz.ohrae.challenge.ui.components.detail.ChallengeJoinedDetailsTitle
 import biz.ohrae.challenge.ui.components.image.ImageBox
+import biz.ohrae.challenge.ui.components.list_item.ChallengersItem
 import biz.ohrae.challenge.ui.components.list_item.ProgressRatioItem
 import biz.ohrae.challenge.ui.components.text.MiddleDotText
 import biz.ohrae.challenge.ui.theme.DefaultWhite
@@ -33,11 +35,14 @@ import biz.ohrae.challenge.util.challengeVerificationDayMap
 import biz.ohrae.challenge.util.challengeVerificationPeriodMap
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.model.user.User
+import com.google.accompanist.flowlayout.FlowCrossAxisAlignment
+import com.google.accompanist.flowlayout.FlowMainAxisAlignment
+import com.google.accompanist.flowlayout.FlowRow
+import com.google.accompanist.flowlayout.SizeMode
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 @OptIn(ExperimentalPagerApi::class)
 @Preview(
@@ -57,7 +62,6 @@ fun ChallengeJoinedDetailScreen(
 
     val pagerState = rememberPagerState()
     val scope = rememberCoroutineScope()
-    val scrollState = rememberScrollState()
     var status by remember { mutableStateOf(challengeDetailStatusMap[challengeData.status]) }
     LaunchedEffect(challengeData) {
         status = challengeDetailStatusMap[challengeData.status]
@@ -66,104 +70,122 @@ fun ChallengeJoinedDetailScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(scrollState)
             .background(DefaultWhite)
     ) {
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(24.dp, 0.dp)
+//                .padding(24.dp, 0.dp)
         ) {
-            ImageBox(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(1.51f),
-                imagePath = ""
-            )
-            Spacer(modifier = Modifier.height(24.dp))
+            item {
+                Column {
+                    ImageBox(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .aspectRatio(1.51f),
+                        imagePath = ""
+                    )
+                    Spacer(modifier = Modifier.height(24.dp))
+                }
+            }
             if (status != null) {
-                ChallengeJoinedDetailsTitle(
-                    status = status!!,
-                    personnel = 0,
-                    detailTitle = challengeData.goal.toString(),
-                    isFree = challengeData.min_deposit_amount == 0,
-                    isAdult = challengeData.is_adult_only == 1,
-                    isPhoto = challengeData.is_verification_photo == 1,
-                    startDay = challengeData.start_date.toString(),
-                    endDay = challengeData.end_date.toString()
+                item {
+                    ColumnForLazy {
+                        ChallengeJoinedDetailsTitle(
+                            status = status!!,
+                            personnel = 0,
+                            detailTitle = challengeData.goal.toString(),
+                            isFree = challengeData.min_deposit_amount == 0,
+                            isAdult = challengeData.is_adult_only == 1,
+                            isPhoto = challengeData.is_verification_photo == 1,
+                            startDay = challengeData.start_date.toString(),
+                            endDay = challengeData.end_date.toString()
+                        )
+                    }
+                }
+            }
+            item {
+                ColumnForLazy {
+                    Spacer(modifier = Modifier.height(24.dp))
+                    TabRow(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .aspectRatio(6.42f),
+                        selectedTabIndex = pagerState.currentPage,
+                        backgroundColor = DefaultWhite,
+                        indicator = {
+                            TabRowDefaults.Indicator(
+                                modifier = Modifier.tabIndicatorOffset(it[pagerState.currentPage]),
+                                color = Color(0xff005bad),
+                                height = 2.dp
+                            )
+                        }
+                    ) {
+                        Tab(
+                            selected = pagerState.currentPage == 0,
+                            selectedContentColor = Color(0xff005bad),
+                            unselectedContentColor = Color(0xffc7c7c7),
+                            onClick = {
+                                scope.launch {
+                                    pagerState.scrollToPage(0)
+                                }
+                            },
+                        ) {
+                            Text(
+                                text = "상세보기",
+                                fontSize = dpToSp(dp = 16.dp),
+                                style = myTypography.bold
+                            )
+                        }
+                        Tab(
+                            selected = pagerState.currentPage == 1,
+                            selectedContentColor = Color(0xff005bad),
+                            unselectedContentColor = Color(0xffc7c7c7),
+                            onClick = {
+                                scope.launch {
+                                    pagerState.scrollToPage(1)
+                                }
+                            },
+                        ) {
+                            Text(
+                                text = "인증",
+                                fontSize = dpToSp(dp = 16.dp),
+                                style = myTypography.bold
+                            )
+                        }
+                    }
+                }
+            }
+            item {
+                ColumnForLazy {
+                    HorizontalPager(
+                        count = 2, state = pagerState
+                    ) { page ->
+                        if (page == 0) {
+                            ChallengeJoinedDetailPage(
+                                challengeData = challengeData,
+                                challengers = challengers,
+                                clickListener = clickListener
+                            )
+                        } else {
+                            ChallengeAuthPage(
+                                challengeData = challengeData,
+                                clickListener = clickListener
+                            )
+                        }
+                    }
+                }
+            }
+            item {
+                FlatBookMarkButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(6f),
+                    text = "인증하기",
+                    onClick = { clickListener?.onClickParticipation() }
                 )
             }
-            Spacer(modifier = Modifier.height(24.dp))
-            TabRow(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(6.42f),
-                selectedTabIndex = pagerState.currentPage,
-                backgroundColor = DefaultWhite,
-                indicator = {
-                    TabRowDefaults.Indicator(
-                        modifier = Modifier.tabIndicatorOffset(it[pagerState.currentPage]),
-                        color = Color(0xff005bad),
-                        height = 2.dp
-                    )
-                }
-            ) {
-                Tab(
-                    selected = pagerState.currentPage == 0,
-                    selectedContentColor = Color(0xff005bad),
-                    unselectedContentColor = Color(0xffc7c7c7),
-                    onClick = {
-                        scope.launch {
-                            pagerState.scrollToPage(0)
-                        }
-                    },
-                ) {
-                    Text(
-                        text = "상세보기",
-                        fontSize = dpToSp(dp = 16.dp),
-                        style = myTypography.bold
-                    )
-                }
-                Tab(
-                    selected = pagerState.currentPage == 1,
-                    selectedContentColor = Color(0xff005bad),
-                    unselectedContentColor = Color(0xffc7c7c7),
-                    onClick = {
-                        scope.launch {
-                            pagerState.scrollToPage(1)
-                        }
-                    },
-                ) {
-                    Text(
-                        text = "인증",
-                        fontSize = dpToSp(dp = 16.dp),
-                        style = myTypography.bold
-                    )
-                }
-            }
-            HorizontalPager(
-                count = 2, state = pagerState
-            ) { page ->
-                if (page == 0) {
-                    ChallengeJoinedDetailPage(
-                        challengeData = challengeData,
-                        clickListener = clickListener
-                    )
-                } else {
-                    ChallengeAuthPage(
-                        challengeData = challengeData,
-                        clickListener = clickListener
-                    )
-                }
-            }
         }
-        FlatBookMarkButton(
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(6f),
-            text = "인증하기",
-            onClick = { clickListener?.onClickParticipation() }
-        )
     }
 }
 
@@ -173,7 +195,30 @@ private fun ChallengeProgressDetail(
     remainCount: Int = 0,
     failCount: Int = 0
 ) {
-    val list = listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10")
+    val list = listOf(
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "1",
+        "2"
+    )
     val columnCount by remember { mutableStateOf((list.size / 10) + (list.size % 10)) }
 
     Column {
@@ -203,27 +248,47 @@ private fun ChallengeProgressDetail(
             )
         }
         Spacer(modifier = Modifier.height(8.dp))
-        for (i in 0 until columnCount) {
-            val start = i * 10
-            val end = if (start + 10 > list.size) {
-                list.size
-            } else {
-                start + 10
-            }
-            val sublist = list.subList(start, end)
-            Timber.e("start :$i, end :$end")
-            Column(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    for (item in sublist) {
-                        ProgressRatioItem(modifier = Modifier.weight(1f), isSuccess = false, number = item)
-                        Spacer(modifier = Modifier.width(4.dp))
-                    }
-                }
-                Spacer(modifier = Modifier.height(4.dp))
+
+        val spacing by remember { mutableStateOf(3.5.dp) }
+        val itemSize = (LocalConfiguration.current.screenWidthDp.dp - 48.dp - (spacing * 9)) / 10
+
+        FlowRow(
+            mainAxisSize = SizeMode.Expand,
+            mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween,
+            crossAxisAlignment = FlowCrossAxisAlignment.Start,
+            mainAxisSpacing = 3.5.dp,
+            crossAxisSpacing = 3.5.dp
+        ) {
+            list.forEachIndexed { index, item ->
+                ProgressRatioItem(
+                    modifier = Modifier.size(itemSize),
+                    isSuccess = false,
+                    number = item
+                )
             }
         }
+
+//        for (i in 0 until columnCount) {
+//            val start = i * 10
+//            val end = if (start + 10 > list.size) {
+//                list.size
+//            } else {
+//                start + 10
+//            }
+//            val sublist = list.subList(start, end)
+//            Timber.e("start :$i, end :$end")
+//            Column(
+//                modifier = Modifier.fillMaxWidth()
+//            ) {
+//                Row(modifier = Modifier.fillMaxWidth()) {
+//                    for (item in sublist) {
+//                        ProgressRatioItem(modifier = Modifier.weight(1f), isSuccess = false, number = item)
+//                        Spacer(modifier = Modifier.width(4.dp))
+//                    }
+//                }
+//                Spacer(modifier = Modifier.height(4.dp))
+//            }
+//        }
         Spacer(modifier = Modifier.height(24.dp))
         Divider(
             modifier = Modifier
@@ -237,6 +302,7 @@ private fun ChallengeProgressDetail(
 @Composable
 private fun ChallengeJoinedDetailPage(
     challengeData: ChallengeData,
+    challengers: List<User>?,
     clickListener: ChallengeDetailClickListener? = null
 ) {
     Column {
@@ -247,20 +313,25 @@ private fun ChallengeJoinedDetailPage(
             failCount = 1
         )
         Spacer(modifier = Modifier.height(24.dp))
-        ChallengeJoinedDescription(challengeData = challengeData)
+        ChallengeJoinedDescription(
+            challengeData = challengeData,
+        )
         Divider(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(1.dp)
                 .background(Color(0xffebebeb))
         )
-        Spacer(modifier = Modifier.height(96.dp))
+        Spacer(modifier = Modifier.height(24.dp))
+        if (challengers != null) {
+            Challengers(challengers)
+        }
     }
 }
 
 @Composable
 private fun ChallengeJoinedDescription(
-    challengeData: ChallengeData
+    challengeData: ChallengeData,
 ) {
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -391,6 +462,72 @@ private fun ChallengeJoinedDescription(
                     .aspectRatio(1.90f)
             )
         }
+    }
+}
+
+@Composable
+private fun ColumnForLazy(
+    content: @Composable ColumnScope.() -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(24.dp, 0.dp),
+    ) {
+        content()
+    }
+}
+
+@Composable
+private fun Challengers(challengers: List<User>) {
+    Column {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            val annotatedString = buildAnnotatedString {
+                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold, color = Color(0xff4985f8))) {
+                    append("${challengers.size}명 ")
+                }
+                append("참여")
+            }
+            Text(
+                text = "챌린저스",
+                color = TextBlack,
+                fontSize = dpToSp(dp = 16.dp),
+                style = myTypography.bold
+            )
+            Text(
+                text = annotatedString,
+                fontSize = dpToSp(dp = 14.dp),
+                style = myTypography.default
+            )
+        }
+        Spacer(modifier = Modifier.height(25.dp))
+        challengers.forEachIndexed { index, user ->
+            if (index < 10) {
+                val name = if (user.nick_name == null) {
+                    user.name
+                } else {
+                    user.nick_name
+                }
+                ChallengersItem(
+                    userName = name.toString(),
+                    imagePath = user.image_path.toString()
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+        }
+        if (challengers.size > 10) {
+            Spacer(modifier = Modifier.height(17.dp))
+            FlatBorderButton(
+                modifier = Modifier.fillMaxWidth().aspectRatio(7.1f),
+                text = "전체보기",
+                onClick = {}
+            )
+        }
+        Spacer(modifier = Modifier.height(100.dp))
     }
 }
 

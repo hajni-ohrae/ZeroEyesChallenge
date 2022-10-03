@@ -34,7 +34,7 @@ class ChallengeDetailViewModel @Inject constructor(
     fun getChallenge(id: String) {
         viewModelScope.launch {
             repo.getChallenge(id).flowOn(Dispatchers.IO).collect {
-                Timber.e("result : ${gson.toJson(it.data)}")
+                Timber.e("getChallenge result : ${gson.toJson(it.data)}")
                 if (it.data != null) {
                     val challengeData = it.data as ChallengeData
                     _challengeData.value = challengeData
@@ -47,7 +47,7 @@ class ChallengeDetailViewModel @Inject constructor(
     fun getUserByChallenge(id: String, page: Int = 1, count: Int = 10) {
         viewModelScope.launch {
             repo.getUserByChallenge(id, page, count).flowOn(Dispatchers.IO).collect {
-                Timber.e("result : ${gson.toJson(it.data)}")
+                Timber.e("getUserByChallenge result : ${gson.toJson(it.data)}")
                 if (it.data != null) {
                     val challengers = it.data as List<User>
                     _challengers.value = challengers

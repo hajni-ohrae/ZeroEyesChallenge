@@ -109,7 +109,7 @@ class ChallengeDetailActivity : AppCompatActivity() {
 
     private fun init() {
         viewModel.getChallenge(challengeId.toString())
-        viewModel.getUserByChallenge(challengeId.toString(), 1, 10)
+        viewModel.getUserByChallenge(challengeId.toString(), 1, 11)
     }
 
     private fun initClickListener() {

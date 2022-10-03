@@ -55,9 +55,12 @@ class ChallengeDetailRepo @Inject constructor(
         when (response) {
             is NetworkResponse.Success -> {
                 return if (response.body.success) {
+                    val dataSet = response.body.dataset?.asJsonObject
+                    val array = dataSet?.get("array")?.asJsonArray
+
                     val listType = object : TypeToken<List<User?>?>() {}.type
                     val challengerList =
-                        gson.fromJson<List<ChallengeData>>(response.body.dataset, listType)
+                        gson.fromJson<List<ChallengeData>>(array, listType)
 
                     flow {
                         emit(FlowResult(challengerList, "", ""))

@@ -57,7 +57,7 @@ interface ApiService {
         @Header("page") page: Int,
         @Header("per_page") count: Int,
         @Path("challenge_id") challengeId: String,
-    ): NetworkResponse<Result, Error>
+    ): NetworkResponse<Result2, Error>
 
     @POST(Routes.REQUEST_PAYMENT)
     suspend fun requestPayment(@Body body: JsonObject?): NetworkResponse<Result, Error>
