@@ -4,6 +4,7 @@ import biz.ohrae.challenge_repo.data.remote.ApiService
 import biz.ohrae.challenge_repo.data.remote.NetworkResponse
 import biz.ohrae.challenge_repo.model.FlowResult
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
+import biz.ohrae.challenge_repo.model.user.UserChallengeData
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import com.google.gson.Gson
 import com.google.gson.JsonElement
@@ -88,9 +89,9 @@ class ChallengeMainRepo @Inject constructor(
 
                         val dataSet: JsonElement = dataset?.getAsJsonArray("array")!!.asJsonArray
 
-                        val listType = object : TypeToken<List<ChallengeData?>?>() {}.type
+                        val listType = object : TypeToken<List<UserChallengeData?>?>() {}.type
                         val userChallengeList =
-                            gson.fromJson<List<ChallengeData>>(dataSet, listType)
+                            gson.fromJson<List<UserChallengeData>>(dataSet, listType)
                         return flow {
                             emit(FlowResult(userChallengeList, "", ""))
                         }
