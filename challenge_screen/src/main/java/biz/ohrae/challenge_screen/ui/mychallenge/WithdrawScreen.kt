@@ -29,12 +29,14 @@ fun WithdrawScreen(
     Column {
         Column(modifier = Modifier.padding(24.dp,0.dp)) {
             Text(text = "출금 신청", style = myTypography.w700, fontSize = dpToSp(dp = 20.dp))
+            Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "5,000원 이상부터 출금 가능합니다",
                 style = myTypography.w700,
                 fontSize = dpToSp(dp = 12.dp),
                 color = Color(0xff828282)
             )
+            Spacer(modifier = Modifier.height(20.dp))
             FlatBanner(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -45,6 +47,8 @@ fun WithdrawScreen(
                 content = "15,500원",
                 contentColor = Color(0xff005bad)
             )
+            Spacer(modifier = Modifier.height(20.dp))
+
             LabeledTextField(
                 modifier = Modifier
                     .fillMaxWidth()

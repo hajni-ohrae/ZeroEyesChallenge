@@ -42,7 +42,7 @@ class MyChallengeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         challengeMainViewModel = ViewModelProvider(this)[ChallengeMainViewModel::class.java]
-
+        init()
         initClickListener()
         setContent {
             ChallengeInTheme {
@@ -51,6 +51,10 @@ class MyChallengeActivity : AppCompatActivity() {
         }
     }
 
+    private fun init() {
+        challengeMainViewModel.getUserChallengeList()
+
+    }
     @Composable
     private fun BuildContent() {
         navController = rememberNavController()

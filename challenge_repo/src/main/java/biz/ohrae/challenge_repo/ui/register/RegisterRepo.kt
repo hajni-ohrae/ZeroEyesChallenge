@@ -26,7 +26,7 @@ class RegisterRepo @Inject constructor(
         val jsonObject = JsonObject()
         jsonObject.addProperty("user_id", userId)
         jsonObject.addProperty("goal", challengeData.goal)
-        jsonObject.addProperty("subject", challengeData.subject)
+        jsonObject.addProperty("caution", challengeData.caution)
         jsonObject.addProperty("apply_start_date", challengeData.apply_start_date)
         jsonObject.addProperty("apply_end_date", challengeData.apply_end_date)
         jsonObject.addProperty("start_date", challengeData.start_date)

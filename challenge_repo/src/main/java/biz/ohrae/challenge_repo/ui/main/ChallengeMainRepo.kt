@@ -29,9 +29,13 @@ class ChallengeMainRepo @Inject constructor(
         is_adult_only: String = ""
     ): Flow<FlowResult> {
         val accessToken = prefs.getUserData()?.access_token
+        val page = "1"
+        val perPage = "10"
         val response =
             apiService.getAllChallenge(
                 accessToken.toString(),
+                page,
+                perPage,
                 paymentType,
                 verificationPeriodType,
                 per_week,
@@ -89,9 +93,9 @@ class ChallengeMainRepo @Inject constructor(
 
                         val dataSet: JsonElement = dataset?.getAsJsonArray("array")!!.asJsonArray
 
-                        val listType = object : TypeToken<List<UserChallengeData?>?>() {}.type
+                        val listType = object : TypeToken<List<ChallengeData?>?>() {}.type
                         val userChallengeList =
-                            gson.fromJson<List<UserChallengeData>>(dataSet, listType)
+                            gson.fromJson<List<ChallengeData>>(dataSet, listType)
                         return flow {
                             emit(FlowResult(userChallengeList, "", ""))
                         }

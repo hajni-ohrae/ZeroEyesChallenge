@@ -44,7 +44,7 @@ data class ChallengeData(
             id = "2d4033ab-244b-47f3-84e9-6af72be39d9f",
             user_id = id,
             goal = "주 2회 자전거 타고 인증하기",
-            subject = "test",
+            subject = "",
             apply_start_date = "2022-09-13",
             apply_end_date = "2022-09-20",
             start_date = "2022-09-20",

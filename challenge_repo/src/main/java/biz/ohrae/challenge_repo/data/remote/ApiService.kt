@@ -19,6 +19,8 @@ interface ApiService {
     @GET(Routes.GET_ALL_CHALLENGE)
     suspend fun getAllChallenge(
         @Header("x-access-token") accessToken: String,
+        @Header("page") page: String,
+        @Header("per_page") perPage: String,
         @Query("payment_type") paymentType: String,
         @Query("verification_period_type") verificationPeriodType: String,
         @Query("per_week") perWeek: String? = "",
@@ -142,7 +144,7 @@ interface ApiService {
         @Path("challenge_id") challengeId: String,
     ): NetworkResponse<Result, Error>
 
-    @POST(Routes.GET_USER_CHALLENGE_LIST)
+    @GET(Routes.GET_USER_CHALLENGE_LIST)
     suspend fun getUserChallengeList(
         @Header("x-access-token") accessToken: String
     ): NetworkResponse<Result2, Error>

@@ -46,7 +46,6 @@ fun ChallengeMainScreen(
     clickListener: MainClickListener? = null,
     filterState: FilterState = FilterState.mock(),
     userChallengeListState: UserChallengeListState? = null
-
 ) {
     Spacer(modifier = Modifier.height(16.dp))
     Column(
@@ -77,11 +76,11 @@ fun ChallengeMainScreen(
                     val type = challengeVerificationPeriodMap[item.verification_period_type]
                     ChallengeCardItem(
                         item.id,
-                        item.goal!!,
+                        item.goal.toString(),
                         item.user?.name,
-                        startDay!!,
+                        startDay.toString(),
                         item.period.toString(),
-                        type!!,
+                        type.toString(),
                         item.summary?.total_user_cnt,
                         getAuthType(item),
                         getOpenType(item),
@@ -152,7 +151,7 @@ fun ItemHeader(
             ) {
                 items(userChallengeListState?.userChallengeList!!) { item ->
                     ChallengesInParticipationCard(
-                        modifier = Modifier,
+                        modifier = Modifier.fillParentMaxSize(),
                         title = item.goal.toString(),
                         1,
                         30,
