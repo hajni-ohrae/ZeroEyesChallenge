@@ -35,9 +35,10 @@ private fun ChallengesInParticipationCardGallery() {
         ChallengesInParticipationCard(
             Modifier,
             title = "매일 6시간씩 한국사 공부",
-            1,
-            30,
+            "1",
+            "30",
             "진행중",
+            "0.00",
             Color(0x335c94ff),
             Color(0xff5c94ff)
         )
@@ -45,9 +46,10 @@ private fun ChallengesInParticipationCardGallery() {
         ChallengesInParticipationCard(
             Modifier,
             title = "매일 6시간씩 한국사 공부",
-            1,
-            30,
+            "1",
+            "30",
             "모집중",
+            "0.00",
             Color(0xffebfaf1),
             Color(0xff219653)
         )
@@ -55,10 +57,12 @@ private fun ChallengesInParticipationCardGallery() {
         ChallengesInParticipationCard(
             Modifier,
             title = "매일 6시간씩 한국사 공부",
-            1,
-            30,
+            "1",
+            "30",
             "완료",
+            "0.00",
             Color(0xffdedede),
+
             Color(0xff6c6c6c)
         )
     }
@@ -68,13 +72,15 @@ private fun ChallengesInParticipationCardGallery() {
 fun ChallengesInParticipationCard(
     modifier: Modifier,
     title: String,
-    count: Int,
-    maxPeople: Int,
+    count: String,
+    maxPeople:String,
     progressStatus: String,
+    achievementRate:String = "0.00",
     background: Color,
-    textColor: Color
+    textColor: Color,
+    onClick: () -> Unit = {}
 ) {
-    val achievementRate = (count.toDouble() / maxPeople.toDouble() * 100.0).roundToInt()
+//    val achievementRate = (count.toDouble() / maxPeople.toDouble() * 100.0).roundToInt()
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(10.dp),
@@ -110,9 +116,11 @@ fun ChallengesInParticipationCard(
                     .height(1.dp)
                     .background(Color(0xfffafafa))
             )
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .padding(0.dp, 16.dp), Arrangement.SpaceBetween) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(0.dp, 16.dp), Arrangement.SpaceBetween
+            ) {
                 Text(
                     text = "인증현황",
                     style = myTypography.default,
@@ -133,7 +141,8 @@ fun ChallengesInParticipationCard(
                     .fillMaxWidth()
                     .aspectRatio(6.5f),
                 text = "인증하기",
-                backgroundColor = appColor.AlertSuccessColor
+                backgroundColor = appColor.AlertSuccessColor,
+                onClick = { onClick() }
             )
         }
     }

@@ -53,7 +53,7 @@ class ChallengeRegisterViewModel @Inject constructor(
             response.flowOn(Dispatchers.IO).collect { it ->
                 it.data?.let { data ->
                     _isChallengeCreate.value = data as Boolean
-                    if (challengeData.image_path.isNullOrEmpty()) {
+                    if (challengeData.imageFile?.path.isNullOrEmpty()) {
                         _isChallengeCreate.value = data as Boolean
                     } else {
                         uploadChallengeImage(challengeData)
@@ -139,7 +139,7 @@ class ChallengeRegisterViewModel @Inject constructor(
             state?.let {
                 it.goal = goal
                 it.caution = precautions
-                it.image_path = imgUrl
+                it.imageFile?.path = imgUrl.toString()
 
                 _challengeData.value = it
                 createChallenge(_challengeData.value!!)

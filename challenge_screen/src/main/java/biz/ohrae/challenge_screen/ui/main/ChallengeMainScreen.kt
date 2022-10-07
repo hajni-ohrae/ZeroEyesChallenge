@@ -53,9 +53,11 @@ fun ChallengeMainScreen(
             .fillMaxWidth()
             .fillMaxSize(),
     ) {
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .fillMaxWidth()) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .fillMaxWidth()
+        ) {
             LazyColumn(
                 modifier = Modifier
                     .padding(24.dp, 0.dp)
@@ -151,13 +153,15 @@ fun ItemHeader(
             ) {
                 items(userChallengeListState?.userChallengeList!!) { item ->
                     ChallengesInParticipationCard(
-                        modifier = Modifier.fillParentMaxSize(),
+                        modifier = Modifier.fillParentMaxWidth(),
                         title = item.goal.toString(),
-                        1,
-                        30,
+                        count = "1",
+                        maxPeople ="2",
                         "완료",
+                        achievementRate = "3",
                         Color(0xffdedede),
-                        Color(0xff6c6c6c)
+                        Color(0xff6c6c6c),
+                        onClick = {clickListener?.onClickChallengeAuthItem(item.id)}
                     )
                 }
             }

@@ -143,6 +143,10 @@ class MyChallengeActivity : AppCompatActivity() {
                 policyScreenType = screen
                 navController.navigate(MyChallengeNavScreen.Policy.route)
             }
+
+            override fun onClickChallengeAuthItem(item:String) {
+                TODO("Not yet implemented")
+            }
         }
     }
 }

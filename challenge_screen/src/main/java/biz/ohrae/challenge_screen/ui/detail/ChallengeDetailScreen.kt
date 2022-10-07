@@ -58,7 +58,7 @@ fun ChallengeDetailScreen(
     }
     val bottomBtnName by remember {
         mutableStateOf(
-            if (challengeData.inChallenge.isNullOrEmpty()) {
+            if (challengeData.inChallenge == null) {
                 "참여 신청"
             } else {
                 "참여 취소"

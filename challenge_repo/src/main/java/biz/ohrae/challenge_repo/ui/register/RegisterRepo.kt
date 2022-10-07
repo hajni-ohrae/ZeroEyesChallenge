@@ -44,7 +44,7 @@ class RegisterRepo @Inject constructor(
         jsonObject.addProperty("period", challengeData.period)
         jsonObject.addProperty("verification_period_type", challengeData.verification_period_type)
         jsonObject.addProperty("per_week", challengeData.per_week)
-        jsonObject.addProperty("image_path", challengeData.image_path)
+//        jsonObject.addProperty("image_path", challengeData.image_path)
 
         val response = apiService.createChallenge(jsonObject)
         when (response) {
@@ -69,8 +69,8 @@ class RegisterRepo @Inject constructor(
     }
 
     suspend fun uploadImage(challengeData: ChallengeData): Flow<FlowResult> {
-        Timber.e("imageUri : ${challengeData.image_path.toString()}")
-        val file = File(challengeData.image_path.toString())
+        Timber.e("imageUri : ${challengeData.imageFile.toString()}")
+        val file = File(challengeData.imageFile?.path.toString())
         val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
         val multipartBody = MultipartBody.Part.createFormData("body", file.name, requestFile)
 

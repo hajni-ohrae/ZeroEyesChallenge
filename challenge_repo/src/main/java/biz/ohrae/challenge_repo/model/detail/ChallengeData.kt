@@ -26,19 +26,19 @@ data class ChallengeData(
     var verification_period_type: String? = null,
 //    daily | weekday | weekend | per_week
     var per_week: Int = 0,
-    var image_path: String?,
+    var imageFile: ImageFile? = null,
     val status: String,
     var caution: String? = null,
     val created_date: String,
-    val inChallenge: List<Any>?,
+    val inChallenge:List<Any>? = null,
     val total_verification_cnt: Int,
     val updated_date: String,
     val verification_daily_staying_time: Int,
     val remaining_time: String? = null,
     val user: User? = null,
-    val summary:Summary? = null,
+    val summary: Summary? = null,
 
-) {
+    ) {
     companion object {
         fun mock(id: String = "2d4033ab-244b-47f3-84e9-6af72be39d9f") = ChallengeData(
             id = "2d4033ab-244b-47f3-84e9-6af72be39d9f",
@@ -63,11 +63,9 @@ data class ChallengeData(
             period = 3,
             verification_period_type = "daily",
             per_week = 3,
-            image_path = "daily",
             status = "pending",
             created_date = "2022-09-20",
             updated_date = "2022-09-20",
-            inChallenge = listOf(),
             total_verification_cnt = 0,
             verification_daily_staying_time = 0,
         )
@@ -76,4 +74,18 @@ data class ChallengeData(
 
 data class Summary(
     val total_user_cnt: Int = 0,
+)
+
+data class InChallenge(
+    val id: Int = 0,
+    val achievement_percent: String,
+    val today_verified_cnt: Int,
+    val verified_cnt: Int
+)
+
+data class ImageFile(
+    val id: Int,
+    val type: String,
+    var path: String,
+    val thumbnail_path: String
 )

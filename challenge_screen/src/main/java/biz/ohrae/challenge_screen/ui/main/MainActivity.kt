@@ -132,6 +132,10 @@ class MainActivity : AppCompatActivity() {
                     viewModel.getChallengeList(paymentType = filterType,"","","","")
                 }
             }
+
+            override fun onClickChallengeAuthItem(id: String) {
+                goDetail(id)
+            }
         }
     }
 

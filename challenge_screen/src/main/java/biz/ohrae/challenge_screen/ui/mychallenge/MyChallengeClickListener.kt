@@ -8,4 +8,5 @@ interface MyChallengeClickListener {
     fun onClickApplyWithdraw()
     fun onClickApplyWithdrawDetail()
     fun onClickPolicy(screen:String)
+    fun onClickChallengeAuthItem(id:String)
 }

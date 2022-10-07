@@ -20,12 +20,12 @@ class ParticipationRepo @Inject constructor(
         val accessToken = prefs.getUserData()?.access_token
         val userId = prefs.getUserData()?.id
         val jsonObject = JsonObject()
-        jsonObject.addProperty("user_id", userId)
+//        jsonObject.addProperty("user_id", userId)
         jsonObject.addProperty("challenge_id", challengeData.id)
         jsonObject.addProperty("verification_type", challengeData.verification_period_type)
         jsonObject.addProperty("paid_amount", paidAmount)
         jsonObject.addProperty("reward_amount", rewardsAmount)
-        jsonObject.addProperty("deposit_amount", depositAmount)
+//        jsonObject.addProperty("deposit_amount", depositAmount)
 
         val response = apiService.registerChallenge(accessToken.toString(),jsonObject)
         when (response) {
