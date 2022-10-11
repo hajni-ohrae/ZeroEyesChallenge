@@ -29,6 +29,7 @@ object Routes {
     const val GET_ALL_WARNING = "${CHALLENGE}/api/regulation/warn/get/all"
     const val SET_WARNING = "${CHALLENGE}/api/regulation/warn"
     const val CANCEL_WARNING = "${CHALLENGE}/api/regulation/warn/cancel/{redcard_id}"
+    const val GET_RADCARD_LIST = "${CHALLENGE}/api/regulation/redcard/get/all"
 
     // 규정 (이용정지)
     const val GET_ALL_BLOCK = "${CHALLENGE}/api/regulation/block/get/all"

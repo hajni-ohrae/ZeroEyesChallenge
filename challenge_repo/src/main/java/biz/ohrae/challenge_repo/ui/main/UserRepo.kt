@@ -153,4 +153,24 @@ class UserRepo @Inject constructor(
         }
 
     }
+    suspend fun getRedCardList(): Flow<FlowResult> {
+        val accessToken = prefs.getUserData()?.access_token
+        val response = apiService.getRedCardList(accessToken.toString(),1,10)
+
+        when (response) {
+            is NetworkResponse.Success -> {
+                val redCardList =
+                    gson.fromJson(response.body.dataset, RedCardState::class.java)
+                return flow {
+                    emit(FlowResult(redCardList, "", ""))
+                }
+            }
+            else -> {
+                return flow {
+                    emit(FlowResult(null, "", ""))
+                }
+            }
+        }
+
+    }
 }

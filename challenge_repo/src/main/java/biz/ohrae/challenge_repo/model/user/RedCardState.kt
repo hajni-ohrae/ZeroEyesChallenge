@@ -10,7 +10,6 @@ data class RedCardState(
     val canceled_date: String,
     val created_date: String,
     val updated_date: String,
-    val user: User
 ) {
 
 }

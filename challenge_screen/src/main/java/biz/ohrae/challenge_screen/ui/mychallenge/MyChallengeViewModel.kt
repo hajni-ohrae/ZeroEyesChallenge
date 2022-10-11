@@ -7,6 +7,9 @@ import biz.ohrae.challenge_repo.model.user.RedCardState
 import biz.ohrae.challenge_repo.ui.main.ChallengeMainRepo
 import biz.ohrae.challenge_repo.ui.main.UserRepo
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
+import biz.ohrae.challenge_screen.model.user.RedCard
+import biz.ohrae.challenge_screen.model.user.RedCardListState
+import biz.ohrae.challenge_screen.model.user.UserChallengeListState
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -21,7 +24,9 @@ class MyChallengeViewModel @Inject constructor(
     private val prefs: SharedPreference,
     private val gson: Gson
 ) : ViewModel() {
-    private val _mainScreenState = MutableLiveData<RedCardState>()
+    private val _redCardListState = MutableLiveData<RedCardListState>()
+
+    val redCardListState get() = _redCardListState
 
     fun getAllBlock() {
         viewModelScope.launch {
@@ -29,6 +34,20 @@ class MyChallengeViewModel @Inject constructor(
             response.flowOn(Dispatchers.IO).collect {
                 it.data?.let { data ->
                     val challengeList = data as List<RedCardState>
+
+                }
+            }
+        }
+    }
+
+    fun getRedCardList() {
+        viewModelScope.launch {
+            val response = userRepo.getRedCardList()
+            response.flowOn(Dispatchers.IO).collect {
+                it.data?.let { data ->
+                    val redCardState = data as List<RedCard>
+                    val state = RedCardListState(redCardState)
+                    _redCardListState.value = state
 
                 }
             }

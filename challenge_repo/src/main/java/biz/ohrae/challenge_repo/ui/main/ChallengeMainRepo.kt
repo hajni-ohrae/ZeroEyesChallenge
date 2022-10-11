@@ -34,8 +34,8 @@ class ChallengeMainRepo @Inject constructor(
         val response =
             apiService.getAllChallenge(
                 accessToken.toString(),
-                page,
-                perPage,
+                page.toInt(),
+                perPage.toInt(),
                 paymentType,
                 verificationPeriodType,
                 per_week,

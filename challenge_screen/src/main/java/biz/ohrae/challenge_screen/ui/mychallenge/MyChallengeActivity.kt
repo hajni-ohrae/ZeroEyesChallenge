@@ -32,6 +32,7 @@ class MyChallengeActivity : AppCompatActivity() {
     }
 
     private lateinit var challengeMainViewModel: ChallengeMainViewModel
+    private lateinit var myChallengeViewModel: MyChallengeViewModel
     private lateinit var navController: NavHostController
     private lateinit var myChallengeClickListener: MyChallengeClickListener
     private lateinit var prefs: SharedPreference
@@ -42,6 +43,7 @@ class MyChallengeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         challengeMainViewModel = ViewModelProvider(this)[ChallengeMainViewModel::class.java]
+        myChallengeViewModel = ViewModelProvider(this)[MyChallengeViewModel::class.java]
         init()
         initClickListener()
         setContent {
@@ -53,7 +55,7 @@ class MyChallengeActivity : AppCompatActivity() {
 
     private fun init() {
         challengeMainViewModel.getUserChallengeList()
-
+        myChallengeViewModel.getRedCardList()
     }
     @Composable
     private fun BuildContent() {
@@ -81,6 +83,7 @@ class MyChallengeActivity : AppCompatActivity() {
     private fun Navigation() {
         val state by challengeMainViewModel.userChallengeListState.observeAsState()
         val userData by challengeMainViewModel.userData.observeAsState()
+        val redCardListState by myChallengeViewModel.redCardListState.observeAsState()
 
         NavHost(
             navController = navController,

@@ -19,8 +19,8 @@ interface ApiService {
     @GET(Routes.GET_ALL_CHALLENGE)
     suspend fun getAllChallenge(
         @Header("x-access-token") accessToken: String,
-        @Header("page") page: String,
-        @Header("per_page") perPage: String,
+        @Header("page") page: Int,
+        @Header("per_page") perPage: Int,
         @Query("payment_type") paymentType: String,
         @Query("verification_period_type") verificationPeriodType: String,
         @Query("per_week") perWeek: String? = "",
@@ -81,6 +81,13 @@ interface ApiService {
         @Path("redcard_id") redCardId: String,
         @Body body: JsonObject?
     ): NetworkResponse<Result, Error>
+
+    @POST(Routes.GET_RADCARD_LIST)
+    suspend fun getRedCardList(
+        @Header("x-access-token") accessToken: String,
+        @Header("page") page: Int,
+        @Header("per_page") count: Int,
+        ): NetworkResponse<Result, Error>
 
     @GET(Routes.GET_ALL_BLOCK)
     suspend fun getAllBlock(

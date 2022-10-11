@@ -16,6 +16,7 @@ import biz.ohrae.challenge.ui.components.list_item.RedCardHistoryItem
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
+import biz.ohrae.challenge_screen.model.user.RedCardListState
 
 
 @Preview(
@@ -25,7 +26,8 @@ import biz.ohrae.challenge.ui.theme.myTypography
 )
 @Composable
 fun RedCardScreen(
-    clickListener: MyChallengeClickListener? = null
+    clickListener: MyChallengeClickListener? = null,
+    redCardListState: RedCardListState? = null
 ) {
     Column(modifier = Modifier.background(DefaultWhite)) {
         Column(modifier = Modifier.padding(24.dp, 0.dp)) {
@@ -54,15 +56,17 @@ fun RedCardScreen(
                 backgroundColor = Color(0xfffbefef),
                 title = "레드카드",
                 titleColor = Color(0xff6c6c6c),
-                content = "2회",
+                content = if(redCardListState?.redCardList == null) "0" else "${redCardListState.redCardList.size.toString()}",
                 contentColor = Color(0xffff0000)
             )
             Spacer(modifier = Modifier.height(21.dp))
 
         }
-        Column(modifier = Modifier
-            .fillMaxHeight()
-            .background(Color(0xfffafafa))) {
+        Column(
+            modifier = Modifier
+                .fillMaxHeight()
+                .background(Color(0xfffafafa))
+        ) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -77,10 +81,12 @@ fun RedCardScreen(
                         title = "책읽기 챌린지",
                         content = "인증규정관 무관한 이미지로 인증을 대체"
                     )
-                    Divider(modifier = Modifier
-                        .fillMaxWidth()
-                        .height(1.dp)
-                        .background(Color(0xfffafafa)))
+                    Divider(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(1.dp)
+                            .background(Color(0xfffafafa))
+                    )
                 }
             }
         }
