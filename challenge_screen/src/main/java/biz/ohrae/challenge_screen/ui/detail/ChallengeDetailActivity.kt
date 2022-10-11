@@ -30,6 +30,7 @@ import biz.ohrae.challenge.ui.components.header.NavigationHeader
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.dialog.LoadingDialog
+import biz.ohrae.challenge_screen.ui.mychallenge.PolicyScreen
 import biz.ohrae.challenge_screen.ui.participation.ParticipationActivity
 import biz.ohrae.challenge_screen.ui.register.ChallengeCameraScreen
 import dagger.hilt.android.AndroidEntryPoint
@@ -148,6 +149,9 @@ class ChallengeDetailActivity : BaseActivity() {
                     clickListener = detailClickListener
                 )
             }
+            composable(ChallengeDetailNavScreen.RedCardInfo.route) {
+                PolicyScreen(screen = "")
+            }
         }
     }
 
@@ -202,6 +206,10 @@ class ChallengeDetailActivity : BaseActivity() {
                 navController.navigate(ChallengeDetailNavScreen.AuthWrite.route)
             }
 
+            override fun onClickRedCardInfo() {
+                navController.navigate(ChallengeDetailNavScreen.RedCardInfo.route)
+            }
+
             override fun onDone(content: String) {
                 viewModel.verifyChallenge(content)
                 navController.navigate(ChallengeDetailNavScreen.JoinedDetail.route)
@@ -219,6 +227,7 @@ class ChallengeDetailActivity : BaseActivity() {
 sealed class ChallengeDetailNavScreen(val route: String) {
     object Detail : ChallengeDetailNavScreen("Detail")
     object JoinedDetail : ChallengeDetailNavScreen("JoinedDetail")
+    object RedCardInfo : ChallengeDetailNavScreen("RedCardInfo")
     object AuthCameraPreview : ChallengeDetailNavScreen("AuthCameraPreview")
     object AuthCameraResult : ChallengeDetailNavScreen("AuthCameraResult")
     object AuthWrite : ChallengeDetailNavScreen("AuthWrite")

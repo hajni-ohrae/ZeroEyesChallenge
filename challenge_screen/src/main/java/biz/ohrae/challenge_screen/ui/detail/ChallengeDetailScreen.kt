@@ -101,7 +101,10 @@ fun ChallengeDetailScreen(
                     .background(Color(0xffebebeb))
             )
             Spacer(modifier = Modifier.height(32.dp))
-            ChallengeDescription(challengeData = challengeData)
+            ChallengeDescription(
+                challengeData = challengeData,
+                clickListener = clickListener
+            )
             if (challengeData.is_verification_photo == 1) {
                 ChallengePhotoAuthentication()
             }
@@ -145,7 +148,8 @@ fun ChallengeDetailScreen(
 
 @Composable
 fun ChallengeDescription(
-    challengeData: ChallengeData
+    challengeData: ChallengeData,
+    clickListener: ChallengeDetailClickListener? = null
 ) {
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -253,7 +257,10 @@ fun ChallengeDescription(
         RedCardInfo(
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(13f)
+                .aspectRatio(13f),
+            onClick = {
+                clickListener?.onClickRedCardInfo()
+            }
         )
         Spacer(modifier = Modifier.height(32.dp))
         Text(
@@ -320,10 +327,10 @@ fun ChallengePhotoAuthentication() {
 @Composable
 fun ChallengeHost(challengeData: ChallengeData) {
     val name by remember {
-        if (challengeData.user?.nick_name.isNullOrEmpty()) {
+        if (challengeData.user?.nickname.isNullOrEmpty()) {
             mutableStateOf(challengeData.user?.name)
         } else {
-            mutableStateOf(challengeData.user?.nick_name)
+            mutableStateOf(challengeData.user?.nickname)
         }
     }
 

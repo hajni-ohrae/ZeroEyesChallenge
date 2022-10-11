@@ -5,5 +5,6 @@ interface ChallengeDetailClickListener {
     fun onClickAuth()
     fun onClickReTakePhoto()
     fun onClickUsePhoto()
+    fun onClickRedCardInfo()
     fun onDone(content: String)
 }

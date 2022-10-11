@@ -4,8 +4,9 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -38,15 +39,21 @@ private fun RedCardInfoGallery() {
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun RedCardInfo(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
 ) {
     Column(modifier = modifier) {
-        Surface(
+        Card(
             modifier = Modifier.fillMaxSize(),
             shape = RoundedCornerShape(10.dp),
-            border = BorderStroke(0.dp, Color(0xffffeee5))
+            border = BorderStroke(0.dp, Color(0xffffeee5)),
+            elevation = 0.dp,
+            onClick = {
+                onClick()
+            },
         ) {
             val annotatedString = buildAnnotatedString {
                 append("인증 규정을 지키지 않을 경우 ")

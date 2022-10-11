@@ -315,6 +315,7 @@ private fun ChallengeJoinedDetailPage(
         Spacer(modifier = Modifier.height(24.dp))
         ChallengeJoinedDescription(
             challengeData = challengeData,
+            clickListener = clickListener
         )
         Divider(
             modifier = Modifier
@@ -332,6 +333,7 @@ private fun ChallengeJoinedDetailPage(
 @Composable
 private fun ChallengeJoinedDescription(
     challengeData: ChallengeData,
+    clickListener: ChallengeDetailClickListener? = null
 ) {
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -387,7 +389,10 @@ private fun ChallengeJoinedDescription(
         RedCardInfo(
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(13f)
+                .aspectRatio(13f),
+            onClick = {
+                clickListener?.onClickRedCardInfo()
+            }
         )
         Spacer(modifier = Modifier.height(32.dp))
         Text(
@@ -507,10 +512,10 @@ private fun Challengers(challengers: List<User>) {
         Spacer(modifier = Modifier.height(25.dp))
         challengers.forEachIndexed { index, user ->
             if (index < 10) {
-                val name = if (user.nick_name == null) {
+                val name = if (user.nickname == null) {
                     user.name
                 } else {
-                    user.nick_name
+                    user.nickname
                 }
                 ChallengersItem(
                     userName = name.toString(),
