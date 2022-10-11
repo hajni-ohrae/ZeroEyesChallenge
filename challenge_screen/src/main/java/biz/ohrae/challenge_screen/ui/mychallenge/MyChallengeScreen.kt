@@ -72,17 +72,19 @@ fun MyChallengeScreen(
                 }
                 if (userChallengeListState != null) {
                     items(userChallengeListState?.userChallengeList!!) { item ->
-                        ChallengesInParticipationCard(
-                            modifier = Modifier.fillParentMaxWidth(),
-                            title = item.goal.toString(),
-                            count = "1",
-                            maxPeople ="2",
-                            "완료",
-                            achievementRate = "3",
-                            Color(0xffdedede),
-                            Color(0xff6c6c6c),
-                            onClick = {clickListener?.onClickChallengeAuthItem(item.id)}
-                        )
+                        item.inChallenge?.forEach { inChallenge ->
+                            ChallengesInParticipationCard(
+                                modifier = Modifier.fillParentMaxWidth(),
+                                title = item.goal.toString(),
+                                count = inChallenge.today_verified_cnt.toString(),
+                                maxPeople = inChallenge.verified_cnt.toString(),
+                                progressStatus = item.status,
+                                achievementRate = inChallenge.achievement_percent,
+                                Color(0xffdedede),
+                                Color(0xff6c6c6c),
+                                onClick = { clickListener?.onClickChallengeAuthItem(item.id) }
+                            )
+                        }
                     }
                 }
             }
