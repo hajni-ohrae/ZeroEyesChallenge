@@ -95,7 +95,8 @@ fun BackButton(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp, 13.dp)
+            .aspectRatio(6.43f)
+//            .padding(16.dp, 13.dp)
             .background(backgroundColor),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween

@@ -1,13 +1,16 @@
 package biz.ohrae.challenge_screen.ui.register
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.activity.compose.setContent
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
@@ -17,8 +20,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
@@ -37,6 +38,7 @@ import biz.ohrae.challenge_screen.ui.main.MainActivity
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import java.io.IOException
 
 
 @AndroidEntryPoint
@@ -52,6 +54,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var registerClickListener: RegisterClickListener
     private lateinit var challengeData: ChallengeData
     private lateinit var capturedCallback: ImageCapture.OnImageSavedCallback
+    private lateinit var albumLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +66,24 @@ class RegisterActivity : AppCompatActivity() {
         setContent {
             ChallengeInTheme {
                 BuildContent()
+            }
+        }
+
+        albumLauncher = registerForActivityResult<Intent, ActivityResult>(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val data = result.data
+                // do your operation from here....
+                if (data != null && data.data != null) {
+                    val selectedImageUri = data.data
+                    try {
+                        Timber.e("selectedImageUri : $selectedImageUri")
+                        viewModel.setChallengeImage(selectedImageUri.toString())
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
+                }
             }
         }
     }
@@ -207,15 +228,16 @@ class RegisterActivity : AppCompatActivity() {
             }
 
             override fun onClickPhotoBox() {
-                val permission = Manifest.permission.CAMERA
-                if(ContextCompat.checkSelfPermission(this@RegisterActivity, permission)
-                    != PackageManager.PERMISSION_GRANTED)
-                {
-                    // Permission is not granted
-                    ActivityCompat.requestPermissions(this@RegisterActivity, arrayOf(permission), 100)
-                } else {
-                    navController.navigate(ChallengeRegisterNavScreen.ChallengerCameraPreview.route)
-                }
+//                val permission = Manifest.permission.CAMERA
+//                if(ContextCompat.checkSelfPermission(this@RegisterActivity, permission)
+//                    != PackageManager.PERMISSION_GRANTED)
+//                {
+//                    // Permission is not granted
+//                    ActivityCompat.requestPermissions(this@RegisterActivity, arrayOf(permission), 100)
+//                } else {
+//                    navController.navigate(ChallengeRegisterNavScreen.ChallengerCameraPreview.route)
+//                }
+                callImageSelector()
             }
 
             override fun onClickReTakePhoto() {
@@ -303,6 +325,17 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         return path
+    }
+
+    private fun callImageSelector() {
+        val galleryIntent = Intent()
+        galleryIntent.type = "image/*"
+        galleryIntent.action = Intent.ACTION_GET_CONTENT
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+        val chooser = Intent.createChooser(galleryIntent, "이미지 선택")
+        chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(cameraIntent))
+        albumLauncher.launch(chooser)
     }
 }
 

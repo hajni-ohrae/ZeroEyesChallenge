@@ -51,6 +51,7 @@ fun UploadPhotoBox(
     Card(
         modifier = modifier.background(Color(0xfff8f8f8)),
         shape = RoundedCornerShape(10.dp),
+        elevation = 0.dp,
         onClick = {
             onclick()
         }

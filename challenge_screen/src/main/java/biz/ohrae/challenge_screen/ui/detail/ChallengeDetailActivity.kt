@@ -26,7 +26,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import biz.ohrae.challenge.ui.components.header.NavigationHeader
+import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.dialog.LoadingDialog
@@ -89,9 +89,11 @@ class ChallengeDetailActivity : BaseActivity() {
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            NavigationHeader(
-                onClickBack = {},
-                onClickShare = {}
+            BackButton(
+                title = "",
+                isShare = true,
+                onBack = { onBack() },
+                onShare = {}
             )
             Column(
                 modifier = Modifier
@@ -159,6 +161,14 @@ class ChallengeDetailActivity : BaseActivity() {
         baseViewModel.isLoading(true)
         viewModel.getChallenge(challengeId.toString())
         viewModel.getUserByChallenge(challengeId.toString(), 1, 11)
+    }
+
+    override fun onBack() {
+        if (navController.currentBackStackEntry?.destination?.route == ChallengeDetailNavScreen.Detail.route) {
+            finish()
+        } else {
+            navController.popBackStack()
+        }
     }
 
     override fun initClickListeners() {

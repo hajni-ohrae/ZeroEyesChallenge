@@ -181,7 +181,7 @@ class ParticipationActivity : BaseActivity() {
         }
     }
 
-    private fun onBack() {
+    override fun onBack() {
         finish()
     }
 }

@@ -1,5 +1,6 @@
 package biz.ohrae.challenge_screen.ui.mychallenge
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -7,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 
@@ -18,10 +20,13 @@ import biz.ohrae.challenge.ui.theme.myTypography
 )
 @Composable
 fun PolicyScreen(
-    screen:String=""
+    screen: String = ""
 ) {
-    Column(modifier = Modifier.padding(24.dp, 0.dp)) {
-        if (screen == "reward"){
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .background(DefaultWhite)
+        .padding(24.dp, 0.dp)) {
+        if (screen == "reward") {
             RewardPolicyScreen()
         } else {
             RedCardPolicyScreen()

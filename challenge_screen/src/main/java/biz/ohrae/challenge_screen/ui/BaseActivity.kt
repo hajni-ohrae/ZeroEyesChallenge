@@ -16,6 +16,7 @@ open class BaseActivity: AppCompatActivity() {
 
     open fun initClickListeners() { }
     open fun observeViewModels() { }
+    open fun onBack() {}
 
     fun showSnackBar(message: String) {
         Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show()
