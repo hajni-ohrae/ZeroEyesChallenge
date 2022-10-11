@@ -9,7 +9,6 @@ import android.view.WindowManager
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
 import androidx.compose.foundation.layout.Column
@@ -19,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.window.Dialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -28,13 +28,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import biz.ohrae.challenge.ui.components.header.NavigationHeader
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
+import biz.ohrae.challenge_screen.ui.BaseActivity
+import biz.ohrae.challenge_screen.ui.dialog.LoadingDialog
 import biz.ohrae.challenge_screen.ui.participation.ParticipationActivity
 import biz.ohrae.challenge_screen.ui.register.ChallengeCameraScreen
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
 @AndroidEntryPoint
-class ChallengeDetailActivity : AppCompatActivity() {
+class ChallengeDetailActivity : BaseActivity() {
     private lateinit var viewModel: ChallengeDetailViewModel
     private lateinit var navController: NavHostController
     private var challengeId: String? = null
@@ -51,11 +53,19 @@ class ChallengeDetailActivity : AppCompatActivity() {
 
         setContent {
             ChallengeInTheme {
+                val isLoading by baseViewModel.isLoading.observeAsState(false)
+                if (isLoading) {
+                    Dialog(onDismissRequest = { /*TODO*/ }) {
+                        LoadingDialog()
+                    }
+                }
                 BuildContent()
             }
         }
 
-        initClickListener()
+        initClickListeners()
+        observeViewModels()
+
         launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == RESULT_OK) {
                 finish()
@@ -142,11 +152,12 @@ class ChallengeDetailActivity : AppCompatActivity() {
     }
 
     private fun init() {
+        baseViewModel.isLoading(true)
         viewModel.getChallenge(challengeId.toString())
         viewModel.getUserByChallenge(challengeId.toString(), 1, 11)
     }
 
-    private fun initClickListener() {
+    override fun initClickListeners() {
         // camera capture callback
         capturedCallback = object : ImageCapture.OnImageSavedCallback {
             override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
@@ -195,6 +206,12 @@ class ChallengeDetailActivity : AppCompatActivity() {
                 viewModel.verifyChallenge(content)
                 navController.navigate(ChallengeDetailNavScreen.JoinedDetail.route)
             }
+        }
+    }
+
+    override fun observeViewModels() {
+        viewModel.challengeData.observe(this) {
+            baseViewModel.isLoading(false)
         }
     }
 }

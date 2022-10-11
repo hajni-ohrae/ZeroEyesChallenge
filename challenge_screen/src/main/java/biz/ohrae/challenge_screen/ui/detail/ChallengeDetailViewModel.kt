@@ -41,6 +41,8 @@ class ChallengeDetailViewModel @Inject constructor(
                     val challengeData = it.data as ChallengeData
                     _challengeData.value = challengeData
                     _isJoined.value = challengeData.inChallenge.isNullOrEmpty() == false
+                } else {
+                    _challengeData.value = null
                 }
             }
         }
