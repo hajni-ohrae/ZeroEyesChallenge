@@ -138,7 +138,7 @@ class ChallengeDetailRepo @Inject constructor(
 
 
                     val listType = object : TypeToken<List<VerifyData?>?>() {}.type
-                    val verifyListState = gson.fromJson<List<VerifyListState>>(dataSet, listType)
+                    val verifyListState = gson.fromJson<List<VerifyListState>>(array, listType)
 
                     flow {
                         emit(FlowResult(verifyListState, "", ""))

@@ -516,7 +516,7 @@ private fun Challengers(challengers: List<User>) {
                 }
                 ChallengersItem(
                     userName = name.toString(),
-                    imagePath = user.image_path.toString()
+                    imagePath = user.imageFile.toString()
                 )
                 Spacer(modifier = Modifier.height(16.dp))
             }

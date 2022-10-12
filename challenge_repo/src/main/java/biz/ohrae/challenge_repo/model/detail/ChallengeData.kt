@@ -30,7 +30,7 @@ data class ChallengeData(
     val status: String,
     var caution: String? = null,
     val created_date: String,
-    val inChallenge:List<InChallenge>? = null,
+    val inChallenge: List<InChallenge>? = null,
     val total_verification_cnt: Int,
     val updated_date: String,
     val verification_daily_staying_time: Int,
@@ -74,6 +74,9 @@ data class ChallengeData(
 
 data class Summary(
     val total_user_cnt: Int = 0,
+    val attend_cnt: Int = 0,
+    val achievement_cnt: Int = 0,
+    val achievement_percent: Int = 0,
 )
 
 data class InChallenge(
