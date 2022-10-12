@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import biz.ohrae.challenge.ui.components.header.Header
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailActivity
+import biz.ohrae.challenge_screen.ui.detail.ChallengeJoinedDetailActivity
 import biz.ohrae.challenge_screen.ui.dialog.FilterDialog
 import biz.ohrae.challenge_screen.ui.dialog.FilterDialogListener
 import biz.ohrae.challenge_screen.ui.login.LoginActivity
@@ -134,7 +135,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onClickChallengeAuthItem(id: String) {
-                goDetail(id)
+                goChallengeJoinedDetail(id)
             }
         }
     }
@@ -157,6 +158,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun goDetail(id: String) {
         val intent = Intent(this, ChallengeDetailActivity::class.java)
+        intent.putExtra("challengeId", id)
+        startActivity(intent)
+    }
+    private fun goChallengeJoinedDetail(id: String) {
+        val intent = Intent(this, ChallengeJoinedDetailActivity::class.java)
         intent.putExtra("challengeId", id)
         startActivity(intent)
     }

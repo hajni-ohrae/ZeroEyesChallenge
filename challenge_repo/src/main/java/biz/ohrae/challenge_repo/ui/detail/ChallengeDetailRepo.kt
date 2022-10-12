@@ -5,12 +5,15 @@ import biz.ohrae.challenge_repo.data.remote.NetworkResponse
 import biz.ohrae.challenge_repo.model.FlowResult
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.model.user.User
+import biz.ohrae.challenge_repo.model.verify.VerifyData
+import biz.ohrae.challenge_repo.model.verify.VerifyListState
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import java.util.*
 import javax.inject.Inject
 
 class ChallengeDetailRepo @Inject constructor(
@@ -114,4 +117,44 @@ class ChallengeDetailRepo @Inject constructor(
             }
         }
     }
+
+    suspend fun getVerifyList(
+        challengeId: String, order: String, isMine: String
+    ): Flow<FlowResult> {
+        val accessToken = prefs.getUserData()?.access_token
+
+        val jsonObject = JsonObject()
+        val filter = JsonObject()
+        filter.addProperty("order", order)
+        filter.addProperty("is_mine", isMine)
+        jsonObject.add("filter", filter)
+        val response =
+            apiService.getVerifyList(challengeId, accessToken.toString(), body = jsonObject, 1, 10)
+        when (response) {
+            is NetworkResponse.Success -> {
+                return if (response.body.success) {
+                    val dataSet = response.body.dataset?.asJsonObject
+                    val array = dataSet?.get("array")?.asJsonArray
+
+
+                    val listType = object : TypeToken<List<VerifyData?>?>() {}.type
+                    val verifyListState = gson.fromJson<List<VerifyListState>>(dataSet, listType)
+
+                    flow {
+                        emit(FlowResult(verifyListState, "", ""))
+                    }
+                } else {
+                    flow {
+                        emit(FlowResult(null, response.body.code, response.body.message))
+                    }
+                }
+            }
+            else -> {
+                return flow {
+                    emit(FlowResult(null, "", ""))
+                }
+            }
+        }
+    }
+
 }

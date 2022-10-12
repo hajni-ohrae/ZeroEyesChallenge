@@ -87,7 +87,7 @@ interface ApiService {
         @Header("x-access-token") accessToken: String,
         @Header("page") page: Int,
         @Header("per_page") count: Int,
-        ): NetworkResponse<Result, Error>
+    ): NetworkResponse<Result, Error>
 
     @GET(Routes.GET_ALL_BLOCK)
     suspend fun getAllBlock(
@@ -121,6 +121,11 @@ interface ApiService {
     @POST(Routes.UPLOAD_USER_PROFILE)
     suspend fun uploadUserProfile(@Body body: JsonObject?): NetworkResponse<Result, Error>
 
+    @POST(Routes.GET_USER_DATA)
+    suspend fun getUserData(
+        @Header("x-access-token") accessToken: String
+    ): NetworkResponse<Result, Error>
+
     @POST(Routes.VERIFY)
     suspend fun verify(
         @Header("x-access-token") accessToken: String,
@@ -129,6 +134,21 @@ interface ApiService {
 
     @POST(Routes.SERVICE_VERIFY)
     suspend fun serviceVerify(@Body body: JsonObject?): NetworkResponse<Result, Error>
+
+    @POST(Routes.GET_VERIFY_LIST)
+    suspend fun getVerifyList(
+        @Path("challenge_id") challengeId: String,
+        @Header("x-access-token") accessToken: String,
+        @Body body: JsonObject?,
+        @Header("page") page: Int,
+        @Header("per_page") perPage: Int,
+        @Query("payment_type") paymentType: String = "",
+        @Query("verification_period_type") verificationPeriodType: String = "",
+        @Query("per_week") perWeek: String? = "",
+        @Query("period") period: String? = "",
+        @Query("is_like") isLike: String? = "",
+        @Query("is_adult_only") isAdultOnly: String? = "",
+    ): NetworkResponse<Result, Error>
 
     @GET(Routes.GET_ALL_REPORT)
     suspend fun getAllReport(@Body body: JsonObject?): NetworkResponse<Result, Error>

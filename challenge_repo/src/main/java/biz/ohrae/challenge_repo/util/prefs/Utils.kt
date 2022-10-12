@@ -514,4 +514,33 @@ object Utils {
             ""
         }
     }
+
+    fun userChallengeBackground(type:String): Color {
+        return when (type) {
+            "ongoing" -> Color(0xfff3f8ff)
+            "pending" -> Color(0xffebfaf1)
+            "recruiting" -> Color(0xffebfaf1)
+            "register_closed" -> Color(0xffdedede)
+            "finished" -> Color(0xffdedede)
+            "canceled" -> Color(0xffdedede)
+            "rewards" -> Color(0xfff3f8ff)
+            else -> {
+                Color(0xfff3f8ff)
+            }
+        }
+    }
+    fun userChallengeTextColor(type:String): Color {
+        return when (type) {
+            "ongoing" -> Color(0xff4985f8)
+            "pending" -> Color(0xff219653)
+            "recruiting" -> Color(0xff219653)
+            "register_closed" -> Color(0xff6c6c6c)
+            "finished" -> Color(0xff6c6c6c)
+            "canceled" -> Color(0xff6c6c6c)
+            "rewards" -> Color(0xff4985f8)
+            else -> {
+                Color(0xff4985f8)
+            }
+        }
+    }
 }

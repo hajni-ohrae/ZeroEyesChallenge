@@ -15,7 +15,7 @@ object Routes {
     const val GET_CHALLENGE = "${CHALLENGE}/api/challenge/get/{challenge_id}"
     const val CREATE_CHALLENGE = "${CHALLENGE}/api/challenge/create"
     const val REGISTER_CHALLENGE = "${CHALLENGE}/api/challenge/register"
-    const val FAVORITE_CHALLENGE = "${CHALLENGE}/api/challenge/favorite"
+    const val FAVORITE_CHALLENGE = "${CHALLENGE}/api/challenge/like"
     const val GET_USER_CHALLENGE_LIST = "${CHALLENGE}/api/challenge/user/get/all"
     const val CANCEL_CHALLENGE = "${CHALLENGE}/api/admin/challenge/cancel/{challenge_id}/user/{user_id}"
     const val GET_USERS_BY_CHALLENGE = "${CHALLENGE}/api/user/challenge/get/{challenge_id}"
@@ -42,10 +42,12 @@ object Routes {
     const val CREATE_RELATE_SERVICE = "${CHALLENGE}/api/user/service/relate"
     const val CREATE_SERVICE_OWNER = "${CHALLENGE}/api/user/service/owner/create"
     const val UPLOAD_USER_PROFILE = "${CHALLENGE}/api/user/upload/profile"
+    const val GET_USER_DATA = "${CHALLENGE}/challenge/api/user/get/detail"
 
     // 챌린지 인증
     const val VERIFY = "${CHALLENGE}/api/verification/verify"
     const val SERVICE_VERIFY = "${CHALLENGE}/api/verification/service/verify"
+    const val GET_VERIFY_LIST = "${CHALLENGE}/api/verification/challenge/get/{challenge_id}"
 
     // 챌린지 인증 신고
     const val GET_ALL_REPORT = "${CHALLENGE}/api/verification/report/get/all"

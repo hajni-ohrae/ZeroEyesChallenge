@@ -216,8 +216,6 @@ private fun ChallengeProgressDetail(
         "8",
         "9",
         "10",
-        "1",
-        "2"
     )
     val columnCount by remember { mutableStateOf((list.size / 10) + (list.size % 10)) }
 
@@ -254,7 +252,6 @@ private fun ChallengeProgressDetail(
 
         FlowRow(
             mainAxisSize = SizeMode.Expand,
-            mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween,
             crossAxisAlignment = FlowCrossAxisAlignment.Start,
             mainAxisSpacing = 3.5.dp,
             crossAxisSpacing = 3.5.dp

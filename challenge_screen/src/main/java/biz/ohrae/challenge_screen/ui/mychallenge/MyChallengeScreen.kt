@@ -80,8 +80,8 @@ fun MyChallengeScreen(
                                 maxPeople = inChallenge.verified_cnt.toString(),
                                 progressStatus = item.status,
                                 achievementRate = inChallenge.achievement_percent,
-                                Color(0xffdedede),
-                                Color(0xff6c6c6c),
+                                Utils.userChallengeBackground(item.status),
+                                Utils.userChallengeTextColor(item.status),
                                 onClick = { clickListener?.onClickChallengeAuthItem(item.id) }
                             )
                         }

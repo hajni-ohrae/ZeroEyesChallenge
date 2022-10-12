@@ -160,8 +160,8 @@ fun ItemHeader(
                             maxPeople = inChallenge.verified_cnt.toString(),
                             progressStatus = item.status,
                             achievementRate = inChallenge.achievement_percent,
-                            Color(0xffdedede),
-                            Color(0xff6c6c6c),
+                            Utils.userChallengeBackground(item.status),
+                            Utils.userChallengeTextColor(item.status),
                             onClick = { clickListener?.onClickChallengeAuthItem(item.id) }
                         )
                     }
@@ -222,27 +222,5 @@ private fun getOpenType(challengeData: ChallengeData): String {
     }
 }
 
-private fun userChallengeBackground(type:String): Color {
-    return when (type) {
-        "ongoing" -> Color(0xfff3f8ff)
-        "recruiting" -> Color(0xffebfaf1)
-        "completion" -> Color(0xffdedede)
-        "rewards" -> Color(0xfff3f8ff)
-        else -> {
-            Color(0xfff3f8ff)
-        }
-    }
-}
-private fun userChallengeTextColor(type:String): Color {
-    return when (type) {
-        "ongoing" -> Color(0xff4985f8)
-        "recruiting" -> Color(0xff219653)
-        "completion" -> Color(0xff6c6c6c)
-        "rewards" -> Color(0xff4985f8)
-        else -> {
-            Color(0xff4985f8)
-        }
-    }
-}
 
 
