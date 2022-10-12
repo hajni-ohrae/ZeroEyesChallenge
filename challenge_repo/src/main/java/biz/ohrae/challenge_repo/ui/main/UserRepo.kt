@@ -37,7 +37,7 @@ class UserRepo @Inject constructor(
         jsonObject.addProperty("serviceType", "ze_study")
         jsonObject.add("service_ids", jsonArray)
 
-        val response = apiService.login(jsonObject)
+        val response = apiService.login(jsonObject,"token")
 
         when (response) {
             is NetworkResponse.Success -> {
@@ -172,5 +172,24 @@ class UserRepo @Inject constructor(
             }
         }
 
+    }
+
+    suspend fun getUserData():Flow<FlowResult>{
+        val accessToken = prefs.getUserData()?.access_token
+        val response = apiService.getUserData(accessToken.toString())
+        when (response) {
+            is NetworkResponse.Success -> {
+                val redCardList =
+                    gson.fromJson(response.body.dataset, RedCardState::class.java)
+                return flow {
+                    emit(FlowResult(redCardList, "", ""))
+                }
+            }
+            else -> {
+                return flow {
+                    emit(FlowResult(null, "", ""))
+                }
+            }
+        }
     }
 }

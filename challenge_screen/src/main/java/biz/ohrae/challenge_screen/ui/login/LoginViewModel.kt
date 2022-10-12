@@ -87,8 +87,7 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             val response = userRepo.login()
             response.flowOn(Dispatchers.IO).collect { result ->
-                result.data?.let {
-                    val success = it as Boolean
+                result.data?.let { val success = it as Boolean
                     if (success) {
 
                         _loginSuccess.value = true

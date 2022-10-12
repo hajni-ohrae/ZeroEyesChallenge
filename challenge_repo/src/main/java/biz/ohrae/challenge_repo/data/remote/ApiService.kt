@@ -6,7 +6,8 @@ import retrofit2.http.*
 
 interface ApiService {
     @POST(Routes.LOGIN)
-    suspend fun login(@Body body: JsonObject?): NetworkResponse<Result2, Error>
+    suspend fun login(@Body body: JsonObject?,
+                      @Header("x-access-token") accessToken: String,): NetworkResponse<Result2, Error>
 
     @GET(Routes.AUTH_TOKEN_CHECK)
     suspend fun authTokenCheck(
