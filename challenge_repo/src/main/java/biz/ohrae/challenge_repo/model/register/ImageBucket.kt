@@ -14,6 +14,6 @@ data class ImageBucket(
     val type: String? = null,
     val version_id: String? = null,
     val width: Int? = null,
-    val errorCode: String,
-    val errorMessage: String,
+    val errorCode: String? = null,
+    val errorMessage: String? = null,
 )

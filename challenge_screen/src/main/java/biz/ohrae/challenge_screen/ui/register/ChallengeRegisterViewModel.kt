@@ -50,18 +50,13 @@ class ChallengeRegisterViewModel @Inject constructor(
         _screenState.value = ChallengeOpenState.mock()
     }
 
-    fun createChallenge(challengeData: ChallengeData) {
+    fun createChallenge(challengeData: ChallengeData, imageFileId: String?) {
         viewModelScope.launch {
             val userId = prefs.getUserData()?.id
-            val response = registerRepo.createChallenge(userId.toString(), challengeData)
+            val response = registerRepo.createChallenge(userId.toString(), challengeData, imageFileId)
             response.flowOn(Dispatchers.IO).collect { it ->
                 it.data?.let { data ->
                     _isChallengeCreate.value = data as Boolean
-                    if (challengeData.imageFile?.path.isNullOrEmpty()) {
-                        _isChallengeCreate.value = data as Boolean
-                    } else {
-//                        uploadChallengeImage(challengeData)
-                    }
                 }
             }
         }
@@ -140,16 +135,15 @@ class ChallengeRegisterViewModel @Inject constructor(
         }
     }
 
-    fun challengeGoals(goal: String, precautions: String, imgUrl: String?) {
+    fun challengeGoals(goal: String, precautions: String, imageFileId: String?) {
         viewModelScope.launch {
             val state = _challengeData.value?.copy()
             state?.let {
                 it.goal = goal
                 it.caution = precautions
-                it.imageFile?.path = imgUrl.toString()
 
                 _challengeData.value = it
-                createChallenge(_challengeData.value!!)
+                createChallenge(_challengeData.value!!, imageFileId)
             }
         }
     }

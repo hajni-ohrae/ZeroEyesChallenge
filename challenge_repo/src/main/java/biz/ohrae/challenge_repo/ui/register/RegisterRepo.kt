@@ -1,7 +1,5 @@
 package biz.ohrae.challenge_repo.ui.register
 
-import android.net.Uri
-import androidx.core.net.toFile
 import biz.ohrae.challenge_repo.data.remote.ApiService
 import biz.ohrae.challenge_repo.data.remote.NetworkResponse
 import biz.ohrae.challenge_repo.model.FlowResult
@@ -19,13 +17,12 @@ import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
 
-
 class RegisterRepo @Inject constructor(
     private val apiService: ApiService,
     private val gson: Gson,
     private val prefs: SharedPreference
 ) {
-    suspend fun createChallenge(userId: String, challengeData: ChallengeData): Flow<FlowResult> {
+    suspend fun createChallenge(userId: String, challengeData: ChallengeData, imageFileId: String?): Flow<FlowResult> {
         val jsonObject = JsonObject()
         jsonObject.addProperty("user_id", userId)
         jsonObject.addProperty("goal", challengeData.goal)
@@ -47,9 +44,11 @@ class RegisterRepo @Inject constructor(
         jsonObject.addProperty("period", challengeData.period)
         jsonObject.addProperty("verification_period_type", challengeData.verification_period_type)
         jsonObject.addProperty("per_week", challengeData.per_week)
-//        jsonObject.addProperty("image_path", challengeData.image_path)
+        jsonObject.addProperty("image_file_id", imageFileId)
 
-        val response = apiService.createChallenge(jsonObject)
+        val accessToken = prefs.getUserData()?.access_token.toString()
+
+        val response = apiService.createChallenge(accessToken, jsonObject)
         when (response) {
             is NetworkResponse.Success -> {
                 val isSuccess = response.body.success

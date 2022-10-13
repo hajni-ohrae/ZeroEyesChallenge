@@ -58,6 +58,9 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var capturedCallback: ImageCapture.OnImageSavedCallback
     private lateinit var albumLauncher: ActivityResultLauncher<Intent>
 
+    private var goal: String = ""
+    private var caution: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this)[ChallengeRegisterViewModel::class.java]
@@ -216,6 +219,10 @@ class RegisterActivity : AppCompatActivity() {
                     Snackbar.make(this@RegisterActivity, findViewById(android.R.id.content), "챌린지 목표를 입력해주세요.", Snackbar.LENGTH_SHORT).show()
                     return
                 }
+
+                this@RegisterActivity.goal = goal
+                caution = precautions
+
                 if (imgUrl != null) {
                     val imagePath = uriToFilePath(imgUrl)
                     Timber.e("image path : $imagePath")
@@ -310,17 +317,20 @@ class RegisterActivity : AppCompatActivity() {
         viewModel.isChallengeCreate.observe(this) {
             if (it) {
                 val intent = Intent(this@RegisterActivity, MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 startActivity(intent)
+                finish()
             }
         }
 
-        viewModel.uploadedImage.observe(this) {
+        viewModel.uploadedImage.observe(this@RegisterActivity) {
             it?.let {
                 Timber.e("imageBucket: ${Gson().toJson(it)}")
-                if (it.errorCode.isNotEmpty() || it.errorMessage.isNotEmpty()) {
-
+                if (!it.errorCode.isNullOrEmpty() || !it.errorMessage.isNullOrEmpty()) {
+                    val message = "code : ${it.errorCode.toString()}, message : ${it.errorMessage.toString()}"
+                    Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show()
                 } else {
-
+                    viewModel.challengeGoals(goal, caution, it.path)
                 }
             }
         }
@@ -336,7 +346,7 @@ class RegisterActivity : AppCompatActivity() {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 callImageSelector()
             } else {
-                Snackbar.make(findViewById(android.R.id.content), "Camera Permission Denied", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(findViewById(android.R.id.content), "Permission Denied", Snackbar.LENGTH_SHORT).show()
             }
         }
     }
