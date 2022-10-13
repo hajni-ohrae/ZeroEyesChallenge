@@ -486,6 +486,7 @@ object Utils {
             }
         }
     }
+
     fun getRemainTimeDays(startDate: String): String {
         return try {
             val dateString = startDate.replace("T", " ").replace("Z", "")
@@ -512,6 +513,28 @@ object Utils {
         } catch (ignore: Exception) {
             ignore.printStackTrace()
             ""
+        }
+    }
+
+    fun getDaysFromStart(startDate: String): Int {
+        var result = 0
+        return try {
+            val dateString = startDate.replace("T", " ").replace("Z", "")
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
+            val date = inputFormat.parse(dateString)
+            var remain: Long = 0
+
+            if (date != null) {
+                remain = Date().time - date.time
+                if (remain > 0) {
+                    val days = ((((remain / 1000) / 60) / 60) / 24)
+                    result = days.toInt()
+                }
+            }
+            result
+        } catch (ignore: Exception) {
+            ignore.printStackTrace()
+            result
         }
     }
 

@@ -1,6 +1,5 @@
 package biz.ohrae.challenge_screen.model.main
 
-import biz.ohrae.challenge.model.filter.FilterItem
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 
 data class MainScreenState(

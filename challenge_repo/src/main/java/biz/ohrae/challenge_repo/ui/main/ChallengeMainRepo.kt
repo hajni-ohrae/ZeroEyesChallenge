@@ -26,11 +26,11 @@ class ChallengeMainRepo @Inject constructor(
         verificationPeriodType: String = "",
         per_week: String = "",
         period: String = "",
-        is_adult_only: String = ""
+        is_adult_only: String = "",
+        page: Int = 1,
+        perPage: Int = 10,
     ): Flow<FlowResult> {
         val accessToken = prefs.getUserData()?.access_token
-        val page = "1"
-        val perPage = "10"
         val response =
             apiService.getAllChallenge(
                 accessToken.toString(),

@@ -10,8 +10,6 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,6 +31,9 @@ import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.model.main.FilterState
 import biz.ohrae.challenge_screen.model.main.MainScreenState
 import biz.ohrae.challenge_screen.model.user.UserChallengeListState
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.rememberPagerState
 import timber.log.Timber
 
 @Preview(
@@ -73,7 +74,8 @@ fun ChallengeMainScreen(
                         userChallengeListState = userChallengeListState
                     )
                 }
-                items(mainScreenState?.challengeList!!) { item ->
+                Timber.e("list size ${mainScreenState?.challengeList!!.size}")
+                items(mainScreenState?.challengeList!!, key = { item -> item.id }) { item ->
                     val startDay = Utils.getRemainTimeDays(item.start_date.toString())
                     val type = challengeVerificationPeriodMap[item.verification_period_type]
                     ChallengeCardItem(
@@ -124,7 +126,6 @@ fun ItemHeader(
     filterState: FilterState = FilterState.mock(),
     userChallengeListState: UserChallengeListState? = null
 ) {
-
     Column(Modifier.fillMaxWidth()) {
         LazyRow(
             modifier = Modifier.fillMaxWidth(),
@@ -137,38 +138,52 @@ fun ItemHeader(
                 )
             }
         }
-
-        if (userChallengeListState != null) {
-            Spacer(modifier = Modifier.height(30.dp))
-            Text(
-                text = "참여중인 챌린지",
-                style = myTypography.bold,
-                fontSize = dpToSp(dp = 16.dp),
-                color = DefaultBlack
+        if (userChallengeListState != null && !userChallengeListState.userChallengeList.isNullOrEmpty()) {
+            InChallenges(
+                clickListener = clickListener,
+                userChallengeList = userChallengeListState.userChallengeList
             )
-            Spacer(modifier = Modifier.height(10.dp))
-            LazyRow(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(24.dp),
-            ) {
-                items(userChallengeListState?.userChallengeList!!) { item ->
-                    item.inChallenge?.forEach { inChallenge ->
-                        ChallengesInParticipationCard(
-                            modifier = Modifier.fillParentMaxWidth(),
-                            title = item.goal.toString(),
-                            count = inChallenge.today_verified_cnt.toString(),
-                            maxPeople = inChallenge.verified_cnt.toString(),
-                            progressStatus = item.status,
-                            achievementRate = inChallenge.achievement_percent,
-                            Utils.userChallengeBackground(item.status),
-                            Utils.userChallengeTextColor(item.status),
-                            onClick = { clickListener?.onClickChallengeAuthItem(item.id) }
-                        )
-                    }
-                }
-            }
         }
         FilterCard(clickListener = clickListener, filterState, filterState.selectFilterType)
+    }
+}
+
+@OptIn(ExperimentalPagerApi::class)
+@Composable
+fun InChallenges(
+    userChallengeList: List<ChallengeData>,
+    clickListener: MainClickListener?,
+) {
+    Column(modifier = Modifier.fillMaxWidth()) {
+        val pagerState = rememberPagerState()
+
+        Spacer(modifier = Modifier.height(30.dp))
+        Text(
+            text = "참여중인 챌린지",
+            style = myTypography.bold,
+            fontSize = dpToSp(dp = 16.dp),
+            color = DefaultBlack
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        Timber.e("userChallengeList size :${userChallengeList.size}")
+        HorizontalPager(
+            count = userChallengeList.size,
+            state = pagerState
+        ) {
+            val item = userChallengeList[currentPage]
+            val inChallenge = item.inChallenge?.get(0)
+            ChallengesInParticipationCard(
+                modifier = Modifier.fillMaxWidth(),
+                title = item.goal.toString(),
+                count = inChallenge?.today_verified_cnt.toString(),
+                maxPeople = inChallenge?.verified_cnt.toString(),
+                progressStatus = item.status,
+                achievementRate = inChallenge?.achievement_percent.toString(),
+                Utils.userChallengeBackground(item.status),
+                Utils.userChallengeTextColor(item.status),
+                onClick = { clickListener?.onClickChallengeAuthItem(item.id) }
+            )
+        }
     }
 }
 

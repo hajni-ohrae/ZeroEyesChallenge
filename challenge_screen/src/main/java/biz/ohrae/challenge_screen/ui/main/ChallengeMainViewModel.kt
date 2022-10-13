@@ -31,12 +31,14 @@ class ChallengeMainViewModel @Inject constructor(
     private val _filterState = MutableLiveData<FilterState>()
     private val _tokenValid = MutableLiveData<Boolean>()
     private val _userData = MutableLiveData<User>()
+    private val _listPage = MutableLiveData(0)
 
     val filterState get() = _filterState
     val mainScreenState get() = _mainScreenState
     val tokenValid get() = _tokenValid
     val userChallengeListState get() = _userChallengeListState
     val userData get() = _userData
+    val listPage get() = _listPage
 
     init {
 //        login()
@@ -74,15 +76,18 @@ class ChallengeMainViewModel @Inject constructor(
         verificationPeriodType: String,
         per_week: String,
         period: String,
-        is_adult_only: String
+        is_adult_only: String,
     ) {
         viewModelScope.launch {
+            val page = listPage.value ?: 0
+
             val response = challengeMainRepo.getChallenges(
                 paymentType,
                 verificationPeriodType,
                 per_week,
                 period,
-                is_adult_only
+                is_adult_only,
+                page
             )
             response.flowOn(Dispatchers.IO).collect {
                 it.data?.let { data ->

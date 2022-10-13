@@ -24,6 +24,7 @@ import biz.ohrae.challenge.ui.components.detail.ChallengeDetailRefundDescription
 import biz.ohrae.challenge.ui.components.detail.ChallengeJoinedDetailsTitle
 import biz.ohrae.challenge.ui.components.image.ImageBox
 import biz.ohrae.challenge.ui.components.list_item.ChallengersItem
+import biz.ohrae.challenge.ui.components.list_item.ProgressRatioFailItem
 import biz.ohrae.challenge.ui.components.list_item.ProgressRatioItem
 import biz.ohrae.challenge.ui.components.text.MiddleDotText
 import biz.ohrae.challenge.ui.theme.DefaultWhite
@@ -35,8 +36,9 @@ import biz.ohrae.challenge.util.challengeVerificationDayMap
 import biz.ohrae.challenge.util.challengeVerificationPeriodMap
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.model.user.User
+import biz.ohrae.challenge_screen.model.detail.Verification
+import biz.ohrae.challenge_screen.model.detail.VerificationState
 import com.google.accompanist.flowlayout.FlowCrossAxisAlignment
-import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.SizeMode
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -54,6 +56,7 @@ import kotlinx.coroutines.launch
 fun ChallengeJoinedDetailScreen(
     challengeData: ChallengeData? = ChallengeData.mock(),
     challengers: List<User>? = null,
+    verificationState: VerificationState? = null,
     clickListener: ChallengeDetailClickListener? = null
 ) {
     if (challengeData == null) {
@@ -165,6 +168,7 @@ fun ChallengeJoinedDetailScreen(
                             ChallengeJoinedDetailPage(
                                 challengeData = challengeData,
                                 challengers = challengers,
+                                verificationState = verificationState,
                                 clickListener = clickListener
                             )
                         } else {
@@ -191,34 +195,8 @@ fun ChallengeJoinedDetailScreen(
 
 @Composable
 private fun ChallengeProgressDetail(
-    successCount: Int = 0,
-    remainCount: Int = 0,
-    failCount: Int = 0
+    verificationState: VerificationState
 ) {
-    val list = listOf(
-        "1",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8",
-        "9",
-        "10",
-        "1",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8",
-        "9",
-        "10",
-    )
-    val columnCount by remember { mutableStateOf((list.size / 10) + (list.size % 10)) }
-
     Column {
         Text(
             text = "달성률",
@@ -228,19 +206,19 @@ private fun ChallengeProgressDetail(
         Spacer(modifier = Modifier.height(16.dp))
         Row {
             Text(
-                text = "인증성공 ${successCount}개",
+                text = "인증성공 ${verificationState.successCount}개",
                 style = myTypography.bold,
                 fontSize = dpToSp(dp = 14.dp)
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
-                text = "남은인증 ${remainCount}개",
+                text = "남은인증 ${verificationState.remainCount}개",
                 style = myTypography.bold,
                 fontSize = dpToSp(dp = 14.dp)
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
-                text = "인증실패 ${failCount}개",
+                text = "인증실패 ${verificationState.failCount}개",
                 style = myTypography.bold,
                 fontSize = dpToSp(dp = 14.dp)
             )
@@ -256,36 +234,23 @@ private fun ChallengeProgressDetail(
             mainAxisSpacing = 3.5.dp,
             crossAxisSpacing = 3.5.dp
         ) {
-            list.forEachIndexed { index, item ->
-                ProgressRatioItem(
-                    modifier = Modifier.size(itemSize),
-                    isSuccess = false,
-                    number = item
-                )
+            verificationState.verifications?.forEach { item ->
+                when (item.state) {
+                    Verification.NORMAL, Verification.SUCCESS -> {
+                        ProgressRatioItem(
+                            modifier = Modifier.size(itemSize),
+                            isSuccess = item.state == Verification.SUCCESS,
+                            number = item.day.toString()
+                        )
+                    }
+                    Verification.FAIL -> {
+                        ProgressRatioFailItem(
+                            modifier = Modifier.size(itemSize),
+                        )
+                    }
+                }
             }
         }
-
-//        for (i in 0 until columnCount) {
-//            val start = i * 10
-//            val end = if (start + 10 > list.size) {
-//                list.size
-//            } else {
-//                start + 10
-//            }
-//            val sublist = list.subList(start, end)
-//            Timber.e("start :$i, end :$end")
-//            Column(
-//                modifier = Modifier.fillMaxWidth()
-//            ) {
-//                Row(modifier = Modifier.fillMaxWidth()) {
-//                    for (item in sublist) {
-//                        ProgressRatioItem(modifier = Modifier.weight(1f), isSuccess = false, number = item)
-//                        Spacer(modifier = Modifier.width(4.dp))
-//                    }
-//                }
-//                Spacer(modifier = Modifier.height(4.dp))
-//            }
-//        }
         Spacer(modifier = Modifier.height(24.dp))
         Divider(
             modifier = Modifier
@@ -300,15 +265,14 @@ private fun ChallengeProgressDetail(
 private fun ChallengeJoinedDetailPage(
     challengeData: ChallengeData,
     challengers: List<User>?,
+    verificationState: VerificationState? = null,
     clickListener: ChallengeDetailClickListener? = null
 ) {
     Column {
         Spacer(modifier = Modifier.height(32.dp))
-        ChallengeProgressDetail(
-            successCount = 10,
-            remainCount = 1,
-            failCount = 1
-        )
+        if (verificationState != null) {
+            ChallengeProgressDetail(verificationState = verificationState)
+        }
         Spacer(modifier = Modifier.height(24.dp))
         ChallengeJoinedDescription(
             challengeData = challengeData,

@@ -83,7 +83,8 @@ data class InChallenge(
     val id: Int = 0,
     val achievement_percent: String,
     val today_verified_cnt: Int,
-    val verified_cnt: Int
+    val verified_cnt: Int,
+    var verifications: List<Int>?
 )
 
 data class ImageFile(
