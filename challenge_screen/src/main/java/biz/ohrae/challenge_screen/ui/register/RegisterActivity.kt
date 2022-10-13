@@ -1,9 +1,9 @@
 package biz.ohrae.challenge_screen.ui.register
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -20,7 +20,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.core.net.toUri
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -36,6 +37,7 @@ import biz.ohrae.challenge_screen.ui.dialog.CalendarDialog
 import biz.ohrae.challenge_screen.ui.dialog.CalendarDialogListener
 import biz.ohrae.challenge_screen.ui.main.MainActivity
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import java.io.IOException
@@ -79,7 +81,7 @@ class RegisterActivity : AppCompatActivity() {
                     val selectedImageUri = data.data
                     try {
                         Timber.e("selectedImageUri : $selectedImageUri")
-                        viewModel.setChallengeImage(selectedImageUri.toString())
+                        viewModel.setChallengeImage(selectedImageUri!!)
                     } catch (e: IOException) {
                         e.printStackTrace()
                     }
@@ -209,10 +211,18 @@ class RegisterActivity : AppCompatActivity() {
                 navController.navigate(ChallengeRegisterNavScreen.ChallengeGoals.route)
             }
 
-            override fun onClickChallengeCreate(auth: String, precautions: String, imgUrl: String?) {
-//                viewModel.createChallenge(challengeData)
-                val imagePath = uriToFilePath(imgUrl.toString().toUri())
-                viewModel.challengeGoals(auth, precautions, imagePath)
+            override fun onClickChallengeCreate(goal: String, precautions: String, imgUrl: Uri?) {
+                if (goal.isEmpty()) {
+                    Snackbar.make(this@RegisterActivity, findViewById(android.R.id.content), "챌린지 목표를 입력해주세요.", Snackbar.LENGTH_SHORT).show()
+                    return
+                }
+                if (imgUrl != null) {
+                    val imagePath = uriToFilePath(imgUrl)
+                    Timber.e("image path : $imagePath")
+                    if (imagePath.isNotEmpty()) {
+                        viewModel.uploadChallengeImage(imagePath)
+                    }
+                }
             }
 
             override fun onClickSelectedAuth(auth: String) {
@@ -228,16 +238,25 @@ class RegisterActivity : AppCompatActivity() {
             }
 
             override fun onClickPhotoBox() {
-//                val permission = Manifest.permission.CAMERA
-//                if(ContextCompat.checkSelfPermission(this@RegisterActivity, permission)
-//                    != PackageManager.PERMISSION_GRANTED)
-//                {
-//                    // Permission is not granted
-//                    ActivityCompat.requestPermissions(this@RegisterActivity, arrayOf(permission), 100)
-//                } else {
-//                    navController.navigate(ChallengeRegisterNavScreen.ChallengerCameraPreview.route)
-//                }
-                callImageSelector()
+                val permissions = arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.CAMERA
+                )
+
+                val permissionResults = mutableListOf<String>()
+                permissions.forEach {
+                    val result = ContextCompat.checkSelfPermission(this@RegisterActivity, it)
+                    if (result != PackageManager.PERMISSION_GRANTED) {
+                        permissionResults.add(it)
+                    }
+                }
+
+                if (permissionResults.isNotEmpty()) {
+                    ActivityCompat.requestPermissions(this@RegisterActivity, permissionResults.toTypedArray(), 100)
+                } else {
+                    callImageSelector()
+                }
             }
 
             override fun onClickReTakePhoto() {
@@ -277,7 +296,7 @@ class RegisterActivity : AppCompatActivity() {
         capturedCallback = object : ImageCapture.OnImageSavedCallback {
             override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                 Timber.e("onCaptureSuccess : ${outputFileResults.savedUri}")
-                viewModel.setChallengeImage(outputFileResults.savedUri.toString())
+                viewModel.setChallengeImage(outputFileResults.savedUri!!)
                 navController.navigate(ChallengeRegisterNavScreen.ChallengerCameraResult.route)
             }
 
@@ -294,6 +313,17 @@ class RegisterActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
+
+        viewModel.uploadedImage.observe(this) {
+            it?.let {
+                Timber.e("imageBucket: ${Gson().toJson(it)}")
+                if (it.errorCode.isNotEmpty() || it.errorMessage.isNotEmpty()) {
+
+                } else {
+
+                }
+            }
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -304,24 +334,30 @@ class RegisterActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 100) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                navController.navigate(ChallengeRegisterNavScreen.ChallengerCameraPreview.route)
+                callImageSelector()
             } else {
-                Snackbar.make(window.decorView, "Camera Permission Denied", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(findViewById(android.R.id.content), "Camera Permission Denied", Snackbar.LENGTH_SHORT).show()
             }
         }
     }
 
     @SuppressLint("Range")
     private fun uriToFilePath(contentUri: Uri): String {
+        Timber.e("contentUri : $contentUri")
         val proj = arrayOf(MediaStore.Images.Media.DATA)
         var path = ""
 
-        val cursor = contentResolver.query(contentUri, proj, null, null, null)
-        if (cursor != null) {
-            cursor.moveToNext()
-            path = cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DATA))
+        try {
+            val cursor = contentResolver.query(contentUri, proj, null, null, null)
+            if (cursor != null) {
+                cursor.moveToNext()
+                path = cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DATA))
 
-            cursor.close()
+                cursor.close()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+
         }
 
         return path
@@ -330,7 +366,7 @@ class RegisterActivity : AppCompatActivity() {
     private fun callImageSelector() {
         val galleryIntent = Intent()
         galleryIntent.type = "image/*"
-        galleryIntent.action = Intent.ACTION_GET_CONTENT
+        galleryIntent.action = Intent.ACTION_PICK
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
         val chooser = Intent.createChooser(galleryIntent, "이미지 선택")

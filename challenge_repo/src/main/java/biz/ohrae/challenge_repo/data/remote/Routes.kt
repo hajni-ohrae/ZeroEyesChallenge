@@ -59,7 +59,6 @@ object Routes {
     //신고 이유 조회
     const val GET_REGISTER_REPORT = "${CHALLENGE}/api/verification/report/code/get/all"
 
-
     // 이미지 업로드
-    const val CHALLENGE_UPLOAD_IMAGE = "${CHALLENGE}/api/challenge/upload/image/{challenge_id}"
+    const val CHALLENGE_UPLOAD_IMAGE = "${CHALLENGE}/api/file/upload/image/challenge"
 }

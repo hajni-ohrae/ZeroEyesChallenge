@@ -1,10 +1,12 @@
 package biz.ohrae.challenge_screen.ui.register
 
+import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import biz.ohrae.challenge.ui.components.dropdown.DropDownItem
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
+import biz.ohrae.challenge_repo.model.register.ImageBucket
 import biz.ohrae.challenge_repo.ui.main.UserRepo
 import biz.ohrae.challenge_repo.ui.register.RegisterRepo
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
@@ -26,12 +28,13 @@ class ChallengeRegisterViewModel @Inject constructor(
 ) : ViewModel() {
     private val _challengeData = MutableLiveData<ChallengeData>()
     private val _isChallengeCreate = MutableLiveData(false)
-    private val _challengeImageUri = MutableLiveData<String?>(null)
+    private val _challengeImageUri = MutableLiveData<Uri?>(null)
     private val _checkAdultOnly = MutableLiveData<Int?>(0)
     private val _screenState = MutableLiveData<ChallengeOpenState>()
     private val _selectDay = MutableLiveData<String?>(null)
     private val _startDay = MutableLiveData<String?>(null)
     private val _endDay = MutableLiveData<String?>(null)
+    private val _uploadedImage = MutableLiveData<ImageBucket>(null)
 
     val challengeData get() = _challengeData
     val isChallengeCreate get() = _isChallengeCreate
@@ -41,6 +44,7 @@ class ChallengeRegisterViewModel @Inject constructor(
     val selectDay get() = _selectDay
     val startDay get() = _startDay
     val endDay get() = _endDay
+    val uploadedImage get() = _uploadedImage
 
     init {
         _screenState.value = ChallengeOpenState.mock()
@@ -56,19 +60,22 @@ class ChallengeRegisterViewModel @Inject constructor(
                     if (challengeData.imageFile?.path.isNullOrEmpty()) {
                         _isChallengeCreate.value = data as Boolean
                     } else {
-                        uploadChallengeImage(challengeData)
+//                        uploadChallengeImage(challengeData)
                     }
                 }
             }
         }
     }
 
-    fun uploadChallengeImage(challengeData: ChallengeData) {
+    fun uploadChallengeImage(imageFilePath: String) {
         viewModelScope.launch {
-            val response = registerRepo.uploadImage(challengeData)
+            val response = registerRepo.uploadImage(imageFilePath)
             response.flowOn(Dispatchers.IO).collect { it ->
                 it.data?.let { data ->
-                    _isChallengeCreate.value = data as Boolean
+                    val imageBucket = data as ImageBucket
+                    _uploadedImage.value = imageBucket
+                } ?: run {
+                    _uploadedImage.value = null
                 }
             }
         }
@@ -180,7 +187,7 @@ class ChallengeRegisterViewModel @Inject constructor(
         }
     }
 
-    fun setChallengeImage(uri: String) {
+    fun setChallengeImage(uri: Uri) {
         _challengeImageUri.value = uri
     }
 

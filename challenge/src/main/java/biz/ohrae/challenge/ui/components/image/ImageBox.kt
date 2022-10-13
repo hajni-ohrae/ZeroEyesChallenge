@@ -1,5 +1,6 @@
 package biz.ohrae.challenge.ui.components.image
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
@@ -11,6 +12,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.TextBlack
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge_component.R
@@ -54,7 +56,16 @@ fun ImageBox(
         previewPlaceholder = R.drawable.icon_camera,
         contentScale = ContentScale.Inside,
         failure = {
-            Timber.e("fail??")
+            Column(
+                modifier = Modifier.fillMaxSize().background(TextBlack),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+            ) {
+                Text(
+                    text = "이미지를 불러올 수 없습니다.",
+                    color = DefaultWhite
+                )
+            }
         }
     )
 }

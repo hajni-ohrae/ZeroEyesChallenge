@@ -1,12 +1,12 @@
 package biz.ohrae.challenge_screen.ui.register
 
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,7 +28,7 @@ import biz.ohrae.challenge_screen.model.register.ChallengeOpenState
 @Composable
 fun ChallengeGoals(
     challengeOpenState: ChallengeOpenState = ChallengeOpenState.mock(),
-    challengeImageUri: String? = null,
+    challengeImageUri: Uri? = null,
     clickListener: RegisterClickListener? = null,
 ) {
     val scrollState = rememberScrollState()
@@ -95,7 +95,7 @@ fun ChallengeGoals(
                     .background(Color(0xfff8f8f8))
                     .fillMaxWidth()
                     .aspectRatio(1.316f),
-                imageUri = challengeImageUri,
+                imageUri = challengeImageUri.toString(),
                 onclick = {
                     clickListener?.onClickPhotoBox()
                 }

@@ -1,9 +1,12 @@
 package biz.ohrae.challenge_repo.ui.register
 
+import android.net.Uri
+import androidx.core.net.toFile
 import biz.ohrae.challenge_repo.data.remote.ApiService
 import biz.ohrae.challenge_repo.data.remote.NetworkResponse
 import biz.ohrae.challenge_repo.model.FlowResult
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
+import biz.ohrae.challenge_repo.model.register.ImageBucket
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -68,23 +71,27 @@ class RegisterRepo @Inject constructor(
         }
     }
 
-    suspend fun uploadImage(challengeData: ChallengeData): Flow<FlowResult> {
-        Timber.e("imageUri : ${challengeData.imageFile.toString()}")
-        val file = File(challengeData.imageFile?.path.toString())
-        val requestFile = file.asRequestBody("multipart/form-data".toMediaTypeOrNull())
-        val multipartBody = MultipartBody.Part.createFormData("body", file.name, requestFile)
+    suspend fun uploadImage(imageFilePath: String): Flow<FlowResult> {
+        Timber.e("imageFilePath : $imageFilePath")
+        val file = File(imageFilePath)
+        Timber.e("file exists : $${file.exists()}, path : ${file.path}")
+        val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
+        val multipartBody = MultipartBody.Part.createFormData("image", file.path, requestFile)
+        val accessToken = prefs.getUserData()?.access_token.toString()
 
-        val response = apiService.uploadChallengeImage(multipartBody, challengeData.id)
+        val response = apiService.uploadChallengeImage(accessToken, multipartBody)
         when (response) {
             is NetworkResponse.Success -> {
                 val isSuccess = response.body.success
                 return if (isSuccess) {
                     flow {
-                        emit(FlowResult(true, "", ""))
+                        val imageBucket = gson.fromJson(response.body.dataset, ImageBucket::class.java)
+                        emit(FlowResult(imageBucket, "", ""))
                     }
                 } else {
                     flow {
-                        emit(FlowResult(false, response.body.code, response.body.message))
+                        val imageBucket = ImageBucket(errorCode = response.body.code.toString(), errorMessage = response.body.message.toString())
+                        emit(FlowResult(imageBucket, response.body.code, response.body.message))
                     }
                 }
             }

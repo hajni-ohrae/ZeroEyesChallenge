@@ -1,12 +1,13 @@
 package biz.ohrae.challenge_screen.ui.register
 
+import android.net.Uri
 import biz.ohrae.challenge.ui.components.dropdown.DropDownItem
 
 interface RegisterClickListener {
     fun onClickAuthNext(auth: String)
     fun onClickOpenNext()
     fun onClickRecruitmentNext()
-    fun onClickChallengeCreate(auth: String, precautions: String, imgUrl: String?)
+    fun onClickChallengeCreate(goal: String, precautions: String, imgUrl: Uri?)
     fun onClickSelectedAuth(auth: String)
     fun onClickPeriod(item: DropDownItem)
     fun onClickPeriodType(item: String)

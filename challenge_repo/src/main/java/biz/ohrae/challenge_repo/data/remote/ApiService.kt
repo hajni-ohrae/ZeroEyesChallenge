@@ -2,7 +2,9 @@ package biz.ohrae.challenge_repo.data.remote
 
 import com.google.gson.JsonObject
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.http.*
+import java.util.ArrayList
 
 interface ApiService {
     @POST(Routes.LOGIN)
@@ -173,8 +175,8 @@ interface ApiService {
     @Multipart
     @POST(Routes.CHALLENGE_UPLOAD_IMAGE)
     suspend fun uploadChallengeImage(
-        @Part body: MultipartBody.Part,
-        @Path("challenge_id") challengeId: String,
+        @Header("x-access-token") accessToken: String,
+        @Part file: MultipartBody.Part,
     ): NetworkResponse<Result, Error>
 
     @GET(Routes.GET_USER_CHALLENGE_LIST)

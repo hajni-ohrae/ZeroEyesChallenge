@@ -1,5 +1,6 @@
 package biz.ohrae.challenge_screen.ui.register
 
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
@@ -17,7 +18,7 @@ import com.skydoves.landscapist.glide.GlideImage
 )
 @Composable
 fun ChallengerCameraResultScreen(
-    imageUri: String? = null,
+    imageUri: Uri? = null,
     clickListener: RegisterClickListener? = null,
 ) {
     Column(
