@@ -31,7 +31,7 @@ class ChallengeMainViewModel @Inject constructor(
     private val _filterState = MutableLiveData<FilterState>()
     private val _tokenValid = MutableLiveData<Boolean>()
     private val _userData = MutableLiveData<User>()
-    private val _listPage = MutableLiveData(0)
+    private val _listPage = MutableLiveData(1)
 
     val filterState get() = _filterState
     val mainScreenState get() = _mainScreenState
@@ -80,7 +80,7 @@ class ChallengeMainViewModel @Inject constructor(
         is_adult_only: String,
     ) {
         viewModelScope.launch {
-            val page = listPage.value ?: 0
+            val page = listPage.value ?: 1
 
             val response = challengeMainRepo.getChallenges(
                 paymentType,

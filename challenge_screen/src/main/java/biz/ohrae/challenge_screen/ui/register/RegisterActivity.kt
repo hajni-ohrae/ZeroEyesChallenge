@@ -2,8 +2,10 @@ package biz.ohrae.challenge_screen.ui.register
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -11,7 +13,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
 import androidx.compose.foundation.background
@@ -20,6 +21,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.window.Dialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -33,8 +35,10 @@ import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.util.prefs.Utils
+import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.dialog.CalendarDialog
 import biz.ohrae.challenge_screen.ui.dialog.CalendarDialogListener
+import biz.ohrae.challenge_screen.ui.dialog.LoadingDialog
 import biz.ohrae.challenge_screen.ui.main.MainActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
@@ -42,9 +46,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import java.io.IOException
 
-
 @AndroidEntryPoint
-class RegisterActivity : AppCompatActivity() {
+class RegisterActivity : BaseActivity() {
     companion object {
         const val AUTH: Int = 1
         const val OPEN: Int = 2
@@ -65,28 +68,43 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this)[ChallengeRegisterViewModel::class.java]
 
-        init()
-        initClickListener()
-        observeViewModel()
         setContent {
             ChallengeInTheme {
+                val isLoading by baseViewModel.isLoading.observeAsState(false)
+                if (isLoading) {
+                    Dialog(onDismissRequest = { /*TODO*/ }) {
+                        LoadingDialog()
+                    }
+                }
                 BuildContent()
             }
         }
 
+        init()
+        initClickListeners()
+        observeViewModels()
+
         albumLauncher = registerForActivityResult<Intent, ActivityResult>(
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
+            Timber.e("data : ${Gson().toJson(result)}")
+
             if (result.resultCode == RESULT_OK) {
                 val data = result.data
-                // do your operation from here....
-                if (data != null && data.data != null) {
-                    val selectedImageUri = data.data
-                    try {
-                        Timber.e("selectedImageUri : $selectedImageUri")
-                        viewModel.setChallengeImage(selectedImageUri!!)
-                    } catch (e: IOException) {
-                        e.printStackTrace()
+                val isCamera = data?.extras?.containsKey("data")
+                Timber.e("isCamera : ${isCamera.toString()}")
+                if (isCamera == true) {
+                    val bitmap = data.extras?.get("data") as Bitmap
+                } else {
+                    // do your operation from here....
+                    if (data != null && data.data != null) {
+                        val selectedImageUri = data.data
+                        try {
+                            Timber.e("selectedImageUri : $selectedImageUri")
+                            viewModel.setChallengeImage(selectedImageUri!!)
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                        }
                     }
                 }
             }
@@ -175,37 +193,21 @@ class RegisterActivity : AppCompatActivity() {
         viewModel?.setStartDay(Utils.getDefaultChallengeDate())
     }
 
-    private fun onBack() {
+    override fun onBack() {
         if (navController.currentBackStackEntry?.destination?.route == ChallengeRegisterNavScreen.RegisterAuth.route) {
             finish()
         }
         navController.popBackStack()
     }
 
-    private fun initClickListener() {
+    override fun initClickListeners() {
         registerClickListener = object : RegisterClickListener {
             override fun onClickAuthNext(auth: String) {
                 viewModel.selectAuth(auth)
                 navController.navigate(ChallengeRegisterNavScreen.ChallengeOpen.route)
             }
 
-            override fun onClickOpenNext(
-            ) {
-//                val week = perWeek.replace("[^0-9]".toRegex(), "")
-//                val type: String = when (verificationPeriodType) {
-//                    "매일인증" -> {
-//                        "daily"
-//                    }
-//                    "평일만 인증(월,화,수,목,금)" -> {
-//                        "weekday"
-//                    }
-//                    "주말만 인증 (토,일)" -> {
-//                        "weekend"
-//                    }
-//                    else -> {
-//                        "per_week"
-//                    }
-//                }
+            override fun onClickOpenNext() {
                 viewModel.verificationPeriodType()
                 navController.navigate(ChallengeRegisterNavScreen.ChallengerRecruitment.route)
             }
@@ -227,6 +229,7 @@ class RegisterActivity : AppCompatActivity() {
                     val imagePath = uriToFilePath(imgUrl)
                     Timber.e("image path : $imagePath")
                     if (imagePath.isNotEmpty()) {
+                        baseViewModel.isLoading(true)
                         viewModel.uploadChallengeImage(imagePath)
                     }
                 }
@@ -313,8 +316,9 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    private fun observeViewModel() {
+    override fun observeViewModels() {
         viewModel.isChallengeCreate.observe(this) {
+            baseViewModel.isLoading(false)
             if (it) {
                 val intent = Intent(this@RegisterActivity, MainActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -329,9 +333,12 @@ class RegisterActivity : AppCompatActivity() {
                 if (!it.errorCode.isNullOrEmpty() || !it.errorMessage.isNullOrEmpty()) {
                     val message = "code : ${it.errorCode.toString()}, message : ${it.errorMessage.toString()}"
                     Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show()
+                    baseViewModel.isLoading(false)
                 } else {
                     viewModel.challengeGoals(goal, caution, it.path)
                 }
+            } ?: run {
+                baseViewModel.isLoading(false)
             }
         }
     }
@@ -377,11 +384,23 @@ class RegisterActivity : AppCompatActivity() {
         val galleryIntent = Intent()
         galleryIntent.type = "image/*"
         galleryIntent.action = Intent.ACTION_PICK
+
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        val fileName = (System.currentTimeMillis() / 1000).toString() + ".jpg"
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, contentValues(fileName))
 
         val chooser = Intent.createChooser(galleryIntent, "이미지 선택")
         chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(cameraIntent))
         albumLauncher.launch(chooser)
+    }
+
+    private fun contentValues(fileName: String) : Uri? {
+        val values = ContentValues()
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpg")
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, fileName)
+        values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis() / 1000)
+        values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis())
+        return contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
     }
 }
 
