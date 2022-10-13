@@ -69,7 +69,7 @@ fun RedCardScreen(
                 .fillMaxHeight()
                 .background(Color(0xfffafafa))
         ) {
-            if (redCardListState?.redCardList    != null) {
+            if (redCardListState?.redCardList != null) {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -96,6 +96,9 @@ fun RedCardScreen(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(24.dp, 0.dp),
                     text = "내역이 없습니다.",
                     style = myTypography.w500,
                     fontSize = dpToSp(dp = 20.dp),

@@ -88,6 +88,7 @@ class MyChallengeActivity : AppCompatActivity() {
         val userData by myChallengeViewModel.userData.observeAsState()
         val redCardListState by myChallengeViewModel.redCardListState.observeAsState()
         val paymentHistoryState by myChallengeViewModel.paymentHistoryState.observeAsState()
+        val saveChallengeList by challengeMainViewModel.mainScreenState.observeAsState()
 
         NavHost(
             navController = navController,
@@ -109,7 +110,7 @@ class MyChallengeActivity : AppCompatActivity() {
                 PaymentDetailListScreen(paymentHistoryState)
             }
             composable(MyChallengeNavScreen.SavedChallenge.route) {
-                SavedChallengeScreen()
+                SavedChallengeScreen(saveChallengeList)
             }
             composable(MyChallengeNavScreen.RedCard.route) {
                 RedCardScreen(clickListener = myChallengeClickListener,redCardListState)

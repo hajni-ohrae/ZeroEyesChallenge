@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.os.Environment
 import android.text.format.DateUtils
 import androidx.compose.ui.graphics.Color
+import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
@@ -566,4 +567,23 @@ object Utils {
             }
         }
     }
+
+     fun getAuthType(challengeData: ChallengeData): String {
+        return if (challengeData!!.is_verification_photo == 1) {
+            "사진인증"
+        } else if (challengeData.is_verification_time == 1) {
+            "시간인증"
+        } else {
+            "출석인증"
+        }
+    }
+
+     fun getOpenType(challengeData: ChallengeData): String {
+        return if (challengeData.is_feed_open == 1) {
+            "무료"
+        } else {
+            "유료"
+        }
+    }
+
 }
