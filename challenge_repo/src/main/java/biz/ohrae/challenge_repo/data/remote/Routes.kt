@@ -25,6 +25,7 @@ object Routes {
     const val REQUEST_PAYMENT = "/api/payment/request"
     const val COMPLETE_PAYMENT = "${CHALLENGE}/api/payment/complete"
     const val REFUND_PAYMENT = "${CHALLENGE}/api/payment/refund"
+    const val GET_PAYMENT_HISTORY ="${CHALLENGE}/api/payment/history/get/all"
 
     // 규정 (레드카드)
     const val GET_ALL_WARNING = "${CHALLENGE}/api/regulation/warn/get/all"
@@ -43,7 +44,7 @@ object Routes {
     const val CREATE_RELATE_SERVICE = "${CHALLENGE}/api/user/service/relate"
     const val CREATE_SERVICE_OWNER = "${CHALLENGE}/api/user/service/owner/create"
     const val UPLOAD_USER_PROFILE = "${CHALLENGE}/api/user/upload/profile"
-    const val GET_USER_DATA = "${CHALLENGE}/challenge/api/user/get/detail"
+    const val GET_USER_DATA = "${CHALLENGE}/api/user/get/detail"
 
     // 챌린지 인증
     const val VERIFY = "${CHALLENGE}/api/verification/verify"

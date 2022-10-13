@@ -26,6 +26,7 @@ interface ApiService {
         @Header("per_page") perPage: Int,
         @Query("payment_type") paymentType: String,
         @Query("verification_period_type") verificationPeriodType: String,
+        @Query("is_like") isLike: String? = "",
         @Query("per_week") perWeek: String? = "",
         @Query("period") period: String? = "",
         @Query("is_adult_only") isAdultOnly: String? = "",
@@ -72,6 +73,13 @@ interface ApiService {
 
     @POST(Routes.REFUND_PAYMENT)
     suspend fun refundPayment(@Body body: JsonObject?): NetworkResponse<Result, Error>
+
+    @POST(Routes.GET_PAYMENT_HISTORY)
+    suspend fun getPaymentHistory(
+        @Header("x-access-token") accessToken: String,
+        @Header("page") page: Int,
+        @Header("per_page") count: Int,
+    ): NetworkResponse<Result, Error>
 
     @GET(Routes.GET_ALL_WARNING)
     suspend fun getAllWarning(): NetworkResponse<Result, Error>
@@ -127,10 +135,10 @@ interface ApiService {
     @POST(Routes.UPLOAD_USER_PROFILE)
     suspend fun uploadUserProfile(@Body body: JsonObject?): NetworkResponse<Result, Error>
 
-    @POST(Routes.GET_USER_DATA)
+    @GET(Routes.GET_USER_DATA)
     suspend fun getUserData(
         @Header("x-access-token") accessToken: String
-    ): NetworkResponse<Result, Error>
+    ): NetworkResponse<Result2, Error>
 
     @POST(Routes.VERIFY)
     suspend fun verify(

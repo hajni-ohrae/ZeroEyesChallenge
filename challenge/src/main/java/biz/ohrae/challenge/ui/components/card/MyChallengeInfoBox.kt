@@ -23,14 +23,12 @@ import kotlin.math.roundToInt
 @Composable
 private fun MyChallengeIngoBoxGallery() {
     Column() {
-        MyChallengeIngoBox("12", "10")
+        MyChallengeIngoBox("12", "10","1")
     }
 }
 
 @Composable
-fun MyChallengeIngoBox(challenge: String, achievements: String) {
-    val average = (achievements.toDouble() / challenge.toDouble() * 100.0).roundToInt()
-
+fun MyChallengeIngoBox(challenge: String, achievements: String,achievementPercent:String) {
     Card(
         modifier = Modifier,
         shape = RoundedCornerShape(10.dp),
@@ -67,7 +65,7 @@ fun MyChallengeIngoBox(challenge: String, achievements: String) {
                 Text(text = "평균 달성률", style = myTypography.bold, fontSize = dpToSp(dp = 14.dp))
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "$average %",
+                    text = "$achievementPercent %",
                     style = myTypography.bold,
                     fontSize = dpToSp(dp = 14.dp),
                     color = Color(0xff005bad)

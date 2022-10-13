@@ -27,6 +27,7 @@ class ChallengeMainRepo @Inject constructor(
         per_week: String = "",
         period: String = "",
         is_adult_only: String = "",
+        is_like:String = "",
         page: Int = 1,
         perPage: Int = 10,
     ): Flow<FlowResult> {
@@ -38,6 +39,7 @@ class ChallengeMainRepo @Inject constructor(
                 perPage.toInt(),
                 paymentType,
                 verificationPeriodType,
+                is_like,
                 per_week,
                 period,
                 is_adult_only

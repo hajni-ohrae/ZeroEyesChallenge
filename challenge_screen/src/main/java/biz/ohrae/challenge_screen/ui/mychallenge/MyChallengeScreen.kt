@@ -72,19 +72,18 @@ fun MyChallengeScreen(
                 }
                 if (userChallengeListState != null) {
                     items(userChallengeListState?.userChallengeList!!) { item ->
-                        item.inChallenge?.forEach { inChallenge ->
-                            ChallengesInParticipationCard(
-                                modifier = Modifier.fillParentMaxWidth(),
-                                title = item.goal.toString(),
-                                count = inChallenge.today_verified_cnt.toString(),
-                                maxPeople = inChallenge.verified_cnt.toString(),
-                                progressStatus = item.status,
-                                achievementRate = inChallenge.achievement_percent,
-                                Utils.userChallengeBackground(item.status),
-                                Utils.userChallengeTextColor(item.status),
-                                onClick = { clickListener?.onClickChallengeAuthItem(item.id) }
-                            )
-                        }
+                        val inChallenge = item.inChallenge?.get(0)
+                        ChallengesInParticipationCard(
+                            modifier = Modifier.fillMaxWidth(),
+                            title = item.goal.toString(),
+                            count = inChallenge?.today_verified_cnt.toString(),
+                            maxPeople = inChallenge?.verified_cnt.toString(),
+                            progressStatus = item.status,
+                            achievementRate = inChallenge?.achievement_percent.toString(),
+                            Utils.userChallengeBackground(item.status),
+                            Utils.userChallengeTextColor(item.status),
+                            onClick = { clickListener?.onClickChallengeAuthItem(item.id) }
+                        )
                     }
                 }
             }
@@ -115,7 +114,7 @@ fun ItemHeader(
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = user!!.phone_number,
+                        text = user?.phone_number.toString(),
                         style = myTypography.w700,
                         fontSize = dpToSp(dp = 16.dp),
                         color = Color(0xff4f4f4f)
@@ -124,7 +123,11 @@ fun ItemHeader(
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
-        MyChallengeIngoBox("12", "10")
+        MyChallengeIngoBox(
+            user?.summary?.attend_cnt.toString(),
+            user?.summary?.achievement_cnt.toString(),
+            user?.summary?.achievement_percent.toString()
+        )
         Spacer(modifier = Modifier.height(8.dp))
         MenuItem(
             modifier = Modifier
