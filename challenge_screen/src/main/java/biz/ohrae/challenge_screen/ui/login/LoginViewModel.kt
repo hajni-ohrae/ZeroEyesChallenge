@@ -89,7 +89,6 @@ class LoginViewModel @Inject constructor(
             response.flowOn(Dispatchers.IO).collect { result ->
                 result.data?.let { val success = it as Boolean
                     if (success) {
-
                         _loginSuccess.value = true
                     } else {
                         if (result.errorCode == "3002") {

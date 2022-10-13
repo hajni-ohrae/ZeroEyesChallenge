@@ -22,7 +22,7 @@ data class User(
     val created_date: String,
     val updated_date: String,
     val inService:List<InService>? = null,
-    val imageFile: ImageFile,
+    val imageFile: ImageFile?,
     val summary: Summary,
     val access_token: String,
     val phone_number: String,

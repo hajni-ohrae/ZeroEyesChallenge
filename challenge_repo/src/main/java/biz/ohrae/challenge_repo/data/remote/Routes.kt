@@ -2,6 +2,7 @@ package biz.ohrae.challenge_repo.data.remote
 
 object Routes {
     const val HOST_NAME = "https://dev.mooin.kr/"
+    const val PAYMENT_HOST_NAME = "https://challenge.mooin.kr/"
 
     private const val CHALLENGE = "/challenge"
 
@@ -21,7 +22,7 @@ object Routes {
     const val GET_USERS_BY_CHALLENGE = "${CHALLENGE}/api/user/challenge/get/{challenge_id}"
 
     // 결제
-    const val REQUEST_PAYMENT = "${CHALLENGE}/api/payment/request"
+    const val REQUEST_PAYMENT = "/api/payment/request"
     const val COMPLETE_PAYMENT = "${CHALLENGE}/api/payment/complete"
     const val REFUND_PAYMENT = "${CHALLENGE}/api/payment/refund"
 

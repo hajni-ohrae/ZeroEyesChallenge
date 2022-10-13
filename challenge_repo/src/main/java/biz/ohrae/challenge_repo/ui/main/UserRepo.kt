@@ -22,6 +22,7 @@ class UserRepo @Inject constructor(
 ) {
     suspend fun login(): Flow<FlowResult> {
         val serviceIds = prefs.getZeServiceIds()
+        val customer = prefs.getZeCustomer()
         if (serviceIds.isNullOrEmpty()) {
             return flow {
                 emit(FlowResult(false, "", ""))
@@ -37,7 +38,7 @@ class UserRepo @Inject constructor(
         jsonObject.addProperty("serviceType", "ze_study")
         jsonObject.add("service_ids", jsonArray)
 
-        val response = apiService.login(jsonObject,"token")
+        val response = apiService.login(customer?.access_token.toString(), jsonObject)
 
         when (response) {
             is NetworkResponse.Success -> {
@@ -115,7 +116,8 @@ class UserRepo @Inject constructor(
         jsonObject.addProperty("service_type", "ze_study")
         jsonObject.add("service_ids", jsonArray)
 
-        val response = apiService.createUserService(jsonObject)
+        val accessToken = customer.access_token
+        val response = apiService.createUserService(accessToken, jsonObject)
 
         when (response) {
             is NetworkResponse.Success -> {

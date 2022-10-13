@@ -135,7 +135,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onClickChallengeAuthItem(id: String) {
-                goChallengeJoinedDetail(id)
+                goDetail(id)
             }
         }
     }

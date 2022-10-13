@@ -6,8 +6,10 @@ import retrofit2.http.*
 
 interface ApiService {
     @POST(Routes.LOGIN)
-    suspend fun login(@Body body: JsonObject?,
-                      @Header("x-access-token") accessToken: String,): NetworkResponse<Result2, Error>
+    suspend fun login(
+        @Header("x-access-token") accessToken: String,
+        @Body body: JsonObject?,
+    ): NetworkResponse<Result2, Error>
 
     @GET(Routes.AUTH_TOKEN_CHECK)
     suspend fun authTokenCheck(
@@ -111,7 +113,10 @@ interface ApiService {
     suspend fun createUser(@Body body: JsonObject?): NetworkResponse<Result, Error>
 
     @POST(Routes.CREATE_USER_SERVICE)
-    suspend fun createUserService(@Body body: JsonObject?): NetworkResponse<Result, Error>
+    suspend fun createUserService(
+        @Header("x-access-token") accessToken: String,
+        @Body body: JsonObject?
+    ): NetworkResponse<Result, Error>
 
     @POST(Routes.CREATE_RELATE_SERVICE)
     suspend fun createRelateService(@Body body: JsonObject?): NetworkResponse<Result, Error>
