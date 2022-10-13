@@ -28,6 +28,8 @@ import biz.ohrae.challenge.util.challengeVerificationPeriodMap
 import biz.ohrae.challenge_component.R
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.util.prefs.Utils
+import biz.ohrae.challenge_repo.util.prefs.Utils.getAuthType
+import biz.ohrae.challenge_repo.util.prefs.Utils.getOpenType
 import biz.ohrae.challenge_screen.model.main.FilterState
 import biz.ohrae.challenge_screen.model.main.MainScreenState
 import biz.ohrae.challenge_screen.model.user.UserChallengeListState
@@ -218,24 +220,6 @@ fun FilterCard(
     }
 }
 
-
-private fun getAuthType(challengeData: ChallengeData): String {
-    return if (challengeData!!.is_verification_photo == 1) {
-        "사진인증"
-    } else if (challengeData.is_verification_time == 1) {
-        "시간인증"
-    } else {
-        "출석인증"
-    }
-}
-
-private fun getOpenType(challengeData: ChallengeData): String {
-    return if (challengeData.is_feed_open == 1) {
-        "무료"
-    } else {
-        "유료"
-    }
-}
 
 
 

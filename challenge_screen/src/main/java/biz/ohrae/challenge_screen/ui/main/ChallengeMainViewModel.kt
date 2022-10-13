@@ -76,6 +76,7 @@ class ChallengeMainViewModel @Inject constructor(
         verificationPeriodType: String,
         per_week: String,
         period: String,
+        is_like:String,
         is_adult_only: String,
     ) {
         viewModelScope.launch {
@@ -87,6 +88,7 @@ class ChallengeMainViewModel @Inject constructor(
                 per_week,
                 period,
                 is_adult_only,
+                is_like,
                 page
             )
             response.flowOn(Dispatchers.IO).collect {

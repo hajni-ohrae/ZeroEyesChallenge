@@ -1,9 +1,11 @@
 package biz.ohrae.challenge_repo.ui.main
 
+import android.service.autofill.UserData
 import biz.ohrae.challenge_repo.data.remote.ApiService
 import biz.ohrae.challenge_repo.data.remote.NetworkResponse
 import biz.ohrae.challenge_repo.model.FlowResult
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
+import biz.ohrae.challenge_repo.model.user.PaymentHistoryState
 import biz.ohrae.challenge_repo.model.user.RedCardState
 import biz.ohrae.challenge_repo.model.user.User
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
@@ -181,10 +183,29 @@ class UserRepo @Inject constructor(
         val response = apiService.getUserData(accessToken.toString())
         when (response) {
             is NetworkResponse.Success -> {
-                val redCardList =
-                    gson.fromJson(response.body.dataset, RedCardState::class.java)
+                val userData =
+                    gson.fromJson(response.body.dataset, User::class.java)
                 return flow {
-                    emit(FlowResult(redCardList, "", ""))
+                    emit(FlowResult(userData, "", ""))
+                }
+            }
+            else -> {
+                return flow {
+                    emit(FlowResult(null, "", ""))
+                }
+            }
+        }
+    }
+
+    suspend fun getPaymentHistory():Flow<FlowResult>{
+        val accessToken = prefs.getUserData()?.access_token
+        val response = apiService.getPaymentHistory(accessToken.toString(),1,10)
+        when (response) {
+            is NetworkResponse.Success -> {
+                val paymentHistoryList =
+                    gson.fromJson(response.body.dataset, PaymentHistoryState::class.java)
+                return flow {
+                    emit(FlowResult(paymentHistoryList, "", ""))
                 }
             }
             else -> {

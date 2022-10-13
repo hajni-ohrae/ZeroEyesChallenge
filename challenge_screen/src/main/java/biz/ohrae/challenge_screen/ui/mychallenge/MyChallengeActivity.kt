@@ -55,7 +55,10 @@ class MyChallengeActivity : AppCompatActivity() {
 
     private fun init() {
         challengeMainViewModel.getUserChallengeList()
+        challengeMainViewModel.getChallengeList("","","","","1","")
         myChallengeViewModel.getRedCardList()
+        myChallengeViewModel.getPaymentHistory()
+        myChallengeViewModel.getUserData()
     }
     @Composable
     private fun BuildContent() {
@@ -82,8 +85,10 @@ class MyChallengeActivity : AppCompatActivity() {
     @Composable
     private fun Navigation() {
         val state by challengeMainViewModel.userChallengeListState.observeAsState()
-        val userData by challengeMainViewModel.userData.observeAsState()
+        val userData by myChallengeViewModel.userData.observeAsState()
         val redCardListState by myChallengeViewModel.redCardListState.observeAsState()
+        val paymentHistoryState by myChallengeViewModel.paymentHistoryState.observeAsState()
+        val saveChallengeList by challengeMainViewModel.mainScreenState.observeAsState()
 
         NavHost(
             navController = navController,
@@ -102,13 +107,13 @@ class MyChallengeActivity : AppCompatActivity() {
                 PhoneAuthScreenWebView()
             }
             composable(MyChallengeNavScreen.MyPaymentDetail.route) {
-                PaymentDetailListScreen()
+                PaymentDetailListScreen(paymentHistoryState)
             }
             composable(MyChallengeNavScreen.SavedChallenge.route) {
-                SavedChallengeScreen()
+                SavedChallengeScreen(saveChallengeList)
             }
             composable(MyChallengeNavScreen.RedCard.route) {
-                RedCardScreen(clickListener = myChallengeClickListener)
+                RedCardScreen(clickListener = myChallengeClickListener,redCardListState)
             }
             composable(MyChallengeNavScreen.Policy.route) {
                 PolicyScreen(policyScreenType)
