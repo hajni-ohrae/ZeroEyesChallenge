@@ -4,15 +4,12 @@ import biz.ohrae.challenge_repo.data.remote.ApiService
 import biz.ohrae.challenge_repo.data.remote.NetworkResponse
 import biz.ohrae.challenge_repo.model.FlowResult
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
-import biz.ohrae.challenge_repo.model.user.UserChallengeData
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import retrofit2.http.Header
-import retrofit2.http.Query
 import javax.inject.Inject
 
 
@@ -63,7 +60,7 @@ class ChallengeMainRepo @Inject constructor(
                         }
                     } ?: run {
                         return flow {
-                            emit(FlowResult(null, "", ""))
+                            emit(FlowResult(null, "", "data is null"))
                         }
                     }
                 } else {
@@ -75,7 +72,7 @@ class ChallengeMainRepo @Inject constructor(
             }
             else -> {
                 return flow {
-                    emit(FlowResult(null, "", ""))
+                    emit(FlowResult(null, "", response.errorMessage))
                 }
             }
         }

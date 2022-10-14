@@ -74,7 +74,7 @@ class RegisterActivity : BaseActivity() {
 
         setContent {
             ChallengeInTheme {
-                val isLoading by baseViewModel.isLoading.observeAsState(false)
+                val isLoading by viewModel.isLoading.observeAsState(false)
                 if (isLoading) {
                     Dialog(onDismissRequest = { /*TODO*/ }) {
                         LoadingDialog()
@@ -238,11 +238,12 @@ class RegisterActivity : BaseActivity() {
 
                     Timber.e("image path : $imagePath")
                     if (!imagePath.isNullOrEmpty()) {
-                        baseViewModel.isLoading(true)
+                        viewModel.isLoading(true)
                         viewModel.uploadChallengeImage(imagePath)
                     }
                 } else {
-
+                    viewModel.isLoading(true)
+                    viewModel.challengeGoals(goal, precautions, null)
                 }
             }
 
@@ -329,8 +330,8 @@ class RegisterActivity : BaseActivity() {
 
     override fun observeViewModels() {
         viewModel.isChallengeCreate.observe(this) {
-            baseViewModel.isLoading(false)
-            if (it) {
+            viewModel.isLoading(false)
+            if (it == true) {
                 val intent = Intent(this@RegisterActivity, MainActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 startActivity(intent)
@@ -344,12 +345,12 @@ class RegisterActivity : BaseActivity() {
                 if (!it.errorCode.isNullOrEmpty() || !it.errorMessage.isNullOrEmpty()) {
                     val message = "code : ${it.errorCode.toString()}, message : ${it.errorMessage.toString()}"
                     Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show()
-                    baseViewModel.isLoading(false)
+                    viewModel.isLoading(false)
                 } else {
                     viewModel.challengeGoals(goal, caution, it.id.toString())
                 }
             } ?: run {
-                baseViewModel.isLoading(false)
+                viewModel.isLoading(false)
             }
         }
     }

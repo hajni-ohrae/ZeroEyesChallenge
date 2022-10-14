@@ -11,6 +11,7 @@ import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import biz.ohrae.challenge_screen.model.main.FilterState
 import biz.ohrae.challenge_screen.model.main.MainScreenState
 import biz.ohrae.challenge_screen.model.user.UserChallengeListState
+import biz.ohrae.challenge_screen.ui.BaseViewModel
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +26,7 @@ class ChallengeMainViewModel @Inject constructor(
     private val userRepo: UserRepo,
     private val prefs: SharedPreference,
     private val gson: Gson
-) : ViewModel() {
+) : BaseViewModel(prefs) {
     private val _mainScreenState = MutableLiveData<MainScreenState>()
     private val _userChallengeListState = MutableLiveData<UserChallengeListState>()
     private val _filterState = MutableLiveData<FilterState>()
@@ -97,6 +98,8 @@ class ChallengeMainViewModel @Inject constructor(
                     val challengeList = data as List<ChallengeData>
                     val state = MainScreenState(challengeList, topBannerList)
                     _mainScreenState.value = state
+                } ?: run {
+
                 }
             }
         }

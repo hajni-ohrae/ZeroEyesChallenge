@@ -72,17 +72,18 @@ fun ChallengeDetailScreen(
             .verticalScroll(scrollState)
             .background(DefaultWhite)
     ) {
+        ImageBox(
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1.51f)
+                .background(TextBlack),
+            imagePath = challengeData.imageFile?.path.toString()
+        )
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(24.dp, 0.dp)
         ) {
-            ImageBox(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(1.51f),
-                imagePath = challengeData.imageFile?.path.toString()
-            )
             Spacer(modifier = Modifier.height(24.dp))
             if (status != null) {
                 ChallengeDetailsTitle(
@@ -263,24 +264,31 @@ fun ChallengeDescription(
             }
         )
         Spacer(modifier = Modifier.height(32.dp))
-        Text(
-            text = "인증 방법 및 주의사항",
-            style = myTypography.bold,
-            fontSize = dpToSp(dp = 18.dp)
-        )
-        Spacer(modifier = Modifier.height(13.dp))
-        MiddleDotText(
-            text = "만화책은 안됩니다.",
-            fontSize = dpToSp(dp = 14.dp),
-            lineHeight = dpToSp(dp = 19.6.dp)
-        )
-        Spacer(modifier = Modifier.height(4.dp))
-        MiddleDotText(
-            text = "손은 어떤 제스처든 모두 가능해요.",
-            fontSize = dpToSp(dp = 14.dp),
-            lineHeight = dpToSp(dp = 19.6.dp)
-        )
-        Spacer(modifier = Modifier.height(32.dp))
+        if (!challengeData.caution.isNullOrEmpty()) {
+            Text(
+                text = "인증 방법 및 주의사항",
+                style = myTypography.bold,
+                fontSize = dpToSp(dp = 18.dp)
+            )
+            Spacer(modifier = Modifier.height(13.dp))
+            Text(
+                text = challengeData.caution.toString(),
+                fontSize = dpToSp(dp = 14.dp),
+                lineHeight = dpToSp(dp = 19.6.dp)
+            )
+//            MiddleDotText(
+//                text = "만화책은 안됩니다.",
+//                fontSize = dpToSp(dp = 14.dp),
+//                lineHeight = dpToSp(dp = 19.6.dp)
+//            )
+//            Spacer(modifier = Modifier.height(4.dp))
+//            MiddleDotText(
+//                text = "손은 어떤 제스처든 모두 가능해요.",
+//                fontSize = dpToSp(dp = 14.dp),
+//                lineHeight = dpToSp(dp = 19.6.dp)
+//            )
+            Spacer(modifier = Modifier.height(32.dp))
+        }
     }
 }
 

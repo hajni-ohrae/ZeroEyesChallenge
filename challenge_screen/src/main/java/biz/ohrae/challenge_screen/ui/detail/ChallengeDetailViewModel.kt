@@ -10,6 +10,7 @@ import biz.ohrae.challenge_repo.ui.main.UserRepo
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import biz.ohrae.challenge_screen.model.detail.Verification
 import biz.ohrae.challenge_screen.model.detail.VerificationState
+import biz.ohrae.challenge_screen.ui.BaseViewModel
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +26,7 @@ class ChallengeDetailViewModel @Inject constructor(
     private val userRepo: UserRepo,
     private val prefs: SharedPreference,
     private val gson: Gson
-) : ViewModel() {
+) : BaseViewModel(prefs) {
     private val _challengeData = MutableLiveData<ChallengeData>()
     private val _challengeVerificationState = MutableLiveData<VerificationState>()
     private val _challengers = MutableLiveData<List<User>>()

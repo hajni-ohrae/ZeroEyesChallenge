@@ -6,6 +6,8 @@ import timber.log.Timber
 import java.io.IOException
 
 sealed class NetworkResponse<out T : Any, out U : Any> {
+    var errorMessage: String? = null
+
     /**
      * Success response with body
      */
@@ -42,6 +44,7 @@ sealed class NetworkResponse<out T : Any, out U : Any> {
      */
     data class NetworkError(val request: Request?, val error: IOException) : NetworkResponse<Nothing, Nothing>() {
         init {
+            errorMessage = error.message.toString()
             Timber.e( "NetworkError : ${error.message}")
 //            reportNetworkError(request!!, error)
         }
@@ -52,6 +55,7 @@ sealed class NetworkResponse<out T : Any, out U : Any> {
      */
     data class UnknownError(val request: Request, val error: Throwable?) : NetworkResponse<Nothing, Nothing>() {
         init {
+            errorMessage = error?.message.toString()
             Timber.e("UnknownError : ${error?.message.toString()}")
 //            reportNetworkError(request, error)
         }

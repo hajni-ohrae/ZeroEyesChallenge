@@ -12,6 +12,7 @@ import biz.ohrae.challenge_repo.ui.register.RegisterRepo
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.model.register.ChallengeOpenState
+import biz.ohrae.challenge_screen.ui.BaseViewModel
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -25,9 +26,9 @@ class ChallengeRegisterViewModel @Inject constructor(
     private val userRepo: UserRepo,
     private val prefs: SharedPreference,
     private val gson: Gson
-) : ViewModel() {
+) : BaseViewModel(prefs) {
     private val _challengeData = MutableLiveData<ChallengeData>()
-    private val _isChallengeCreate = MutableLiveData(false)
+    private val _isChallengeCreate = MutableLiveData<Boolean?>(false)
     private val _challengeImageUri = MutableLiveData<Uri?>(null)
     private val _checkAdultOnly = MutableLiveData<Int?>(0)
     private val _screenState = MutableLiveData<ChallengeOpenState>()
@@ -57,6 +58,8 @@ class ChallengeRegisterViewModel @Inject constructor(
             response.flowOn(Dispatchers.IO).collect { it ->
                 it.data?.let { data ->
                     _isChallengeCreate.value = data as Boolean
+                } ?: run {
+                    _isChallengeCreate.value = null
                 }
             }
         }

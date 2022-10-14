@@ -1,10 +1,7 @@
 package biz.ohrae.challenge_screen.ui.detail
 
-import android.os.Build
 import android.os.Bundle
-import android.view.WindowManager
 import androidx.activity.compose.setContent
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.ImageCapture
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -44,7 +41,7 @@ class ChallengeJoinedDetailActivity : BaseActivity() {
 
         setContent {
             ChallengeInTheme {
-                val isLoading by baseViewModel.isLoading.observeAsState(false)
+                val isLoading by viewModel.isLoading.observeAsState(false)
                 if (isLoading) {
                     Dialog(onDismissRequest = { /*TODO*/ }) {
                         LoadingDialog()
@@ -131,7 +128,7 @@ class ChallengeJoinedDetailActivity : BaseActivity() {
     }
 
     private fun init() {
-        baseViewModel.isLoading(true)
+        viewModel.isLoading(true)
     }
 
     override fun onBack() {

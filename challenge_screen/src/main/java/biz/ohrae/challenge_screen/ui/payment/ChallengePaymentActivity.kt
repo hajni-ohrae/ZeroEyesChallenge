@@ -21,6 +21,7 @@ class ChallengePaymentActivity : AppCompatActivity() {
     private val APP_SCHEME = "mooinapp://"
 
     private var challengeId: String? = null
+    private var userId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +29,7 @@ class ChallengePaymentActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         challengeId = intent.getStringExtra("challengeId")
+        userId = intent.getStringExtra("userId")
 
         init()
     }
@@ -68,14 +70,14 @@ class ChallengePaymentActivity : AppCompatActivity() {
 
     private fun payment() {
         var postData = ""
-        postData += "user_id=3a6ce792-d0cb-4567-8dd6-f08cb64a1039"
-        postData += "&challenge_id=c2baee02-402f-4a65-aa3f-43b2f36d88c6"
-        postData += "&paid_amount=0"
+        postData += "user_id=$userId"
+        postData += "&challenge_id=$challengeId"
+        postData += "&paid_amount=100"
         postData += "&rewards_amount=0"
         postData += "&pay_method=card"
         postData += "&pg=nice"
         val url = Routes.PAYMENT_HOST_NAME.dropLast(1) + Routes.REQUEST_PAYMENT
-        Timber.e("url : $url")
+        Timber.e("url : $url, postData : $postData")
         binding.webView.postUrl(url, postData.toByteArray())
     }
 }

@@ -54,7 +54,7 @@ class ChallengeDetailActivity : BaseActivity() {
 
         setContent {
             ChallengeInTheme {
-                val isLoading by baseViewModel.isLoading.observeAsState(false)
+                val isLoading by viewModel.isLoading.observeAsState(false)
                 if (isLoading) {
                     Dialog(onDismissRequest = { /*TODO*/ }) {
                         LoadingDialog()
@@ -161,7 +161,7 @@ class ChallengeDetailActivity : BaseActivity() {
     }
 
     private fun init() {
-        baseViewModel.isLoading(true)
+        viewModel.isLoading(true)
         viewModel.getChallenge(challengeId.toString())
         viewModel.getUserByChallenge(challengeId.toString(), 1, 11)
     }
@@ -232,7 +232,7 @@ class ChallengeDetailActivity : BaseActivity() {
 
     override fun observeViewModels() {
         viewModel.challengeData.observe(this) {
-            baseViewModel.isLoading(false)
+            viewModel.isLoading(false)
         }
     }
 }

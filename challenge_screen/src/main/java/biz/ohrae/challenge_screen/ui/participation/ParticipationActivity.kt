@@ -1,6 +1,5 @@
 package biz.ohrae.challenge_screen.ui.participation
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -20,7 +19,6 @@ import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailViewModel
-import biz.ohrae.challenge_screen.ui.payment.ChallengePaymentActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -133,12 +131,16 @@ class ParticipationActivity : BaseActivity() {
     override fun initClickListeners() {
         clickListener = object : ParticipationClickListener {
             override fun onClickPayment(paidAmount: Int, rewardAmount: Int, depositAmount: Int) {
-                navController.navigate(ChallengeParticipationNavScreen.ParticipationPayment.route)
-                val intent = Intent(this@ParticipationActivity, ChallengePaymentActivity::class.java)
-                startActivity(intent)
-//                detailViewModel.challengeData.value?.let {
-//                    viewModel.registerChallenge(challengeData = it, paidAmount, rewardAmount, depositAmount)
-//                }
+//                navController.navigate(ChallengeParticipationNavScreen.ParticipationPayment.route)
+//                val userId = prefs.getUserData()?.id
+//                val intent = Intent(this@ParticipationActivity, ChallengePaymentActivity::class.java)
+//                intent.putExtra("challengeId", challengeId)
+//                intent.putExtra("userId", userId)
+//
+//                startActivity(intent)
+                detailViewModel.challengeData.value?.let {
+                    viewModel.registerChallenge(challengeData = it, paidAmount, rewardAmount, depositAmount)
+                }
             }
 
             // 챌린지 참여 취소
