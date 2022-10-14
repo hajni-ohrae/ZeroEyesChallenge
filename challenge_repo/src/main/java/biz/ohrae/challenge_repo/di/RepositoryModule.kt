@@ -2,6 +2,7 @@ package biz.ohrae.challenge_repo.di
 
 import biz.ohrae.challenge_repo.data.remote.ApiService
 import biz.ohrae.challenge_repo.data.remote.ApiServiceForBase
+import biz.ohrae.challenge_repo.ui.challengers.ChallengersRepo
 import biz.ohrae.challenge_repo.ui.detail.ChallengeDetailRepo
 import biz.ohrae.challenge_repo.ui.login.LoginRepo
 import biz.ohrae.challenge_repo.ui.main.ChallengeMainRepo
@@ -67,6 +68,16 @@ object RepositoryModule {
         prefs: SharedPreference
     ): ParticipationRepo {
         return ParticipationRepo(apiService, gson, prefs)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideChallengersRepo(
+        apiService: ApiService,
+        gson: Gson,
+        prefs: SharedPreference
+    ): ChallengersRepo {
+        return ChallengersRepo(apiService, gson, prefs)
     }
 
     @Provides

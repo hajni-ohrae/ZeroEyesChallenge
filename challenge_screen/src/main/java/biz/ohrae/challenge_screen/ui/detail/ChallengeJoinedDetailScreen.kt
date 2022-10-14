@@ -185,6 +185,7 @@ fun ChallengeJoinedDetailScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .aspectRatio(6f),
+                    enabled = challengeData.is_verification_photo == 1,
                     text = "인증하기",
                     onClick = { clickListener?.onClickAuth() }
                 )
@@ -286,7 +287,7 @@ private fun ChallengeJoinedDetailPage(
         )
         Spacer(modifier = Modifier.height(24.dp))
         if (challengers != null) {
-            Challengers(challengers)
+            Challengers(challengers = challengers, clickListener = clickListener)
         }
     }
 }
@@ -445,7 +446,10 @@ private fun ColumnForLazy(
 }
 
 @Composable
-private fun Challengers(challengers: List<User>) {
+private fun Challengers(
+    challengers: List<User>,
+    clickListener: ChallengeDetailClickListener? = null
+) {
     Column {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -485,12 +489,14 @@ private fun Challengers(challengers: List<User>) {
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
-        if (challengers.size > 10) {
+        if (challengers.size > 0) {
             Spacer(modifier = Modifier.height(17.dp))
             FlatBorderButton(
                 modifier = Modifier.fillMaxWidth().aspectRatio(7.1f),
                 text = "전체보기",
-                onClick = {}
+                onClick = {
+                    clickListener?.onClickShowAllChallengers()
+                }
             )
         }
         Spacer(modifier = Modifier.height(100.dp))

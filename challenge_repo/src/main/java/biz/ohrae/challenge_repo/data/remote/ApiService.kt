@@ -2,6 +2,7 @@ package biz.ohrae.challenge_repo.data.remote
 
 import com.google.gson.JsonObject
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.http.*
 
 interface ApiService {
@@ -143,10 +144,16 @@ interface ApiService {
         @Header("x-access-token") accessToken: String
     ): NetworkResponse<Result2, Error>
 
+    @Multipart
     @POST(Routes.VERIFY)
     suspend fun verify(
         @Header("x-access-token") accessToken: String,
-        @Body body: JsonObject?
+        @Part file: MultipartBody.Part,
+//        @PartMap partMap: Map<String, RequestBody>
+        @Part("challenge_id") challengeId: RequestBody,
+        @Part("user_id") userId: RequestBody,
+        @Part("type") type: RequestBody,
+        @Part("comment") comment: RequestBody,
     ): NetworkResponse<Result, Error>
 
     @POST(Routes.SERVICE_VERIFY)

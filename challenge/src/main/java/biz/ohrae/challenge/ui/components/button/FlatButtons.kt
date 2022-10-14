@@ -124,7 +124,7 @@ fun FlatBorderButton(
     enabled: Boolean = true,
     onClick: () -> Unit = {}
 ) {
-    TextButton(
+    Button(
         modifier = modifier,
         colors = ButtonDefaults.textButtonColors(
             backgroundColor = DefaultWhite,
@@ -132,6 +132,11 @@ fun FlatBorderButton(
         ),
         shape = RoundedCornerShape(24.dp),
         border = BorderStroke(1.dp, Color(0xffc7c7c7)),
+        elevation = ButtonDefaults.elevation(
+            defaultElevation = 0.dp,
+            pressedElevation = 0.dp,
+            disabledElevation = 0.dp
+        ),
         onClick = {
             if (enabled) {
                 onClick()

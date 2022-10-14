@@ -12,10 +12,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.model.list_item.RankItemData
 import biz.ohrae.challenge.ui.components.avatar.circularAvatar
-import biz.ohrae.challenge.ui.theme.DefaultBlack
+import biz.ohrae.challenge.ui.theme.TextBlack
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
-
 
 @Preview(
     showBackground = true,
@@ -46,9 +45,10 @@ fun RankItemGallery() {
 @Composable
 fun RankItem(
     rank: String = "1",
-    userName: String = "이오래",
-    timeDays: String = "30시간 10분",
-    progress: String = "100%",
+    userName: String = "",
+    timeDays: String = "",
+    progress: String = "",
+    count: String = ""
 ) {
     Row(
         modifier = Modifier
@@ -73,29 +73,42 @@ fun RankItem(
                 text = rank,
                 style = myTypography.extraBold,
                 fontSize = dpToSp(dp = 14.dp),
-                color = DefaultBlack
+                color = TextBlack
             )
             Spacer(modifier = Modifier.fillMaxWidth(0.051f))
             Text(
                 text = userName,
                 style = myTypography.default,
                 fontSize = dpToSp(dp = 14.dp),
-                color = DefaultBlack
+                color = TextBlack
             )
             Spacer(modifier = Modifier.weight(1f))
-            Text(
-                text = timeDays,
-                style = myTypography.extraBold,
-                fontSize = dpToSp(dp = 14.dp),
-                color = DefaultBlack
-            )
-            Spacer(modifier = Modifier.fillMaxWidth(0.051f))
-            Text(
-                text = progress,
-                style = myTypography.bold,
-                fontSize = dpToSp(dp = 14.dp),
-                color = Color(0xff005bad)
-            )
+            if (timeDays.isNotEmpty()) {
+                Text(
+                    text = timeDays,
+                    style = myTypography.extraBold,
+                    fontSize = dpToSp(dp = 14.dp),
+                    color = TextBlack
+                )
+                Spacer(modifier = Modifier.fillMaxWidth(0.051f))
+            }
+            if (count.isNotEmpty()) {
+                Text(
+                    text = count,
+                    style = myTypography.bold,
+                    fontSize = dpToSp(dp = 14.dp),
+                    color = TextBlack
+                )
+                Spacer(modifier = Modifier.fillMaxWidth(0.051f))
+            }
+            if (progress.isNotEmpty()) {
+                Text(
+                    text = progress,
+                    style = myTypography.bold,
+                    fontSize = dpToSp(dp = 14.dp),
+                    color = Color(0xff005bad)
+                )
+            }
         }
     }
 }

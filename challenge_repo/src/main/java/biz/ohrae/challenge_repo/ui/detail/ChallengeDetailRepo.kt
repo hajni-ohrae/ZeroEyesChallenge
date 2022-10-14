@@ -6,15 +6,19 @@ import biz.ohrae.challenge_repo.model.FlowResult
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.model.user.User
 import biz.ohrae.challenge_repo.model.verify.VerifyData
-import biz.ohrae.challenge_repo.model.verify.VerifyListState
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import java.util.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.File
 import javax.inject.Inject
+
 
 class ChallengeDetailRepo @Inject constructor(
     private val apiService: ApiService,
@@ -87,26 +91,30 @@ class ChallengeDetailRepo @Inject constructor(
         challengeId: String,
         type: String,
         content: String,
+        imageFilePath: String,
     ): Flow<FlowResult> {
         val accessToken = prefs.getUserData()?.access_token
         val userId = prefs.getUserData()?.id
 
-        val jsonObject = JsonObject()
-        jsonObject.addProperty("challenge_id", challengeId)
-        jsonObject.addProperty("user_id", userId)
-        jsonObject.addProperty("type", type)
-        jsonObject.addProperty("comment", content)
+        val challengeIdData = challengeId.toRequestBody("text/plain".toMediaTypeOrNull())
+        val userIdData = userId.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+        val typeData = type.toRequestBody("text/plain".toMediaTypeOrNull())
+        val commentData = content.toRequestBody("text/plain".toMediaTypeOrNull())
 
-        val response = apiService.verify(accessToken.toString(), jsonObject)
+        val file = File(imageFilePath)
+        val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
+        val multipartBody = MultipartBody.Part.createFormData("image", file.path, requestFile)
+
+        val response = apiService.verify(accessToken.toString(), multipartBody, challengeIdData, userIdData, typeData, commentData)
         when (response) {
             is NetworkResponse.Success -> {
                 return if (response.body.success) {
                     flow {
-                        emit(FlowResult(null, "", ""))
+                        emit(FlowResult(true, "", ""))
                     }
                 } else {
                     flow {
-                        emit(FlowResult(null, response.body.code, response.body.message))
+                        emit(FlowResult(false, response.body.code, response.body.message))
                     }
                 }
             }
@@ -136,12 +144,11 @@ class ChallengeDetailRepo @Inject constructor(
                     val dataSet = response.body.dataset?.asJsonObject
                     val array = dataSet?.get("array")?.asJsonArray
 
-
                     val listType = object : TypeToken<List<VerifyData?>?>() {}.type
-                    val verifyListState = gson.fromJson<List<VerifyListState>>(array, listType)
+                    val verifyList = gson.fromJson<List<VerifyData>>(array, listType)
 
                     flow {
-                        emit(FlowResult(verifyListState, "", ""))
+                        emit(FlowResult(verifyList, "", ""))
                     }
                 } else {
                     flow {

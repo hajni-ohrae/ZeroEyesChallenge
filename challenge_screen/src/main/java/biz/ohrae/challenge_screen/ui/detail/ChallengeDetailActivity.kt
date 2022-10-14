@@ -1,10 +1,13 @@
 package biz.ohrae.challenge_screen.ui.detail
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.WindowManager
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
@@ -29,10 +32,12 @@ import androidx.navigation.compose.rememberNavController
 import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge_screen.ui.BaseActivity
+import biz.ohrae.challenge_screen.ui.challengers.ChallengersActivity
 import biz.ohrae.challenge_screen.ui.dialog.LoadingDialog
 import biz.ohrae.challenge_screen.ui.mychallenge.PolicyScreen
 import biz.ohrae.challenge_screen.ui.participation.ParticipationActivity
 import biz.ohrae.challenge_screen.ui.register.ChallengeCameraScreen
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -164,6 +169,7 @@ class ChallengeDetailActivity : BaseActivity() {
         viewModel.isLoading(true)
         viewModel.getChallenge(challengeId.toString())
         viewModel.getUserByChallenge(challengeId.toString(), 1, 11)
+        viewModel.getVerifyList(challengeId.toString())
     }
 
     override fun onBack() {
@@ -179,8 +185,10 @@ class ChallengeDetailActivity : BaseActivity() {
         capturedCallback = object : ImageCapture.OnImageSavedCallback {
             override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                 Timber.e("onCaptureSuccess : ${outputFileResults.savedUri}")
-                viewModel.setChallengeAuthImage(outputFileResults.savedUri.toString())
-                navController.navigate(ChallengeDetailNavScreen.AuthCameraResult.route)
+                if (outputFileResults.savedUri != null) {
+                    viewModel.setChallengeAuthImage(outputFileResults.savedUri!!)
+                    navController.navigate(ChallengeDetailNavScreen.AuthCameraResult.route)
+                }
             }
 
             override fun onError(exception: ImageCaptureException) {
@@ -200,12 +208,22 @@ class ChallengeDetailActivity : BaseActivity() {
             }
 
             override fun onClickAuth() {
-                val permission = Manifest.permission.CAMERA
-                if(ContextCompat.checkSelfPermission(this@ChallengeDetailActivity, permission)
-                    != PackageManager.PERMISSION_GRANTED)
-                {
-                    // Permission is not granted
-                    ActivityCompat.requestPermissions(this@ChallengeDetailActivity, arrayOf(permission), 100)
+                val permissions = arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.CAMERA
+                )
+
+                val permissionResults = mutableListOf<String>()
+                permissions.forEach {
+                    val result = ContextCompat.checkSelfPermission(this@ChallengeDetailActivity, it)
+                    if (result != PackageManager.PERMISSION_GRANTED) {
+                        permissionResults.add(it)
+                    }
+                }
+
+                if (permissionResults.isNotEmpty()) {
+                    ActivityCompat.requestPermissions(this@ChallengeDetailActivity, permissionResults.toTypedArray(), 100)
                 } else {
                     navController.navigate(ChallengeDetailNavScreen.AuthCameraPreview.route)
                 }
@@ -223,9 +241,45 @@ class ChallengeDetailActivity : BaseActivity() {
                 navController.navigate(ChallengeDetailNavScreen.RedCardInfo.route)
             }
 
+            override fun onClickShowAllChallengers() {
+                val intent = Intent(this@ChallengeDetailActivity, ChallengersActivity::class.java)
+                intent.putExtra("challengeId", challengeId)
+                startActivity(intent)
+            }
+
             override fun onDone(content: String) {
-                viewModel.verifyChallenge(content)
-                navController.navigate(ChallengeDetailNavScreen.JoinedDetail.route)
+                viewModel.challengeAuthImageUri.value?.let {
+                    viewModel.verifyChallenge(content, uriToFilePath(it))
+                    navController.navigate(ChallengeDetailNavScreen.JoinedDetail.route) {
+                        popUpTo(0)
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        var grantedCount = 0
+        if (requestCode == 100) {
+            if (grantResults.isNotEmpty()) {
+                grantResults.forEach {
+                    if (it == PackageManager.PERMISSION_GRANTED) {
+                        grantedCount++
+                    }
+                }
+
+                if (grantedCount == grantResults.size) {
+                    navController.navigate(ChallengeDetailNavScreen.AuthCameraPreview.route)
+                } else {
+                    Snackbar.make(findViewById(android.R.id.content), "Permission Denied", Snackbar.LENGTH_SHORT).show()
+                }
+            } else {
+                Snackbar.make(findViewById(android.R.id.content), "Permission Denied", Snackbar.LENGTH_SHORT).show()
             }
         }
     }
@@ -234,6 +288,28 @@ class ChallengeDetailActivity : BaseActivity() {
         viewModel.challengeData.observe(this) {
             viewModel.isLoading(false)
         }
+    }
+
+    @SuppressLint("Range")
+    private fun uriToFilePath(contentUri: Uri): String {
+        Timber.e("contentUri : $contentUri")
+        val proj = arrayOf(MediaStore.Images.Media.DATA)
+        var path = ""
+
+        try {
+            val cursor = contentResolver.query(contentUri, proj, null, null, null)
+            if (cursor != null) {
+                cursor.moveToNext()
+                path = cursor.getString(cursor.getColumnIndex(MediaStore.MediaColumns.DATA))
+
+                cursor.close()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+
+        }
+
+        return path
     }
 }
 

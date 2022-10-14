@@ -85,6 +85,7 @@ data class InChallenge(
     val achievement_percent: String,
     val today_verified_cnt: Int,
     val verified_cnt: Int,
+    val ranking: Int?,
     var verifications: List<Int>?
 )
 

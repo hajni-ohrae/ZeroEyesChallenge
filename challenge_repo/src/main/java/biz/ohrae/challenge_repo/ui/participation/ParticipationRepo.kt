@@ -5,6 +5,7 @@ import biz.ohrae.challenge_repo.data.remote.NetworkResponse
 import biz.ohrae.challenge_repo.model.FlowResult
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
+import biz.ohrae.challenge_repo.util.prefs.Utils
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import kotlinx.coroutines.flow.Flow
@@ -20,9 +21,11 @@ class ParticipationRepo @Inject constructor(
         val accessToken = prefs.getUserData()?.access_token
         val userId = prefs.getUserData()?.id
         val jsonObject = JsonObject()
+        val challengeType = Utils.getAuthTypeEnglish(challengeData)
+
 //        jsonObject.addProperty("user_id", userId)
         jsonObject.addProperty("challenge_id", challengeData.id)
-        jsonObject.addProperty("verification_type", challengeData.verification_period_type)
+        jsonObject.addProperty("verification_type", challengeType)
         jsonObject.addProperty("paid_amount", paidAmount)
         jsonObject.addProperty("reward_amount", rewardsAmount)
 //        jsonObject.addProperty("deposit_amount", depositAmount)

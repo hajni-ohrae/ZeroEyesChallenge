@@ -1,5 +1,6 @@
 package biz.ohrae.challenge_screen.ui.detail
 
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
@@ -17,7 +18,7 @@ import com.skydoves.landscapist.glide.GlideImage
 )
 @Composable
 fun ChallengeDetailAuthCameraResultScreen(
-    imageUri: String? = null,
+    imageUri: Uri? = null,
     clickListener: ChallengeDetailClickListener? = null,
 ) {
     Column(
@@ -32,7 +33,7 @@ fun ChallengeDetailAuthCameraResultScreen(
             verticalArrangement = Arrangement.Center
         ) {
            GlideImage(
-               imageModel = imageUri,
+               imageModel = imageUri.toString(),
                failure = {
 
                },

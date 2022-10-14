@@ -1,13 +1,14 @@
 package biz.ohrae.challenge_screen.ui.detail
 
+import android.net.Uri
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.model.user.User
 import biz.ohrae.challenge_repo.ui.detail.ChallengeDetailRepo
 import biz.ohrae.challenge_repo.ui.main.UserRepo
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
+import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.model.detail.Verification
 import biz.ohrae.challenge_screen.model.detail.VerificationState
 import biz.ohrae.challenge_screen.ui.BaseViewModel
@@ -28,16 +29,20 @@ class ChallengeDetailViewModel @Inject constructor(
     private val gson: Gson
 ) : BaseViewModel(prefs) {
     private val _challengeData = MutableLiveData<ChallengeData>()
+    private val _challengeVerifiedList = MutableLiveData<List<ChallengeData>>()
     private val _challengeVerificationState = MutableLiveData<VerificationState>()
     private val _challengers = MutableLiveData<List<User>>()
     private val _isJoined = MutableLiveData<Boolean>()
-    private val _challengeAuthImageUri = MutableLiveData<String?>(null)
+    private val _challengeAuthImageUri = MutableLiveData<Uri?>(null)
+    private val _verified = MutableLiveData<Boolean?>(false)
 
     val challengeData get() = _challengeData
     val challengers get() = _challengers
     val isJoined get() = _isJoined
     val challengeAuthImageUri get() = _challengeAuthImageUri
     val challengeVerificationState get() = _challengeVerificationState
+    val challengeVerifiedList get() = _challengeVerifiedList
+    val verified get() = _verified
 
     fun getChallenge(id: String) {
         viewModelScope.launch {
@@ -105,22 +110,38 @@ class ChallengeDetailViewModel @Inject constructor(
         }
     }
 
-    fun verifyChallenge(content: String) {
+    fun getVerifyList(id: String) {
         viewModelScope.launch {
-            val id = challengeData.value?.id.toString()
-            val type = ""
-
-            repo.verifyChallenge(id, type, content).flowOn(Dispatchers.IO).collect {
-                Timber.e("verifyChallenge result : ${gson.toJson(it.data)}")
+            repo.getVerifyList(id, "desc", "0").flowOn(Dispatchers.IO).collect {
+                Timber.e("getVerifyList result : ${gson.toJson(it.data)}")
                 if (it.data != null) {
-                    val challengers = it.data as List<User>
-                    _challengers.value = challengers
+                    val challengeVerifiedList = it.data as List<ChallengeData>
+                    _challengeVerifiedList.value = challengeVerifiedList
                 }
             }
         }
     }
 
-    fun setChallengeAuthImage(uri: String) {
+    fun verifyChallenge(content: String, filePath: String) {
+        viewModelScope.launch {
+            challengeData.value?.let {
+                val id = challengeData.value?.id.toString()
+                val type = Utils.getAuthTypeEnglish(challengeData = it)
+
+                repo.verifyChallenge(id, type, content, filePath).flowOn(Dispatchers.IO).collect { result ->
+                    Timber.e("_verified result : ${gson.toJson(result.data)}")
+                    if (result.data != null) {
+                        _verified.value = result.data as Boolean
+                    } else {
+                        _verified.value = null
+                    }
+                    Timber.e("verify challenge Type : $type")
+                }
+            }
+        }
+    }
+
+    fun setChallengeAuthImage(uri: Uri) {
         _challengeAuthImageUri.value = uri
     }
 }

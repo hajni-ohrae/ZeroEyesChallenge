@@ -57,7 +57,6 @@
             android:name="biz.ohrae.challenge_screen.ui.participation.ParticipationActivity"
             android:exported="true">
         </activity>
-<!--        zz-->
         <activity
             android:name="biz.ohrae.challenge_screen.ui.mychallenge.MyChallengeActivity"
             android:exported="true">
@@ -66,15 +65,9 @@
             android:name="biz.ohrae.challenge_screen.ui.payment.ChallengePaymentActivity"
             android:exported="true">
         </activity>
-
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="biz.ohrae.challenge.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/files" />
-        </provider>
+        <activity
+            android:name="biz.ohrae.challenge_screen.ui.challengers.ChallengersActivity"
+            android:exported="true">
+        </activity>
     </application>
 </manifest>

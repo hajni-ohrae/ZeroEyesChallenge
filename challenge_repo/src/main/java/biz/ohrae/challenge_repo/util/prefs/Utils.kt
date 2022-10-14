@@ -553,6 +553,7 @@ object Utils {
             }
         }
     }
+
     fun userChallengeTextColor(type:String): Color {
         return when (type) {
             "ongoing" -> Color(0xff4985f8)
@@ -568,8 +569,8 @@ object Utils {
         }
     }
 
-     fun getAuthType(challengeData: ChallengeData): String {
-        return if (challengeData!!.is_verification_photo == 1) {
+    fun getAuthType(challengeData: ChallengeData): String {
+        return if (challengeData.is_verification_photo == 1) {
             "사진인증"
         } else if (challengeData.is_verification_time == 1) {
             "시간인증"
@@ -578,11 +579,21 @@ object Utils {
         }
     }
 
-     fun getOpenType(challengeData: ChallengeData): String {
+    fun getOpenType(challengeData: ChallengeData): String {
         return if (challengeData.is_feed_open == 1) {
             "무료"
         } else {
             "유료"
+        }
+    }
+
+    fun getAuthTypeEnglish(challengeData: ChallengeData): String {
+        return if (challengeData.is_verification_photo == 1) {
+            "photo"
+        } else if (challengeData.is_verification_time == 1) {
+            "staying_time"
+        } else {
+            "checkin"
         }
     }
 }

@@ -1,6 +1,7 @@
 package biz.ohrae.challenge_repo.model.user
 
 import biz.ohrae.challenge_repo.model.detail.ImageFile
+import biz.ohrae.challenge_repo.model.detail.InChallenge
 import biz.ohrae.challenge_repo.model.detail.Summary
 
 data class User(
@@ -22,11 +23,12 @@ data class User(
     val created_date: String,
     val updated_date: String,
     val inService:List<InService>? = null,
-    val imageFile: ImageFile,
+    val imageFile: ImageFile?,
     val summary: Summary,
     val access_token: String,
     val phone_number: String,
     val refresh_token: String,
+    val inChallenge: List<InChallenge>?,
 )
 
 data class InService(

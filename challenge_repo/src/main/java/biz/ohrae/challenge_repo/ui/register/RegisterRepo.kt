@@ -71,9 +71,7 @@ class RegisterRepo @Inject constructor(
     }
 
     suspend fun uploadImage(imageFilePath: String): Flow<FlowResult> {
-        Timber.e("imageFilePath : $imageFilePath")
         val file = File(imageFilePath)
-        Timber.e("file exists : $${file.exists()}, path : ${file.path}")
         val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
         val multipartBody = MultipartBody.Part.createFormData("image", file.path, requestFile)
         val accessToken = prefs.getUserData()?.access_token.toString()
