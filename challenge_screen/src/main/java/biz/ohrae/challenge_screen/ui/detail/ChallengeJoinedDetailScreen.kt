@@ -4,6 +4,9 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.*
 import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.*
@@ -39,6 +42,7 @@ import biz.ohrae.challenge.util.challengeVerificationPeriodMap
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.model.user.User
 import biz.ohrae.challenge_repo.model.verify.VerifyData
+import biz.ohrae.challenge_repo.model.verify.VerifyListState
 import biz.ohrae.challenge_screen.model.detail.Verification
 import biz.ohrae.challenge_screen.model.detail.VerificationState
 import com.google.accompanist.flowlayout.FlowCrossAxisAlignment
@@ -61,6 +65,7 @@ fun ChallengeJoinedDetailScreen(
     challengers: List<User>? = null,
     verificationState: VerificationState? = null,
     challengeVerifiedList: List<VerifyData>? = null,
+    verifyListState: VerifyListState? = null,
     clickListener: ChallengeDetailClickListener? = null
 ) {
     if (challengeData == null) {
@@ -178,6 +183,7 @@ fun ChallengeJoinedDetailScreen(
                         } else {
                             ChallengeAuthPage(
                                 challengeVerifiedList = challengeVerifiedList,
+                                verifyListState = verifyListState,
                                 clickListener = clickListener
                             )
                         }
@@ -461,7 +467,12 @@ private fun Challengers(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             val annotatedString = buildAnnotatedString {
-                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold, color = Color(0xff4985f8))) {
+                withStyle(
+                    style = SpanStyle(
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xff4985f8)
+                    )
+                ) {
                     append("${challengers.size}명 ")
                 }
                 append("참여")
@@ -512,6 +523,7 @@ private fun Challengers(
 @Composable
 private fun ChallengeAuthPage(
     challengeVerifiedList: List<VerifyData>? = null,
+    verifyListState: VerifyListState? = null,
     clickListener: ChallengeDetailClickListener? = null
 ) {
     if (challengeVerifiedList.isNullOrEmpty()) {
@@ -537,6 +549,43 @@ private fun ChallengeAuthPage(
                     imageUrl = item.imageFile.path.toString(),
                     username = item.user.nickname.toString(),
                 )
+            }
+        }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(200.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        if (verifyListState?.verifyList!!.isEmpty()) {
+            Text(
+                text = "인증 내역이 없습니다",
+                color = TextBlack,
+                fontSize = dpToSp(dp = 14.dp),
+                style = myTypography.bold
+            )
+        } else {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(DefaultWhite)
+            ) {
+                LazyVerticalGrid(
+                    modifier = Modifier.padding(24.dp, 0.dp),
+                    columns = GridCells.Fixed(2),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(verifyListState.verifyList!!) { item ->
+                        CertificationImageItem(
+                            item.imageFile.path,
+                            item.user.name,
+                            item.cnt,
+                            item.created_date
+                        )
+                    }
+                }
             }
         }
     }

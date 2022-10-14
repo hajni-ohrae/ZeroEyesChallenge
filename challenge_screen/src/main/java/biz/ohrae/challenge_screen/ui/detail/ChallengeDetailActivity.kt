@@ -134,10 +134,12 @@ class ChallengeDetailActivity : BaseActivity() {
                 val challengers by viewModel.challengers.observeAsState()
                 val challengeVerificationState by viewModel.challengeVerificationState.observeAsState()
                 val challengeVerifiedList by viewModel.challengeVerifiedList.observeAsState()
+                val verifyListState by viewModel.verifyListState.observeAsState()
 
                 ChallengeJoinedDetailScreen(
                     challengeData = challengeData,
                     challengers = challengers,
+                    verifyListState = verifyListState,
                     verificationState = challengeVerificationState,
                     challengeVerifiedList = challengeVerifiedList,
                     clickListener = detailClickListener
@@ -172,6 +174,7 @@ class ChallengeDetailActivity : BaseActivity() {
         viewModel.getChallenge(challengeId.toString())
         viewModel.getUserByChallenge(challengeId.toString(), 1, 11)
         viewModel.getVerifyList(challengeId.toString())
+        viewModel.getVerifyList(challengeId.toString(),"acs","0")
     }
 
     override fun onBack() {

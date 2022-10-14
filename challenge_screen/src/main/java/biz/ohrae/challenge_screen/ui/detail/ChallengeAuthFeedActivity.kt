@@ -22,9 +22,7 @@ import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.dialog.LoadingDialog
 import biz.ohrae.challenge_screen.ui.mychallenge.PolicyScreen
 import biz.ohrae.challenge_screen.ui.register.ChallengeCameraScreen
-import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class ChallengeJoinedDetailActivity : BaseActivity() {
@@ -78,7 +76,7 @@ class ChallengeJoinedDetailActivity : BaseActivity() {
                     .fillMaxWidth()
                     .weight(1f)
             ) {
-                Navigation()
+                ChallengeAuthFeedScreen()
             }
         }
     }
@@ -86,50 +84,6 @@ class ChallengeJoinedDetailActivity : BaseActivity() {
     @Composable
     private fun Navigation() {
         navController = rememberNavController()
-        val isJoined by viewModel.isJoined.observeAsState()
-        val challengeData by viewModel.challengeData.observeAsState()
-
-        if (isJoined == null || challengeData == null) {
-            return
-        }
-
-        NavHost(
-            navController = navController,
-            startDestination = if (isJoined == true) ChallengeDetailNavScreen.JoinedDetail.route else ChallengeDetailNavScreen.JoinedDetail.route
-        ) {
-            composable(ChallengeDetailNavScreen.JoinedDetail.route) {
-                val challengers by viewModel.challengers.observeAsState()
-                val challengeVerifiedList by viewModel.challengeVerifiedList.observeAsState()
-                Timber.e("challengeVerifiedList : ${Gson().toJson(challengeVerifiedList)}")
-                ChallengeJoinedDetailScreen(
-                    challengeData = challengeData,
-                    challengers = challengers,
-                    challengeVerifiedList = challengeVerifiedList,
-                    clickListener = detailClickListener
-                )
-            }
-            composable(ChallengeDetailNavScreen.AuthCameraPreview.route) {
-                ChallengeCameraScreen(
-                    capturedCallback = capturedCallback
-                )
-            }
-            composable(ChallengeDetailNavScreen.AuthCameraResult.route) {
-                val challengeAuthImageUri by viewModel.challengeAuthImageUri.observeAsState()
-
-                ChallengeDetailAuthCameraResultScreen(
-                    imageUri = challengeAuthImageUri,
-                    clickListener = detailClickListener
-                )
-            }
-            composable(ChallengeDetailNavScreen.AuthWrite.route) {
-                ChallengeDetailAuthWriteScreen(
-                    clickListener = detailClickListener
-                )
-            }
-            composable(ChallengeDetailNavScreen.RedCardInfo.route) {
-                PolicyScreen(screen = "")
-            }
-        }
     }
 
     private fun init() {
@@ -151,12 +105,4 @@ class ChallengeJoinedDetailActivity : BaseActivity() {
     override fun observeViewModels() {
 
     }
-}
-
-sealed class ChallengeJoinedDetailNavScreen(val route: String) {
-    object JoinedDetail : ChallengeJoinedDetailNavScreen("JoinedDetail")
-    object RedCardInfo : ChallengeJoinedDetailNavScreen("RedCardInfo")
-    object AuthCameraPreview : ChallengeJoinedDetailNavScreen("AuthCameraPreview")
-    object AuthCameraResult : ChallengeJoinedDetailNavScreen("AuthCameraResult")
-    object AuthWrite : ChallengeJoinedDetailNavScreen("AuthWrite")
 }
