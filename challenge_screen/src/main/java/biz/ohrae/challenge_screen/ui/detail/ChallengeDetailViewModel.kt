@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.model.user.User
+import biz.ohrae.challenge_repo.model.verify.VerifyData
 import biz.ohrae.challenge_repo.ui.detail.ChallengeDetailRepo
 import biz.ohrae.challenge_repo.ui.main.UserRepo
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
@@ -29,7 +30,7 @@ class ChallengeDetailViewModel @Inject constructor(
     private val gson: Gson
 ) : BaseViewModel(prefs) {
     private val _challengeData = MutableLiveData<ChallengeData>()
-    private val _challengeVerifiedList = MutableLiveData<List<ChallengeData>>()
+    private val _challengeVerifiedList = MutableLiveData<List<VerifyData>>()
     private val _challengeVerificationState = MutableLiveData<VerificationState>()
     private val _challengers = MutableLiveData<List<User>>()
     private val _isJoined = MutableLiveData<Boolean>()
@@ -54,7 +55,7 @@ class ChallengeDetailViewModel @Inject constructor(
                     val isJoined = !challengeData.inChallenge.isNullOrEmpty()
                     _isJoined.value = isJoined
                     if (isJoined) {
-                        val verifications = challengeData.inChallenge?.get(0)?.verifications ?: mutableListOf<Int>()
+                        val verifications = challengeData.inChallenge?.get(0)?.verifications
                         val totalVerificationCount = challengeData.total_verification_cnt
                         val total = (ceil(totalVerificationCount.toDouble() / 10f) * 10).toInt()
 
@@ -63,17 +64,19 @@ class ChallengeDetailViewModel @Inject constructor(
                         val today = challengeData.today ?: 0
                         val remainCount = challengeData.total_verification_cnt - today
                         val verificationList = mutableListOf<Verification>()
-                        Timber.e("total : $total")
+                        Timber.e("total : $total, today : $today")
+                        Timber.e("verifications : ${Gson().toJson(verifications)}")
 
                         for (i in 0 until total) {
                             val verification = Verification(i + 1, Verification.NORMAL)
                             if (i < today) {
-                                if (verifications.isEmpty()) {
+                                if (verifications.isNullOrEmpty()) {
                                     failCount++
                                     verification.state = Verification.FAIL
                                 } else {
-                                    verifications.forEach { day ->
-                                        if (i == day) {
+                                    verifications.forEach { item ->
+                                        Timber.e("verification : $i to ${item.day}")
+                                        if (i == item.day) {
                                             successCount++
                                             verification.state = Verification.SUCCESS
                                         } else {
@@ -115,8 +118,9 @@ class ChallengeDetailViewModel @Inject constructor(
             repo.getVerifyList(id, "desc", "0").flowOn(Dispatchers.IO).collect {
                 Timber.e("getVerifyList result : ${gson.toJson(it.data)}")
                 if (it.data != null) {
-                    val challengeVerifiedList = it.data as List<ChallengeData>
+                    val challengeVerifiedList = it.data as List<VerifyData>
                     _challengeVerifiedList.value = challengeVerifiedList
+                    _challengeVerifiedList.postValue(challengeVerifiedList)
                 }
             }
         }

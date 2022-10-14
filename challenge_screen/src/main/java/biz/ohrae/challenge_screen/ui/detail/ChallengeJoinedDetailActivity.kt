@@ -22,7 +22,9 @@ import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.dialog.LoadingDialog
 import biz.ohrae.challenge_screen.ui.mychallenge.PolicyScreen
 import biz.ohrae.challenge_screen.ui.register.ChallengeCameraScreen
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class ChallengeJoinedDetailActivity : BaseActivity() {
@@ -97,9 +99,12 @@ class ChallengeJoinedDetailActivity : BaseActivity() {
         ) {
             composable(ChallengeDetailNavScreen.JoinedDetail.route) {
                 val challengers by viewModel.challengers.observeAsState()
+                val challengeVerifiedList by viewModel.challengeVerifiedList.observeAsState()
+                Timber.e("challengeVerifiedList : ${Gson().toJson(challengeVerifiedList)}")
                 ChallengeJoinedDetailScreen(
                     challengeData = challengeData,
                     challengers = challengers,
+                    challengeVerifiedList = challengeVerifiedList,
                     clickListener = detailClickListener
                 )
             }

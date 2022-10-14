@@ -1,6 +1,7 @@
 package biz.ohrae.challenge_repo.model.detail
 
 import biz.ohrae.challenge_repo.model.user.User
+import biz.ohrae.challenge_repo.model.verify.ChallengeVerification
 
 data class ChallengeData(
     val id: String,
@@ -86,7 +87,7 @@ data class InChallenge(
     val today_verified_cnt: Int,
     val verified_cnt: Int,
     val ranking: Int?,
-    var verifications: List<Int>?
+    var verifications: List<ChallengeVerification>?
 )
 
 data class ImageFile(

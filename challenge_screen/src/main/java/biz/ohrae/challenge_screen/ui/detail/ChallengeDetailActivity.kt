@@ -133,11 +133,13 @@ class ChallengeDetailActivity : BaseActivity() {
             composable(ChallengeDetailNavScreen.JoinedDetail.route) {
                 val challengers by viewModel.challengers.observeAsState()
                 val challengeVerificationState by viewModel.challengeVerificationState.observeAsState()
+                val challengeVerifiedList by viewModel.challengeVerifiedList.observeAsState()
 
                 ChallengeJoinedDetailScreen(
                     challengeData = challengeData,
                     challengers = challengers,
                     verificationState = challengeVerificationState,
+                    challengeVerifiedList = challengeVerifiedList,
                     clickListener = detailClickListener
                 )
             }

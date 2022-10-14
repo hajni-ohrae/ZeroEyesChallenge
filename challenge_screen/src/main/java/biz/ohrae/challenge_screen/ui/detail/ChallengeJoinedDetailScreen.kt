@@ -1,5 +1,6 @@
 package biz.ohrae.challenge_screen.ui.detail
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.ui.components.button.FlatBookMarkButton
 import biz.ohrae.challenge.ui.components.button.FlatBorderButton
+import biz.ohrae.challenge.ui.components.card.CertificationImageItem
 import biz.ohrae.challenge.ui.components.card.RedCardInfo
 import biz.ohrae.challenge.ui.components.detail.ChallengeDetailFreeDescription
 import biz.ohrae.challenge.ui.components.detail.ChallengeDetailRefundDescription
@@ -36,6 +38,7 @@ import biz.ohrae.challenge.util.challengeVerificationDayMap
 import biz.ohrae.challenge.util.challengeVerificationPeriodMap
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.model.user.User
+import biz.ohrae.challenge_repo.model.verify.VerifyData
 import biz.ohrae.challenge_screen.model.detail.Verification
 import biz.ohrae.challenge_screen.model.detail.VerificationState
 import com.google.accompanist.flowlayout.FlowCrossAxisAlignment
@@ -46,7 +49,7 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalPagerApi::class, ExperimentalFoundationApi::class)
 @Preview(
     showBackground = true,
     widthDp = 360,
@@ -57,6 +60,7 @@ fun ChallengeJoinedDetailScreen(
     challengeData: ChallengeData? = ChallengeData.mock(),
     challengers: List<User>? = null,
     verificationState: VerificationState? = null,
+    challengeVerifiedList: List<VerifyData>? = null,
     clickListener: ChallengeDetailClickListener? = null
 ) {
     if (challengeData == null) {
@@ -104,12 +108,12 @@ fun ChallengeJoinedDetailScreen(
                             startDay = challengeData.start_date.toString(),
                             endDay = challengeData.end_date.toString()
                         )
+                        Spacer(modifier = Modifier.height(24.dp))
                     }
                 }
             }
-            item {
+            stickyHeader {
                 ColumnForLazy {
-                    Spacer(modifier = Modifier.height(24.dp))
                     TabRow(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -159,7 +163,7 @@ fun ChallengeJoinedDetailScreen(
                     }
                 }
             }
-            item {
+            items(1) {
                 ColumnForLazy {
                     HorizontalPager(
                         count = 2, state = pagerState
@@ -173,7 +177,7 @@ fun ChallengeJoinedDetailScreen(
                             )
                         } else {
                             ChallengeAuthPage(
-                                challengeData = challengeData,
+                                challengeVerifiedList = challengeVerifiedList,
                                 clickListener = clickListener
                             )
                         }
@@ -492,7 +496,9 @@ private fun Challengers(
         if (challengers.size > 0) {
             Spacer(modifier = Modifier.height(17.dp))
             FlatBorderButton(
-                modifier = Modifier.fillMaxWidth().aspectRatio(7.1f),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(7.1f),
                 text = "전체보기",
                 onClick = {
                     clickListener?.onClickShowAllChallengers()
@@ -505,21 +511,33 @@ private fun Challengers(
 
 @Composable
 private fun ChallengeAuthPage(
-    challengeData: ChallengeData,
+    challengeVerifiedList: List<VerifyData>? = null,
     clickListener: ChallengeDetailClickListener? = null
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(200.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(
-            text = "인증 내역이 없습니다",
-            color = TextBlack,
-            fontSize = dpToSp(dp = 14.dp),
-            style = myTypography.bold
-        )
+    if (challengeVerifiedList.isNullOrEmpty()) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(200.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = "인증 내역이 없습니다",
+                color = TextBlack,
+                fontSize = dpToSp(dp = 14.dp),
+                style = myTypography.bold
+            )
+        }
+    } else {
+        FlowRow(modifier = Modifier.fillMaxWidth()) {
+            repeat(challengeVerifiedList.size) { index ->
+                val item = challengeVerifiedList[index]
+                CertificationImageItem(
+                    imageUrl = item.imageFile.path.toString(),
+                    username = item.user.nickname.toString(),
+                )
+            }
+        }
     }
 }

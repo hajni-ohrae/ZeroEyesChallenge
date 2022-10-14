@@ -96,6 +96,10 @@ class ChallengersActivity: BaseActivity() {
         viewModel.getUserByChallenge(challengeId.toString())
     }
 
+    override fun onBack() {
+        finish()
+    }
+
     override fun initClickListeners() {
 
     }

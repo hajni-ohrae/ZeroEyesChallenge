@@ -172,7 +172,7 @@ interface ApiService {
         @Query("period") period: String? = "",
         @Query("is_like") isLike: String? = "",
         @Query("is_adult_only") isAdultOnly: String? = "",
-    ): NetworkResponse<Result, Error>
+    ): NetworkResponse<Result2, Error>
 
     @GET(Routes.GET_ALL_REPORT)
     suspend fun getAllReport(@Body body: JsonObject?): NetworkResponse<Result, Error>
