@@ -551,42 +551,43 @@ private fun ChallengeAuthPage(
                 )
             }
         }
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(200.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        if (verifyListState?.verifyList!!.isEmpty()) {
-            Text(
-                text = "인증 내역이 없습니다",
-                color = TextBlack,
-                fontSize = dpToSp(dp = 14.dp),
-                style = myTypography.bold
-            )
-        } else {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(DefaultWhite)
-            ) {
-                LazyVerticalGrid(
-                    modifier = Modifier.padding(24.dp, 0.dp),
-                    columns = GridCells.Fixed(2),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    items(verifyListState.verifyList!!) { item ->
-                        CertificationImageItem(
-                            item.imageFile.path,
-                            item.user.name,
-                            item.cnt,
-                            item.created_date
-                        )
-                    }
-                }
-            }
-        }
     }
+//    Column(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .heightIn(200.dp),
+//        horizontalAlignment = Alignment.CenterHorizontally,
+//        verticalArrangement = Arrangement.Center
+//    ) {
+//        if (verifyListState?.verifyList!!.isEmpty()) {
+//            Text(
+//                text = "인증 내역이 없습니다",
+//                color = TextBlack,
+//                fontSize = dpToSp(dp = 14.dp),
+//                style = myTypography.bold
+//            )
+//        } else {
+//            Column(
+//                modifier = Modifier
+//                    .fillMaxSize()
+//                    .background(DefaultWhite)
+//            ) {
+//                LazyVerticalGrid(
+//                    modifier = Modifier.padding(24.dp, 0.dp),
+//                    columns = GridCells.Fixed(2),
+//                    verticalArrangement = Arrangement.spacedBy(8.dp),
+//                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+//                ) {
+//                    items(verifyListState.verifyList!!) { item ->
+//                        CertificationImageItem(
+//                            item.imageFile.path,
+//                            item.user.name,
+//                            item.cnt,
+//                            item.created_date
+//                        )
+//                    }
+//                }
+//            }
+//        }
+//    }
 }
