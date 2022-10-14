@@ -5,16 +5,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.model.user.User
+import biz.ohrae.challenge_repo.model.verify.VerifyData
+import biz.ohrae.challenge_repo.model.verify.VerifyListState
 import biz.ohrae.challenge_repo.ui.detail.ChallengeDetailRepo
 import biz.ohrae.challenge_repo.ui.main.UserRepo
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.model.detail.Verification
 import biz.ohrae.challenge_screen.model.detail.VerificationState
+import biz.ohrae.challenge_screen.model.user.UserChallengeListState
 import biz.ohrae.challenge_screen.ui.BaseViewModel
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -30,6 +34,7 @@ class ChallengeDetailViewModel @Inject constructor(
 ) : BaseViewModel(prefs) {
     private val _challengeData = MutableLiveData<ChallengeData>()
     private val _challengeVerifiedList = MutableLiveData<List<ChallengeData>>()
+    private val _verifyListState = MutableLiveData<VerifyListState>()
     private val _challengeVerificationState = MutableLiveData<VerificationState>()
     private val _challengers = MutableLiveData<List<User>>()
     private val _isJoined = MutableLiveData<Boolean>()
@@ -37,6 +42,7 @@ class ChallengeDetailViewModel @Inject constructor(
     private val _verified = MutableLiveData<Boolean?>(false)
 
     val challengeData get() = _challengeData
+    val verifyListState get() = _verifyListState
     val challengers get() = _challengers
     val isJoined get() = _isJoined
     val challengeAuthImageUri get() = _challengeAuthImageUri
@@ -54,7 +60,8 @@ class ChallengeDetailViewModel @Inject constructor(
                     val isJoined = !challengeData.inChallenge.isNullOrEmpty()
                     _isJoined.value = isJoined
                     if (isJoined) {
-                        val verifications = challengeData.inChallenge?.get(0)?.verifications ?: mutableListOf<Int>()
+                        val verifications =
+                            challengeData.inChallenge?.get(0)?.verifications ?: mutableListOf<Int>()
                         val totalVerificationCount = challengeData.total_verification_cnt
                         val total = (ceil(totalVerificationCount.toDouble() / 10f) * 10).toInt()
 
@@ -82,13 +89,18 @@ class ChallengeDetailViewModel @Inject constructor(
                                         }
                                     }
                                 }
-                            } else if (i >= challengeData.total_verification_cnt){
+                            } else if (i >= challengeData.total_verification_cnt) {
                                 verification.state = Verification.HIDDEN
                             }
                             verificationList.add(verification)
                         }
                         Timber.e("verificationList : ${Gson().toJson(verificationList)}")
-                        val state = VerificationState(successCount, remainCount, failCount, verificationList)
+                        val state = VerificationState(
+                            successCount,
+                            remainCount,
+                            failCount,
+                            verificationList
+                        )
                         _challengeVerificationState.value = state
                     }
                 } else {
@@ -143,5 +155,20 @@ class ChallengeDetailViewModel @Inject constructor(
 
     fun setChallengeAuthImage(uri: Uri) {
         _challengeAuthImageUri.value = uri
+    }
+
+    fun getVerifyList(
+        challengeId: String, order: String, isMine: String
+    ) {
+        viewModelScope.launch {
+            repo.getVerifyList(challengeId,order,isMine).flowOn(Dispatchers.IO).collect(){
+                if (it.data != null) {
+                    val verifyListState =  it.data as List<VerifyData>
+                    val state = VerifyListState(verifyListState)
+
+                    _verifyListState.value = state
+                }
+            }
+        }
     }
 }

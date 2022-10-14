@@ -5,7 +5,7 @@ import biz.ohrae.challenge_repo.model.user.User
 
 
 data class VerifyListState(
-    val verifyListState:List<VerifyData>? = null
+    val verifyList:List<VerifyData>? = null
 ) {
     companion object {
 

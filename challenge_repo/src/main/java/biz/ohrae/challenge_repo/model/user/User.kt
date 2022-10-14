@@ -28,6 +28,7 @@ data class User(
     val access_token: String,
     val phone_number: String,
     val refresh_token: String,
+    val thumbnail_path:String,
     val inChallenge: List<InChallenge>?,
 )
 

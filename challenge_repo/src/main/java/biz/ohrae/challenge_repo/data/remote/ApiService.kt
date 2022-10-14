@@ -166,13 +166,7 @@ interface ApiService {
         @Body body: JsonObject?,
         @Header("page") page: Int,
         @Header("per_page") perPage: Int,
-        @Query("payment_type") paymentType: String = "",
-        @Query("verification_period_type") verificationPeriodType: String = "",
-        @Query("per_week") perWeek: String? = "",
-        @Query("period") period: String? = "",
-        @Query("is_like") isLike: String? = "",
-        @Query("is_adult_only") isAdultOnly: String? = "",
-    ): NetworkResponse<Result, Error>
+    ): NetworkResponse<Result2, Error>
 
     @GET(Routes.GET_ALL_REPORT)
     suspend fun getAllReport(@Body body: JsonObject?): NetworkResponse<Result, Error>
