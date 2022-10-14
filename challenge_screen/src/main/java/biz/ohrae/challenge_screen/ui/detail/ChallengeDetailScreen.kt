@@ -81,7 +81,7 @@ fun ChallengeDetailScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(1.51f),
-                imagePath = ""
+                imagePath = challengeData.imageFile?.path.toString()
             )
             Spacer(modifier = Modifier.height(24.dp))
             if (status != null) {

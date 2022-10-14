@@ -3,9 +3,9 @@ package biz.ohrae.challenge_screen.ui.register
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -34,6 +34,7 @@ import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
+import biz.ohrae.challenge_repo.util.FileUtils
 import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.dialog.CalendarDialog
@@ -44,6 +45,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
+import java.io.File
+import java.io.FileNotFoundException
 import java.io.IOException
 
 @AndroidEntryPoint
@@ -63,6 +66,7 @@ class RegisterActivity : BaseActivity() {
 
     private var goal: String = ""
     private var caution: String = ""
+    private var cameraImageUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,20 +95,20 @@ class RegisterActivity : BaseActivity() {
 
             if (result.resultCode == RESULT_OK) {
                 val data = result.data
-                val isCamera = data?.extras?.containsKey("data")
-                Timber.e("isCamera : ${isCamera.toString()}")
-                if (isCamera == true) {
-                    val bitmap = data.extras?.get("data") as Bitmap
+
+                // 사진 결과 받음
+                if (data != null && data.data != null) {
+                    val selectedImageUri = data.data
+                    try {
+                        Timber.e("selectedImageUri : $selectedImageUri")
+                        viewModel.setChallengeImage(selectedImageUri!!)
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                    }
                 } else {
-                    // do your operation from here....
-                    if (data != null && data.data != null) {
-                        val selectedImageUri = data.data
-                        try {
-                            Timber.e("selectedImageUri : $selectedImageUri")
-                            viewModel.setChallengeImage(selectedImageUri!!)
-                        } catch (e: IOException) {
-                            e.printStackTrace()
-                        }
+                    // 카메라로 찍은 사진
+                    if (cameraImageUri != null) {
+                        viewModel.setChallengeImage(cameraImageUri!!)
                     }
                 }
             }
@@ -226,12 +230,19 @@ class RegisterActivity : BaseActivity() {
                 caution = precautions
 
                 if (imgUrl != null) {
-                    val imagePath = uriToFilePath(imgUrl)
+                    val imagePath = if (imgUrl.toString().contains("com.google.android.apps.photos.contentprovider")) {
+                        getPathFromInputStreamUri(this@RegisterActivity, imgUrl)
+                    } else {
+                        uriToFilePath(imgUrl)
+                    }
+
                     Timber.e("image path : $imagePath")
-                    if (imagePath.isNotEmpty()) {
+                    if (!imagePath.isNullOrEmpty()) {
                         baseViewModel.isLoading(true)
                         viewModel.uploadChallengeImage(imagePath)
                     }
+                } else {
+
                 }
             }
 
@@ -335,7 +346,7 @@ class RegisterActivity : BaseActivity() {
                     Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show()
                     baseViewModel.isLoading(false)
                 } else {
-                    viewModel.challengeGoals(goal, caution, it.path)
+                    viewModel.challengeGoals(goal, caution, it.id.toString())
                 }
             } ?: run {
                 baseViewModel.isLoading(false)
@@ -380,6 +391,23 @@ class RegisterActivity : BaseActivity() {
         return path
     }
 
+    fun getPathFromInputStreamUri(context: Context, uri: Uri): String? {
+        var filePath: String? = null
+        uri.authority?.let {
+            try {
+                context.contentResolver.openInputStream(uri).use {
+                    val photoFile: File? = FileUtils.createTemporalFileFrom(it)
+                    filePath = photoFile?.path
+                }
+            } catch (e: FileNotFoundException) {
+                e.printStackTrace()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+        return filePath
+    }
+
     private fun callImageSelector() {
         val galleryIntent = Intent()
         galleryIntent.type = "image/*"
@@ -387,14 +415,16 @@ class RegisterActivity : BaseActivity() {
 
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         val fileName = (System.currentTimeMillis() / 1000).toString() + ".jpg"
-        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, contentValues(fileName))
+        val imageUri = getImageUri(fileName)
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
+        cameraImageUri = imageUri
 
         val chooser = Intent.createChooser(galleryIntent, "이미지 선택")
         chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(cameraIntent))
         albumLauncher.launch(chooser)
     }
 
-    private fun contentValues(fileName: String) : Uri? {
+    private fun getImageUri(fileName: String) : Uri? {
         val values = ContentValues()
         values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpg")
         values.put(MediaStore.Images.Media.DISPLAY_NAME, fileName)

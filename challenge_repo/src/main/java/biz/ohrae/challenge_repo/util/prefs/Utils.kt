@@ -2,7 +2,6 @@ package biz.ohrae.challenge_repo.util.prefs
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Environment
 import android.text.format.DateUtils
 import androidx.compose.ui.graphics.Color
@@ -10,7 +9,6 @@ import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
-import java.io.IOException
 import java.text.DateFormat
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
@@ -586,34 +584,5 @@ object Utils {
         } else {
             "유료"
         }
-    }
-
-    fun getImageUri(): Uri? {
-        var imageUri: Uri? = null
-        val file: File
-        try {
-            val sdf = SimpleDateFormat("yyyyMMddHHmmss")
-            val now = sdf.format(Date())
-            val imagePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-            file = File(imagePath, "${now}.jpg")
-            imageUri = Uri.fromFile(file)
-            Timber.e("imageUri : $imageUri")
-        } catch (e: Exception) {
-        }
-        return imageUri
-    }
-
-    @Throws(IOException::class)
-    fun createImageFile(context: Context): File? {
-        // Create an image file name
-        val imageFileName = System.currentTimeMillis().toString()
-        val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        // 참고: getExternalFilesDir() 또는 getFilesDir()에서 제공한 디렉터리에 저장한 파일은 사용자가 앱을 제거할 때 삭제됩니다.
-        // Save a file: path for use with ACTION_VIEW intents
-        return File.createTempFile(
-            imageFileName,  /* prefix */
-            ".jpg",  /* suffix */
-            storageDir /* directory */
-        )
     }
 }
