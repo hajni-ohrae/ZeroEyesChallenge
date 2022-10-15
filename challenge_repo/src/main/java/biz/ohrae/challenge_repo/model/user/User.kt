@@ -30,7 +30,11 @@ data class User(
     val refresh_token: String,
     val thumbnail_path:String,
     val inChallenge: List<InChallenge>?,
-)
+) {
+    fun getUserName(): String {
+        return nickname ?: name
+    }
+}
 
 data class InService(
     val id:String,

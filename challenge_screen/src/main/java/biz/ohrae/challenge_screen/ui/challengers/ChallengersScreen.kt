@@ -26,7 +26,7 @@ fun ChallengersScreen(
     LazyColumn(modifier = Modifier.fillMaxSize().background(DefaultWhite)) {
         items(challengers) { item ->
             RankItem(
-                userName = item.nickname.toString(),
+                userName = item.getUserName(),
                 rank = item.inChallenge?.get(0)?.ranking.toString()
             )
         }

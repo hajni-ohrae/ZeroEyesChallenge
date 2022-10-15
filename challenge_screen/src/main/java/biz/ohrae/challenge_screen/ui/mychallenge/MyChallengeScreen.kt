@@ -3,7 +3,6 @@ package biz.ohrae.challenge_screen.ui.mychallenge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -15,7 +14,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.ui.components.avatar.circularAvatar
-import biz.ohrae.challenge.ui.components.card.*
+import biz.ohrae.challenge.ui.components.card.ChallengesInParticipationCard
+import biz.ohrae.challenge.ui.components.card.MyChallengeIngoBox
 import biz.ohrae.challenge.ui.components.menu.MenuItem
 import biz.ohrae.challenge.ui.theme.DefaultBlack
 import biz.ohrae.challenge.ui.theme.DefaultWhite
@@ -108,7 +108,7 @@ fun ItemHeader(
                 Spacer(modifier = Modifier.width(16.dp))
                 Column() {
                     Text(
-                        text = user?.name ?: "이름",
+                        text = user?.getUserName() ?: "이름",
                         style = myTypography.w700,
                         fontSize = dpToSp(dp = 16.dp)
                     )

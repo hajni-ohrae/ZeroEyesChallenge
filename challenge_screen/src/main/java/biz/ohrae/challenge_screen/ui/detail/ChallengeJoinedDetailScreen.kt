@@ -491,13 +491,8 @@ private fun Challengers(
         Spacer(modifier = Modifier.height(25.dp))
         challengers.forEachIndexed { index, user ->
             if (index < 10) {
-                val name = if (user.nickname == null) {
-                    user.name
-                } else {
-                    user.nickname
-                }
                 ChallengersItem(
-                    userName = name.toString(),
+                    userName = user.getUserName(),
                     imagePath = user.imageFile?.path.toString()
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -553,7 +548,7 @@ private fun ChallengeAuthPage(
                     CertificationImageItem(
                         modifier = Modifier.fillMaxWidth(0.49f),
                         imageUrl = item.imageFile.thumbnail_path.toString(),
-                        username = item.user.nickname.toString(),
+                        username = item.user.getUserName(),
                         date = Utils.convertDate(item.updated_date),
                         count = item.cnt
                     )

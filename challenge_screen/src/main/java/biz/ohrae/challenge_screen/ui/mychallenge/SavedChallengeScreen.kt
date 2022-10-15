@@ -44,7 +44,7 @@ fun SavedChallengeScreen(
                     ChallengeCardItem(
                         item.id,
                         item.goal.toString(),
-                        item.user?.name,
+                        item.user?.getUserName(),
                         startDay.toString(),
                         item.period.toString(),
                         type.toString(),
