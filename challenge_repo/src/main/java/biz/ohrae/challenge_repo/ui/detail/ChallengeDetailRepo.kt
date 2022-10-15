@@ -81,7 +81,7 @@ class ChallengeDetailRepo @Inject constructor(
             }
             else -> {
                 return flow {
-                    emit(FlowResult(null, "", ""))
+                    emit(FlowResult(null, "", response.errorMessage))
                 }
             }
         }

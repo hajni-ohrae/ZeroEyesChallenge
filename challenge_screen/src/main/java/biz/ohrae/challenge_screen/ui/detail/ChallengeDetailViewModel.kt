@@ -143,11 +143,15 @@ class ChallengeDetailViewModel @Inject constructor(
                 repo.verifyChallenge(id, type, content, filePath).flowOn(Dispatchers.IO).collect { result ->
                     Timber.e("_verified result : ${gson.toJson(result.data)}")
                     if (result.data != null) {
-                        _verified.value = result.data as Boolean
+                        val success = result.data as Boolean
+                        _verified.value = success
+                        if (!success) {
+                            setErrorData(result.errorCode, result.errorMessage)
+                        }
                     } else {
                         _verified.value = null
+                        setErrorData(null, result.errorMessage)
                     }
-                    Timber.e("verify challenge Type : $type")
                 }
             }
         }

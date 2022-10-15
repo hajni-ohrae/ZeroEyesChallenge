@@ -174,7 +174,6 @@ class ChallengeDetailActivity : BaseActivity() {
         viewModel.getChallenge(challengeId.toString())
         viewModel.getUserByChallenge(challengeId.toString(), 1, 11)
         viewModel.getVerifyList(challengeId.toString())
-        viewModel.getVerifyList(challengeId.toString(),"acs","0")
     }
 
     override fun onBack() {
@@ -254,10 +253,8 @@ class ChallengeDetailActivity : BaseActivity() {
 
             override fun onDone(content: String) {
                 viewModel.challengeAuthImageUri.value?.let {
+                    viewModel.isLoading(true)
                     viewModel.verifyChallenge(content, uriToFilePath(it))
-                    navController.navigate(ChallengeDetailNavScreen.JoinedDetail.route) {
-                        popUpTo(0)
-                    }
                 }
             }
         }
@@ -292,6 +289,19 @@ class ChallengeDetailActivity : BaseActivity() {
     override fun observeViewModels() {
         viewModel.challengeData.observe(this) {
             viewModel.isLoading(false)
+        }
+
+        viewModel.verified.observe(this) {
+            viewModel.isLoading(false)
+            if (it == true) {
+                init()
+                navController.navigate(ChallengeDetailNavScreen.JoinedDetail.route) {
+                    popUpTo(0)
+                }
+            } else {
+                val errorData = viewModel.errorData.value
+                showSnackBar(errorData?.code, errorData?.message)
+            }
         }
     }
 
