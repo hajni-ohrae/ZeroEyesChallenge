@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -19,6 +20,7 @@ import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailViewModel
+import biz.ohrae.challenge_screen.ui.dialog.LoadingDialog
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -36,6 +38,12 @@ class ParticipationActivity : BaseActivity() {
 
         setContent {
             ChallengeInTheme {
+                val isLoading by viewModel.isLoading.observeAsState(false)
+                if (isLoading) {
+                    Dialog(onDismissRequest = { /*TODO*/ }) {
+                        LoadingDialog()
+                    }
+                }
                 BuildContent()
             }
         }
@@ -139,6 +147,7 @@ class ParticipationActivity : BaseActivity() {
 //
 //                startActivity(intent)
                 detailViewModel.challengeData.value?.let {
+                    viewModel.isLoading(true)
                     viewModel.registerChallenge(challengeData = it, paidAmount, rewardAmount, depositAmount)
                 }
             }
@@ -166,6 +175,7 @@ class ParticipationActivity : BaseActivity() {
 
     override fun observeViewModels() {
         viewModel.registerResult.observe(this) { result ->
+            viewModel.isLoading(false)
             result.data?.let {
                 setResult(RESULT_OK)
                 finish()
@@ -176,6 +186,7 @@ class ParticipationActivity : BaseActivity() {
         }
 
         viewModel.cancelResult.observe(this) { result ->
+            viewModel.isLoading(false)
             result.data?.let {
                 navController.navigate(ChallengeParticipationNavScreen.ParticipationCancelResult.route)
             } ?: run {
