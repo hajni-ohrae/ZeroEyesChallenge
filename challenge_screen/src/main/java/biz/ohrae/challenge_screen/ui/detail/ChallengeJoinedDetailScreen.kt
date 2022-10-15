@@ -4,9 +4,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.*
 import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.*
@@ -43,9 +40,11 @@ import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.model.user.User
 import biz.ohrae.challenge_repo.model.verify.VerifyData
 import biz.ohrae.challenge_repo.model.verify.VerifyListState
+import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.model.detail.Verification
 import biz.ohrae.challenge_screen.model.detail.VerificationState
 import com.google.accompanist.flowlayout.FlowCrossAxisAlignment
+import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.SizeMode
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -542,52 +541,25 @@ private fun ChallengeAuthPage(
             )
         }
     } else {
-        FlowRow(modifier = Modifier.fillMaxWidth()) {
-            repeat(challengeVerifiedList.size) { index ->
-                val item = challengeVerifiedList[index]
-                CertificationImageItem(
-                    imageUrl = item.imageFile.path.toString(),
-                    username = item.user.nickname.toString(),
-                )
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Spacer(modifier = Modifier.height(33.dp))
+            FlowRow(
+                modifier = Modifier.fillMaxWidth(),
+                crossAxisSpacing = 8.dp,
+                mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween
+            ) {
+                repeat(challengeVerifiedList.size) { index ->
+                    val item = challengeVerifiedList[index]
+                    CertificationImageItem(
+                        modifier = Modifier.fillMaxWidth(0.49f),
+                        imageUrl = item.imageFile.thumbnail_path.toString(),
+                        username = item.user.nickname.toString(),
+                        date = Utils.convertDate(item.updated_date),
+                        count = item.cnt
+                    )
+                }
             }
+            Spacer(modifier = Modifier.height(100.dp))
         }
     }
-//    Column(
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .heightIn(200.dp),
-//        horizontalAlignment = Alignment.CenterHorizontally,
-//        verticalArrangement = Arrangement.Center
-//    ) {
-//        if (verifyListState?.verifyList!!.isEmpty()) {
-//            Text(
-//                text = "인증 내역이 없습니다",
-//                color = TextBlack,
-//                fontSize = dpToSp(dp = 14.dp),
-//                style = myTypography.bold
-//            )
-//        } else {
-//            Column(
-//                modifier = Modifier
-//                    .fillMaxSize()
-//                    .background(DefaultWhite)
-//            ) {
-//                LazyVerticalGrid(
-//                    modifier = Modifier.padding(24.dp, 0.dp),
-//                    columns = GridCells.Fixed(2),
-//                    verticalArrangement = Arrangement.spacedBy(8.dp),
-//                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-//                ) {
-//                    items(verifyListState.verifyList!!) { item ->
-//                        CertificationImageItem(
-//                            item.imageFile.path,
-//                            item.user.name,
-//                            item.cnt,
-//                            item.created_date
-//                        )
-//                    }
-//                }
-//            }
-//        }
-//    }
 }

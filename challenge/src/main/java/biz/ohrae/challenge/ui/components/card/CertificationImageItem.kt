@@ -49,7 +49,12 @@ private fun CertificationImageItemGallery() {
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(list) { item ->
-                CertificationImageItem(item.imageUrl, item.userName, item.count, item.date)
+                CertificationImageItem(
+                    modifier = Modifier.fillMaxWidth(),
+                    item.imageUrl,
+                    item.userName,
+                    item.count,
+                    item.date)
             }
         }
     }
@@ -61,15 +66,14 @@ private fun CertificationImageItemGallery() {
 )
 @Composable
 fun CertificationImageItem(
+    modifier: Modifier = Modifier,
     imageUrl: String = "",
-    username: String = "아이오",
-    count: Int = 1,
-    date: String = "2022.05.09",
+    username: String = "",
+    count: Int = 0,
+    date: String = "",
 ) {
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .aspectRatio(1f),
+        modifier = modifier.aspectRatio(1f),
         shape = RoundedCornerShape(10.dp),
         elevation = 0.dp,
         backgroundColor = Color(0xfff9f9f9)
