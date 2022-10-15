@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -33,6 +34,7 @@ import biz.ohrae.challenge_repo.util.prefs.Utils.getOpenType
 import biz.ohrae.challenge_screen.model.main.FilterState
 import biz.ohrae.challenge_screen.model.main.MainScreenState
 import biz.ohrae.challenge_screen.model.user.UserChallengeListState
+import biz.ohrae.challenge_screen.util.OnBottomReached
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -48,7 +50,8 @@ fun ChallengeMainScreen(
     mainScreenState: MainScreenState? = null,
     clickListener: MainClickListener? = null,
     filterState: FilterState = FilterState.mock(),
-    userChallengeListState: UserChallengeListState? = null
+    userChallengeListState: UserChallengeListState? = null,
+    onBottomReached: () -> Unit = {}
 ) {
     Spacer(modifier = Modifier.height(16.dp))
     Column(
@@ -61,44 +64,13 @@ fun ChallengeMainScreen(
                 .fillMaxSize()
                 .fillMaxWidth()
         ) {
-            LazyColumn(
-                modifier = Modifier
-                    .padding(24.dp, 0.dp)
-                    .fillMaxWidth()
-                    .fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                item {
-                    ItemHeader(
-                        mainScreenState = mainScreenState,
-                        clickListener = clickListener,
-                        filterState = filterState,
-                        userChallengeListState = userChallengeListState
-                    )
-                }
-                Timber.e("list size ${mainScreenState?.challengeList!!.size}")
-                items(mainScreenState?.challengeList!!, key = { item -> item.id }) { item ->
-                    val startDay = Utils.getRemainTimeDays(item.start_date.toString())
-                    val type = challengeVerificationPeriodMap[item.verification_period_type]
-                    ChallengeCardItem(
-                        item.id,
-                        item.goal.toString(),
-                        item.user?.getUserName(),
-                        startDay.toString(),
-                        item.period.toString(),
-                        type.toString(),
-                        item.summary?.total_user_cnt,
-                        getAuthType(item),
-                        getOpenType(item),
-                        item.is_adult_only,
-                        onClick = {
-                            Timber.e("chall id : ${item.id}")
-                            clickListener?.onClickChallengeItem(it)
-                        },
-                    )
-                }
-            }
-
+            ChallengeList(
+                mainScreenState = mainScreenState,
+                clickListener = clickListener,
+                filterState = filterState,
+                userChallengeListState = userChallengeListState,
+                onBottomReached = onBottomReached
+            )
             IconButton(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
@@ -117,7 +89,59 @@ fun ChallengeMainScreen(
                 }
             }
         }
+    }
+}
 
+@Composable
+private fun ChallengeList(
+    mainScreenState: MainScreenState? = null,
+    clickListener: MainClickListener? = null,
+    filterState: FilterState = FilterState.mock(),
+    userChallengeListState: UserChallengeListState? = null,
+    onBottomReached: () -> Unit = {}
+) {
+    val listState = rememberLazyListState()
+    LazyColumn(
+        modifier = Modifier
+            .padding(24.dp, 0.dp)
+            .fillMaxWidth()
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        state = listState
+    ) {
+        item {
+            ItemHeader(
+                mainScreenState = mainScreenState,
+                clickListener = clickListener,
+                filterState = filterState,
+                userChallengeListState = userChallengeListState
+            )
+        }
+        Timber.e("list size ${mainScreenState?.challengeList!!.size}")
+        items(mainScreenState?.challengeList!!, key = { item -> item.id }) { item ->
+            val startDay = Utils.getRemainTimeDays(item.start_date.toString())
+            val type = challengeVerificationPeriodMap[item.verification_period_type]
+            ChallengeCardItem(
+                item.id,
+                item.goal.toString(),
+                item.user?.getUserName(),
+                startDay.toString(),
+                item.period.toString(),
+                type.toString(),
+                item.summary?.total_user_cnt,
+                getAuthType(item),
+                getOpenType(item),
+                item.is_adult_only,
+                onClick = {
+                    Timber.e("chall id : ${item.id}")
+                    clickListener?.onClickChallengeItem(it)
+                },
+            )
+        }
+    }
+    listState.OnBottomReached {
+        Timber.e("bottom reached!!")
+        onBottomReached()
     }
 }
 

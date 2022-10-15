@@ -1,7 +1,6 @@
 package biz.ohrae.challenge_screen.ui.main
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.model.user.User
@@ -15,9 +14,9 @@ import biz.ohrae.challenge_screen.ui.BaseViewModel
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -73,12 +72,12 @@ class ChallengeMainViewModel @Inject constructor(
     }
 
     fun getChallengeList(
-        paymentType: String,
-        verificationPeriodType: String,
-        per_week: String,
-        period: String,
-        is_like:String,
-        is_adult_only: String,
+        paymentType: String = "",
+        verificationPeriodType: String = "",
+        per_week: String = "",
+        period: String = "",
+        is_like:String = "",
+        is_adult_only: String = "",
     ) {
         viewModelScope.launch {
             val page = listPage.value ?: 1
@@ -94,10 +93,23 @@ class ChallengeMainViewModel @Inject constructor(
             )
             response.flowOn(Dispatchers.IO).collect {
                 it.data?.let { data ->
+                    val pager = it.pager
+
+                    if (it.pager?.page == page) {
+                        _listPage.value = page + 1
+                        Timber.e("current page : ${_listPage.value}")
+                    }
+
+                    Timber.e("pager : ${gson.toJson(pager)}")
                     val topBannerList = MainScreenState.mock().topBannerList
-                    val challengeList = data as List<ChallengeData>
-                    val state = MainScreenState(challengeList, topBannerList)
-                    _mainScreenState.value = state
+                    val challengeList = data as MutableList<ChallengeData>
+                    val state = mainScreenState.value?.copy()
+                    state?.let {
+                        state.challengeList?.addAll(challengeList)
+                        _mainScreenState.value = state
+                    } ?: run {
+                        _mainScreenState.value = MainScreenState(challengeList, topBannerList)
+                    }
                 } ?: run {
 
                 }

@@ -4,6 +4,7 @@ import biz.ohrae.challenge_repo.data.remote.ApiService
 import biz.ohrae.challenge_repo.data.remote.NetworkResponse
 import biz.ohrae.challenge_repo.model.FlowResult
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
+import biz.ohrae.challenge_repo.util.PagerMeta
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import com.google.gson.Gson
 import com.google.gson.JsonElement
@@ -51,12 +52,13 @@ class ChallengeMainRepo @Inject constructor(
                     dataset?.let {
 
                         val dataSet: JsonElement = dataset?.getAsJsonArray("array")!!.asJsonArray
+                        val pager = gson.fromJson(dataset.get("meta").toString(), PagerMeta::class.java)
 
                         val listType = object : TypeToken<List<ChallengeData?>?>() {}.type
                         val challengeList = gson.fromJson<List<ChallengeData>>(dataSet, listType)
 
                         return flow {
-                            emit(FlowResult(challengeList, "", ""))
+                            emit(FlowResult(challengeList, "", "", pager))
                         }
                     } ?: run {
                         return flow {

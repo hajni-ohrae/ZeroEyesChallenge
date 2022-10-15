@@ -61,14 +61,17 @@ class MainActivity : AppCompatActivity() {
                     mainScreenState = mainScreenState,
                     filterState = filterState!!,
                     clickListener = mainClickListener,
-                    userChallengeListState = state
+                    userChallengeListState = state,
+                    onBottomReached = {
+                        onBottomReached()
+                    }
                 )
             }
         }
     }
 
     private fun init() {
-        viewModel.getChallengeList("","","","","","")
+        viewModel.getChallengeList()
         viewModel.getUserChallengeList()
         viewModel.selectPeriodType("")
         viewModel.selectPeriod("")
@@ -154,6 +157,10 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
+    }
+
+    private fun onBottomReached() {
+        viewModel.getChallengeList()
     }
 
     private fun goDetail(id: String) {
