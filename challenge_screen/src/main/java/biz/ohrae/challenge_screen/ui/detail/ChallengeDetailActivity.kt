@@ -142,7 +142,10 @@ class ChallengeDetailActivity : BaseActivity() {
                     verifyListState = verifyListState,
                     verificationState = challengeVerificationState,
                     challengeVerifiedList = challengeVerifiedList,
-                    clickListener = detailClickListener
+                    clickListener = detailClickListener,
+                    onBottomReached = {
+                        onBottomReached()
+                    }
                 )
             }
             composable(ChallengeDetailNavScreen.AuthCameraPreview.route) {
@@ -303,6 +306,10 @@ class ChallengeDetailActivity : BaseActivity() {
                 showSnackBar(errorData?.code, errorData?.message)
             }
         }
+    }
+
+    private fun onBottomReached() {
+
     }
 
     @SuppressLint("Range")

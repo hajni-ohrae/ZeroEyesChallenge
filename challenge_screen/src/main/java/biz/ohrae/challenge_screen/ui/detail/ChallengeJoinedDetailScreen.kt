@@ -4,6 +4,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.*
@@ -43,6 +44,7 @@ import biz.ohrae.challenge_repo.model.verify.VerifyListState
 import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.model.detail.Verification
 import biz.ohrae.challenge_screen.model.detail.VerificationState
+import biz.ohrae.challenge_screen.util.OnBottomReached
 import com.google.accompanist.flowlayout.FlowCrossAxisAlignment
 import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
@@ -51,6 +53,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @OptIn(ExperimentalPagerApi::class, ExperimentalFoundationApi::class)
 @Preview(
@@ -65,7 +68,8 @@ fun ChallengeJoinedDetailScreen(
     verificationState: VerificationState? = null,
     challengeVerifiedList: List<VerifyData>? = null,
     verifyListState: VerifyListState? = null,
-    clickListener: ChallengeDetailClickListener? = null
+    clickListener: ChallengeDetailClickListener? = null,
+    onBottomReached: () -> Unit = {}
 ) {
     if (challengeData == null) {
         return
@@ -77,6 +81,7 @@ fun ChallengeJoinedDetailScreen(
     LaunchedEffect(challengeData) {
         status = challengeDetailStatusMap[challengeData.status]
     }
+    val listState = rememberLazyListState()
 
     Column(
         modifier = Modifier
@@ -85,8 +90,8 @@ fun ChallengeJoinedDetailScreen(
     ) {
         LazyColumn(
             modifier = Modifier
-                .fillMaxWidth()
-//                .padding(24.dp, 0.dp)
+                .fillMaxWidth(),
+            state = listState
         ) {
             item {
                 Column {
@@ -198,6 +203,12 @@ fun ChallengeJoinedDetailScreen(
                     text = "인증하기",
                     onClick = { clickListener?.onClickAuth() }
                 )
+            }
+        }
+        listState.OnBottomReached {
+            if (pagerState.currentPage == 1) {
+                Timber.e("bottom reached!!")
+                onBottomReached()
             }
         }
     }
