@@ -1,14 +1,28 @@
 package biz.ohrae.challenge_repo.model.verify
 
+import biz.ohrae.challenge.model.filter.FilterItem
+import biz.ohrae.challenge.model.list_item.ChallengeItemData
 import biz.ohrae.challenge_repo.model.detail.ImageFile
 import biz.ohrae.challenge_repo.model.user.User
 
 
 data class VerifyListState(
-    val verifyList:List<VerifyData>? = null
+    val verifyList: List<VerifyData>? = null
 ) {
     companion object {
-
+        fun mock() = VerifyListState(
+            verifyList = listOf(
+                VerifyData(
+                    id = "a858a07c-2e0f-4c80-be5b-e8cac8d98056",
+                    type = "photo",
+                    cnt = 1,
+                    staying_time = "",
+                    comment = "gg",
+                    created_date = "",
+                    updated_date = "",
+                )
+            ),
+        )
     }
 
 }
@@ -21,6 +35,18 @@ data class VerifyData(
     val comment: String,
     val created_date: String,
     val updated_date: String,
-    val user: User,
-    val imageFile: ImageFile
-)
+    val user: User? = null,
+    val imageFile: ImageFile? = null
+) {
+    companion object {
+        fun mock() = VerifyData(
+            id = "a858a07c-2e0f-4c80-be5b-e8cac8d98056",
+            type = "photo",
+            cnt = 1,
+            staying_time = "",
+            comment = "gg",
+            created_date = "",
+            updated_date = "",
+        )
+    }
+}

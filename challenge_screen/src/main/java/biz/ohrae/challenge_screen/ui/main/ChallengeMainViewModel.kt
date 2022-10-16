@@ -133,7 +133,11 @@ class ChallengeMainViewModel @Inject constructor(
             val filterState = _filterState.value?.copy()
 
             filterState?.let {
-                it.selectVerificationPeriodType = item
+                if(it.selectVerificationPeriodType == item){
+                    it.selectVerificationPeriodType = ""
+                } else {
+                    it.selectVerificationPeriodType = item
+                }
                 _filterState.value = it
             }
         }
@@ -144,7 +148,11 @@ class ChallengeMainViewModel @Inject constructor(
             val filterState = _filterState.value?.copy()
 
             filterState?.let {
-                it.selectPeriod = item
+                if(it.selectPeriod == item){
+                    it.selectPeriod = ""
+                } else {
+                    it.selectPeriod = item
+                }
                 _filterState.value = it
             }
         }
@@ -155,7 +163,11 @@ class ChallengeMainViewModel @Inject constructor(
             val filterState = _filterState.value?.copy()
 
             filterState?.let {
-                it.selectIsAdultOnly = item
+                if(it.selectIsAdultOnly == item){
+                    it.selectIsAdultOnly = ""
+                } else {
+                    it.selectIsAdultOnly = item
+                }
                 _filterState.value = it
             }
         }

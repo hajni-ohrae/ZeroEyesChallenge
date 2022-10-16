@@ -69,5 +69,9 @@
             android:name="biz.ohrae.challenge_screen.ui.challengers.ChallengersActivity"
             android:exported="true">
         </activity>
+        <activity
+            android:name="biz.ohrae.challenge_screen.ui.detail.ChallengeAuthFeedActivity"
+            android:exported="true">
+        </activity>
     </application>
 </manifest>
