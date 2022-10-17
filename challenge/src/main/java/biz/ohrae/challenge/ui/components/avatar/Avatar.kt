@@ -71,14 +71,14 @@ fun Avatar(
 @Composable
 fun circularAvatar(
     modifier: Modifier = Modifier,
-    url: String = "https://avatars.githubusercontent.com/u/27887884?v=4",
-    backgroundColor: Color? = GrayColor7,
+    url: String = "",
+    backgroundColor: Color? = Color(0xffeeeeee),
 ) {
     GlideImage(
         modifier = modifier
             .clip(CircleShape)
             .background(backgroundColor!!),
-        imageModel = url,
+        imageModel = if (url.isNullOrEmpty()) R.drawable.profile_picture else url,
         contentScale = ContentScale.Crop,
         contentDescription = "avatar",
         previewPlaceholder = R.drawable.icon_user,

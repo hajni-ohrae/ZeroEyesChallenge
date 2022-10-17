@@ -7,11 +7,14 @@ import biz.ohrae.challenge_repo.model.FlowResult
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.model.user.PaymentHistoryState
 import biz.ohrae.challenge_repo.model.user.RedCardState
+import biz.ohrae.challenge_repo.model.user.RewardData
 import biz.ohrae.challenge_repo.model.user.User
+import biz.ohrae.challenge_repo.model.verify.VerifyData
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import timber.log.Timber
@@ -206,6 +209,28 @@ class UserRepo @Inject constructor(
                     gson.fromJson(response.body.dataset, PaymentHistoryState::class.java)
                 return flow {
                     emit(FlowResult(paymentHistoryList, "", ""))
+                }
+            }
+            else -> {
+                return flow {
+                    emit(FlowResult(null, "", ""))
+                }
+            }
+        }
+    }
+
+    suspend fun getRewardHistory():Flow<FlowResult>{
+        val accessToken = prefs.getUserData()?.access_token
+        val response = apiService.getRewardHistory(accessToken.toString(),1,10)
+        when (response) {
+            is NetworkResponse.Success -> {
+                val dataSet = response.body.dataset?.asJsonObject
+                val array = dataSet?.get("array")?.asJsonArray
+
+                val listType = object : TypeToken<List<RewardData?>?>() {}.type
+                val rewardList = gson.fromJson<List<RewardData>>(array, listType)
+                return flow {
+                    emit(FlowResult(rewardList, "", ""))
                 }
             }
             else -> {

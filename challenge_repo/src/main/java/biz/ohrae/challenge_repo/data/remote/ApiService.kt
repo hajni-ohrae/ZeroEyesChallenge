@@ -85,6 +85,13 @@ interface ApiService {
         @Header("per_page") count: Int,
     ): NetworkResponse<Result, Error>
 
+    @POST(Routes.GET_REWARD_HISTORY)
+    suspend fun getRewardHistory(
+        @Header("x-access-token") accessToken: String,
+        @Header("page") page: Int,
+        @Header("per_page") count: Int,
+    ): NetworkResponse<Result, Error>
+
     @GET(Routes.GET_ALL_WARNING)
     suspend fun getAllWarning(): NetworkResponse<Result, Error>
 

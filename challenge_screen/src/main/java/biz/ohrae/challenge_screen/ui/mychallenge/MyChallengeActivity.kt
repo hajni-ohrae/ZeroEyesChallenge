@@ -59,6 +59,7 @@ class MyChallengeActivity : AppCompatActivity() {
         myChallengeViewModel.getRedCardList()
         myChallengeViewModel.getPaymentHistory()
         myChallengeViewModel.getUserData()
+        myChallengeViewModel.getRewardHistory()
     }
     @Composable
     private fun BuildContent() {
@@ -89,6 +90,7 @@ class MyChallengeActivity : AppCompatActivity() {
         val redCardListState by myChallengeViewModel.redCardListState.observeAsState()
         val paymentHistoryState by myChallengeViewModel.paymentHistoryState.observeAsState()
         val saveChallengeList by challengeMainViewModel.mainScreenState.observeAsState()
+        val rewardList by myChallengeViewModel.rewardList.observeAsState()
 
         NavHost(
             navController = navController,

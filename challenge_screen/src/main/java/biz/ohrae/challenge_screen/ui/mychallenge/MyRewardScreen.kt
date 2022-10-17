@@ -17,14 +17,19 @@ import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.ui.components.banner.FlatBanner
 import biz.ohrae.challenge.ui.components.button.ArrowTextButton
 import biz.ohrae.challenge.ui.components.button.FlatBottomButton
+import biz.ohrae.challenge.ui.components.card.CertificationImageItem
 import biz.ohrae.challenge.ui.components.list_item.RewardHistoryItem
 import biz.ohrae.challenge.ui.theme.TextBlack
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
+import biz.ohrae.challenge_repo.model.user.RewardData
+import biz.ohrae.challenge_repo.model.verify.VerifyData
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.ui.mychallenge.MyChallengeActivity.Companion.REWARD
+import com.google.accompanist.flowlayout.FlowMainAxisAlignment
+import com.google.accompanist.flowlayout.FlowRow
 
 
 @Preview(
@@ -37,7 +42,8 @@ fun MyRewardScreen(
     challengeData: ChallengeData = ChallengeData.mock(),
     prefs: SharedPreference? = null,
     select: Boolean = true,
-    clickListener: MyChallengeClickListener? = null
+    clickListener: MyChallengeClickListener? = null,
+    rewardList: List<RewardData>? = null,
 ) {
     val availableRewards by remember {
         mutableStateOf(challengeData.user?.rewards_amount ?: 0)
@@ -70,67 +76,92 @@ fun MyRewardScreen(
             )
             Spacer(modifier = Modifier.height(18.dp))
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = "소멸 예정 리워즈",
-                    style = myTypography.w700,
-                    fontSize = dpToSp(dp = 14.dp),
-                    color = Color(0xff6c6c6c)
-                )
-                Text(
-                    text = "2,500원",
-                    style = myTypography.bold,
-                    fontSize = dpToSp(dp = 14.dp),
-                    color = Color(0xffff5800)
-                )
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = "소멸 일시",
-                    style = myTypography.w700,
-                    fontSize = dpToSp(dp = 14.dp),
-                    color = Color(0xff6c6c6c)
-                )
-                Text(
-                    text = "2,500원",
-                    style = myTypography.bold,
-                    fontSize = dpToSp(dp = 14.dp),
-                    color = Color(0xff6c6c6c)
-                )
-            }
-            Spacer(modifier = Modifier.height(18.dp))
-            Divider(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(1.dp)
-                    .background(Color(0xfffafafa))
-            )
-            LazyColumn(
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                item {
-                    RewardHistoryItem(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .defaultMinSize(minHeight = 105.dp),
-                        date = "2022.04.25  09:33",
-                        progress = "100%",
-                        title = "미라클 모닝, 일찍 일어나기",
-                        price = "10,000원",
-                        state = "2022.04.14 소멸",
+
+            if (rewardList.isNullOrEmpty()) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(200.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "내역이 없습니다",
+                        color = TextBlack,
+                        fontSize = dpToSp(dp = 14.dp),
+                        style = myTypography.bold
                     )
                 }
+            } else {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "소멸 예정 리워즈",
+                        style = myTypography.w700,
+                        fontSize = dpToSp(dp = 14.dp),
+                        color = Color(0xff6c6c6c)
+                    )
+                    Text(
+                        text = "0원",
+                        style = myTypography.bold,
+                        fontSize = dpToSp(dp = 14.dp),
+                        color = Color(0xffff5800)
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "소멸 일시",
+                        style = myTypography.w700,
+                        fontSize = dpToSp(dp = 14.dp),
+                        color = Color(0xff6c6c6c)
+                    )
+                    Text(
+                        text = "0원",
+                        style = myTypography.bold,
+                        fontSize = dpToSp(dp = 14.dp),
+                        color = Color(0xff6c6c6c)
+                    )
+                }
+                Spacer(modifier = Modifier.height(18.dp))
+                Divider(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(1.dp)
+                        .background(Color(0xfffafafa))
+                )
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    Spacer(modifier = Modifier.height(33.dp))
+                    FlowRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        crossAxisSpacing = 8.dp,
+                        mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween
+                    ) {
+                        repeat(rewardList.size) { index ->
+                            val item = rewardList[index]
+                            RewardHistoryItem(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .defaultMinSize(minHeight = 105.dp),
+                                date = "",
+                                progress = item.inChallenge.achievement_percent,
+                                title = "",
+                                price = "",
+                                state = "",
+                            )
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.height(100.dp))
             }
         }
 

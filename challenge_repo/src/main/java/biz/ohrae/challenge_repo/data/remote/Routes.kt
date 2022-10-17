@@ -27,6 +27,9 @@ object Routes {
     const val REFUND_PAYMENT = "${CHALLENGE}/api/payment/refund"
     const val GET_PAYMENT_HISTORY ="${CHALLENGE}/api/payment/history/get/all"
 
+    // 리워즈
+    const val GET_REWARD_HISTORY ="${CHALLENGE}/api/rewards/history/get/all"
+
     // 규정 (레드카드)
     const val GET_ALL_WARNING = "${CHALLENGE}/api/regulation/warn/get/all"
     const val SET_WARNING = "${CHALLENGE}/api/regulation/warn"
