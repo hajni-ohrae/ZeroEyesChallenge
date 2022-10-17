@@ -38,7 +38,7 @@ fun ChallengersItemGallery() {
 @Composable
 fun ChallengersItem(
     modifier: Modifier = Modifier,
-    userName: String = "이오래",
+    userName: String = "",
     imagePath: String? = null,
 ) {
     Row(

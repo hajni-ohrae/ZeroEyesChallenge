@@ -7,7 +7,7 @@ import biz.ohrae.challenge_repo.model.detail.Summary
 data class User(
     val id: String,
     val type: String,
-    val name: String,
+    val name: String?,
     val nickname: String?,
     val birth_date: String? = null,
     val is_blocked: Int,
@@ -32,7 +32,7 @@ data class User(
     val inChallenge: List<InChallenge>?,
 ) {
     fun getUserName(): String {
-        return nickname ?: name
+        return nickname ?: (name ?: "이름없음")
     }
 }
 
