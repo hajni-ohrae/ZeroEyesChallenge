@@ -22,10 +22,11 @@ import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.dialog.LoadingDialog
 import biz.ohrae.challenge_screen.ui.mychallenge.PolicyScreen
 import biz.ohrae.challenge_screen.ui.register.ChallengeCameraScreen
+import biz.ohrae.challenge_screen.ui.register.ChallengeRegisterNavScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ChallengeJoinedDetailActivity : BaseActivity() {
+class ChallengeAuthFeedActivity : BaseActivity() {
     private lateinit var viewModel: ChallengeDetailViewModel
     private lateinit var navController: NavHostController
     private var challengeId: String? = null
@@ -50,7 +51,6 @@ class ChallengeJoinedDetailActivity : BaseActivity() {
                 BuildContent()
             }
         }
-
         initClickListeners()
         observeViewModels()
     }
@@ -76,22 +76,35 @@ class ChallengeJoinedDetailActivity : BaseActivity() {
                     .fillMaxWidth()
                     .weight(1f)
             ) {
-                ChallengeAuthFeedScreen()
+                Navigation()
             }
         }
+    }
+
+    private fun init() {
+        viewModel.isLoading(true)
+        viewModel.getVerifyList(challengeId.toString())
     }
 
     @Composable
     private fun Navigation() {
         navController = rememberNavController()
+        val challengeVerifiedList by viewModel.challengeVerifiedList.observeAsState()
+
+        NavHost(
+            navController = navController,
+            startDestination = ChallengeAuthFeedNavScreen.AuthFeed.route
+        ) {
+            composable(ChallengeAuthFeedNavScreen.AuthFeed.route) {
+                ChallengeAuthFeedScreen(challengeVerifiedList)
+
+            }
+        }
     }
 
-    private fun init() {
-        viewModel.isLoading(true)
-    }
 
     override fun onBack() {
-        if (navController.currentBackStackEntry?.destination?.route == ChallengeDetailNavScreen.Detail.route) {
+        if (navController.currentBackStackEntry?.destination?.route == ChallengeAuthFeedNavScreen.AuthFeed.route) {
             finish()
         } else {
             navController.popBackStack()
@@ -103,6 +116,12 @@ class ChallengeJoinedDetailActivity : BaseActivity() {
     }
 
     override fun observeViewModels() {
-
+        viewModel.challengeData.observe(this) {
+            viewModel.isLoading(false)
+        }
     }
+}
+
+sealed class ChallengeAuthFeedNavScreen(val route: String) {
+    object AuthFeed : ChallengeAuthFeedNavScreen("AuthFeed")
 }

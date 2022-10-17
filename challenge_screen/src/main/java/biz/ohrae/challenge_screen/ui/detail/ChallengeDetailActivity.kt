@@ -132,15 +132,11 @@ class ChallengeDetailActivity : BaseActivity() {
             }
             composable(ChallengeDetailNavScreen.JoinedDetail.route) {
                 val challengers by viewModel.challengers.observeAsState()
-                val challengeVerificationState by viewModel.challengeVerificationState.observeAsState()
                 val challengeVerifiedList by viewModel.challengeVerifiedList.observeAsState()
-                val verifyListState by viewModel.verifyListState.observeAsState()
 
                 ChallengeJoinedDetailScreen(
                     challengeData = challengeData,
                     challengers = challengers,
-                    verifyListState = verifyListState,
-                    verificationState = challengeVerificationState,
                     challengeVerifiedList = challengeVerifiedList,
                     clickListener = detailClickListener,
                     onBottomReached = {
@@ -259,6 +255,12 @@ class ChallengeDetailActivity : BaseActivity() {
                     viewModel.isLoading(true)
                     viewModel.verifyChallenge(content, uriToFilePath(it))
                 }
+            }
+
+            override fun onClickAuthItemCard() {
+                val intent = Intent(this@ChallengeDetailActivity, ChallengeAuthFeedActivity::class.java)
+                intent.putExtra("challengeId", challengeId)
+                startActivity(intent)
             }
         }
     }

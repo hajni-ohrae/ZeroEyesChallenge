@@ -67,7 +67,6 @@ fun ChallengeJoinedDetailScreen(
     challengers: List<User>? = null,
     verificationState: VerificationState? = null,
     challengeVerifiedList: List<VerifyData>? = null,
-    verifyListState: VerifyListState? = null,
     clickListener: ChallengeDetailClickListener? = null,
     onBottomReached: () -> Unit = {}
 ) {
@@ -187,7 +186,6 @@ fun ChallengeJoinedDetailScreen(
                         } else {
                             ChallengeAuthPage(
                                 challengeVerifiedList = challengeVerifiedList,
-                                verifyListState = verifyListState,
                                 clickListener = clickListener
                             )
                         }
@@ -558,10 +556,11 @@ private fun ChallengeAuthPage(
                     val item = challengeVerifiedList[index]
                     CertificationImageItem(
                         modifier = Modifier.fillMaxWidth(0.49f),
-                        imageUrl = item.imageFile.thumbnail_path.toString(),
-                        username = item.user.getUserName(),
+                        imageUrl = item.imageFile?.thumbnail_path.toString(),
+                        username = item.user?.getUserName().toString(),
                         date = Utils.convertDate(item.updated_date),
-                        count = item.cnt
+                        count = item.cnt,
+                        onClick = { clickListener?.onClickAuthItemCard() }
                     )
                 }
             }

@@ -38,16 +38,17 @@ private fun FeedFilterGallery() {
 @Composable
 fun FeedFilter(
     modifier: Modifier = Modifier,
-    order:String = "최신순",
+    order: String = "최신순",
 ) {
     Column(
         modifier
             .fillMaxWidth()
-            .padding(24.dp, 0.dp)
             .background(Color(0xfff7f7f7))
     ) {
         Row(
-            modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween,
+            modifier
+                .fillMaxWidth()
+                .padding(24.dp, 0.dp), horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(

@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -60,6 +61,7 @@ private fun CertificationImageItemGallery() {
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Preview(
     showBackground = true,
     widthDp = 360
@@ -71,12 +73,14 @@ fun CertificationImageItem(
     username: String = "",
     count: Int = 0,
     date: String = "",
+    onClick: () -> Unit = {}
 ) {
     Card(
         modifier = modifier.aspectRatio(1f),
         shape = RoundedCornerShape(10.dp),
         elevation = 0.dp,
-        backgroundColor = Color(0xfff9f9f9)
+        backgroundColor = Color(0xfff9f9f9),
+        onClick = onClick
     ) {
         GlideImage(
             modifier = Modifier.fillMaxSize(),
