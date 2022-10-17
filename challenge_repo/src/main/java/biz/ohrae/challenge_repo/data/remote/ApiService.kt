@@ -204,6 +204,10 @@ interface ApiService {
 
     @GET(Routes.GET_USER_CHALLENGE_LIST)
     suspend fun getUserChallengeList(
-        @Header("x-access-token") accessToken: String
+        @Header("x-access-token") accessToken: String,
+        @Header("page") page: Int,
+        @Header("per_page") perPage: Int,
+        @Query("status") status:String = ""
     ): NetworkResponse<Result2, Error>
+
 }

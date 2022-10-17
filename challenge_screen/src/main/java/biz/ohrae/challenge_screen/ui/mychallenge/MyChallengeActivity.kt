@@ -54,7 +54,7 @@ class MyChallengeActivity : AppCompatActivity() {
     }
 
     private fun init() {
-        challengeMainViewModel.getUserChallengeList()
+        challengeMainViewModel.getUserChallengeList(isInit = true)
         challengeMainViewModel.getChallengeList("","","","","1","")
         myChallengeViewModel.getRedCardList()
         myChallengeViewModel.getPaymentHistory()

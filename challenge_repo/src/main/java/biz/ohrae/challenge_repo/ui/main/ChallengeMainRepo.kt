@@ -80,10 +80,12 @@ class ChallengeMainRepo @Inject constructor(
         }
     }
 
-    suspend fun getUserChallengeList(): Flow<FlowResult> {
+    suspend fun getUserChallengeList(
+        page: Int = 1,
+        perPage: Int = 10,): Flow<FlowResult> {
         val accessToken = prefs.getUserData()?.access_token
         val response =
-            apiService.getUserChallengeList(accessToken.toString())
+            apiService.getUserChallengeList(accessToken.toString(),page, perPage)
         when (response) {
             is NetworkResponse.Success -> {
                 val gson = Gson()

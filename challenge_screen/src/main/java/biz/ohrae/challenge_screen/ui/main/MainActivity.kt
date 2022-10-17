@@ -86,7 +86,7 @@ class MainActivity : BaseActivity() {
 
     private fun init() {
         viewModel.getChallengeList(isInit = true)
-        viewModel.getUserChallengeList()
+        viewModel.getUserChallengeList(isInit = true)
         viewModel.selectPeriodType("")
         viewModel.selectPeriod("")
         viewModel.selectIsAdultOnly("")

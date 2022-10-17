@@ -76,7 +76,32 @@ fun MyRewardScreen(
             )
             Spacer(modifier = Modifier.height(18.dp))
 
-
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "소멸 예정 리워즈 합계",
+                    style = myTypography.w700,
+                    fontSize = dpToSp(dp = 14.dp),
+                    color = Color(0xff6c6c6c)
+                )
+                Text(
+                    text = "0원",
+                    style = myTypography.bold,
+                    fontSize = dpToSp(dp = 14.dp),
+                    color = Color(0xffff5800)
+                )
+            }
+            Spacer(modifier = Modifier.height(18.dp))
+            Divider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(Color(0xfffafafa))
+            )
             if (rewardList.isNullOrEmpty()) {
                 Column(
                     modifier = Modifier
@@ -93,52 +118,6 @@ fun MyRewardScreen(
                     )
                 }
             } else {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = "소멸 예정 리워즈",
-                        style = myTypography.w700,
-                        fontSize = dpToSp(dp = 14.dp),
-                        color = Color(0xff6c6c6c)
-                    )
-                    Text(
-                        text = "0원",
-                        style = myTypography.bold,
-                        fontSize = dpToSp(dp = 14.dp),
-                        color = Color(0xffff5800)
-                    )
-                }
-                Spacer(modifier = Modifier.height(8.dp))
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = "소멸 일시",
-                        style = myTypography.w700,
-                        fontSize = dpToSp(dp = 14.dp),
-                        color = Color(0xff6c6c6c)
-                    )
-                    Text(
-                        text = "0원",
-                        style = myTypography.bold,
-                        fontSize = dpToSp(dp = 14.dp),
-                        color = Color(0xff6c6c6c)
-                    )
-                }
-                Spacer(modifier = Modifier.height(18.dp))
-                Divider(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(1.dp)
-                        .background(Color(0xfffafafa))
-                )
                 Column(modifier = Modifier.fillMaxWidth()) {
                     Spacer(modifier = Modifier.height(33.dp))
                     FlowRow(
@@ -156,7 +135,9 @@ fun MyRewardScreen(
                                 progress = item.inChallenge.achievement_percent,
                                 title = "",
                                 price = "",
-                                state = "",
+                                progressStatus = item.type,
+                                background = Utils.userChallengeBackground(item.type),
+                                textColor = Utils.userChallengeTextColor(item.type),
                             )
                         }
                     }

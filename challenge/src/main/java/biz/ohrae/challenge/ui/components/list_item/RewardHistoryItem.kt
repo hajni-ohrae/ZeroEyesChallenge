@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import biz.ohrae.challenge.ui.components.label.ProgressLabel
 import biz.ohrae.challenge.ui.theme.TextBlack
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
@@ -35,7 +36,9 @@ private fun RewardHistoryItemGallery() {
             progress = "100%",
             title = "미라클 모닝, 일찍 일어나기",
             price = "10,000원",
-            state = "2022.04.14 소멸",
+            progressStatus= "완료",
+            background = Color(0xffdedede),
+            textColor = Color(0xff6c6c6c)
         )
         Divider(modifier = Modifier
             .fillMaxWidth()
@@ -49,7 +52,9 @@ private fun RewardHistoryItemGallery() {
             progress = "85%",
             title = "달리기 챌린지",
             price = "1,000원",
-            state = "2022.04.14 소멸",
+            progressStatus= "완료",
+            background = Color(0xffdedede),
+            textColor = Color(0xff6c6c6c)
         )
         Divider(modifier = Modifier
             .fillMaxWidth()
@@ -63,6 +68,9 @@ private fun RewardHistoryItemGallery() {
             progress = "30%",
             title = "책읽기 챌린지",
             price = "10,000원",
+            progressStatus= "완료",
+            background = Color(0xffdedede),
+            textColor = Color(0xff6c6c6c)
         )
     }
 }
@@ -74,8 +82,11 @@ fun RewardHistoryItem(
     progress: String,
     title: String,
     price: String,
-    state: String? = null,
     isCanceled: Boolean = false,
+
+    progressStatus: String,
+    background: Color,
+    textColor: Color,
 ) {
     val priceColor = if (isCanceled) {
         remember { mutableStateOf(Color(0xff6c6c6c)) }
@@ -86,6 +97,14 @@ fun RewardHistoryItem(
     Column(
         modifier = modifier.padding(0.dp, 18.dp)
     ) {
+
+        ProgressLabel(
+            text = progressStatus,
+            backgroundColor = background,
+            textColor = textColor
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
@@ -93,7 +112,7 @@ fun RewardHistoryItem(
             Text(
                 text = date,
                 style = myTypography.default,
-                color = Color(0xff6c6c6c),
+                color = TextBlack,
                 fontSize = dpToSp(dp = 14.dp)
             )
             Spacer(modifier = Modifier.weight(1f))
@@ -123,14 +142,14 @@ fun RewardHistoryItem(
                 fontSize = dpToSp(dp = 16.dp)
             )
         }
-        Spacer(modifier = Modifier.height(8.dp))
-        if (state != null) {
-            Text(
-                text = state,
-                style = myTypography.default,
-                color = Color(0xff6c6c6c),
-                fontSize = dpToSp(dp = 14.dp)
-            )
-        }
+//        Spacer(modifier = Modifier.height(8.dp))
+//        if (state != null) {
+//            Text(
+//                text = state,
+//                style = myTypography.default,
+//                color = Color(0xff6c6c6c),
+//                fontSize = dpToSp(dp = 14.dp)
+//            )
+//        }
     }
 }

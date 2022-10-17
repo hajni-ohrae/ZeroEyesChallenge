@@ -78,7 +78,7 @@ class ChallengeMainViewModel @Inject constructor(
         verificationPeriodType: String = "",
         per_week: String = "",
         period: String = "",
-        is_like:String = "",
+        is_like: String = "",
         is_adult_only: String = "",
         isInit: Boolean = false,
     ) {
@@ -145,7 +145,7 @@ class ChallengeMainViewModel @Inject constructor(
             val filterState = _filterState.value?.copy()
 
             filterState?.let {
-                if(it.selectVerificationPeriodType == item){
+                if (it.selectVerificationPeriodType == item) {
                     it.selectVerificationPeriodType = ""
                 } else {
                     it.selectVerificationPeriodType = item
@@ -160,7 +160,7 @@ class ChallengeMainViewModel @Inject constructor(
             val filterState = _filterState.value?.copy()
 
             filterState?.let {
-                if(it.selectPeriod == item){
+                if (it.selectPeriod == item) {
                     it.selectPeriod = ""
                 } else {
                     it.selectPeriod = item
@@ -175,7 +175,7 @@ class ChallengeMainViewModel @Inject constructor(
             val filterState = _filterState.value?.copy()
 
             filterState?.let {
-                if(it.selectIsAdultOnly == item){
+                if (it.selectIsAdultOnly == item) {
                     it.selectIsAdultOnly = ""
                 } else {
                     it.selectIsAdultOnly = item
@@ -185,14 +185,39 @@ class ChallengeMainViewModel @Inject constructor(
         }
     }
 
-    fun getUserChallengeList() {
+    fun getUserChallengeList(
+        isInit: Boolean = false,
+    ) {
         viewModelScope.launch {
+            if (isInit) {
+                _listPage.value = 1
+            }
+            val page = listPage.value ?: 1
             val response = challengeMainRepo.getUserChallengeList()
             response.flowOn(Dispatchers.IO).collect {
+                isLoading(false)
+                _isRefreshing.value = false
                 it.data?.let { data ->
-                    val userChallengeList = data as List<ChallengeData>
-                    val state = UserChallengeListState(userChallengeList)
-                    _userChallengeListState.value = state
+                    val pager = it.pager
+
+                    if (it.pager?.page == page) {
+                        _listPage.value = page + 1
+                        Timber.e("current page : ${_listPage.value}")
+                    }
+                    val userChallengeList = data as MutableList<ChallengeData>
+                    val state = userChallengeListState.value?.copy()
+                    state?.let {
+                        if (isInit) {
+                            state.userChallengeList = userChallengeList
+                        } else {
+                            state.userChallengeList?.addAll(userChallengeList)
+                        }
+                        _userChallengeListState.value = state
+                    } ?: run {
+                        _userChallengeListState.value = UserChallengeListState(userChallengeList)
+                    }
+                } ?: run {
+                    setErrorData(it.errorCode, it.errorMessage)
                 }
             }
         }
