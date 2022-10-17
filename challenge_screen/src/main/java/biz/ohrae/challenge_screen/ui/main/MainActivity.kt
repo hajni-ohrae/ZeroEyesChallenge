@@ -14,6 +14,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.ViewModelProvider
 import biz.ohrae.challenge.ui.components.header.Header
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
+import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailActivity
 import biz.ohrae.challenge_screen.ui.dialog.FilterDialog
 import biz.ohrae.challenge_screen.ui.dialog.FilterDialogListener
@@ -24,7 +25,7 @@ import biz.ohrae.challenge_screen.ui.register.RegisterActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
     private lateinit var viewModel: ChallengeMainViewModel
     private lateinit var mainClickListener: MainClickListener
 
@@ -44,8 +45,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        initClickListener()
-        observeViewModel()
+        initClickListeners()
+        observeViewModels()
     }
 
     override fun onResume() {
@@ -91,7 +92,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.selectIsAdultOnly("")
     }
 
-    private fun initClickListener() {
+    override fun initClickListeners() {
         mainClickListener = object : MainClickListener {
             override fun onClickPurchaseTicket() {
                 TODO("Not yet implemented")
@@ -166,7 +167,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun observeViewModel() {
+    override fun observeViewModels() {
 //        viewModel.isChallengeCreate.observe(this) {
 //            if (it) {
 //                val intent = Intent(this@RegisterActivity, MainActivity::class.java)
@@ -178,6 +179,12 @@ class MainActivity : AppCompatActivity() {
             if (!it) {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
+            }
+        }
+
+        viewModel.errorData.observe(this) {
+            if (it != null) {
+                showSnackBar(it.code, it.message)
             }
         }
     }

@@ -1,10 +1,10 @@
 package biz.ohrae.challenge_repo.data.remote
 
 object Routes {
-    const val HOST_NAME = "https://dev.mooin.kr/"
+    const val HOST_NAME = "https://challenge.mooin.kr/"
     const val PAYMENT_HOST_NAME = "https://challenge.mooin.kr/"
 
-    private const val CHALLENGE = "/challenge"
+    private const val CHALLENGE = ""
 
     // 로그인 & 인증
     const val LOGIN = "${CHALLENGE}/api/auth/service/login"

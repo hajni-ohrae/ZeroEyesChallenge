@@ -123,7 +123,7 @@ class ChallengeMainViewModel @Inject constructor(
                         _mainScreenState.value = MainScreenState(challengeList, topBannerList)
                     }
                 } ?: run {
-
+                    setErrorData(it.errorCode, it.errorMessage)
                 }
             }
         }
