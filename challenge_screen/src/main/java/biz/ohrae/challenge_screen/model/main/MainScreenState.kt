@@ -3,7 +3,7 @@ package biz.ohrae.challenge_screen.model.main
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 
 data class MainScreenState(
-    val challengeList: MutableList<ChallengeData>? = null,
+    var challengeList: MutableList<ChallengeData>? = null,
     val topBannerList: List<TopBannerData>? = null,
     val authCycleList: List<AuthCycle>? = null,
     val userChallengeList: List<ChallengeData>? = null,

@@ -10,12 +10,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.ViewModelProvider
 import biz.ohrae.challenge.ui.components.header.Header
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailActivity
 import biz.ohrae.challenge_screen.ui.dialog.FilterDialog
 import biz.ohrae.challenge_screen.ui.dialog.FilterDialogListener
+import biz.ohrae.challenge_screen.ui.dialog.LoadingDialog
 import biz.ohrae.challenge_screen.ui.login.LoginActivity
 import biz.ohrae.challenge_screen.ui.mychallenge.MyChallengeActivity
 import biz.ohrae.challenge_screen.ui.register.RegisterActivity
@@ -32,6 +34,12 @@ class MainActivity : AppCompatActivity() {
 
         setContent {
             ChallengeInTheme {
+                val isLoading by viewModel.isLoading.observeAsState(false)
+                if (isLoading) {
+                    Dialog(onDismissRequest = { /*TODO*/ }) {
+                        LoadingDialog()
+                    }
+                }
                 BuildContent()
             }
         }
@@ -108,8 +116,17 @@ class MainActivity : AppCompatActivity() {
                             period: String,
                             isAdultOnly: String
                         ) {
-                            val filterType = viewModel.filterState.value?.selectFilterType
-                            viewModel.getChallengeList(filterType.toString(),verificationPeriodType, perWeek, period,"", isAdultOnly)
+                            viewModel.isLoading(true)
+                            val selectedFilterType = viewModel.filterState.value?.selectFilterType
+                            viewModel.getChallengeList(
+                                selectedFilterType.toString(),
+                                verificationPeriodType,
+                                perWeek,
+                                period,
+                                "",
+                                isAdultOnly,
+                                isInit = true
+                            )
                             dialog.dismiss()
                         }
 
@@ -137,8 +154,9 @@ class MainActivity : AppCompatActivity() {
                     dialog.show(supportFragmentManager, "FilterDialog")
 
                 } else {
+                    viewModel.isLoading(true)
                     viewModel.selectFilter(filterType)
-                    viewModel.getChallengeList(paymentType = filterType,"","","","","")
+                    viewModel.getChallengeList(paymentType = filterType, isInit = true)
                 }
             }
 

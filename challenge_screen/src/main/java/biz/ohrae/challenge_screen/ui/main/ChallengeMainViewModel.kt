@@ -98,6 +98,7 @@ class ChallengeMainViewModel @Inject constructor(
                 page
             )
             response.flowOn(Dispatchers.IO).collect {
+                isLoading(false)
                 _isRefreshing.value = false
                 it.data?.let { data ->
                     val pager = it.pager
@@ -112,7 +113,11 @@ class ChallengeMainViewModel @Inject constructor(
                     val challengeList = data as MutableList<ChallengeData>
                     val state = mainScreenState.value?.copy()
                     state?.let {
-                        state.challengeList?.addAll(challengeList)
+                        if (isInit) {
+                            state.challengeList = challengeList
+                        } else {
+                            state.challengeList?.addAll(challengeList)
+                        }
                         _mainScreenState.value = state
                     } ?: run {
                         _mainScreenState.value = MainScreenState(challengeList, topBannerList)
