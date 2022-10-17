@@ -51,6 +51,7 @@ class MainActivity : AppCompatActivity() {
         val mainScreenState by viewModel.mainScreenState.observeAsState()
         val filterState by viewModel.filterState.observeAsState()
         val state by viewModel.userChallengeListState.observeAsState()
+        val isRefreshing by viewModel.isRefreshing.observeAsState(false)
 
         Column(
             modifier = Modifier.fillMaxSize()
@@ -62,8 +63,13 @@ class MainActivity : AppCompatActivity() {
                     filterState = filterState!!,
                     clickListener = mainClickListener,
                     userChallengeListState = state,
+                    isRefreshing = isRefreshing,
                     onBottomReached = {
                         onBottomReached()
+                    },
+                    onRefresh = {
+                        viewModel.isRefreshing(true)
+                        init()
                     }
                 )
             }
@@ -71,7 +77,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun init() {
-        viewModel.getChallengeList()
+        viewModel.getChallengeList(isInit = true)
         viewModel.getUserChallengeList()
         viewModel.selectPeriodType("")
         viewModel.selectPeriod("")

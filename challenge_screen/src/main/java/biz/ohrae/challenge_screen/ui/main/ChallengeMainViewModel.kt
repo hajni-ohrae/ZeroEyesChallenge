@@ -32,6 +32,7 @@ class ChallengeMainViewModel @Inject constructor(
     private val _tokenValid = MutableLiveData<Boolean>()
     private val _userData = MutableLiveData<User>()
     private val _listPage = MutableLiveData(1)
+    private val _isRefreshing = MutableLiveData(false)
 
     val filterState get() = _filterState
     val mainScreenState get() = _mainScreenState
@@ -39,6 +40,7 @@ class ChallengeMainViewModel @Inject constructor(
     val userChallengeListState get() = _userChallengeListState
     val userData get() = _userData
     val listPage get() = _listPage
+    val isRefreshing get() = _isRefreshing
 
     init {
 //        login()
@@ -78,8 +80,12 @@ class ChallengeMainViewModel @Inject constructor(
         period: String = "",
         is_like:String = "",
         is_adult_only: String = "",
+        isInit: Boolean = false,
     ) {
         viewModelScope.launch {
+            if (isInit) {
+                _listPage.value = 1
+            }
             val page = listPage.value ?: 1
 
             val response = challengeMainRepo.getChallenges(
@@ -92,6 +98,7 @@ class ChallengeMainViewModel @Inject constructor(
                 page
             )
             response.flowOn(Dispatchers.IO).collect {
+                _isRefreshing.value = false
                 it.data?.let { data ->
                     val pager = it.pager
 
@@ -172,5 +179,9 @@ class ChallengeMainViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun isRefreshing(isRefreshing: Boolean) {
+        _isRefreshing.value = isRefreshing
     }
 }

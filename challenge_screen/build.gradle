@@ -125,6 +125,7 @@ dependencies {
     implementation accompanistNavigationAnimation
     implementation accompanistFlowLayout
     implementation accompanistWebView
+    implementation accompanistSwipeRefresh
 
     // Timber
     implementation timber

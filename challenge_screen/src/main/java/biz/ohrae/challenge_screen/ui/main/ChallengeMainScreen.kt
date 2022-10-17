@@ -38,6 +38,8 @@ import biz.ohrae.challenge_screen.util.OnBottomReached
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import timber.log.Timber
 
 @Preview(
@@ -51,7 +53,9 @@ fun ChallengeMainScreen(
     clickListener: MainClickListener? = null,
     filterState: FilterState = FilterState.mock(),
     userChallengeListState: UserChallengeListState? = null,
-    onBottomReached: () -> Unit = {}
+    isRefreshing: Boolean = false,
+    onBottomReached: () -> Unit = {},
+    onRefresh: () -> Unit = {}
 ) {
     Spacer(modifier = Modifier.height(16.dp))
     Column(
@@ -64,13 +68,20 @@ fun ChallengeMainScreen(
                 .fillMaxSize()
                 .fillMaxWidth()
         ) {
-            ChallengeList(
-                mainScreenState = mainScreenState,
-                clickListener = clickListener,
-                filterState = filterState,
-                userChallengeListState = userChallengeListState,
-                onBottomReached = onBottomReached
-            )
+            SwipeRefresh(
+                state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
+                onRefresh = {
+                    onRefresh()
+                }
+            ) {
+                ChallengeList(
+                    mainScreenState = mainScreenState,
+                    clickListener = clickListener,
+                    filterState = filterState,
+                    userChallengeListState = userChallengeListState,
+                    onBottomReached = onBottomReached
+                )
+            }
             IconButton(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
@@ -107,7 +118,7 @@ private fun ChallengeList(
             .fillMaxWidth()
             .fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(8.dp),
-        state = listState
+        state = listState,
     ) {
         item {
             ItemHeader(

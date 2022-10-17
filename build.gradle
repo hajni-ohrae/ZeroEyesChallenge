@@ -76,6 +76,7 @@ buildscript {
         accompanistNavigationAnimation = "com.google.accompanist:accompanist-navigation-animation:$accompanist"
         accompanistFlowLayout = "com.google.accompanist:accompanist-flowlayout:$accompanist"
         accompanistWebView = "com.google.accompanist:accompanist-webview:$accompanist"
+        accompanistSwipeRefresh = "com.google.accompanist:accompanist-swiperefresh:$accompanist"
 
         /** retrofit2 **/
         retrofit2_version = '2.9.0'
