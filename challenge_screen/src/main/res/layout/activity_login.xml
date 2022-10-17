@@ -24,7 +24,7 @@
                 android:layout_marginStart="18dp"
                 android:layout_marginTop="20dp"
                 android:text="휴대폰번호"
-                android:textColor="@color/black"
+                android:textColor="#121212"
                 android:textSize="16dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

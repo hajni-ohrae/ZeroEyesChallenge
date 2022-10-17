@@ -1,0 +1,226 @@
+{
+  "project_info": {
+    "project_number": "666734454852",
+    "project_id": "mooin-da5d9",
+    "storage_bucket": "mooin-da5d9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:666734454852:android:5141731fdbd98dcccab411",
+        "android_client_info": {
+          "package_name": "biz.ohrae.challenge"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "666734454852-nu2pljth4nnuuva31511f7la05o2pqee.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6-EJ0AJzIcoPaYxRu_lxrq5yX3nPVqeM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "666734454852-nu2pljth4nnuuva31511f7la05o2pqee.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "666734454852-attgjkfln6gjjpjtocd9jimqhumepfoj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "kr.mooin.zeroeyes"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:666734454852:android:2e1b11ccdd7f8670cab411",
+        "android_client_info": {
+          "package_name": "biz.ohrae.mooin_shop_in"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "666734454852-nu2pljth4nnuuva31511f7la05o2pqee.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6-EJ0AJzIcoPaYxRu_lxrq5yX3nPVqeM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "666734454852-nu2pljth4nnuuva31511f7la05o2pqee.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "666734454852-attgjkfln6gjjpjtocd9jimqhumepfoj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "kr.mooin.zeroeyes"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:666734454852:android:90b8c60dd52a368dcab411",
+        "android_client_info": {
+          "package_name": "biz.ohrae.mooin_shop_out"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "666734454852-nu2pljth4nnuuva31511f7la05o2pqee.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6-EJ0AJzIcoPaYxRu_lxrq5yX3nPVqeM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "666734454852-nu2pljth4nnuuva31511f7la05o2pqee.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "666734454852-attgjkfln6gjjpjtocd9jimqhumepfoj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "kr.mooin.zeroeyes"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:666734454852:android:b64624363ac83dc3cab411",
+        "android_client_info": {
+          "package_name": "com.ohrae.mooin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "666734454852-nu2pljth4nnuuva31511f7la05o2pqee.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6-EJ0AJzIcoPaYxRu_lxrq5yX3nPVqeM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "666734454852-nu2pljth4nnuuva31511f7la05o2pqee.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "666734454852-attgjkfln6gjjpjtocd9jimqhumepfoj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "kr.mooin.zeroeyes"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:666734454852:android:2ce6a65ccccfc899cab411",
+        "android_client_info": {
+          "package_name": "kr.mooin.zedev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "666734454852-nu2pljth4nnuuva31511f7la05o2pqee.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6-EJ0AJzIcoPaYxRu_lxrq5yX3nPVqeM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "666734454852-nu2pljth4nnuuva31511f7la05o2pqee.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "666734454852-attgjkfln6gjjpjtocd9jimqhumepfoj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "kr.mooin.zeroeyes"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:666734454852:android:d10cd24279742df5cab411",
+        "android_client_info": {
+          "package_name": "kr.mooin.zeroeyes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "666734454852-nu2pljth4nnuuva31511f7la05o2pqee.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6-EJ0AJzIcoPaYxRu_lxrq5yX3nPVqeM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "666734454852-nu2pljth4nnuuva31511f7la05o2pqee.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "666734454852-attgjkfln6gjjpjtocd9jimqhumepfoj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "kr.mooin.zeroeyes"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
