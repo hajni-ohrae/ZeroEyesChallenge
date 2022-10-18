@@ -58,7 +58,7 @@ class ChallengeDetailRepo @Inject constructor(
     ): Flow<FlowResult> {
         val accessToken = prefs.getUserData()?.access_token
         val response =
-            apiService.getUsersByChallenge(accessToken.toString(), page, count, challengeId)
+            apiService.getUsersByChallenge(accessToken.toString(), challengeId, page, count)
 
         when (response) {
             is NetworkResponse.Success -> {

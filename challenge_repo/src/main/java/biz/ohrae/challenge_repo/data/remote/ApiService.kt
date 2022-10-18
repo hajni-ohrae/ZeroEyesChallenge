@@ -25,8 +25,8 @@ interface ApiService {
     @GET(Routes.GET_ALL_CHALLENGE)
     suspend fun getAllChallenge(
         @Header("x-access-token") accessToken: String,
-        @Header("page") page: Int,
-        @Header("per_page") perPage: Int,
+        @Query("page") page: Int,
+        @Query("per_page") perPage: Int,
         @Query("payment_type") paymentType: String,
         @Query("verification_period_type") verificationPeriodType: String,
         @Query("is_like") isLike: String? = "",
@@ -66,9 +66,9 @@ interface ApiService {
     @GET(Routes.GET_USERS_BY_CHALLENGE)
     suspend fun getUsersByChallenge(
         @Header("x-access-token") accessToken: String,
-        @Header("page") page: Int,
-        @Header("per_page") count: Int,
         @Path("challenge_id") challengeId: String,
+        @Query("page") page: Int,
+        @Query("per_page") count: Int,
     ): NetworkResponse<Result2, Error>
 
     @POST(Routes.REQUEST_PAYMENT)
@@ -83,15 +83,15 @@ interface ApiService {
     @POST(Routes.GET_PAYMENT_HISTORY)
     suspend fun getPaymentHistory(
         @Header("x-access-token") accessToken: String,
-        @Header("page") page: Int,
-        @Header("per_page") count: Int,
+        @Query("page") page: Int,
+        @Query("per_page") count: Int,
     ): NetworkResponse<Result, Error>
 
     @POST(Routes.GET_REWARD_HISTORY)
     suspend fun getRewardHistory(
         @Header("x-access-token") accessToken: String,
-        @Header("page") page: Int,
-        @Header("per_page") count: Int,
+        @Query("page") page: Int,
+        @Query("per_page") count: Int,
     ): NetworkResponse<Result, Error>
 
     @GET(Routes.GET_ALL_WARNING)
@@ -109,8 +109,8 @@ interface ApiService {
     @POST(Routes.GET_RADCARD_LIST)
     suspend fun getRedCardList(
         @Header("x-access-token") accessToken: String,
-        @Header("page") page: Int,
-        @Header("per_page") count: Int,
+        @Query("page") page: Int,
+        @Query("per_page") count: Int,
     ): NetworkResponse<Result, Error>
 
     @GET(Routes.GET_ALL_BLOCK)
@@ -173,8 +173,8 @@ interface ApiService {
         @Path("challenge_id") challengeId: String,
         @Header("x-access-token") accessToken: String,
         @Body body: JsonObject?,
-        @Header("page") page: Int,
-        @Header("per_page") perPage: Int,
+        @Query("page") page: Int,
+        @Query("per_page") perPage: Int,
         @Query("payment_type") paymentType: String = "",
         @Query("verification_period_type") verificationPeriodType: String = "",
         @Query("per_week") perWeek: String? = "",
@@ -207,8 +207,8 @@ interface ApiService {
     @GET(Routes.GET_USER_CHALLENGE_LIST)
     suspend fun getUserChallengeList(
         @Header("x-access-token") accessToken: String,
-        @Header("page") page: Int,
-        @Header("per_page") perPage: Int,
+        @Query("page") page: Int,
+        @Query("per_page") perPage: Int,
         @Query("status") status:String = ""
     ): NetworkResponse<Result2, Error>
 
