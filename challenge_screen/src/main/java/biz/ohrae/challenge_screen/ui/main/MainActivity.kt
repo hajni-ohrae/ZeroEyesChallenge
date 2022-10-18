@@ -27,6 +27,11 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : BaseActivity() {
     private lateinit var viewModel: ChallengeMainViewModel
     private lateinit var mainClickListener: MainClickListener
+    private lateinit var periodTypeValue:String
+    private lateinit var perWeekValue:String
+    private lateinit var periodValue:String
+    private lateinit var adultOnlyValue:String
+    private lateinit var paymentType:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -124,8 +129,13 @@ class MainActivity : BaseActivity() {
                             period: String,
                             isAdultOnly: String
                         ) {
-                            viewModel.isLoading(true)
                             val selectedFilterType = viewModel.filterState.value?.selectFilterType
+                            paymentType = selectedFilterType.toString()
+                            periodTypeValue = verificationPeriodType
+                            perWeekValue = perWeek
+                            periodValue = period
+                            adultOnlyValue = isAdultOnly
+                            viewModel.isLoading(true)
                             viewModel.getChallengeList(
                                 selectedFilterType.toString(),
                                 verificationPeriodType,
@@ -197,7 +207,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun onBottomReached() {
-        viewModel.getChallengeList()
+        viewModel.getChallengeList(paymentType,periodTypeValue,perWeekValue,periodValue, is_adult_only = adultOnlyValue)
     }
 
     private fun goDetail(id: String, isParticipant: Boolean = false) {

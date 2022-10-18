@@ -11,6 +11,7 @@ import com.google.gson.JsonElement
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -20,28 +21,31 @@ class ChallengeMainRepo @Inject constructor(
     private val prefs: SharedPreference
 ) {
     suspend fun getChallenges(
-        paymentType: String = "",
-        verificationPeriodType: String = "",
-        per_week: String = "",
-        period: String = "",
-        is_adult_only: String = "",
-        is_like:String = "",
+        paymentType: String,
+        verificationPeriodType: String,
+        per_week: String,
+        period: String,
+        is_adult_only: String,
+        is_like: String,
         page: Int = 1,
         perPage: Int = 10,
     ): Flow<FlowResult> {
         val accessToken = prefs.getUserData()?.access_token
+        Timber.e("getAllChallenge : ${paymentType}, ${verificationPeriodType}, ${per_week},${period},${is_adult_only}")
+
         val response =
             apiService.getAllChallenge(
-                accessToken.toString(),
-                page.toInt(),
-                perPage.toInt(),
-                paymentType,
-                verificationPeriodType,
-                is_like,
-                per_week,
-                period,
-                is_adult_only
+                accessToken = accessToken.toString(),
+                page = page.toInt(),
+                perPage = perPage.toInt(),
+                paymentType = paymentType,
+                verificationPeriodType = verificationPeriodType,
+                isLike = is_like,
+                perWeek = per_week,
+                period = period,
+                isAdultOnly = is_adult_only
             )
+
 
         when (response) {
             is NetworkResponse.Success -> {
@@ -52,7 +56,8 @@ class ChallengeMainRepo @Inject constructor(
                     dataset?.let {
 
                         val dataSet: JsonElement = dataset?.getAsJsonArray("array")!!.asJsonArray
-                        val pager = gson.fromJson(dataset.get("meta").toString(), PagerMeta::class.java)
+                        val pager =
+                            gson.fromJson(dataset.get("meta").toString(), PagerMeta::class.java)
 
                         val listType = object : TypeToken<List<ChallengeData?>?>() {}.type
                         val challengeList = gson.fromJson<List<ChallengeData>>(dataSet, listType)
@@ -82,10 +87,11 @@ class ChallengeMainRepo @Inject constructor(
 
     suspend fun getUserChallengeList(
         page: Int = 1,
-        perPage: Int = 10,): Flow<FlowResult> {
+        perPage: Int = 10,
+    ): Flow<FlowResult> {
         val accessToken = prefs.getUserData()?.access_token
         val response =
-            apiService.getUserChallengeList(accessToken.toString(),page, perPage)
+            apiService.getUserChallengeList(accessToken.toString(), page, perPage)
         when (response) {
             is NetworkResponse.Success -> {
                 val gson = Gson()
