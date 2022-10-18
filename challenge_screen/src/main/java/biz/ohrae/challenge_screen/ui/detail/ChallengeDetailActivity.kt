@@ -268,6 +268,10 @@ class ChallengeDetailActivity : BaseActivity() {
                 intent.putExtra("challengeId", challengeId)
                 startActivity(intent)
             }
+
+            override fun onClickCaution() {
+
+            }
         }
     }
 
@@ -350,4 +354,5 @@ sealed class ChallengeDetailNavScreen(val route: String) {
     object AuthCameraPreview : ChallengeDetailNavScreen("AuthCameraPreview")
     object AuthCameraResult : ChallengeDetailNavScreen("AuthCameraResult")
     object AuthWrite : ChallengeDetailNavScreen("AuthWrite")
+    object Caution : ChallengeDetailNavScreen("Caution")
 }

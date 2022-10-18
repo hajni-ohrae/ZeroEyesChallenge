@@ -79,6 +79,8 @@ data class Summary(
     val attend_cnt: Int = 0,
     val achievement_cnt: Int = 0,
     val achievement_percent: Int = 0,
+    val total_amount: Int? = 0,
+    val average_amount: Int? = 0
 )
 
 data class InChallenge(

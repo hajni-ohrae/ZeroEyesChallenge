@@ -102,6 +102,7 @@ fun ImageBoxWithExampleTitle(
                 color = TextBlack
             )
         }
+        Spacer(modifier = Modifier.height(9.dp))
         ImageBox(
             modifier = Modifier
                 .fillMaxWidth()

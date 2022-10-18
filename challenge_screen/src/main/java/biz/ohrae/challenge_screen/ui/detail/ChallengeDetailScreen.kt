@@ -135,7 +135,10 @@ fun ChallengeDetailScreen(
                     .fillMaxWidth()
                     .aspectRatio(3.71f),
                 text = "챌린지 이용 주의사항",
-                textColor = TextBlack
+                textColor = TextBlack,
+                onClick = {
+                    clickListener?.onClickCaution()
+                }
             )
             Divider(
                 modifier = Modifier

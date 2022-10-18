@@ -126,11 +126,15 @@ object Utils {
         return result.trim { it <= ' ' }
     }
 
-    fun numberFormat(price: Int): String {
-        try {
-            return DecimalFormat("###,###").format(price)
-        } catch (ignore: Exception) {
-            return price.toString()
+    fun numberFormat(price: Int?): String {
+        return if (price == null) {
+            "0"
+        } else {
+            try {
+                DecimalFormat("###,###").format(price)
+            } catch (ignore: Exception) {
+                price.toString()
+            }
         }
     }
 

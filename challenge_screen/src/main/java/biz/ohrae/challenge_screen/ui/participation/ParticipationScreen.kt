@@ -319,7 +319,7 @@ fun ParticipationDetailCard(challengeData: ChallengeData) {
                     color = Color(0xff4f4f4f)
                 )
                 Text(
-                    text = "0명",
+                    text = "${Utils.numberFormat(challengeData.summary?.total_user_cnt)}명",
                     style = myTypography.bold,
                     fontSize = dpToSp(dp = 13.dp)
                 )
@@ -337,7 +337,7 @@ fun ParticipationDetailCard(challengeData: ChallengeData) {
                     color = Color(0xff4f4f4f)
                 )
                 Text(
-                    text = "총 1,000원",
+                    text = "총 ${Utils.numberFormat(challengeData.summary?.total_amount)}원",
                     style = myTypography.bold,
                     fontSize = dpToSp(dp = 13.dp)
                 )
@@ -355,7 +355,7 @@ fun ParticipationDetailCard(challengeData: ChallengeData) {
                     color = Color(0xff4f4f4f)
                 )
                 Text(
-                    text = "100원",
+                    text = "${Utils.numberFormat(challengeData.summary?.average_amount)}원",
                     style = myTypography.w500,
                     fontSize = dpToSp(dp = 13.dp)
                 )
