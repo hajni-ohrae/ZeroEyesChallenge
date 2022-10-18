@@ -62,7 +62,7 @@ fun Avatar(
     url: String = "https://avatars.githubusercontent.com/u/27887884?v=4",
 ) {
     Image(
-        painter = painterResource(id = R.drawable.icon_user),
+        painter = painterResource(id = R.drawable.profile_picture),
         modifier = modifier.clip(CircleShape),
         contentDescription = "avatar_fail"
     )
@@ -81,10 +81,10 @@ fun circularAvatar(
         imageModel = if (url.isNullOrEmpty()) R.drawable.profile_picture else url,
         contentScale = ContentScale.Crop,
         contentDescription = "avatar",
-        previewPlaceholder = R.drawable.icon_user,
+        previewPlaceholder = R.drawable.profile_picture,
         failure = {
             Image(
-                painter = painterResource(id = R.drawable.icon_user),
+                painter = painterResource(id = R.drawable.profile_picture),
                 modifier = modifier.clip(CircleShape),
                 contentDescription = "avatar_fail"
             )
@@ -111,10 +111,10 @@ fun AvatarWithNumber(
             imageModel = url,
             contentScale = ContentScale.Crop,
             contentDescription = "avatar",
-            previewPlaceholder = R.drawable.icon_user,
+            previewPlaceholder = R.drawable.profile_picture,
             failure = {
                 Image(
-                    painter = painterResource(id = R.drawable.icon_user),
+                    painter = painterResource(id = R.drawable.profile_picture),
                     modifier = modifier.clip(CircleShape),
                     contentDescription = "avatar_fail"
                 )

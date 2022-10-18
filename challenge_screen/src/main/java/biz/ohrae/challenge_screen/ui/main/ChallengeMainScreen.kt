@@ -10,7 +10,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,7 +25,6 @@ import biz.ohrae.challenge.ui.theme.DefaultBlack
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
-import biz.ohrae.challenge.util.challengeDetailStatusMap
 import biz.ohrae.challenge.util.challengeVerificationPeriodMap
 import biz.ohrae.challenge_component.R
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
@@ -75,13 +74,15 @@ fun ChallengeMainScreen(
                     onRefresh()
                 }
             ) {
-                ChallengeList(
-                    mainScreenState = mainScreenState,
-                    clickListener = clickListener,
-                    filterState = filterState,
-                    userChallengeListState = userChallengeListState,
-                    onBottomReached = onBottomReached
-                )
+                if (userChallengeListState != null) {
+                    ChallengeList(
+                        mainScreenState = mainScreenState,
+                        clickListener = clickListener,
+                        filterState = filterState,
+                        userChallengeListState = userChallengeListState,
+                        onBottomReached = onBottomReached
+                    )
+                }
             }
             IconButton(
                 modifier = Modifier
@@ -109,7 +110,7 @@ private fun ChallengeList(
     mainScreenState: MainScreenState? = null,
     clickListener: MainClickListener? = null,
     filterState: FilterState = FilterState.mock(),
-    userChallengeListState: UserChallengeListState? = null,
+    userChallengeListState: UserChallengeListState,
     onBottomReached: () -> Unit = {}
 ) {
     val listState = rememberLazyListState()
@@ -129,7 +130,6 @@ private fun ChallengeList(
                 userChallengeListState = userChallengeListState
             )
         }
-        Timber.e("list size ${mainScreenState?.challengeList!!.size}")
         items(mainScreenState?.challengeList!!, key = { item -> item.id }) { item ->
             val startDay = Utils.getRemainTimeDays(item.start_date.toString())
             val type = challengeVerificationPeriodMap[item.verification_period_type]
@@ -179,7 +179,7 @@ fun ItemHeader(
         if (userChallengeListState != null && !userChallengeListState.userChallengeList.isNullOrEmpty()) {
             InChallenges(
                 clickListener = clickListener,
-                userChallengeList = userChallengeListState.userChallengeList
+                userChallengeList = userChallengeListState.userChallengeList!!
             )
         }
         FilterCard(clickListener = clickListener, filterState, filterState.selectFilterType)
@@ -255,7 +255,3 @@ fun FilterCard(
             onClick = { clickListener?.onClickFilterType("filter") })
     }
 }
-
-
-
-

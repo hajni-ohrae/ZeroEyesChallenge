@@ -20,6 +20,7 @@ object Utils {
     var sdf: SimpleDateFormat? = null
     var sdf2: SimpleDateFormat? = null
     var sdf3: SimpleDateFormat? = null
+    var sdf4: SimpleDateFormat? = null
     var sdfDiffDay: SimpleDateFormat? = null
     var sdfSameDay: SimpleDateFormat? = null
 
@@ -286,6 +287,14 @@ object Utils {
             sdf3?.timeZone = TimeZone.getTimeZone("Asia/Seoul")
         }
         return sdf3!!
+    }
+
+    fun sdf4(): SimpleDateFormat {
+        if (sdf4 == null) {
+            sdf4 = SimpleDateFormat("yyyy.MM.dd HH:mm a", Locale.KOREA)
+            sdf4?.timeZone = TimeZone.getTimeZone("Asia/Seoul")
+        }
+        return sdf4!!
     }
 
     fun sdfDiffDay(): SimpleDateFormat? {
