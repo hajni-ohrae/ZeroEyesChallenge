@@ -153,6 +153,7 @@ class ChallengeRegisterViewModel @Inject constructor(
         val state = _challengeData.value?.copy()
         state?.let {
             it.end_date = Utils.addWeeks(it.start_date.toString(), weeks)
+            it.period = weeks
             _challengeData.value = it
         }
     }
