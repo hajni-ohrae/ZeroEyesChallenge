@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.flow
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
 
@@ -54,11 +53,12 @@ class RegisterRepo @Inject constructor(
                 val isSuccess = response.body.success
                 return if (isSuccess) {
                     flow {
-                        emit(FlowResult(true, "", ""))
+                        val resultData = gson.fromJson(response.body.dataset, ChallengeData::class.java)
+                        emit(FlowResult(resultData.id, "", ""))
                     }
                 } else {
                     flow {
-                        emit(FlowResult(false, response.body.code, response.body.message))
+                        emit(FlowResult(null, response.body.code, response.body.message))
                     }
                 }
             }

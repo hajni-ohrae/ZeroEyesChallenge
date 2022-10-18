@@ -1,8 +1,5 @@
 package biz.ohrae.challenge_screen.ui.dialog
 
-import android.graphics.Bitmap
-
-
 interface CustomDialogListener {
     fun clickPositive()
     fun clickNegative()

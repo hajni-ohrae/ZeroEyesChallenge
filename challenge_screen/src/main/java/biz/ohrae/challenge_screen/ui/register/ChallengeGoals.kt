@@ -64,7 +64,7 @@ fun ChallengeGoals(
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "인증 빈도",
+                text = "목표 입력",
                 style = myTypography.w700,
                 fontSize = dpToSp(dp = 16.dp),
                 color = DefaultBlack
@@ -95,7 +95,7 @@ fun ChallengeGoals(
                     .background(Color(0xfff8f8f8))
                     .fillMaxWidth()
                     .aspectRatio(1.316f),
-                imageUri = challengeImageUri.toString(),
+                imageUri = challengeImageUri?.toString(),
                 onclick = {
                     clickListener?.onClickPhotoBox()
                 }

@@ -63,7 +63,7 @@ fun UploadPhotoBox(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if (imageUri != null) {
+            if (!imageUri.isNullOrEmpty() && imageUri.toString() != "null") {
                 GlideImage(imageModel = imageUri)
             } else {
                 Column(

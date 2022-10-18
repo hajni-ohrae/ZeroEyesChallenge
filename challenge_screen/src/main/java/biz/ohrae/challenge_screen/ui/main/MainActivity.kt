@@ -3,7 +3,6 @@ package biz.ohrae.challenge_screen.ui.main
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -52,6 +51,14 @@ class MainActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
         init()
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        val challengeId = intent?.getStringExtra("challengeId")
+        if (challengeId != null) {
+            goDetail(challengeId, true)
+        }
     }
 
     @Composable
@@ -193,9 +200,10 @@ class MainActivity : BaseActivity() {
         viewModel.getChallengeList()
     }
 
-    private fun goDetail(id: String) {
+    private fun goDetail(id: String, isParticipant: Boolean = false) {
         val intent = Intent(this, ChallengeDetailActivity::class.java)
         intent.putExtra("challengeId", id)
+        intent.putExtra("isParticipant", isParticipant)
         startActivity(intent)
     }
 

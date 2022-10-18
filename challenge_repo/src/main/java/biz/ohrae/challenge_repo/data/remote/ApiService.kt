@@ -18,7 +18,9 @@ interface ApiService {
     ): NetworkResponse<Result, Error>
 
     @GET(Routes.AUTH_TOKEN_REFRESH)
-    suspend fun authTokenRefresh(): NetworkResponse<Result, Error>
+    suspend fun authTokenRefresh(
+        @Header("x-refresh-token") refreshToken: String
+    ): NetworkResponse<Result, Error>
 
     @GET(Routes.GET_ALL_CHALLENGE)
     suspend fun getAllChallenge(

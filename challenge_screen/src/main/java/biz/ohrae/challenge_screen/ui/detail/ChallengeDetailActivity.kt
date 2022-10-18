@@ -45,9 +45,11 @@ import timber.log.Timber
 class ChallengeDetailActivity : BaseActivity() {
     private lateinit var viewModel: ChallengeDetailViewModel
     private lateinit var navController: NavHostController
-    private var challengeId: String? = null
     private lateinit var detailClickListener: ChallengeDetailClickListener
     private lateinit var capturedCallback: ImageCapture.OnImageSavedCallback
+
+    private var challengeId: String? = null
+    private var isParticipant: Boolean = false
 
     private lateinit var launcher: ActivityResultLauncher<Intent>
 
@@ -56,6 +58,7 @@ class ChallengeDetailActivity : BaseActivity() {
         viewModel = ViewModelProvider(this)[ChallengeDetailViewModel::class.java]
 
         challengeId = intent.getStringExtra("challengeId")
+        isParticipant = intent.getBooleanExtra("isParticipant", false)
 
         setContent {
             ChallengeInTheme {
@@ -127,7 +130,8 @@ class ChallengeDetailActivity : BaseActivity() {
             composable(ChallengeDetailNavScreen.Detail.route) {
                 ChallengeDetailScreen(
                     challengeData = challengeData,
-                    clickListener = detailClickListener
+                    clickListener = detailClickListener,
+                    isParticipant = isParticipant
                 )
             }
             composable(ChallengeDetailNavScreen.JoinedDetail.route) {

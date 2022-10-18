@@ -28,7 +28,7 @@ class ChallengeRegisterViewModel @Inject constructor(
     private val gson: Gson
 ) : BaseViewModel(prefs) {
     private val _challengeData = MutableLiveData<ChallengeData>()
-    private val _isChallengeCreate = MutableLiveData<Boolean?>(false)
+    private val _createdChallengeId = MutableLiveData<String>()
     private val _challengeImageUri = MutableLiveData<Uri?>(null)
     private val _checkAdultOnly = MutableLiveData<Int?>(0)
     private val _screenState = MutableLiveData<ChallengeOpenState>()
@@ -38,7 +38,7 @@ class ChallengeRegisterViewModel @Inject constructor(
     private val _uploadedImage = MutableLiveData<ImageBucket>(null)
 
     val challengeData get() = _challengeData
-    val isChallengeCreate get() = _isChallengeCreate
+    val createdChallengeId get() = _createdChallengeId
     val challengeImageUri get() = _challengeImageUri
     val checkAdultOnly get() = _checkAdultOnly
     val screenState get() = _screenState
@@ -57,9 +57,10 @@ class ChallengeRegisterViewModel @Inject constructor(
             val response = registerRepo.createChallenge(userId.toString(), challengeData, imageFileId)
             response.flowOn(Dispatchers.IO).collect { it ->
                 it.data?.let { data ->
-                    _isChallengeCreate.value = data as Boolean
+                    _createdChallengeId.value = data as String
                 } ?: run {
-                    _isChallengeCreate.value = null
+                    _createdChallengeId.value = null
+                    setErrorData(it.errorCode, it.errorMessage)
                 }
             }
         }

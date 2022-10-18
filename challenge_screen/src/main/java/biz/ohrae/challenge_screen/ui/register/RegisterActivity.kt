@@ -37,9 +37,7 @@ import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.util.FileUtils
 import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.ui.BaseActivity
-import biz.ohrae.challenge_screen.ui.dialog.CalendarDialog
-import biz.ohrae.challenge_screen.ui.dialog.CalendarDialogListener
-import biz.ohrae.challenge_screen.ui.dialog.LoadingDialog
+import biz.ohrae.challenge_screen.ui.dialog.*
 import biz.ohrae.challenge_screen.ui.main.MainActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
@@ -329,13 +327,10 @@ class RegisterActivity : BaseActivity() {
     }
 
     override fun observeViewModels() {
-        viewModel.isChallengeCreate.observe(this) {
+        viewModel.createdChallengeId.observe(this) {
             viewModel.isLoading(false)
-            if (it == true) {
-                val intent = Intent(this@RegisterActivity, MainActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                startActivity(intent)
-                finish()
+            it?.let {
+                showParticipantDialog(it)
             }
         }
 
@@ -351,6 +346,12 @@ class RegisterActivity : BaseActivity() {
                 }
             } ?: run {
                 viewModel.isLoading(false)
+            }
+        }
+
+        viewModel.errorData.observe(this) {
+            it?.let {
+                showSnackBar(it.code, it.message)
             }
         }
     }
@@ -432,6 +433,35 @@ class RegisterActivity : BaseActivity() {
         values.put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis() / 1000)
         values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis())
         return contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+    }
+
+    private fun showParticipantDialog(challengeId: String?) {
+        val dialog = ConfirmDialog(positiveBtnName = "지금 바로 참여", negativeBtnName = "나중에")
+        dialog.isCancelable = false
+        dialog.setListener(object : CustomDialogListener {
+            override fun clickPositive() {
+                dialog.dismiss()
+                goMain(true, challengeId)
+            }
+
+            override fun clickNegative() {
+                dialog.dismiss()
+                goMain()
+            }
+        })
+
+        dialog.show(supportFragmentManager, "confirmDialog")
+    }
+
+    private fun goMain(isParticipant: Boolean = false, challengeId: String? = null) {
+        val intent = Intent(this@RegisterActivity, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        if (isParticipant) {
+            intent.putExtra("challengeId", challengeId)
+        }
+        startActivity(intent)
+        finish()
     }
 }
 

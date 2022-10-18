@@ -1,15 +1,12 @@
 package biz.ohrae.challenge_repo.ui.main
 
-import android.service.autofill.UserData
 import biz.ohrae.challenge_repo.data.remote.ApiService
 import biz.ohrae.challenge_repo.data.remote.NetworkResponse
 import biz.ohrae.challenge_repo.model.FlowResult
-import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.model.user.PaymentHistoryState
 import biz.ohrae.challenge_repo.model.user.RedCardState
 import biz.ohrae.challenge_repo.model.user.RewardData
 import biz.ohrae.challenge_repo.model.user.User
-import biz.ohrae.challenge_repo.model.verify.VerifyData
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import com.google.gson.Gson
 import com.google.gson.JsonArray
@@ -83,14 +80,37 @@ class UserRepo @Inject constructor(
         when (response) {
             is NetworkResponse.Success -> {
                 val isSuccess = response.body.success
-                return flow {
-                    emit(FlowResult(isSuccess, "", ""))
+                if (isSuccess) {
+                    return flow {
+                        emit(FlowResult(isSuccess, "", ""))
+                    }
+                } else {
+                    return flow {
+                        val isRefreshed = refreshToken()
+                        emit(FlowResult(isRefreshed, "", ""))
+                    }
                 }
             }
             else -> {
                 return flow {
                     emit(FlowResult(null, "", ""))
                 }
+            }
+        }
+    }
+
+    suspend fun refreshToken(): Boolean {
+        val user = prefs.getUserData()
+        if (user == null) {
+            return false
+        }
+        val response = apiService.authTokenRefresh(user.refresh_token)
+        when (response) {
+            is NetworkResponse.Success -> {
+                return response.body.success
+            }
+            else -> {
+                return false
             }
         }
     }

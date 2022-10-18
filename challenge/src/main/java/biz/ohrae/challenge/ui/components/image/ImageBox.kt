@@ -49,12 +49,13 @@ private fun ImageBoxGallery(
 fun ImageBox(
     modifier: Modifier = Modifier,
     imagePath: String,
+    contentScale: ContentScale = ContentScale.Inside
 ) {
     GlideImage(
         modifier = modifier,
         imageModel = imagePath,
         previewPlaceholder = R.drawable.icon_camera,
-        contentScale = ContentScale.Inside,
+        contentScale = contentScale,
         failure = {
             Column(
                 modifier = Modifier.fillMaxSize().background(TextBlack),

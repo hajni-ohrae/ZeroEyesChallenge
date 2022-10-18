@@ -11,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -45,7 +46,8 @@ import biz.ohrae.challenge_repo.model.detail.ChallengeData
 @Composable
 fun ChallengeDetailScreen(
     challengeData: ChallengeData? = ChallengeData.mock(),
-    clickListener: ChallengeDetailClickListener? = null
+    clickListener: ChallengeDetailClickListener? = null,
+    isParticipant: Boolean = false,
 ) {
     if (challengeData == null) {
         return
@@ -55,6 +57,11 @@ fun ChallengeDetailScreen(
     var status by remember { mutableStateOf(challengeDetailStatusMap[challengeData.status]) }
     LaunchedEffect(challengeData) {
         status = challengeDetailStatusMap[challengeData.status]
+    }
+    LaunchedEffect(isParticipant) {
+        if (isParticipant) {
+            scrollState.scrollTo(scrollState.maxValue)
+        }
     }
     val bottomBtnName by remember {
         mutableStateOf(
@@ -77,7 +84,8 @@ fun ChallengeDetailScreen(
                 .fillMaxWidth()
                 .aspectRatio(1.51f)
                 .background(TextBlack),
-            imagePath = challengeData.imageFile?.path.toString()
+            imagePath = challengeData.imageFile?.path.toString(),
+            contentScale = ContentScale.Crop
         )
         Column(
             modifier = Modifier
