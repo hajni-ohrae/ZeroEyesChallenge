@@ -72,7 +72,7 @@ class ChallengeDetailViewModel @Inject constructor(
 
                         for (i in 0 until total) {
                             val verification = Verification(i + 1, Verification.NORMAL)
-                            if (i < today) {
+                            if (i <= today) {
                                 if (verifications.isNullOrEmpty()) {
                                     failCount++
                                     verification.state = Verification.FAIL

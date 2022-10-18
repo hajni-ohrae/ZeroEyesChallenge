@@ -291,7 +291,7 @@ object Utils {
 
     fun sdf4(): SimpleDateFormat {
         if (sdf4 == null) {
-            sdf4 = SimpleDateFormat("yyyy.MM.dd HH:mm a", Locale.KOREA)
+            sdf4 = SimpleDateFormat("yyyy.MM.dd hh:mm a", Locale.KOREA)
             sdf4?.timeZone = TimeZone.getTimeZone("Asia/Seoul")
         }
         return sdf4!!
