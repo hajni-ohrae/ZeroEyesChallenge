@@ -107,7 +107,7 @@ fun ChallengeDurationLabel(
         color = Color(0xfff5f5f5)
     ) {
         Row(
-            modifier = Modifier.padding(20.dp,12.dp)) {
+            modifier = Modifier.padding(0.dp,12.dp)) {
             Text(
                 modifier = Modifier.weight(5F),
                 text = dDay,

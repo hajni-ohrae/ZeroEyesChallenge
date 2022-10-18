@@ -133,13 +133,14 @@ private fun ChallengeList(
         items(mainScreenState?.challengeList!!, key = { item -> item.id }) { item ->
             val startDay = Utils.getRemainTimeDays(item.start_date.toString())
             val type = challengeVerificationPeriodMap[item.verification_period_type]
+            val weekType = if (type.isNullOrEmpty()) "주${item.per_week}회 인증" else type
             ChallengeCardItem(
                 item.id,
                 item.goal.toString(),
                 item.user?.getUserName(),
                 startDay.toString(),
                 item.period.toString(),
-                type.toString(),
+                weekType.toString(),
                 item.summary?.total_user_cnt,
                 getAuthType(item),
                 getOpenType(item),
