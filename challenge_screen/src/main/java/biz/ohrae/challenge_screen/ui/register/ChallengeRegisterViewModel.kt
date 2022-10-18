@@ -153,6 +153,7 @@ class ChallengeRegisterViewModel @Inject constructor(
         val state = _challengeData.value?.copy()
         state?.let {
             it.end_date = Utils.addWeeks(it.start_date.toString(), weeks)
+            it.period = weeks
             _challengeData.value = it
         }
     }
@@ -174,9 +175,9 @@ class ChallengeRegisterViewModel @Inject constructor(
         val state = _challengeData.value?.copy()
         state?.let {
             if (checked) {
-                _checkAdultOnly.value = 1
+                it.is_adult_only = 1
             } else {
-                _checkAdultOnly.value = 0
+                it.is_adult_only = 0
             }
             _challengeData.value = it
         }

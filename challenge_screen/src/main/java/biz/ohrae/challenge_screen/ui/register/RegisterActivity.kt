@@ -167,7 +167,8 @@ class RegisterActivity : BaseActivity() {
                 ChallengerRecruitment(
                     challengeOpenState = screenState,
                     challengeData = challengeDataState,
-                    clickListener = registerClickListener
+                    clickListener = registerClickListener,
+                    viewModel = viewModel
                 )
             }
 

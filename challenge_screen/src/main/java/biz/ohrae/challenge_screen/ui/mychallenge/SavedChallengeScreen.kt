@@ -65,7 +65,7 @@ fun SavedChallengeScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(24.dp, 0.dp),
-                text = "좋아요 한 챌린지가 없습니다.",
+                text = "저장한 챌린지가 없습니다.",
                 style = myTypography.w500,
                 fontSize = dpToSp(dp = 20.dp),
                 color = Color(0xff828282)
