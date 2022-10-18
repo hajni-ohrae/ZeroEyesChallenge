@@ -28,7 +28,8 @@ import biz.ohrae.challenge.ui.theme.myTypography
 
 class ConfirmDialog(
     private var positiveBtnName: String = "확인",
-    private var negativeBtnName: String = "취소"
+    private var negativeBtnName: String = "취소",
+    private var content: String,
 ) : DialogFragment() {
     private lateinit var dialogListener: CustomDialogListener
 
@@ -47,6 +48,7 @@ class ConfirmDialog(
                     listener = dialogListener,
                     positiveBtnName = positiveBtnName,
                     negativeBtnName = negativeBtnName,
+                    content = content,
                 )
             }
         }

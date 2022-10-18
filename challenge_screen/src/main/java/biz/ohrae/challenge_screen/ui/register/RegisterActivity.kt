@@ -438,7 +438,11 @@ class RegisterActivity : BaseActivity() {
     }
 
     private fun showParticipantDialog(challengeId: String?) {
-        val dialog = ConfirmDialog(positiveBtnName = "지금 바로 참여", negativeBtnName = "나중에")
+        val content = "챌린지가 성공적으로 개설되었습니다\n" +
+                "개설자도 참여를 해야 챌린지 진행이 가능합니다\n" +
+                "\n" +
+                "지금 바로 참여하시겠습니까?"
+        val dialog = ConfirmDialog(positiveBtnName = "지금 바로 참여", negativeBtnName = "나중에", content = content)
         dialog.isCancelable = false
         dialog.setListener(object : CustomDialogListener {
             override fun clickPositive() {

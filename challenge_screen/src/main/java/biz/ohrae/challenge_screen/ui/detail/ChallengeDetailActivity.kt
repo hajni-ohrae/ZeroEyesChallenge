@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.WindowManager
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -33,6 +34,8 @@ import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.challengers.ChallengersActivity
+import biz.ohrae.challenge_screen.ui.dialog.ConfirmDialog
+import biz.ohrae.challenge_screen.ui.dialog.CustomDialogListener
 import biz.ohrae.challenge_screen.ui.dialog.LoadingDialog
 import biz.ohrae.challenge_screen.ui.mychallenge.PolicyScreen
 import biz.ohrae.challenge_screen.ui.participation.ParticipationActivity
@@ -57,9 +60,6 @@ class ChallengeDetailActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this)[ChallengeDetailViewModel::class.java]
 
-        challengeId = intent.getStringExtra("challengeId")
-        isParticipant = intent.getBooleanExtra("isParticipant", false)
-
         setContent {
             ChallengeInTheme {
                 val isLoading by viewModel.isLoading.observeAsState(false)
@@ -71,6 +71,9 @@ class ChallengeDetailActivity : BaseActivity() {
                 BuildContent()
             }
         }
+
+        challengeId = intent.getStringExtra("challengeId")
+        isParticipant = intent.getBooleanExtra("isParticipant", false)
 
         initClickListeners()
         observeViewModels()
@@ -151,19 +154,27 @@ class ChallengeDetailActivity : BaseActivity() {
                 )
             }
             composable(ChallengeDetailNavScreen.AuthCameraPreview.route) {
+                BackHandler(true) {
+                    onBack()
+                }
                 ChallengeCameraScreen(
                     capturedCallback = capturedCallback
                 )
             }
             composable(ChallengeDetailNavScreen.AuthCameraResult.route) {
+                BackHandler(true) {
+                    onBack()
+                }
                 val challengeAuthImageUri by viewModel.challengeAuthImageUri.observeAsState()
-
                 ChallengeDetailAuthCameraResultScreen(
                     imageUri = challengeAuthImageUri,
                     clickListener = detailClickListener
                 )
             }
             composable(ChallengeDetailNavScreen.AuthWrite.route) {
+                BackHandler(true) {
+                    onBack()
+                }
                 ChallengeDetailAuthWriteScreen(
                     clickListener = detailClickListener
                 )
@@ -185,10 +196,20 @@ class ChallengeDetailActivity : BaseActivity() {
     }
 
     override fun onBack() {
-        if (navController.currentBackStackEntry?.destination?.route == ChallengeDetailNavScreen.Detail.route) {
-            finish()
-        } else {
-            navController.popBackStack()
+        Timber.e("nav : ${navController.currentBackStackEntry?.destination?.route}")
+        when(navController.currentBackStackEntry?.destination?.route) {
+            ChallengeDetailNavScreen.Detail.route,
+            ChallengeDetailNavScreen.JoinedDetail.route -> {
+                finish()
+            }
+            ChallengeDetailNavScreen.AuthCameraPreview.route,
+            ChallengeDetailNavScreen.AuthCameraResult.route,
+            ChallengeDetailNavScreen.AuthWrite.route -> {
+                showAuthCancelDialog()
+            }
+            else -> {
+                navController.popBackStack()
+            }
         }
     }
 
@@ -325,6 +346,24 @@ class ChallengeDetailActivity : BaseActivity() {
 
     private fun onBottomReached() {
 
+    }
+
+    private fun showAuthCancelDialog() {
+        val dialog = ConfirmDialog(positiveBtnName = "계속 작성", content = "인증이 완료되지 않았습니다\n인증을 취소하시겠습니까?")
+        dialog.isCancelable = false
+        dialog.setListener(object : CustomDialogListener {
+            override fun clickPositive() {
+                dialog.dismiss()
+            }
+
+            override fun clickNegative() {
+                dialog.dismiss()
+                navController.navigate(ChallengeDetailNavScreen.JoinedDetail.route) {
+                    popUpTo(0)
+                }
+            }
+        })
+        dialog.show(supportFragmentManager, "AuthCancelDialog")
     }
 
     @SuppressLint("Range")
