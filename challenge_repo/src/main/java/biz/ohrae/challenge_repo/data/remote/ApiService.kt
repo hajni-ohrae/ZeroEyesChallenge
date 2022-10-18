@@ -29,10 +29,10 @@ interface ApiService {
         @Query("per_page") perPage: Int,
         @Query("payment_type") paymentType: String,
         @Query("verification_period_type") verificationPeriodType: String,
-        @Query("is_like") isLike: String? = "",
-        @Query("per_week") perWeek: String? = "",
-        @Query("period") period: String? = "",
-        @Query("is_adult_only") isAdultOnly: String? = "",
+        @Query("is_like") isLike: String,
+        @Query("per_week") perWeek: String,
+        @Query("period") period: String,
+        @Query("is_adult_only") isAdultOnly: String,
     ): NetworkResponse<Result2, Error>
 
     @GET(Routes.GET_CHALLENGE)

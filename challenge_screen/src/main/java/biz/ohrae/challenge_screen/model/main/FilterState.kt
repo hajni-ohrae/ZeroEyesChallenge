@@ -11,6 +11,7 @@ data class FilterState(
 
     var selectVerificationPeriodType:String ="",
     var selectPeriod:String ="",
+    var selectPreWeek:String ="",
     var selectIsAdultOnly:String ="",
 
     ) {
