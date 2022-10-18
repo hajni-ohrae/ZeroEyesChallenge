@@ -3,9 +3,7 @@ package biz.ohrae.challenge_screen.ui.register
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,6 +38,8 @@ fun ChallengeOpenScreen(
     if (challengeOpenState == null) {
         return
     }
+
+    var selectedPeriod by remember { mutableStateOf(1) }
 
     Column(
         modifier = Modifier
@@ -77,7 +77,9 @@ fun ChallengeOpenScreen(
         ChallengeCalendarCard(
             Utils.convertDate7(challengeData?.start_date.toString()),
             R.drawable.calander,
-            onClick = { clickListener?.onClickCalendar() })
+            onClick = {
+                clickListener?.onClickCalendar()
+            })
         Spacer(modifier = Modifier.height(28.dp))
         Text(
             text = "인증 빈도",
@@ -98,7 +100,10 @@ fun ChallengeOpenScreen(
                 .aspectRatio(7.1f),
             label = "",
             list = challengeOpenState.authCycleList,
-            onSelectItem = { clickListener?.onClickPeriod(it) }
+            onSelectItem = {
+                selectedPeriod = it.value.toInt()
+                clickListener?.onClickPeriod(it)
+            }
         )
 
         MyDropDown(
@@ -128,7 +133,7 @@ fun ChallengeOpenScreen(
                 .fillMaxWidth()
                 .aspectRatio(6f),
             text = "다음(${OPEN}/4)",
-            onClick = { clickListener?.onClickOpenNext() }
+            onClick = { clickListener?.onClickOpenNext(weeks = selectedPeriod) }
         )
     }
 }

@@ -526,6 +526,12 @@ object Utils {
         }
     }
 
+    fun isAfter(dateStr: String): Boolean {
+        val base = dateStr.replace("-", "").toInt()
+        val today = sdf3().format(Date()).replace("-", "").toInt()
+        return base > today
+    }
+
     fun getDaysFromStart(startDate: String): Int {
         var result = 0
         return try {

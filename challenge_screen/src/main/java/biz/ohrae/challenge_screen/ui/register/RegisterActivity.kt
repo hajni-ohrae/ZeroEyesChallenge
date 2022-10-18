@@ -209,7 +209,8 @@ class RegisterActivity : BaseActivity() {
                 navController.navigate(ChallengeRegisterNavScreen.ChallengeOpen.route)
             }
 
-            override fun onClickOpenNext() {
+            override fun onClickOpenNext(weeks: Int) {
+                viewModel.selectPeriod(weeks)
                 viewModel.verificationPeriodType()
                 navController.navigate(ChallengeRegisterNavScreen.ChallengerRecruitment.route)
             }

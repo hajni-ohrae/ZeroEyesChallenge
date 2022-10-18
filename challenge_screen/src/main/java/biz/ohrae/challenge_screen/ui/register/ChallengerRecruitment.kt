@@ -21,6 +21,7 @@ import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.model.register.ChallengeOpenState
+import timber.log.Timber
 
 
 @Preview(
@@ -41,7 +42,7 @@ fun ChallengerRecruitment(
 
     val scrollState = rememberScrollState()
     var checked by remember { mutableStateOf(false) }
-    var selectedDaysPosition by remember { mutableStateOf(challengeOpenState.authCycleList.size - 1) }
+    var selectedDaysPosition by remember { mutableStateOf(challengeOpenState.recruitPeriod.size - 1) }
 
     Column(
         modifier = Modifier
@@ -108,7 +109,7 @@ fun ChallengerRecruitment(
                 .fillMaxWidth()
                 .aspectRatio(7.1f),
             label = "",
-            list = challengeOpenState.authCycleList,
+            list = challengeOpenState.recruitPeriod,
             selectedPosition = selectedDaysPosition,
             onSelectItem = {
                 clickListener?.onClickRecruitDays(it)

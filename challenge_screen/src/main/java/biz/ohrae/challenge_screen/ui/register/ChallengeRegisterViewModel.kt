@@ -2,7 +2,6 @@ package biz.ohrae.challenge_screen.ui.register
 
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import biz.ohrae.challenge.ui.components.dropdown.DropDownItem
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
@@ -18,6 +17,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -103,15 +103,11 @@ class ChallengeRegisterViewModel @Inject constructor(
         }
     }
 
-    fun verificationPeriodType(
-    ) {
+    fun verificationPeriodType() {
         viewModelScope.launch {
             val state = _challengeData.value?.copy()
             state?.let {
-                val applyStartDate = Utils.addDays(it.start_date.toString(), -2)
-
-//                it.per_week = perWeek.toInt()
-//                it.verification_period_type = verificationPeriodType
+                val applyStartDate = Utils.sdf3().format(Date())
                 it.apply_start_date = applyStartDate
 
                 val remainDays = Utils.getDifferenceDays(
@@ -126,11 +122,12 @@ class ChallengeRegisterViewModel @Inject constructor(
                     }
                     list.add(DropDownItem("${i}일", i.toString()))
                 }
+
                 it.apply_end_date = Utils.addDays(it.apply_start_date.toString(), list.size - 1)
 
                 val state2 = _screenState.value?.copy()
                 state2?.let { screenState ->
-                    screenState.authCycleList = list
+                    screenState.recruitPeriod = list
                     _screenState.value = screenState
                 }
 
@@ -196,6 +193,7 @@ class ChallengeRegisterViewModel @Inject constructor(
             _challengeData.value = it
         }
     }
+
     fun selectDay(day:String){
         _selectDay.value = day
     }

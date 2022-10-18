@@ -6,34 +6,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Card
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.DialogFragment
 import androidx.window.layout.WindowMetricsCalculator
 import biz.ohrae.challenge.ui.components.button.FlatDoubleButton
-import biz.ohrae.challenge.ui.theme.DefaultBlack
 import biz.ohrae.challenge.ui.theme.DefaultWhite
+import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.ui.register.ChallengeRegisterViewModel
 import com.himanshoe.kalendar.common.KalendarKonfig
 import com.himanshoe.kalendar.common.KalendarSelector
 import com.himanshoe.kalendar.common.KalendarStyle
-import com.himanshoe.kalendar.common.data.KalendarEvent
+import com.himanshoe.kalendar.common.YearRange
 import com.himanshoe.kalendar.ui.Kalendar
 import com.himanshoe.kalendar.ui.KalendarType
-import java.time.LocalDate
+import timber.log.Timber
 import java.util.*
 
 class CalendarDialog(private val challengeRegisterViewModel: ChallengeRegisterViewModel) :
@@ -110,6 +106,8 @@ fun Calendar(
     negativeBtnName: String = "",
     viewModel: ChallengeRegisterViewModel? = null
 ) {
+    var enabled by remember { mutableStateOf(false) }
+
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RectangleShape,
@@ -118,9 +116,18 @@ fun Calendar(
         Column() {
             Kalendar(
                 kalendarType = KalendarType.Firey(),
-                kalendarKonfig = KalendarKonfig(weekCharacters = 1, locale = Locale.KOREA),
+                kalendarKonfig = KalendarKonfig(
+                    yearRange = YearRange(2022, 2023),
+                    weekCharacters = 1, locale = Locale.KOREA
+                ),
                 onCurrentDayClick = { day, event ->
-                    listener?.clickDay(day.toString())
+                    Timber.d("day : $day")
+                    if (Utils.isAfter(day.toString())) {
+                        enabled = true
+                        listener?.clickDay(day.toString())
+                    } else {
+                        enabled = false
+                    }
                 },
                 errorMessage = {
                     //Handle the error if any
@@ -140,6 +147,7 @@ fun Calendar(
                     .aspectRatio(6f),
                 rightText = positiveBtnName,
                 leftText = negativeBtnName,
+                enabled = enabled,
                 onClickRight = {
                     listener?.clickPositive()
                 },
