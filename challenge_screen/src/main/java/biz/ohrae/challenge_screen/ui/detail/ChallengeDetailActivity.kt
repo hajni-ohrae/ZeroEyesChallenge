@@ -99,7 +99,7 @@ class ChallengeDetailActivity : BaseActivity() {
         ) {
             BackButton(
                 title = "",
-                isShare = true,
+                isShare = false,
                 onBack = { onBack() },
                 onShare = {}
             )
@@ -170,6 +170,9 @@ class ChallengeDetailActivity : BaseActivity() {
             }
             composable(ChallengeDetailNavScreen.RedCardInfo.route) {
                 PolicyScreen(screen = "")
+            }
+            composable(ChallengeDetailNavScreen.Caution.route) {
+                ChallengeCautionScreen()
             }
         }
     }
@@ -270,7 +273,7 @@ class ChallengeDetailActivity : BaseActivity() {
             }
 
             override fun onClickCaution() {
-
+                navController.navigate(ChallengeDetailNavScreen.Caution.route)
             }
         }
     }

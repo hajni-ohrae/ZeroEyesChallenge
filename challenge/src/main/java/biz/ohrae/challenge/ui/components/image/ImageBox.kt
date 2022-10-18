@@ -1,5 +1,6 @@
 package biz.ohrae.challenge.ui.components.image
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
@@ -17,7 +18,6 @@ import biz.ohrae.challenge.ui.theme.TextBlack
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge_component.R
 import com.skydoves.landscapist.glide.GlideImage
-import timber.log.Timber
 
 
 @Preview(
@@ -39,7 +39,7 @@ private fun ImageBoxGallery(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1.35f),
-            imagePath = "",
+            resourceId = R.drawable.img_good_example,
             isGood = true
         )
     }
@@ -58,7 +58,9 @@ fun ImageBox(
         contentScale = contentScale,
         failure = {
             Column(
-                modifier = Modifier.fillMaxSize().background(TextBlack),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(TextBlack),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
             ) {
@@ -74,7 +76,7 @@ fun ImageBox(
 @Composable
 fun ImageBoxWithExampleTitle(
     modifier: Modifier = Modifier,
-    imagePath: String,
+    resourceId: Int,
     isGood: Boolean,
 ) {
     var title = "좋은예시"
@@ -103,11 +105,13 @@ fun ImageBoxWithExampleTitle(
             )
         }
         Spacer(modifier = Modifier.height(9.dp))
-        ImageBox(
+        Image(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
-            imagePath = imagePath
+            painter = painterResource(id = resourceId),
+            contentDescription = resourceId.toString(),
+            contentScale = ContentScale.FillBounds
         )
     }
 }

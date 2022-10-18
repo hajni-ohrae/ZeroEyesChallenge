@@ -37,6 +37,7 @@ import biz.ohrae.challenge.util.challengeDetailStatusMap
 import biz.ohrae.challenge.util.challengeVerificationDayMap
 import biz.ohrae.challenge.util.challengeVerificationPeriodMap
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
+import biz.ohrae.challenge_screen.R
 
 @Preview(
     showBackground = true,
@@ -327,14 +328,14 @@ fun ChallengePhotoAuthentication() {
             item {
                 ImageBoxWithExampleTitle(
                     modifier = Modifier.size(itemHeight.dp),
-                    imagePath = "https://dev.mooin.kr/public/kiosk/image/63",
+                    resourceId = biz.ohrae.challenge_component.R.drawable.img_good_example,
                     isGood = true
                 )
             }
             item {
                 ImageBoxWithExampleTitle(
                     modifier = Modifier.size(itemHeight.dp),
-                    imagePath = "https://dev.mooin.kr/public/kiosk/image/63",
+                    resourceId = biz.ohrae.challenge_component.R.drawable.img_bad_example,
                     isGood = false
                 )
             }

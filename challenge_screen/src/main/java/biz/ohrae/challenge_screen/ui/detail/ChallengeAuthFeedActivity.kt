@@ -67,7 +67,7 @@ class ChallengeAuthFeedActivity : BaseActivity() {
         ) {
             BackButton(
                 title = "",
-                isShare = true,
+                isShare = false,
                 onBack = { onBack() },
                 onShare = {}
             )

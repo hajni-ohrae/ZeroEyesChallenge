@@ -42,6 +42,13 @@ private fun MiddleDotTextGallery() {
             fontSize = dpToSp(dp = 14.dp),
             lineHeight = dpToSp(dp = 19.6.dp)
         )
+        Spacer(modifier = Modifier.height(8.dp))
+        NumberSectionText(
+            number = 1,
+            text = "리워즈 획득이 확정된 후 오류가 발생한 경우 회원은 오류 발생일로부터 30일 이내에 회사에 정정 요구를 할 수 있으며, 회사는 정당한 요구임이 확인된 경우 정정 요구일로부터 90일 이내에 정정 가능",
+            fontSize = dpToSp(dp = 14.dp),
+            lineHeight = dpToSp(dp = 19.6.dp)
+        )
     }
 }
 
@@ -57,6 +64,36 @@ fun MiddleDotText(
     Row {
         Text(
             text = "· ",
+            color = color,
+            fontSize = fontSize,
+            fontStyle = fontStyle,
+            fontWeight = fontWeight,
+            lineHeight = lineHeight,
+        )
+        Text(
+            text = text,
+            color = color,
+            fontSize = fontSize,
+            fontStyle = fontStyle,
+            fontWeight = fontWeight,
+            lineHeight = lineHeight,
+        )
+    }
+}
+
+@Composable
+fun NumberSectionText(
+    number: Int,
+    text: String,
+    color: Color = Color.Unspecified,
+    fontSize: TextUnit = TextUnit.Unspecified,
+    fontStyle: FontStyle? = null,
+    fontWeight: FontWeight? = null,
+    lineHeight: TextUnit = TextUnit.Unspecified,
+) {
+    Row {
+        Text(
+            text = "${number}. ",
             color = color,
             fontSize = fontSize,
             fontStyle = fontStyle,
