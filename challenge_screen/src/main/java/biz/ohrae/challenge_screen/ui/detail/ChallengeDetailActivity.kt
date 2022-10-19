@@ -261,6 +261,10 @@ class ChallengeDetailActivity : BaseActivity() {
                 }
             }
 
+            override fun onClickBookMark() {
+                showSnackBar("준비중입니다.")
+            }
+
             override fun onClickReTakePhoto() {
                 navController.navigate(ChallengeDetailNavScreen.AuthCameraPreview.route)
             }

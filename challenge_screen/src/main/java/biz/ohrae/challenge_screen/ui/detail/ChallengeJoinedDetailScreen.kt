@@ -199,7 +199,8 @@ fun ChallengeJoinedDetailScreen(
                         .aspectRatio(6f),
                     enabled = challengeData.is_verification_photo == 1,
                     text = "인증하기",
-                    onClick = { clickListener?.onClickAuth() }
+                    onClick = { clickListener?.onClickAuth() },
+                    onClickBookMark = { clickListener?.onClickBookMark() }
                 )
             }
         }

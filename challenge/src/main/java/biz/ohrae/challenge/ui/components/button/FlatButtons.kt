@@ -223,7 +223,7 @@ fun FlatBookMarkButton(
     textStyle: TextStyle = myTypography.bold,
     enabled: Boolean = true,
     onClick: () -> Unit = {},
-    onClickLike: () -> Unit = {}
+    onClickBookMark: () -> Unit = {}
 ) {
     Row(
         modifier = modifier,
@@ -234,7 +234,7 @@ fun FlatBookMarkButton(
                 .aspectRatio(1f)
                 .background(Color(0xfffcd2d2)),
             onClick = {
-                onClickLike()
+                onClickBookMark()
             },
         ) {
             Icon(

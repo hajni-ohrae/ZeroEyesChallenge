@@ -3,6 +3,7 @@ package biz.ohrae.challenge_screen.ui.detail
 interface ChallengeDetailClickListener {
     fun onClickParticipation()
     fun onClickAuth()
+    fun onClickBookMark()
     fun onClickReTakePhoto()
     fun onClickUsePhoto()
     fun onClickRedCardInfo()

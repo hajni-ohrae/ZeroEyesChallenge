@@ -153,7 +153,8 @@ fun ChallengeDetailScreen(
                 .fillMaxWidth()
                 .aspectRatio(6f),
             text = bottomBtnName,
-            onClick = { clickListener?.onClickParticipation() }
+            onClick = { clickListener?.onClickParticipation() },
+            onClickBookMark = { clickListener?.onClickBookMark() }
         )
     }
 }
