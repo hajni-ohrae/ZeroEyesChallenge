@@ -9,7 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import biz.ohrae.challenge.ui.components.list_item.RankItem
 import biz.ohrae.challenge.ui.theme.DefaultWhite
-import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.model.user.User
 
 @Preview(
@@ -18,7 +17,7 @@ import biz.ohrae.challenge_repo.model.user.User
 )
 @Composable
 fun ChallengersScreen(
-    challengers: List<ChallengeData>? = null
+    challengers: List<User>? = null
 ) {
     if (challengers == null) {
         return
@@ -27,8 +26,8 @@ fun ChallengersScreen(
     LazyColumn(modifier = Modifier.fillMaxSize().background(DefaultWhite)) {
         items(challengers) { item ->
             RankItem(
-                userName = item.user?.nickname.toString(),
-                rank = item.inChallenge?.get(0)?.ranking.toString()
+                userName = item.getUserName(),
+                rank = item.ranking.toString()
             )
         }
     }

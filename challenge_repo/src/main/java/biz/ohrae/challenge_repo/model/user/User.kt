@@ -29,6 +29,7 @@ data class User(
     val phone_number: String,
     val refresh_token: String,
     val thumbnail_path:String,
+    val ranking: String?,
     val inChallenge: List<InChallenge>?,
 ) {
     fun getUserName(): String {

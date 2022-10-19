@@ -34,7 +34,7 @@ class ChallengeDetailViewModel @Inject constructor(
     private val _challengeVerifiedList = MutableLiveData<List<VerifyData>>()
     private val _verifyListState = MutableLiveData<VerifyListState>()
     private val _challengeVerificationState = MutableLiveData<VerificationState>()
-    private val _challengers = MutableLiveData<List<ChallengeData>>()
+    private val _challengers = MutableLiveData<List<User>>()
     private val _isJoined = MutableLiveData<Boolean>()
     private val _challengeAuthImageUri = MutableLiveData<Uri?>(null)
     private val _verified = MutableLiveData<Boolean?>(false)
@@ -114,7 +114,7 @@ class ChallengeDetailViewModel @Inject constructor(
             repo.getUserByChallenge(id, page, count).flowOn(Dispatchers.IO).collect {
                 Timber.e("getUserByChallenge result : ${gson.toJson(it.data)}")
                 if (it.data != null) {
-                    val challengers = it.data as List<ChallengeData>
+                    val challengers = it.data as List<User>
                     _challengers.value = challengers
                 }
             }

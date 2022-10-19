@@ -64,7 +64,7 @@ import timber.log.Timber
 @Composable
 fun ChallengeJoinedDetailScreen(
     challengeData: ChallengeData? = ChallengeData.mock(),
-    challengers: List<ChallengeData>? = null,
+    challengers: List<User>? = null,
     verificationState: VerificationState? = null,
     challengeVerifiedList: List<VerifyData>? = null,
     clickListener: ChallengeDetailClickListener? = null,
@@ -284,7 +284,7 @@ private fun ChallengeProgressDetail(
 @Composable
 private fun ChallengeJoinedDetailPage(
     challengeData: ChallengeData,
-    challengers: List<ChallengeData>?,
+    challengers: List<User>?,
     verificationState: VerificationState? = null,
     clickListener: ChallengeDetailClickListener? = null
 ) {
@@ -466,7 +466,7 @@ private fun ColumnForLazy(
 
 @Composable
 private fun Challengers(
-    challengers: List<ChallengeData>,
+    challengers: List<User>,
     clickListener: ChallengeDetailClickListener? = null
 ) {
     Column {
@@ -499,11 +499,11 @@ private fun Challengers(
             )
         }
         Spacer(modifier = Modifier.height(25.dp))
-        challengers.forEachIndexed { index, challenge ->
+        challengers.forEachIndexed { index, user ->
             if (index < 10) {
                 ChallengersItem(
-                    userName = challenge.user?.nickname.toString(),
-                    imagePath = challenge.user?.imageFile?.path.toString()
+                    userName = user.getUserName(),
+                    imagePath = user.imageFile?.path
                 )
                 Spacer(modifier = Modifier.height(16.dp))
             }
