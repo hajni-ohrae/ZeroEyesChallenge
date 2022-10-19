@@ -185,6 +185,11 @@ class MainActivity : BaseActivity() {
             override fun onClickChallengeAuthItem(id: String) {
                 goDetail(id)
             }
+
+            override fun onClickTopBanner() {
+                val intent = Intent(this@MainActivity, BannerDetailActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 

@@ -174,7 +174,8 @@ fun ItemHeader(
             items(mainScreenState?.topBannerList!!) { item ->
                 MainTopCard(
                     modifier = Modifier.fillParentMaxSize(),
-                    content = item.content
+                    content = item.content,
+                    onClick = { clickListener?.onClickTopBanner() }
                 )
             }
         }
