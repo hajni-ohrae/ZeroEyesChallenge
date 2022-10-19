@@ -382,7 +382,7 @@ private fun ChallengeJoinedDescription(
         )
         Spacer(modifier = Modifier.height(13.dp))
         MiddleDotText(
-            text = "만화책은 안됩니다.",
+            text = challengeData.caution.toString(),
             fontSize = dpToSp(dp = 14.dp),
             lineHeight = dpToSp(dp = 19.6.dp)
         )
