@@ -81,5 +81,10 @@
             android:screenOrientation = "portrait"
             android:exported="true">
         </activity>
+        <activity
+            android:name="biz.ohrae.challenge_screen.ui.policy.PolicyActivity"
+            android:screenOrientation = "portrait"
+            android:exported="true">
+        </activity>
     </application>
 </manifest>

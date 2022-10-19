@@ -128,7 +128,7 @@ private fun ChallengeCreateDialog(
                 ArrowTextButton(
                     text = "유의사항 더보기",
                     onClick = {
-
+                        listener?.clickNegative()
                     }
                 )
             }

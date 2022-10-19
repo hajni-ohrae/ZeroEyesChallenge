@@ -24,7 +24,8 @@ import biz.ohrae.challenge_repo.model.user.PaymentHistoryState
 )
 @Composable
 fun PaymentDetailListScreen(
-    paymentHistoryState: PaymentHistoryState? = null
+    paymentHistoryState: PaymentHistoryState? = null,
+    clickListener: MyChallengeClickListener? = null
 ) {
     Column() {
         Column(modifier = Modifier.padding(24.dp, 0.dp)) {
@@ -39,6 +40,9 @@ fun PaymentDetailListScreen(
             Spacer(modifier = Modifier.height(8.dp))
             ArrowTextButton(
                 text = "참여금 환급 정책 보러가기",
+                onClick = {
+                    clickListener?.onClickPolicyRefund()
+                }
             )
             Spacer(modifier = Modifier.height(16.dp))
             Divider(

@@ -2,7 +2,6 @@ package biz.ohrae.challenge_screen.ui.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.SystemClock
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -21,6 +20,7 @@ import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailActivity
 import biz.ohrae.challenge_screen.ui.dialog.*
 import biz.ohrae.challenge_screen.ui.login.LoginActivity
 import biz.ohrae.challenge_screen.ui.mychallenge.MyChallengeActivity
+import biz.ohrae.challenge_screen.ui.policy.PolicyActivity
 import biz.ohrae.challenge_screen.ui.register.RegisterActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -253,6 +253,9 @@ class MainActivity : BaseActivity() {
 
             override fun clickNegative() {
                 dialog.dismiss()
+                val intent = Intent(this@MainActivity, PolicyActivity::class.java)
+                intent.putExtra("policyType", "Caution")
+                startActivity(intent)
             }
         })
 

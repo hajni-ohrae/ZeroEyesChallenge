@@ -22,6 +22,7 @@ import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailActivity
 import biz.ohrae.challenge_screen.ui.main.ChallengeMainViewModel
+import biz.ohrae.challenge_screen.ui.policy.PolicyActivity
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -111,7 +112,10 @@ class MyChallengeActivity : AppCompatActivity() {
                 PhoneAuthScreenWebView()
             }
             composable(MyChallengeNavScreen.MyPaymentDetail.route) {
-                PaymentDetailListScreen(paymentHistoryState)
+                PaymentDetailListScreen(
+                    paymentHistoryState = paymentHistoryState,
+                    clickListener = myChallengeClickListener
+                )
             }
             composable(MyChallengeNavScreen.SavedChallenge.route) {
                 SavedChallengeScreen(saveChallengeList)
@@ -154,6 +158,12 @@ class MyChallengeActivity : AppCompatActivity() {
             override fun onClickPolicy(screen: String) {
                 policyScreenType = screen
                 navController.navigate(MyChallengeNavScreen.Policy.route)
+            }
+
+            override fun onClickPolicyRefund() {
+                val intent = Intent(this@MyChallengeActivity, PolicyActivity::class.java)
+                intent.putExtra("policyType", "Refund")
+                startActivity(intent)
             }
 
             override fun onClickChallengeAuthItem(challengeId: String) {
