@@ -561,7 +561,7 @@ object Utils {
         }
     }
 
-    fun userChallengeBackground(type:String): Color {
+    fun userChallengeBackground(type: String): Color {
         return when (type) {
             "ongoing" -> Color(0xfff3f8ff)
             "pending" -> Color(0xffebfaf1)
@@ -576,7 +576,7 @@ object Utils {
         }
     }
 
-    fun userChallengeTextColor(type:String): Color {
+    fun userChallengeTextColor(type: String): Color {
         return when (type) {
             "ongoing" -> Color(0xff4985f8)
             "pending" -> Color(0xff219653)
@@ -594,10 +594,12 @@ object Utils {
     fun getAuthType(challengeData: ChallengeData): String {
         return if (challengeData.is_verification_photo == 1) {
             "사진인증"
+        } else if (challengeData.is_verification_checkin == 1) {
+            "출석인증"
         } else if (challengeData.is_verification_time == 1) {
             "시간인증"
         } else {
-            "출석인증"
+            ""
         }
     }
 
@@ -612,10 +614,12 @@ object Utils {
     fun getAuthTypeEnglish(challengeData: ChallengeData): String {
         return if (challengeData.is_verification_photo == 1) {
             "photo"
-        } else if (challengeData.is_verification_time == 1) {
+        } else (if (challengeData.is_verification_time == 1) {
             "staying_time"
-        } else {
+        } else if (challengeData.is_verification_time == 1) {
             "checkin"
-        }
+        } else {
+            ""
+        })
     }
 }
