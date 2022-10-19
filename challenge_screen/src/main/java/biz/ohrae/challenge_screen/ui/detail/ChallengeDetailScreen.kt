@@ -66,10 +66,10 @@ fun ChallengeDetailScreen(
     }
     val bottomBtnName by remember {
         mutableStateOf(
-            if (challengeData.inChallenge.isNullOrEmpty()) {
-                "참여 신청"
-            } else {
+            if (challengeData.is_canceled == 0 && challengeData.is_valid == 1) {
                 "참여 취소"
+            } else {
+                "참여 신청"
             }
         )
     }
@@ -97,7 +97,7 @@ fun ChallengeDetailScreen(
             if (status != null) {
                 ChallengeDetailsTitle(
                     status = status!!,
-                    personnel = 0,
+                    personnel = challengeData.summary?.total_user_cnt ?: 0,
                     detailTitle = challengeData.goal.toString(),
                     startDay = challengeData.start_date.toString(),
                     endDay = challengeData.end_date.toString()

@@ -7,6 +7,6 @@ interface MyChallengeClickListener {
     fun onClickRedCard()
     fun onClickApplyWithdraw()
     fun onClickApplyWithdrawDetail()
-    fun onClickPolicy(screen:String)
-    fun onClickChallengeAuthItem(id:String)
+    fun onClickPolicy(screen: String)
+    fun onClickChallengeAuthItem(challengeId: String)
 }

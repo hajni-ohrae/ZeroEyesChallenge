@@ -126,7 +126,11 @@ fun ParticipationScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = CenterVertically
             ) {
-                Text(text = "리워즈 사용", style = myTypography.bold, fontSize = dpToSp(dp = 14.dp))
+                Text(
+                    text = "리워즈 사용",
+                    style = myTypography.bold,
+                    fontSize = dpToSp(dp = 14.dp)
+                )
                 MyCheckBox(
                     checkBoxSize = 20.dp,
                     label = "리워즈 전액 사용",

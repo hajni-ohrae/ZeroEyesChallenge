@@ -1,5 +1,6 @@
 package biz.ohrae.challenge_screen.ui.mychallenge
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
@@ -19,9 +20,10 @@ import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
+import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailActivity
 import biz.ohrae.challenge_screen.ui.main.ChallengeMainViewModel
-import biz.ohrae.challenge_screen.ui.register.ChallengeRegisterNavScreen
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MyChallengeActivity : AppCompatActivity() {
@@ -154,8 +156,10 @@ class MyChallengeActivity : AppCompatActivity() {
                 navController.navigate(MyChallengeNavScreen.Policy.route)
             }
 
-            override fun onClickChallengeAuthItem(item:String) {
-                TODO("Not yet implemented")
+            override fun onClickChallengeAuthItem(challengeId: String) {
+                val intent = Intent(this@MyChallengeActivity, ChallengeDetailActivity::class.java)
+                intent.putExtra("challengeId", challengeId)
+                startActivity(intent)
             }
         }
     }

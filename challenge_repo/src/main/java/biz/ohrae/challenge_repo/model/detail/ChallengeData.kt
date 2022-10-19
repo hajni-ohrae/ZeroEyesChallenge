@@ -38,9 +38,10 @@ data class ChallengeData(
     val verification_daily_staying_time: Int,
     val remaining_time: String? = null,
     val user: User? = null,
+    val is_canceled: Int,
+    val is_valid: Int,
     val summary: Summary? = null,
-
-    ) {
+) {
     companion object {
         fun mock(id: String = "2d4033ab-244b-47f3-84e9-6af72be39d9f") = ChallengeData(
             id = "2d4033ab-244b-47f3-84e9-6af72be39d9f",
@@ -70,6 +71,8 @@ data class ChallengeData(
             updated_date = "2022-09-20",
             total_verification_cnt = 0,
             verification_daily_staying_time = 0,
+            is_canceled = 0,
+            is_valid = 0
         )
     }
 }

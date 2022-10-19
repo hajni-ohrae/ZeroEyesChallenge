@@ -21,6 +21,7 @@ import biz.ohrae.challenge.ui.theme.DefaultBlack
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
+import biz.ohrae.challenge.util.challengeDetailStatusMap
 import biz.ohrae.challenge_component.R
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.model.user.User
@@ -78,7 +79,7 @@ fun MyChallengeScreen(
                             title = item.goal.toString(),
                             count = inChallenge?.today_verified_cnt.toString(),
                             maxPeople = inChallenge?.verified_cnt.toString(),
-                            progressStatus = item.status,
+                            progressStatus = challengeDetailStatusMap[item.status]?.status.toString(),
                             achievementRate = inChallenge?.achievement_percent.toString(),
                             Utils.userChallengeBackground(item.status),
                             Utils.userChallengeTextColor(item.status),
