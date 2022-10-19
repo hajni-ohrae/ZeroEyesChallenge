@@ -73,7 +73,7 @@ fun ChallengesInParticipationCard(
     modifier: Modifier,
     title: String,
     count: String,
-    maxPeople:String,
+    total:String,
     progressStatus: String,
     achievementRate:String = "0.00",
     background: Color,
@@ -129,7 +129,7 @@ fun ChallengesInParticipationCard(
                 )
 
                 Text(
-                    text = "${count}/${maxPeople} (달성률 $achievementRate%)",
+                    text = "${count}/${total} (달성률 $achievementRate%)",
                     style = myTypography.default,
                     color = Color(0xff6c6c6c),
                     fontSize = dpToSp(dp = 13.dp),

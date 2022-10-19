@@ -78,7 +78,7 @@ fun MyChallengeScreen(
                             modifier = Modifier.fillMaxWidth(),
                             title = item.goal.toString(),
                             count = inChallenge?.today_verified_cnt.toString(),
-                            maxPeople = inChallenge?.verified_cnt.toString(),
+                            total = inChallenge?.verified_cnt.toString(),
                             progressStatus = challengeDetailStatusMap[item.status]?.status.toString(),
                             achievementRate = inChallenge?.achievement_percent.toString(),
                             Utils.userChallengeBackground(item.status),
