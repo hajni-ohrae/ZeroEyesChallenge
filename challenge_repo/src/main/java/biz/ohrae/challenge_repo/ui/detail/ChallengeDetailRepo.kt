@@ -6,8 +6,10 @@ import biz.ohrae.challenge_repo.model.FlowResult
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.model.user.User
 import biz.ohrae.challenge_repo.model.verify.VerifyData
+import biz.ohrae.challenge_repo.util.PagerMeta
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import com.google.gson.Gson
+import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.Flow
@@ -66,8 +68,8 @@ class ChallengeDetailRepo @Inject constructor(
                     val dataSet = response.body.dataset?.asJsonObject
                     val array = dataSet?.get("array")?.asJsonArray
 
-                    val listType = object : TypeToken<List<User?>?>() {}.type
-                    val challengerList = gson.fromJson<List<User>>(array, listType)
+                    val listType = object : TypeToken<List<ChallengeData?>?>() {}.type
+                    val challengerList = gson.fromJson<List<ChallengeData>>(array, listType)
 
                     flow {
                         emit(FlowResult(challengerList, "", ""))
