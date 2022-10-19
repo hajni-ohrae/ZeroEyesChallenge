@@ -37,7 +37,6 @@ import biz.ohrae.challenge.util.challengeDetailStatusMap
 import biz.ohrae.challenge.util.challengeVerificationDayMap
 import biz.ohrae.challenge.util.challengeVerificationPeriodMap
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
-import biz.ohrae.challenge_screen.R
 
 @Preview(
     showBackground = true,
@@ -66,7 +65,7 @@ fun ChallengeDetailScreen(
     }
     val bottomBtnName by remember {
         mutableStateOf(
-            if (challengeData.is_canceled == 0 && challengeData.is_valid == 1) {
+            if (challengeData.is_cancelable == 1) {
                 "참여 취소"
             } else {
                 "참여 신청"

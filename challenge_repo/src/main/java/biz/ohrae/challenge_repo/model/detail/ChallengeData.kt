@@ -38,6 +38,7 @@ data class ChallengeData(
     val verification_daily_staying_time: Int,
     val remaining_time: String? = null,
     val user: User? = null,
+    val is_cancelable: Int,
     val is_canceled: Int,
     val is_valid: Int,
     val summary: Summary? = null,
@@ -71,6 +72,7 @@ data class ChallengeData(
             updated_date = "2022-09-20",
             total_verification_cnt = 0,
             verification_daily_staying_time = 0,
+            is_cancelable = 1,
             is_canceled = 0,
             is_valid = 0
         )
