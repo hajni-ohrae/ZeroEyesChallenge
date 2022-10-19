@@ -76,6 +76,7 @@ fun TextBox(
     singleLine: Boolean = false,
     value: String,
     visualTransformation: VisualTransformation = VisualTransformation.None,
+    enabled: Boolean = true,
     onValueChange: (String) -> Unit,
 ) {
     Column(modifier = modifier) {
@@ -132,14 +133,15 @@ fun TextBox(
                                 focusedIndicatorColor = Color.Transparent,
                                 unfocusedIndicatorColor = Color.Transparent,
                             ),
-                            enabled = true,
+                            enabled = enabled,
                             singleLine = false,
                             interactionSource = interactionSource,
                             value = value,
                             visualTransformation = visualTransformation,
                             contentPadding = PaddingValues(0.dp),
                         )
-                    }
+                    },
+                    enabled = enabled
                 )
             }
         }

@@ -4,6 +4,7 @@ import biz.ohrae.challenge_repo.data.remote.ApiService
 import biz.ohrae.challenge_repo.data.remote.NetworkResponse
 import biz.ohrae.challenge_repo.model.FlowResult
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
+import biz.ohrae.challenge_repo.model.participation.ParticipationResult
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import biz.ohrae.challenge_repo.util.prefs.Utils
 import com.google.gson.Gson
@@ -27,16 +28,16 @@ class ParticipationRepo @Inject constructor(
         jsonObject.addProperty("challenge_id", challengeData.id)
         jsonObject.addProperty("verification_type", challengeType)
         jsonObject.addProperty("paid_amount", paidAmount)
-        jsonObject.addProperty("reward_amount", rewardsAmount)
+        jsonObject.addProperty("rewards_amount", rewardsAmount)
 //        jsonObject.addProperty("deposit_amount", depositAmount)
 
         val response = apiService.registerChallenge(accessToken.toString(),jsonObject)
         when (response) {
             is NetworkResponse.Success -> {
                 return if (response.body.success) {
-                    val resultObject = response.body.dataset?.asJsonObject
+                    val participationResult = gson.fromJson(response.body.dataset, ParticipationResult::class.java)
                     flow {
-                        emit(FlowResult(resultObject, "", ""))
+                        emit(FlowResult(participationResult, "", ""))
                     }
                 } else {
                     flow {

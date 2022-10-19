@@ -140,6 +140,8 @@ fun ParticipationScreen(
                         if (checked) {
                             rewards = (challengeData.user?.rewards_amount ?: 0).toString()
                             totalAmount = calculateTotalAmount(participationAmount, rewards)
+                        } else {
+                            rewards = ""
                         }
                     },
                     onChecked = {
@@ -157,7 +159,7 @@ fun ParticipationScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(7.1f),
-                placeholder = "숫자만 입력",
+                placeholder = if (availableRewards > 0) "숫자만 입력" else "사용가능한 리워즈가 없습니다.",
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Done
@@ -168,6 +170,7 @@ fun ParticipationScreen(
                     }
                 ),
                 singleLine = true,
+                enabled = availableRewards > 0,
                 value = rewards,
                 onValueChange = {
                     rewards = numberToString(it)

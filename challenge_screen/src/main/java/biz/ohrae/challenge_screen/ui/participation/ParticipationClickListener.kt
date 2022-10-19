@@ -5,4 +5,6 @@ interface ParticipationClickListener {
     fun onClickCancelParticipation()
     fun onClickCancelResult()
     fun onClickPaymentDetail()
+    fun onClickHome()
+    fun onClickSetAlarm()
 }

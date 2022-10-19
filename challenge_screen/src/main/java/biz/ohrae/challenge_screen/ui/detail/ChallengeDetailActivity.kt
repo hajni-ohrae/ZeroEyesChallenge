@@ -196,7 +196,6 @@ class ChallengeDetailActivity : BaseActivity() {
     }
 
     override fun onBack() {
-        Timber.e("nav : ${navController.currentBackStackEntry?.destination?.route}")
         when(navController.currentBackStackEntry?.destination?.route) {
             ChallengeDetailNavScreen.Detail.route,
             ChallengeDetailNavScreen.JoinedDetail.route -> {

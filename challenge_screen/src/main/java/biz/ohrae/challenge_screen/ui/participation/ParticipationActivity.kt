@@ -1,6 +1,7 @@
 package biz.ohrae.challenge_screen.ui.participation
 
 import android.os.Bundle
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -103,10 +104,16 @@ class ParticipationActivity : BaseActivity() {
                 ParticipationPaymentScreen()
             }
             composable(ChallengeParticipationNavScreen.ParticipationFinish.route) {
+                BackHandler(true) {
+                    onBack()
+                }
                 val challengeData by detailViewModel.challengeData.observeAsState()
-                if (challengeData != null) {
+                val participationResult by viewModel.participationResult.observeAsState()
+
+                if (challengeData != null && participationResult != null) {
                     ParticipationFinishScreen(
                         challengeData = challengeData!!,
+                        participationResult = participationResult,
                         clickListener = clickListener
                     )
                 }
@@ -121,6 +128,9 @@ class ParticipationActivity : BaseActivity() {
                 }
             }
             composable(ChallengeParticipationNavScreen.ParticipationCancelResult.route) {
+                BackHandler(true) {
+                    onBack()
+                }
                 val challengeData by detailViewModel.challengeData.observeAsState()
                 if (challengeData != null) {
                     ParticipationCancelResultScreen(
@@ -170,15 +180,36 @@ class ParticipationActivity : BaseActivity() {
                 setResult(RESULT_OK)
                 finish()
             }
+
+            override fun onClickHome() {
+                setResult(RESULT_OK)
+                finish()
+            }
+
+            override fun onClickSetAlarm() {
+                showSnackBar("준비중입니다.")
+            }
         }
     }
 
     override fun observeViewModels() {
+        viewModel.participationResult.observe(this) { result ->
+            viewModel.isLoading(false)
+
+            result?.let {
+                init()
+                navController.navigate(ChallengeParticipationNavScreen.ParticipationFinish.route)
+            } ?: run {
+                val code = viewModel.errorData.value?.code
+                val message = viewModel.errorData.value?.message
+                showSnackBar(code, message)
+            }
+        }
+
         viewModel.registerResult.observe(this) { result ->
             viewModel.isLoading(false)
             result.data?.let {
-                setResult(RESULT_OK)
-                finish()
+                navController.navigate(ChallengeParticipationNavScreen.ParticipationFinish.route)
             } ?: run {
                 val message = "code : ${result.errorCode}, message : ${result.errorMessage}"
                 showSnackBar(message)
@@ -197,7 +228,16 @@ class ParticipationActivity : BaseActivity() {
     }
 
     override fun onBack() {
-        finish()
+        when(navController.currentBackStackEntry?.destination?.route) {
+            ChallengeParticipationNavScreen.Participation.route,
+            ChallengeParticipationNavScreen.ParticipationCancelResult.route,
+            ChallengeParticipationNavScreen.ParticipationFinish.route -> {
+                finish()
+            }
+            else -> {
+                navController.popBackStack()
+            }
+        }
     }
 }
 

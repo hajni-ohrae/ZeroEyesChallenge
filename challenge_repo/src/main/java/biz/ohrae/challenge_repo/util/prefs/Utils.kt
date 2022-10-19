@@ -492,11 +492,14 @@ object Utils {
         return if (text.isEmpty()) {
             text
         } else {
-            val price = text.replace("[^\\d]".toRegex(), "")
+            var price = text.replace("[^\\d]".toRegex(), "")
             if (price.isEmpty()) {
                 price
             } else {
-                Utils.numberFormat(price.toInt())
+                if (price.toInt() > 500000) {
+                    price = "500000"
+                }
+                numberFormat(price.toInt())
             }
         }
     }

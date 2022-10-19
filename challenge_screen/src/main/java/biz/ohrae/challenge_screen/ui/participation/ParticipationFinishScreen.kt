@@ -20,6 +20,7 @@ import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge.util.challengeVerificationPeriodMap
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
+import biz.ohrae.challenge_repo.model.participation.ParticipationResult
 import biz.ohrae.challenge_repo.util.prefs.Utils
 import java.text.NumberFormat
 import java.util.*
@@ -32,6 +33,7 @@ import java.util.*
 @Composable
 fun ParticipationFinishScreen(
     challengeData: ChallengeData = ChallengeData.mock(),
+    participationResult: ParticipationResult? = null,
     clickListener: ParticipationClickListener? = null,
 ) {
     Column(
@@ -80,7 +82,7 @@ fun ParticipationFinishScreen(
                     color = Color(0xff6c6c6c)
                 )
                 Text(
-                    text = "500,000원",
+                    text = "${Utils.numberFormat(participationResult?.actual_pay_amount)}원",
                     style = myTypography.bold,
                     fontSize = dpToSp(dp = 16.dp),
                     color = Color(0xff4985f8)
@@ -94,9 +96,11 @@ fun ParticipationFinishScreen(
             rightText = "홈으로",
             leftText = "챌린지 알람 설정",
             onClickRight = {
-                clickListener?.onClickCancelParticipation()
+                clickListener?.onClickHome()
             },
-            onClickLeft = {}
+            onClickLeft = {
+                clickListener?.onClickSetAlarm()
+            }
         )
     }
 }
