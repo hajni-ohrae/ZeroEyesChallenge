@@ -2,6 +2,7 @@ package biz.ohrae.challenge_screen.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.SystemClock
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -17,9 +18,7 @@ import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge.ui.theme.DefaultBackground
 import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailActivity
-import biz.ohrae.challenge_screen.ui.dialog.FilterDialog
-import biz.ohrae.challenge_screen.ui.dialog.FilterDialogListener
-import biz.ohrae.challenge_screen.ui.dialog.LoadingDialog
+import biz.ohrae.challenge_screen.ui.dialog.*
 import biz.ohrae.challenge_screen.ui.login.LoginActivity
 import biz.ohrae.challenge_screen.ui.mychallenge.MyChallengeActivity
 import biz.ohrae.challenge_screen.ui.register.RegisterActivity
@@ -113,8 +112,7 @@ class MainActivity : BaseActivity() {
             }
 
             override fun onClickRegister() {
-                val intent = Intent(this@MainActivity, RegisterActivity::class.java)
-                startActivity(intent)
+                showCreateDialog()
             }
 
             override fun onClickChallengeItem(id: String) {
@@ -122,6 +120,10 @@ class MainActivity : BaseActivity() {
             }
 
             override fun onClickFilterType(filterType: String) {
+                if (!isClickable()) {
+                    return
+                }
+
                 if (filterType == "filter") {
                     val dialog = FilterDialog(viewModel)
                     dialog.setListener(object : FilterDialogListener {
@@ -228,6 +230,28 @@ class MainActivity : BaseActivity() {
     private fun goMyChallenge() {
         val intent = Intent(this, MyChallengeActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun showCreateDialog() {
+        if (!isClickable()) {
+            return
+        }
+
+        val dialog = ChallengeCreateDialog()
+        dialog.isCancelable = true
+        dialog.setListener(object : CustomDialogListener {
+            override fun clickPositive() {
+                dialog.dismiss()
+                val intent = Intent(this@MainActivity, RegisterActivity::class.java)
+                startActivity(intent)
+            }
+
+            override fun clickNegative() {
+                dialog.dismiss()
+            }
+        })
+
+        dialog.show(supportFragmentManager, "ChallengeCreateDialog")
     }
 }
 

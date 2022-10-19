@@ -59,6 +59,7 @@ fun ArrowTextButton(
     textColor: Color = Color(0xff005bad),
     textSize: Dp = 14.dp,
     enabled: Boolean = true,
+    contentPadding: PaddingValues = PaddingValues(0.dp, 10.dp),
     onClick: () -> Unit = {}
 ) {
     val iconSize by remember { mutableStateOf(textSize.value * 1.43f) }
@@ -69,7 +70,8 @@ fun ArrowTextButton(
             if (enabled) {
                 onClick()
             }
-        }
+        },
+        contentPadding = contentPadding
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically
