@@ -126,6 +126,7 @@ class ChallengeDetailViewModel @Inject constructor(
             repo.getVerifyList(id, "desc", "0").flowOn(Dispatchers.IO).collect {
                 Timber.e("getVerifyList result : ${gson.toJson(it.data)}")
                 if (it.data != null) {
+                    isLoading(false)
                     val challengeVerifiedList = it.data as List<VerifyData>
                     _challengeVerifiedList.value = challengeVerifiedList
                     _challengeVerifiedList.postValue(challengeVerifiedList)
