@@ -35,7 +35,7 @@ data class ChallengeData(
     val inChallenge: List<InChallenge>? = null,
     val total_verification_cnt: Int,
     val updated_date: String,
-    val verification_daily_staying_time: Int,
+    var verification_daily_staying_time: Int,
     val remaining_time: String? = null,
     val user: User? = null,
     val is_cancelable: Int,

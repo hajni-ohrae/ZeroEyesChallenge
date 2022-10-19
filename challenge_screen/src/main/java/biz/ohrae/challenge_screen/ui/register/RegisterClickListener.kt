@@ -16,4 +16,5 @@ interface RegisterClickListener {
     fun onClickUsePhoto()
     fun onClickCalendar()
     fun onClickRecruitDays(item: DropDownItem)
+    fun onClickHoursOfUse(item: String)
 }

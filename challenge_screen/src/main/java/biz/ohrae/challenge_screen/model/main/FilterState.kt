@@ -25,8 +25,8 @@ data class FilterState(
             selectFilterType = "all",
             certifiedList = listOf(
                 FilterItem("매일","daily"),
-                FilterItem("평일만","weekend"),
-                FilterItem("주말만","weekday"),
+                FilterItem("평일만","weekday"),
+                FilterItem("주말만","weekend"),
                 FilterItem("주1회","1"),
                 FilterItem("주2회","2"),
                 FilterItem("주3회","3"),

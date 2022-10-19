@@ -54,6 +54,7 @@ class RegisterActivity : BaseActivity() {
         const val OPEN: Int = 2
         const val CHALLENGER: Int = 3
     }
+
     private lateinit var viewModel: ChallengeRegisterViewModel
 
     private lateinit var navController: NavHostController
@@ -119,8 +120,9 @@ class RegisterActivity : BaseActivity() {
         var isDark by remember { mutableStateOf(false) }
 
         LaunchedEffect(navController.currentBackStackEntry?.destination?.route) {
-            isDark = (navController.currentBackStackEntry?.destination?.route == ChallengeRegisterNavScreen.ChallengerCameraPreview.route
-                    || navController.currentBackStackEntry?.destination?.route == ChallengeRegisterNavScreen.ChallengerCameraResult.route)
+            isDark =
+                (navController.currentBackStackEntry?.destination?.route == ChallengeRegisterNavScreen.ChallengerCameraPreview.route
+                        || navController.currentBackStackEntry?.destination?.route == ChallengeRegisterNavScreen.ChallengerCameraResult.route)
         }
 
         Column(
@@ -222,7 +224,12 @@ class RegisterActivity : BaseActivity() {
 
             override fun onClickChallengeCreate(goal: String, precautions: String, imgUrl: Uri?) {
                 if (goal.isEmpty()) {
-                    Snackbar.make(this@RegisterActivity, findViewById(android.R.id.content), "챌린지 목표를 입력해주세요.", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(
+                        this@RegisterActivity,
+                        findViewById(android.R.id.content),
+                        "챌린지 목표를 입력해주세요.",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
                     return
                 }
 
@@ -230,7 +237,9 @@ class RegisterActivity : BaseActivity() {
                 caution = precautions
 
                 if (imgUrl != null) {
-                    val imagePath = if (imgUrl.toString().contains("com.google.android.apps.photos.contentprovider")) {
+                    val imagePath = if (imgUrl.toString()
+                            .contains("com.google.android.apps.photos.contentprovider")
+                    ) {
                         getPathFromInputStreamUri(this@RegisterActivity, imgUrl)
                     } else {
                         uriToFilePath(imgUrl)
@@ -275,7 +284,11 @@ class RegisterActivity : BaseActivity() {
                 }
 
                 if (permissionResults.isNotEmpty()) {
-                    ActivityCompat.requestPermissions(this@RegisterActivity, permissionResults.toTypedArray(), 100)
+                    ActivityCompat.requestPermissions(
+                        this@RegisterActivity,
+                        permissionResults.toTypedArray(),
+                        100
+                    )
                 } else {
                     callImageSelector()
                 }
@@ -312,6 +325,10 @@ class RegisterActivity : BaseActivity() {
             override fun onClickRecruitDays(item: DropDownItem) {
                 viewModel.setRecruitDays(item.value.toInt())
             }
+
+            override fun onClickHoursOfUse(item: String) {
+                viewModel.setHourOfUse(item.toInt())
+            }
         }
 
         // camera capture callback
@@ -340,8 +357,13 @@ class RegisterActivity : BaseActivity() {
             it?.let {
                 Timber.e("imageBucket: ${Gson().toJson(it)}")
                 if (!it.errorCode.isNullOrEmpty() || !it.errorMessage.isNullOrEmpty()) {
-                    val message = "code : ${it.errorCode.toString()}, message : ${it.errorMessage.toString()}"
-                    Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show()
+                    val message =
+                        "code : ${it.errorCode.toString()}, message : ${it.errorMessage.toString()}"
+                    Snackbar.make(
+                        findViewById(android.R.id.content),
+                        message,
+                        Snackbar.LENGTH_SHORT
+                    ).show()
                     viewModel.isLoading(false)
                 } else {
                     viewModel.challengeGoals(goal, caution, it.id.toString())
@@ -368,7 +390,11 @@ class RegisterActivity : BaseActivity() {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 callImageSelector()
             } else {
-                Snackbar.make(findViewById(android.R.id.content), "Permission Denied", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(
+                    findViewById(android.R.id.content),
+                    "Permission Denied",
+                    Snackbar.LENGTH_SHORT
+                ).show()
             }
         }
     }
@@ -428,7 +454,7 @@ class RegisterActivity : BaseActivity() {
         albumLauncher.launch(chooser)
     }
 
-    private fun getImageUri(fileName: String) : Uri? {
+    private fun getImageUri(fileName: String): Uri? {
         val values = ContentValues()
         values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpg")
         values.put(MediaStore.Images.Media.DISPLAY_NAME, fileName)
@@ -437,12 +463,15 @@ class RegisterActivity : BaseActivity() {
         return contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
     }
 
+
+
     private fun showParticipantDialog(challengeId: String?) {
         val content = "챌린지가 성공적으로 개설되었습니다\n" +
                 "개설자도 참여를 해야 챌린지 진행이 가능합니다\n" +
                 "\n" +
                 "지금 바로 참여하시겠습니까?"
-        val dialog = ConfirmDialog(positiveBtnName = "지금 바로 참여", negativeBtnName = "나중에", content = content)
+        val dialog =
+            ConfirmDialog(positiveBtnName = "지금 바로 참여", negativeBtnName = "나중에", content = content)
         dialog.isCancelable = false
         dialog.setListener(object : CustomDialogListener {
             override fun clickPositive() {

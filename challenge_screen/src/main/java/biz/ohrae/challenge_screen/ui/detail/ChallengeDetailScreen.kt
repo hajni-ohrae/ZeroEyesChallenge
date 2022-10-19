@@ -227,13 +227,16 @@ fun ChallengeDescription(
 
         val week by remember { mutableStateOf(challengeData.period) }
         val periodType by remember { mutableStateOf(challengeVerificationPeriodMap[challengeData.verification_period_type]) }
+        val weekType = if (periodType.isNullOrEmpty()) "${challengeData.per_week}회" else periodType
+
         MiddleDotText(
-            text = "${week}주 동안 $periodType, 이용권 사용 내역이 이용시간으로 자동 인증됩니다.",
+            text = "${week}주 동안 $weekType, 이용권 사용 내역이 이용시간으로 자동 인증됩니다.",
             fontSize = dpToSp(dp = 14.dp),
             lineHeight = dpToSp(dp = 19.6.dp),
         )
         Spacer(modifier = Modifier.height(8.dp))
-        val days by remember { mutableStateOf(challengeVerificationDayMap[challengeData.verification_period_type]) }
+        var days by remember { mutableStateOf(challengeVerificationDayMap[challengeData.verification_period_type]) }
+        if(days.isNullOrEmpty()) days = "월,화,수,목,금,토,일"
         MiddleDotText(
             text = "인증 가능한 요일은 $days 입니다",
             fontSize = dpToSp(dp = 14.dp),

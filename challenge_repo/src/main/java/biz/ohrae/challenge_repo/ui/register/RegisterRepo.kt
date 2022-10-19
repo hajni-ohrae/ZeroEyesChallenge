@@ -36,6 +36,7 @@ class RegisterRepo @Inject constructor(
         jsonObject.addProperty("is_verification_photo", challengeData.is_verification_photo)
         jsonObject.addProperty("is_verification_checkin", challengeData.is_verification_checkin)
         jsonObject.addProperty("is_verification_time", challengeData.is_verification_time)
+        jsonObject.addProperty("verification_daily_staying_time", challengeData.verification_daily_staying_time)
         jsonObject.addProperty("is_adult_only", challengeData.is_adult_only)
         jsonObject.addProperty("is_feed_open", challengeData.is_feed_open)
         jsonObject.addProperty("achievement_percent", challengeData.achievement_percent)

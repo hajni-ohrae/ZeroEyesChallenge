@@ -40,7 +40,6 @@ fun ChallengeOpenScreen(
     }
 
     var selectedPeriod by remember { mutableStateOf(1) }
-
     Column(
         modifier = Modifier
             .background(DefaultWhite)
@@ -112,7 +111,8 @@ fun ChallengeOpenScreen(
                 .aspectRatio(7.1f),
             label = "",
             list = challengeOpenState.authFrequencyList,
-            onSelectItem = { clickListener?.onClickPeriodType(it.value) }
+            onSelectItem = {
+                clickListener?.onClickPeriodType(it.value) }
         )
 
         if (challengeData?.is_verification_time == 1) {
@@ -121,7 +121,10 @@ fun ChallengeOpenScreen(
                     .fillMaxWidth()
                     .aspectRatio(7.1f),
                 label = "",
-                list = challengeOpenState.authFrequencyList,
+                list = challengeOpenState.hoursOfUseList,
+                onSelectItem = {
+                    clickListener?.onClickHoursOfUse(it.value)
+                }
             )
         }
         Spacer(modifier = Modifier.height(28.dp))

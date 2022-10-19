@@ -95,6 +95,20 @@ class ChallengeRegisterViewModel @Inject constructor(
                         it.is_verification_time = 1
                     }
                 }
+                val list = mutableListOf<DropDownItem>()
+                loop@ for(i in 1..13) {
+                    if (i >= 12) {
+                        break@loop
+                    }
+                    list.add(DropDownItem("1일 누적 ${i}시간 이상", i.toString()))
+                }
+
+
+                val state2 = _screenState.value?.copy()
+                state2?.let { screenState ->
+                    screenState.hoursOfUseList = list
+                    _screenState.value = screenState
+                }
 
                 it.start_date = Utils.getDefaultChallengeDate()
                 it.end_date = Utils.addWeeks(it.start_date.toString(), 1)
@@ -191,6 +205,14 @@ class ChallengeRegisterViewModel @Inject constructor(
         val state = _challengeData.value?.copy()
         state?.let {
             it.apply_end_date = Utils.addDays(it.apply_start_date.toString(), days - 1)
+            _challengeData.value = it
+        }
+    }
+
+    fun setHourOfUse(hour: Int) {
+        val state = _challengeData.value?.copy()
+        state?.let {
+            it.verification_daily_staying_time = hour
             _challengeData.value = it
         }
     }
