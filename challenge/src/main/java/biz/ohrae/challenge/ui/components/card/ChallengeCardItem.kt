@@ -201,7 +201,7 @@ fun ChallengeCardItem(
                     )
                     Text(
                         modifier = Modifier.align(Alignment.CenterVertically),
-                        text = personnel.toString(),
+                        text = "${personnel.toString()}명",
                         textAlign = TextAlign.Center,
                         style = myTypography.bold,
                         fontSize = dpToSp(dp = 12.dp), color = DefaultBlack

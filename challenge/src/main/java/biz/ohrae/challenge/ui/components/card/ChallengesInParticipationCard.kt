@@ -141,7 +141,7 @@ fun ChallengesInParticipationCard(
                     .fillMaxWidth()
                     .aspectRatio(6.5f),
                 text = "인증하기",
-                backgroundColor = appColor.AlertSuccessColor,
+                backgroundColor = Color(0xff005bad),
                 onClick = { onClick() }
             )
         }

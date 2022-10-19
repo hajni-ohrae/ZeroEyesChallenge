@@ -3,6 +3,7 @@ package biz.ohrae.challenge_screen.ui.main
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -13,6 +14,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.ViewModelProvider
 import biz.ohrae.challenge.ui.components.header.Header
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
+import biz.ohrae.challenge.ui.theme.DefaultBackground
 import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailActivity
 import biz.ohrae.challenge_screen.ui.dialog.FilterDialog
@@ -74,7 +76,7 @@ class MainActivity : BaseActivity() {
         val isRefreshing by viewModel.isRefreshing.observeAsState(false)
 
         Column(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize().background(DefaultBackground)
         ) {
             Header(goMyChallenge = { goMyChallenge() })
             if (mainScreenState != null) {

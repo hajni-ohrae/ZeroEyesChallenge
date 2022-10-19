@@ -9,6 +9,7 @@ val Teal200 = Color(0xFF03DAC5)
 val TextBlack = Color(0xFF1F1F1F)
 val DefaultBlack = Color(0xFF1F1F1F)
 val DefaultWhite = Color(0xFFFFFFFF)
+val DefaultBackground = Color(0xFFF9F9F9)
 
 val FooterRoundBtnBorderColor = Color(0xFFE0E0E0)
 val FooterRoundBtnColor = Color(0xFFEEEEEE)

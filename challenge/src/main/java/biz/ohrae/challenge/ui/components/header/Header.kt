@@ -52,11 +52,12 @@ fun Header(
         modifier = Modifier
             .fillMaxWidth()
             .aspectRatio(6.43f)
+            .background(DefaultWhite)
             .padding(24.dp, 0.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = "Challenge", style = myTypography.extraBold, fontSize = dpToSp(dp = 20.dp))
+        Text(text = "Challenge", style = myTypography.extraBold, fontSize = dpToSp(dp = 26.dp))
         IconButton(
             modifier = Modifier,
             onClick = {
