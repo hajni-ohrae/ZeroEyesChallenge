@@ -1,20 +1,23 @@
-package biz.ohrae.challenge.ui.components.card
+package biz.ohrae.challenge.ui.components.filter
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
-import androidx.compose.material.SnackbarDefaults.backgroundColor
+import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Icon
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import biz.ohrae.challenge.ui.components.dropdown.DropDownItem
 import biz.ohrae.challenge.ui.theme.*
 import biz.ohrae.challenge_component.R
 
@@ -60,14 +63,15 @@ fun PaidFilterCard(
         if (text?.isNotEmpty() == true) {
             Text(
                 modifier = Modifier.padding(20.dp, 12.dp),
-                text = text!!,
+                text = text,
                 style = textStyle,
+                fontSize = dpToSp(dp = 14.dp),
                 color = if (select) DefaultWhite else TextBlack
             )
         } else {
             Icon(
                 modifier = Modifier.padding(16.dp, 7.dp),
-                painter = painterResource(id = icon!!),
+                painter = painterResource(id = icon),
                 contentDescription = "icon"
             )
         }

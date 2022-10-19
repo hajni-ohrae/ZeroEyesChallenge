@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.ui.components.card.ChallengeCardItem
 import biz.ohrae.challenge.ui.components.card.ChallengesInParticipationCard
 import biz.ohrae.challenge.ui.components.card.MainTopCard
-import biz.ohrae.challenge.ui.components.card.PaidFilterCard
+import biz.ohrae.challenge.ui.components.filter.PaidFilterCard
 import biz.ohrae.challenge.ui.theme.DefaultBlack
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.dpToSp
