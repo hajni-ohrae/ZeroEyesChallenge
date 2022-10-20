@@ -41,6 +41,7 @@ class ParticipationViewModel @Inject constructor(
                     _participationResult.value = it as ParticipationResult
                 } ?: run {
                     _participationResult.value = null
+                    isLoading(false)
                     setErrorData(result.errorCode, result.errorMessage)
                 }
             }

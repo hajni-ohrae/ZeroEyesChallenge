@@ -58,12 +58,13 @@ class MyChallengeActivity : AppCompatActivity() {
 
     private fun init() {
         challengeMainViewModel.getUserChallengeList(isInit = true)
-        challengeMainViewModel.getChallengeList("","","","","1","")
+        challengeMainViewModel.getChallengeList("", "", "", "", "1", "")
         myChallengeViewModel.getRedCardList()
         myChallengeViewModel.getPaymentHistory()
         myChallengeViewModel.getUserData()
         myChallengeViewModel.getRewardHistory()
     }
+
     @Composable
     private fun BuildContent() {
         navController = rememberNavController()
@@ -86,6 +87,7 @@ class MyChallengeActivity : AppCompatActivity() {
         }
         navController.popBackStack()
     }
+
     @Composable
     private fun Navigation() {
         val state by challengeMainViewModel.userChallengeListState.observeAsState()
@@ -93,14 +95,26 @@ class MyChallengeActivity : AppCompatActivity() {
         val redCardListState by myChallengeViewModel.redCardListState.observeAsState()
         val paymentHistoryState by myChallengeViewModel.paymentHistoryState.observeAsState()
         val saveChallengeList by challengeMainViewModel.mainScreenState.observeAsState()
-        val rewardList by myChallengeViewModel.rewardList.observeAsState()
+        val isRefreshing by challengeMainViewModel.isRefreshing.observeAsState(false)
 
         NavHost(
             navController = navController,
             startDestination = MyChallengeNavScreen.MyChallenge.route
         ) {
             composable(MyChallengeNavScreen.MyChallenge.route) {
-                MyChallengeScreen(user = userData,clickListener = myChallengeClickListener, userChallengeListState = state)
+                MyChallengeScreen(
+                    user = userData,
+                    clickListener = myChallengeClickListener,
+                    userChallengeListState = state,
+                    isRefreshing = isRefreshing,
+                    onBottomReached = {
+                        onBottomReached()
+                    },
+                    onRefresh = {
+                        challengeMainViewModel.isRefreshing(true)
+                        init()
+                    }
+                )
             }
             composable(MyChallengeNavScreen.MyReward.route) {
                 MyRewardScreen(clickListener = myChallengeClickListener)
@@ -121,7 +135,7 @@ class MyChallengeActivity : AppCompatActivity() {
                 SavedChallengeScreen(saveChallengeList)
             }
             composable(MyChallengeNavScreen.RedCard.route) {
-                RedCardScreen(clickListener = myChallengeClickListener,redCardListState)
+                RedCardScreen(clickListener = myChallengeClickListener, redCardListState)
             }
             composable(MyChallengeNavScreen.Policy.route) {
                 PolicyScreen(policyScreenType)
@@ -172,6 +186,10 @@ class MyChallengeActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
+    }
+
+    private fun onBottomReached() {
+        challengeMainViewModel.getUserChallengeList(isInit = true)
     }
 }
 
