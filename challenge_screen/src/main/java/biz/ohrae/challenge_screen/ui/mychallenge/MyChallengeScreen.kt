@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,6 +28,10 @@ import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.model.user.User
 import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.model.user.UserChallengeListState
+import biz.ohrae.challenge_screen.util.OnBottomReached
+import timber.log.Timber
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 
 @Preview(
@@ -39,11 +44,11 @@ fun MyChallengeScreen(
     challengeData: ChallengeData = ChallengeData.mock(),
     user: User? = null,
     clickListener: MyChallengeClickListener? = null,
-    userChallengeListState: UserChallengeListState? = null
+    userChallengeListState: UserChallengeListState? = null,
+    onBottomReached: () -> Unit = {},
+    isRefreshing: Boolean = false,
+    onRefresh: () -> Unit = {}
 ) {
-    val availableRewards by remember {
-        mutableStateOf(challengeData.user?.rewards_amount ?: 0)
-    }
 
     Column(
         modifier = Modifier
@@ -57,37 +62,23 @@ fun MyChallengeScreen(
                 .fillMaxSize()
                 .fillMaxWidth()
         ) {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+            SwipeRefresh(
+                state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
+                onRefresh = {
+                    onRefresh()
+                }
             ) {
-                item {
-                    ItemHeader(
+                if (userChallengeListState != null) {
+                    UserChallengeList(
+                        challengeData = challengeData,
                         user = user,
-                        availableRewards = availableRewards.toString(),
                         clickListener = clickListener,
-                        userChallengeListState = userChallengeListState
+                        userChallengeListState = userChallengeListState,
+                        onBottomReached = onBottomReached
                     )
                 }
-                if (userChallengeListState != null) {
-                    items(userChallengeListState?.userChallengeList!!) { item ->
-                        val inChallenge = item.inChallenge?.get(0)
-                        ChallengesInParticipationCard(
-                            modifier = Modifier.fillMaxWidth(),
-                            title = item.goal.toString(),
-                            count = inChallenge?.today_verified_cnt.toString(),
-                            total = inChallenge?.verified_cnt.toString(),
-                            progressStatus = challengeDetailStatusMap[item.status]?.status.toString(),
-                            achievementRate = inChallenge?.achievement_percent.toString(),
-                            Utils.userChallengeBackground(item.status),
-                            Utils.userChallengeTextColor(item.status),
-                            onClick = { clickListener?.onClickChallengeAuthItem(item.id) }
-                        )
-                    }
-                }
             }
+
         }
     }
 }
@@ -171,39 +162,57 @@ fun ItemHeader(
             color = DefaultBlack
         )
         Spacer(modifier = Modifier.height(17.dp))
-//        if (userChallengeListState != null) {
-//            Row(modifier = Modifier.padding(0.dp, 22.dp)) {
-//                PaidFilterCard(modifier = Modifier, text = "전체", select = select)
-//                Spacer(modifier = Modifier.width(4.dp))
-//                PaidFilterCard(modifier = Modifier, text = "모집중")
-//                Spacer(modifier = Modifier.width(4.dp))
-//                PaidFilterCard(modifier = Modifier, text = "진행중")
-//                PaidFilterCard(modifier = Modifier, text = "완료")
-//            }
-//            LazyColumn(
-//                modifier = Modifier.fillMaxWidth(),
-//                verticalArrangement = Arrangement.spacedBy(17.dp),
-//            ) {
-//                items(userChallengeListState?.userChallengeList!!) { item ->
-//                    ChallengesInParticipationCard(
-//                        modifier = Modifier.fillParentMaxSize(),
-//                        title = item.goal.toString(),
-//                        1,
-//                        30,
-//                        "완료",
-//                        Color(0xffdedede),
-//                        Color(0xff6c6c6c)
-//                    )
-//                }
-//            }
-//        } else {
-//            Text(
-//                text = "참여중인 챌린지 없음",
-//                style = myTypography.bold,
-//                fontSize = dpToSp(dp = 16.dp),
-//                color = DefaultBlack
-//            )
-//        }
     }
 }
 
+@Composable
+fun UserChallengeList(
+    challengeData: ChallengeData = ChallengeData.mock(),
+    user: User? = null,
+    clickListener: MyChallengeClickListener? = null,
+    userChallengeListState: UserChallengeListState? = null,
+    onBottomReached: () -> Unit = {},
+) {
+
+    val listState = rememberLazyListState()
+
+    val availableRewards by remember {
+        mutableStateOf(challengeData.user?.rewards_amount ?: 0)
+    }
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxSize(),
+        state = listState,
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        item {
+            ItemHeader(
+                user = user,
+                availableRewards = availableRewards.toString(),
+                clickListener = clickListener,
+                userChallengeListState = userChallengeListState
+            )
+        }
+        if (userChallengeListState != null) {
+            items(userChallengeListState?.userChallengeList!!) { item ->
+                val inChallenge = item.inChallenge?.get(0)
+                ChallengesInParticipationCard(
+                    modifier = Modifier.fillMaxWidth(),
+                    title = item.goal.toString(),
+                    count = inChallenge?.today_verified_cnt.toString(),
+                    total = inChallenge?.verified_cnt.toString(),
+                    progressStatus = challengeDetailStatusMap[item.status]?.status.toString(),
+                    achievementRate = inChallenge?.achievement_percent.toString(),
+                    Utils.userChallengeBackground(item.status),
+                    Utils.userChallengeTextColor(item.status),
+                    onClick = { clickListener?.onClickChallengeAuthItem(item.id) }
+                )
+            }
+        }
+    }
+    listState.OnBottomReached {
+        Timber.e("bottom reached!!")
+        onBottomReached()
+    }
+}

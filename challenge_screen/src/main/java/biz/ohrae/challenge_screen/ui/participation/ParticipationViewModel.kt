@@ -40,6 +40,7 @@ class ParticipationViewModel @Inject constructor(
                 result.data?.let {
                     _participationResult.value = it as ParticipationResult
                 } ?: run {
+                    isLoading(false)
                     setErrorData(result.errorCode, result.errorMessage)
                 }
             }
