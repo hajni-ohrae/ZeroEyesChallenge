@@ -1,5 +1,6 @@
 package biz.ohrae.challenge_screen.ui.payment
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.webkit.CookieManager
@@ -36,6 +37,33 @@ class ChallengePaymentActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        val resVal = data?.extras?.getString("bankpay_value")
+        val resCode = data?.extras?.getString("bankpay_code")
+        when (resCode) {
+            "000" -> {
+                niceClient!!.bankPayPostProcess(resCode, resVal)
+            }
+            "091" -> { //계좌이체 결제를 취소한 경우
+                Timber.e("계좌이체 결제를 취소하였습니다.")
+            }
+            "060" -> {
+                Timber.e("타임아웃")
+            }
+            "050" -> {
+                Timber.e("전자서명 실패")
+            }
+            "040" -> {
+                Timber.e("OTP/보안카드 처리 실패")
+            }
+            "030" -> {
+                Timber.e("인증모듈 초기화 오류")
+            }
+        }
     }
 
     private fun init() {
@@ -79,5 +107,19 @@ class ChallengePaymentActivity : AppCompatActivity() {
         val url = Routes.PAYMENT_HOST_NAME.dropLast(1) + Routes.REQUEST_PAYMENT
         Timber.e("url : $url, postData : $postData")
         binding.webView.postUrl(url, postData.toByteArray())
+    }
+
+    fun paymentResult(isSuccess: Boolean, code: String?, message: String?) {
+        Timber.e("isSuccess : $isSuccess, code : $code, message : $message")
+        if (isSuccess) {
+            setResult(RESULT_OK)
+            finish()
+        } else {
+            val intent = Intent()
+            intent.putExtra("code", code)
+            intent.putExtra("message", message)
+            setResult(RESULT_OK, intent)
+            finish()
+        }
     }
 }

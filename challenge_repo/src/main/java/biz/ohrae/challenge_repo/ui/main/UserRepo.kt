@@ -135,9 +135,9 @@ class UserRepo @Inject constructor(
         }
 
         val jsonObject = JsonObject()
-        jsonObject.addProperty("name", customer.name.toString())
-        jsonObject.addProperty("nickname", customer.nick_name.toString())
-        jsonObject.addProperty("phone_number", customer.phone_number)
+//        jsonObject.addProperty("name", customer.name.toString())
+//        jsonObject.addProperty("nickname", customer.nick_name.toString())
+//        jsonObject.addProperty("phone_number", customer.phone_number)
         jsonObject.addProperty("service_type", "ze_study")
         jsonObject.add("service_ids", jsonArray)
 

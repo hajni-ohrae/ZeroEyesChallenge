@@ -50,8 +50,6 @@ fun ParticipationScreen(
     clickListener: ParticipationClickListener? = null,
 ) {
 
-    val keyboardController = LocalSoftwareKeyboardController.current
-    var checked by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
 
     val list = listOf(
@@ -61,6 +59,9 @@ fun ParticipationScreen(
     var rewards by remember { mutableStateOf("") }
     val availableRewards by remember {
         mutableStateOf(challengeData.user?.rewards_amount ?: 0)
+    }
+    val isFree by remember {
+        mutableStateOf(challengeData.min_deposit_amount <= 0)
     }
     var totalAmount by remember { mutableStateOf(0) }
 
@@ -77,128 +78,26 @@ fun ParticipationScreen(
             Spacer(modifier = Modifier.height(16.dp))
             ParticipationDetailCard(challengeData = challengeData)
             Spacer(modifier = Modifier.height(24.dp))
-            Text(
-                text = "습관에 돈을 걸고 의지를 유지하세요",
-                style = myTypography.w500,
-                fontSize = dpToSp(dp = 20.dp),
-                color = Color(0xffff5800),
-            )
-            Spacer(modifier = Modifier.height(24.dp))
-            Text(text = "참여금", style = myTypography.bold, fontSize = dpToSp(dp = 16.dp))
-            Spacer(modifier = Modifier.height(8.dp))
-            TextBox(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(7.1f),
-                placeholder = "숫자만 입력",
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Done
-                ),
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        keyboardController?.hide()
-                    }
-                ),
-                singleLine = true,
-                value = participationAmount,
-                onValueChange = {
+            InputParticipationAmount(
+                isFree = isFree,
+                availableRewards = availableRewards,
+                participationAmount = participationAmount,
+                onParticipationAmountChange = {
                     val price = numberToString(it)
                     participationAmount = price
                     totalAmount = calculateTotalAmount(participationAmount, rewards)
                 },
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Text(
-                text = "· 참여금이 높을수록 받는 리워즈도 많아져요\n· 최소 1천원 ~ 최대 50만원 까지 설정 가능해요",
-                style = myTypography.w500,
-                lineHeight = dpToSp(dp = 19.6.dp),
-                fontSize = dpToSp(dp = 14.dp),
-            )
-            Spacer(modifier = Modifier.height(14.dp))
-
-            Text(text = "결제 금액", style = myTypography.bold, fontSize = dpToSp(dp = 16.dp))
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = CenterVertically
-            ) {
-                Text(
-                    text = "리워즈 사용",
-                    style = myTypography.bold,
-                    fontSize = dpToSp(dp = 14.dp)
-                )
-                MyCheckBox(
-                    checkBoxSize = 20.dp,
-                    label = "리워즈 전액 사용",
-                    labelStyle = myTypography.w700,
-                    onClick = {
-                        checked = !checked
-                        if (checked) {
-                            rewards = (challengeData.user?.rewards_amount ?: 0).toString()
-                            totalAmount = calculateTotalAmount(participationAmount, rewards)
-                        } else {
-                            rewards = ""
-                        }
-                    },
-                    onChecked = {
-                        checked = !checked
-                        if (checked) {
-                            rewards = (challengeData.user?.rewards_amount ?: 0).toString()
-                            totalAmount = calculateTotalAmount(participationAmount, rewards)
-                        }
-                    },
-                    checked = checked,
-                )
-            }
-            Spacer(modifier = Modifier.height(12.dp))
-            TextBox(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(7.1f),
-                placeholder = if (availableRewards > 0) "숫자만 입력" else "사용가능한 리워즈가 없습니다.",
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Done
-                ),
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        keyboardController?.hide()
-                    }
-                ),
-                singleLine = true,
-                enabled = availableRewards > 0,
-                value = rewards,
-                onValueChange = {
+                rewards = rewards,
+                onParticipationRewardChange = {
                     rewards = numberToString(it)
                     totalAmount = calculateTotalAmount(participationAmount, rewards)
+                },
+                onCheckUseAllRewards = {
+                    if (it) {
+                        rewards = (challengeData.user?.rewards_amount ?: 0).toString()
+                        totalAmount = calculateTotalAmount(participationAmount, rewards)
+                    }
                 }
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = "사용 가능한 리워즈",
-                    style = myTypography.w500,
-                    fontSize = dpToSp(dp = 14.dp),
-                    color = Color(0xff6c6c6c)
-                )
-                Text(
-                    text = "${numberToString(availableRewards.toString())}원",
-                    style = myTypography.bold,
-                    fontSize = dpToSp(dp = 14.dp)
-                )
-            }
-            Spacer(modifier = Modifier.height(24.dp))
-            Divider(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(1.dp), color = GrayColor4
             )
             Spacer(modifier = Modifier.height(24.dp))
             Row(
@@ -228,7 +127,7 @@ fun ParticipationScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(6f),
-            text = "결제하기",
+            text = if (isFree) "참여하기" else "결제하기",
             onClick = {
                 val paidAmount = if (participationAmount.isEmpty()) {
                     0
@@ -249,6 +148,135 @@ fun ParticipationScreen(
             }
         )
     }
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+private fun InputParticipationAmount(
+    isFree: Boolean,
+    availableRewards: Int,
+    participationAmount: String,
+    onParticipationAmountChange: (text: String) -> Unit,
+    rewards: String,
+    onParticipationRewardChange: (text: String) -> Unit,
+    onCheckUseAllRewards: (checked: Boolean) -> Unit,
+) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+    var checked by remember { mutableStateOf(false) }
+
+    Text(
+        text = "습관에 돈을 걸고 의지를 유지하세요",
+        style = myTypography.w500,
+        fontSize = dpToSp(dp = 20.dp),
+        color = Color(0xffff5800),
+    )
+    Spacer(modifier = Modifier.height(24.dp))
+    Text(text = "참여금", style = myTypography.bold, fontSize = dpToSp(dp = 16.dp))
+    Spacer(modifier = Modifier.height(8.dp))
+    TextBox(
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(7.1f),
+        placeholder = if (isFree) "무료챌린지 입니다." else "숫자만 입력",
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Number,
+            imeAction = ImeAction.Done
+        ),
+        keyboardActions = KeyboardActions(
+            onDone = {
+                keyboardController?.hide()
+            }
+        ),
+        singleLine = true,
+        enabled = !isFree,
+        value = participationAmount,
+        onValueChange = {
+            onParticipationAmountChange(it)
+        },
+    )
+    Spacer(modifier = Modifier.height(12.dp))
+
+    Text(
+        text = "· 참여금이 높을수록 받는 리워즈도 많아져요\n· 최소 1천원 ~ 최대 50만원 까지 설정 가능해요",
+        style = myTypography.w500,
+        lineHeight = dpToSp(dp = 19.6.dp),
+        fontSize = dpToSp(dp = 14.dp),
+    )
+    Spacer(modifier = Modifier.height(14.dp))
+
+    Text(text = "결제 금액", style = myTypography.bold, fontSize = dpToSp(dp = 16.dp))
+    Spacer(modifier = Modifier.height(16.dp))
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = CenterVertically
+    ) {
+        Text(
+            text = "리워즈 사용",
+            style = myTypography.bold,
+            fontSize = dpToSp(dp = 14.dp)
+        )
+        MyCheckBox(
+            checkBoxSize = 20.dp,
+            label = "리워즈 전액 사용",
+            labelStyle = myTypography.w700,
+            onClick = {
+                checked = !checked
+                onCheckUseAllRewards(checked)
+            },
+            onChecked = {
+                checked = !checked
+                onCheckUseAllRewards(checked)
+            },
+            checked = checked,
+        )
+    }
+    Spacer(modifier = Modifier.height(12.dp))
+    TextBox(
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(7.1f),
+        placeholder = if (availableRewards > 0) "숫자만 입력" else "사용가능한 리워즈가 없습니다.",
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Number,
+            imeAction = ImeAction.Done
+        ),
+        keyboardActions = KeyboardActions(
+            onDone = {
+                keyboardController?.hide()
+            }
+        ),
+        singleLine = true,
+        enabled = availableRewards > 0,
+        value = rewards,
+        onValueChange = {
+            onParticipationRewardChange(it)
+        }
+    )
+    Spacer(modifier = Modifier.height(12.dp))
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = "사용 가능한 리워즈",
+            style = myTypography.w500,
+            fontSize = dpToSp(dp = 14.dp),
+            color = Color(0xff6c6c6c)
+        )
+        Text(
+            text = "${numberToString(availableRewards.toString())}원",
+            style = myTypography.bold,
+            fontSize = dpToSp(dp = 14.dp)
+        )
+    }
+    Spacer(modifier = Modifier.height(24.dp))
+    Divider(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(1.dp), color = GrayColor4
+    )
 }
 
 @Composable

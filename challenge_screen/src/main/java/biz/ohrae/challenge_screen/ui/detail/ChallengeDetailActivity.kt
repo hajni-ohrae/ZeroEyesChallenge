@@ -230,13 +230,16 @@ class ChallengeDetailActivity : BaseActivity() {
 
         detailClickListener = object : ChallengeDetailClickListener {
             override fun onClickParticipation() {
-                intent = Intent(this@ChallengeDetailActivity, ParticipationActivity::class.java)
-                intent.putExtra("challengeId", challengeId)
-                intent.putExtra(
-                    "isCancel",
-                    !viewModel.challengeData.value?.inChallenge.isNullOrEmpty()
-                )
-                launcher.launch(intent)
+                viewModel.challengeData.value?.let {
+                    if (it.status == "register") {
+                        intent = Intent(this@ChallengeDetailActivity, ParticipationActivity::class.java)
+                        intent.putExtra("challengeId", challengeId)
+                        intent.putExtra("isCancel", !it.inChallenge.isNullOrEmpty())
+                        launcher.launch(intent)
+                    } else {
+                        showSnackBar("모집종료 되었습니다.")
+                    }
+                }
             }
 
             override fun onClickAuth() {

@@ -1,5 +1,6 @@
 package biz.ohrae.challenge_screen.ui.participation
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
@@ -22,6 +23,7 @@ import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailViewModel
 import biz.ohrae.challenge_screen.ui.dialog.LoadingDialog
+import biz.ohrae.challenge_screen.ui.payment.ChallengePaymentActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -149,16 +151,17 @@ class ParticipationActivity : BaseActivity() {
     override fun initClickListeners() {
         clickListener = object : ParticipationClickListener {
             override fun onClickPayment(paidAmount: Int, rewardAmount: Int, depositAmount: Int) {
-//                navController.navigate(ChallengeParticipationNavScreen.ParticipationPayment.route)
-//                val userId = prefs.getUserData()?.id
-//                val intent = Intent(this@ParticipationActivity, ChallengePaymentActivity::class.java)
-//                intent.putExtra("challengeId", challengeId)
-//                intent.putExtra("userId", userId)
-//
-//                startActivity(intent)
                 detailViewModel.challengeData.value?.let {
-                    viewModel.isLoading(true)
-                    viewModel.registerChallenge(challengeData = it, paidAmount, rewardAmount, depositAmount)
+                    if (it.min_deposit_amount > 0) {
+                        val userId = prefs.getUserData()?.id
+                        val intent = Intent(this@ParticipationActivity, ChallengePaymentActivity::class.java)
+                        intent.putExtra("challengeId", challengeId)
+                        intent.putExtra("userId", userId)
+                        startActivity(intent)
+                    } else {
+                        viewModel.isLoading(true)
+                        viewModel.registerChallenge(challengeData = it, paidAmount, rewardAmount, depositAmount)
+                    }
                 }
             }
 
