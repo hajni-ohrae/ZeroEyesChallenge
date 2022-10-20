@@ -174,4 +174,8 @@ class ChallengeDetailRepo @Inject constructor(
         }
     }
 
+    suspend fun favoriteChallenge(){
+
+    }
+
 }

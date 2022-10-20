@@ -17,6 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,11 +31,14 @@ class MyChallengeViewModel @Inject constructor(
     private val _paymentHistoryState = MutableLiveData<PaymentHistoryState>()
     private val _rewardList = MutableLiveData<List<RewardData>>()
     private val _userData = MutableLiveData<User>()
+    private val _userRedCardListPage = MutableLiveData(1)
+
 
     val redCardListState get() = _redCardListState
     val paymentHistoryState get() = _paymentHistoryState
     val userData get() = _userData
     val rewardList get() = _rewardList
+    val userRedCardListPage get() = _userRedCardListPage
 
     fun getAllBlock() {
         viewModelScope.launch {
@@ -48,11 +52,23 @@ class MyChallengeViewModel @Inject constructor(
         }
     }
 
-    fun getRedCardList() {
+    fun getRedCardList(
+        isInit: Boolean = false,
+    ) {
         viewModelScope.launch {
+            if (isInit) {
+                _userRedCardListPage.value = 1
+            }
+            val page = _userRedCardListPage.value ?: 1
             val response = userRepo.getRedCardList()
             response.flowOn(Dispatchers.IO).collect {
                 it.data?.let { data ->
+                    val pager = it.pager
+
+                    if (it.pager?.page == page) {
+                        _userRedCardListPage.value = page + 1
+                    }
+
                     val redCardState = data as List<RedCard>
                     val state = RedCardListState(redCardState)
                     _redCardListState.value = state
@@ -90,7 +106,7 @@ class MyChallengeViewModel @Inject constructor(
     fun getRewardHistory() {
         viewModelScope.launch {
             val response = userRepo.getRewardHistory()
-            response.flowOn(Dispatchers.IO).collect(){
+            response.flowOn(Dispatchers.IO).collect() {
                 if (it.data != null) {
                     val rewardList = it.data as List<RewardData>
                     _rewardList.value = rewardList
