@@ -488,7 +488,7 @@ object Utils {
         return times[0] + ":" + times[1]
     }
 
-    fun numberToString(text: String): String {
+    fun numberToString(text: String, maxNumber: Int = 500000): String {
         return if (text.isEmpty()) {
             text
         } else {
@@ -496,8 +496,8 @@ object Utils {
             if (price.isEmpty()) {
                 price
             } else {
-                if (price.toInt() > 500000) {
-                    price = "500000"
+                if (price.toInt() > maxNumber) {
+                    price = maxNumber.toString()
                 }
                 numberFormat(price.toInt())
             }

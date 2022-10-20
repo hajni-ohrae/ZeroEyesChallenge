@@ -35,6 +35,7 @@ import biz.ohrae.challenge.util.challengeVerificationPeriodMap
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_repo.util.prefs.Utils.numberToString
+import java.lang.Math.min
 import java.text.NumberFormat
 import java.util.*
 
@@ -63,7 +64,7 @@ fun ParticipationScreen(
     val isFree by remember {
         mutableStateOf(challengeData.min_deposit_amount <= 0)
     }
-    var totalAmount by remember { mutableStateOf(0) }
+    var paidAmount by remember { mutableStateOf(0) }
 
     Column(
         modifier = Modifier
@@ -82,21 +83,52 @@ fun ParticipationScreen(
                 isFree = isFree,
                 availableRewards = availableRewards,
                 participationAmount = participationAmount,
-                onParticipationAmountChange = {
-                    val price = numberToString(it)
+                onParticipationAmountChange = { text, checked ->
+                    val price = numberToString(text)
                     participationAmount = price
-                    totalAmount = calculateTotalAmount(participationAmount, rewards)
+                    if (checked) {
+                        val amount = try {
+                            participationAmount.replace(",", "").toInt()
+                        } catch (e: Exception) {
+                            0
+                        }
+                        val ownRewards = challengeData.user?.rewards_amount ?: 0
+                        val min = min(amount, ownRewards)
+                        rewards = numberToString(text, min)
+                        paidAmount = calculatePaidAmount(participationAmount, rewards)
+                    } else {
+                        paidAmount = calculatePaidAmount(participationAmount, rewards)
+                    }
                 },
                 rewards = rewards,
                 onParticipationRewardChange = {
-                    rewards = numberToString(it)
-                    totalAmount = calculateTotalAmount(participationAmount, rewards)
+                    val amount = try {
+                        participationAmount.replace(",", "").toInt()
+                    } catch (e: Exception) {
+                        0
+                    }
+                    val ownRewards = challengeData.user?.rewards_amount ?: 0
+                    val min = min(amount, ownRewards)
+                    rewards = numberToString(it, min)
+                    paidAmount = calculatePaidAmount(participationAmount, rewards)
                 },
                 onCheckUseAllRewards = {
-                    if (it) {
-                        rewards = (challengeData.user?.rewards_amount ?: 0).toString()
-                        totalAmount = calculateTotalAmount(participationAmount, rewards)
+                    val amount = try {
+                        participationAmount.replace(",", "").toInt()
+                    } catch (e: Exception) {
+                        0
                     }
+                    var ownRewards = challengeData.user?.rewards_amount ?: 0
+                    if (ownRewards >= amount) {
+                        ownRewards = amount
+                    }
+
+                    if (!it) {
+                        ownRewards = 0
+                    }
+
+                    rewards = Utils.numberFormat(ownRewards)
+                    paidAmount = calculatePaidAmount(participationAmount, rewards)
                 }
             )
             Spacer(modifier = Modifier.height(24.dp))
@@ -107,7 +139,7 @@ fun ParticipationScreen(
             ) {
                 Text(text = "최종 결제 금액", style = myTypography.bold, fontSize = dpToSp(dp = 16.dp))
                 Text(
-                    text = "${Utils.numberFormat(totalAmount)}원",
+                    text = "${Utils.numberFormat(paidAmount)}원",
                     style = myTypography.bold,
                     fontSize = dpToSp(dp = 18.dp),
                     color = Color(0xff4985f8)
@@ -129,7 +161,7 @@ fun ParticipationScreen(
                 .aspectRatio(6f),
             text = if (isFree) "참여하기" else "결제하기",
             onClick = {
-                val paidAmount = if (participationAmount.isEmpty()) {
+                val depositAmount = if (participationAmount.isEmpty()) {
                     0
                 } else {
                     participationAmount.replace(",", "").toInt()
@@ -143,7 +175,7 @@ fun ParticipationScreen(
                 clickListener?.onClickPayment(
                     paidAmount = paidAmount,
                     rewardAmount = rewardAmount,
-                    depositAmount = totalAmount
+                    depositAmount = depositAmount
                 )
             }
         )
@@ -156,7 +188,7 @@ private fun InputParticipationAmount(
     isFree: Boolean,
     availableRewards: Int,
     participationAmount: String,
-    onParticipationAmountChange: (text: String) -> Unit,
+    onParticipationAmountChange: (text: String, checked: Boolean) -> Unit,
     rewards: String,
     onParticipationRewardChange: (text: String) -> Unit,
     onCheckUseAllRewards: (checked: Boolean) -> Unit,
@@ -191,7 +223,7 @@ private fun InputParticipationAmount(
         enabled = !isFree,
         value = participationAmount,
         onValueChange = {
-            onParticipationAmountChange(it)
+            onParticipationAmountChange(it, checked)
         },
     )
     Spacer(modifier = Modifier.height(12.dp))
@@ -248,7 +280,7 @@ private fun InputParticipationAmount(
             }
         ),
         singleLine = true,
-        enabled = availableRewards > 0,
+        enabled = availableRewards > 0 && !checked,
         value = rewards,
         onValueChange = {
             onParticipationRewardChange(it)
@@ -427,7 +459,7 @@ private fun getAuthText(challengeData: ChallengeData): String {
 }
 
 
-private fun calculateTotalAmount(priceText: String, rewardsText: String): Int {
+private fun calculatePaidAmount(priceText: String, rewardsText: String): Int {
     val price = priceText.replace("[^\\d]".toRegex(), "")
     val rewards = rewardsText.replace("[^\\d]".toRegex(), "")
 
@@ -443,5 +475,9 @@ private fun calculateTotalAmount(priceText: String, rewardsText: String): Int {
         rewards.toInt()
     }
 
-    return priceNumber - rewardsNumber
+    var result = 0
+    if (priceNumber - rewardsNumber > 0) {
+        result = priceNumber - rewardsNumber
+    }
+    return result
 }

@@ -27,6 +27,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.window.layout.WindowMetricsCalculator
 import biz.ohrae.challenge.ui.components.button.FlatDoubleButton
 import biz.ohrae.challenge.ui.theme.DefaultWhite
+import biz.ohrae.challenge.ui.theme.GrayColor6
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge_repo.util.prefs.Utils
@@ -37,6 +38,7 @@ import com.kizitonwose.calendar.core.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.time.DayOfWeek
+import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.*
@@ -169,6 +171,7 @@ private fun ComposeCalendar(
     endMonth: YearMonth = startMonth.plusMonths(3),
     onDayClick: (day: CalendarDay) -> Unit = {}
 ) {
+    val now by remember { mutableStateOf(LocalDate.now()) }
     val coroutineScope = rememberCoroutineScope()
     val selections = remember { mutableStateListOf<CalendarDay>() }
     val state = rememberCalendarState(
@@ -212,7 +215,11 @@ private fun ComposeCalendar(
             modifier = Modifier.fillMaxWidth(),
             state = state,
             dayContent = { day ->
-                Day(day, isSelected = selections.contains(day)) { clicked ->
+                Day(
+                    day = day,
+                    isSelected = selections.contains(day),
+                    isAfter = day.date.isAfter(now),
+                ) { clicked ->
                     selections.clear()
                     selections.add(clicked)
                     onDayClick(clicked)
@@ -285,7 +292,12 @@ private fun MonthHeader(daysOfWeek: List<DayOfWeek>) {
 }
 
 @Composable
-private fun Day(day: CalendarDay, isSelected: Boolean, onClick: (CalendarDay) -> Unit) {
+private fun Day(
+    day: CalendarDay,
+    isSelected: Boolean,
+    isAfter: Boolean,
+    onClick: (CalendarDay) -> Unit
+) {
     Box(
         modifier = Modifier
             .aspectRatio(1f) // This is important for square-sizing!
@@ -294,14 +306,28 @@ private fun Day(day: CalendarDay, isSelected: Boolean, onClick: (CalendarDay) ->
             .background(color = if (isSelected) Color(0xff005bad) else Color.Transparent)
             .clickable(
                 enabled = day.position == DayPosition.MonthDate,
-                onClick = { onClick(day) }
+                onClick = {
+                    if (day.date.isAfter(LocalDate.now())) {
+                        onClick(day)
+                    }
+                }
             ),
         contentAlignment = Alignment.Center
     ) {
         val textColor = when (day.position) {
             // Color.Unspecified will use the default text color from the current theme
-            DayPosition.MonthDate -> if (isSelected) Color.White else Color.Unspecified
-            DayPosition.InDate, DayPosition.OutDate -> Color(0xff6c6c6c)
+            DayPosition.MonthDate -> {
+                if (isSelected) {
+                    Color.White
+                } else {
+                    if (isAfter) {
+                        Color.Unspecified
+                    } else {
+                        GrayColor6
+                    }
+                }
+            }
+            DayPosition.InDate, DayPosition.OutDate -> GrayColor6
         }
         Text(
             text = day.date.dayOfMonth.toString(),

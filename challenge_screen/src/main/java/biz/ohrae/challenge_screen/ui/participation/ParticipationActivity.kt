@@ -209,7 +209,8 @@ class ParticipationActivity : BaseActivity() {
             viewModel.isLoading(false)
             result?.let {
                 val minDepositAmount = detailViewModel.challengeData.value?.min_deposit_amount ?: 0
-                if (minDepositAmount > 0) {
+                val paidAmount = viewModel.participationResult.value?.paid_amount ?: 0
+                if (minDepositAmount > 0 && paidAmount > 0) {
                     val userId = prefs.getUserData()?.id
                     val intent = Intent(this@ParticipationActivity, ChallengePaymentActivity::class.java)
                     intent.putExtra("challengeId", challengeId)
