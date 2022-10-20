@@ -58,7 +58,7 @@ class MyChallengeActivity : AppCompatActivity() {
 
     private fun init() {
         challengeMainViewModel.getUserChallengeList(isInit = true)
-        challengeMainViewModel.getChallengeList("", "", "", "", "1", "")
+        challengeMainViewModel.getChallengeList("", "", "", "", "1", "", isInit = true)
         myChallengeViewModel.getRedCardList()
         myChallengeViewModel.getPaymentHistory()
         myChallengeViewModel.getUserData()
@@ -132,7 +132,17 @@ class MyChallengeActivity : AppCompatActivity() {
                 )
             }
             composable(MyChallengeNavScreen.SavedChallenge.route) {
-                SavedChallengeScreen(saveChallengeList)
+                SavedChallengeScreen(
+                    saveChallengeList,
+                    myChallengeClickListener,
+                    isRefreshing = isRefreshing,
+                    onBottomReached = {
+                        onBottomReached()
+                    },
+                    onRefresh = {
+                        challengeMainViewModel.isRefreshing(true)
+                        init()
+                    })
             }
             composable(MyChallengeNavScreen.RedCard.route) {
                 RedCardScreen(clickListener = myChallengeClickListener, redCardListState)
@@ -183,6 +193,12 @@ class MyChallengeActivity : AppCompatActivity() {
             override fun onClickChallengeAuthItem(challengeId: String) {
                 val intent = Intent(this@MyChallengeActivity, ChallengeDetailActivity::class.java)
                 intent.putExtra("challengeId", challengeId)
+                startActivity(intent)
+            }
+
+            override fun onClickChallengeItem(id: String) {
+                val intent = Intent(this@MyChallengeActivity, ChallengeDetailActivity::class.java)
+                intent.putExtra("challengeId", id)
                 startActivity(intent)
             }
         }

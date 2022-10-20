@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -19,7 +20,10 @@ import biz.ohrae.challenge_repo.util.prefs.Utils.getAuthType
 import biz.ohrae.challenge_repo.util.prefs.Utils.getOpenType
 import biz.ohrae.challenge_screen.model.main.MainScreenState
 import biz.ohrae.challenge_screen.ui.main.MainClickListener
+import biz.ohrae.challenge_screen.util.OnBottomReached
 import timber.log.Timber
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 
 @Preview(
@@ -30,49 +34,81 @@ import timber.log.Timber
 @Composable
 fun SavedChallengeScreen(
     mainScreenState: MainScreenState? = MainScreenState.mock(),
-    clickListener: MainClickListener? = null
+    clickListener: MyChallengeClickListener? = null,
+    onBottomReached: () -> Unit = {},
+    isRefreshing: Boolean = false,
+    onRefresh: () -> Unit = {}
 ) {
     Column() {
-        if (!mainScreenState?.challengeList.isNullOrEmpty()) {
-            LazyColumn(
-                modifier = Modifier
-                    .padding(24.dp, 0.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                itemsIndexed(mainScreenState?.challengeList!!, key = { _, item -> item.id }) { index, item ->
-                    val startDay = Utils.getRemainTimeDays(item.start_date.toString())
-                    val type = challengeVerificationPeriodMap[item.verification_period_type]
-                    val weekType = if (type.isNullOrEmpty()) "주${item.per_week}회 인증" else type
-                    ChallengeCardItem(
-                        index,
-                        item.id,
-                        item.goal.toString(),
-                        item.user?.getUserName(),
-                        startDay.toString(),
-                        item.period.toString(),
-                        weekType.toString(),
-                        item.summary?.total_user_cnt,
-                        getAuthType(item),
-                        getOpenType(item),
-                        item.is_adult_only,
-                        onClick = {
-                            Timber.e("chall id : ${item.id}")
-                            clickListener?.onClickChallengeItem(it)
-                        },
-                    )
-                }
+        SwipeRefresh(
+            state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
+            onRefresh = {
+                onRefresh()
             }
-        } else {
-            Spacer(modifier = Modifier.height(20.dp))
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(24.dp, 0.dp),
-                text = "저장한 챌린지가 없습니다.",
-                style = myTypography.w500,
-                fontSize = dpToSp(dp = 20.dp),
-                color = Color(0xff828282)
+        ) {
+            SavedChallengeList(
+                mainScreenState = mainScreenState,
+                clickListener = clickListener,
+                onBottomReached = onBottomReached
             )
         }
+    }
+}
+
+@Composable
+fun SavedChallengeList(
+    mainScreenState: MainScreenState?,
+    clickListener: MyChallengeClickListener? = null,
+    onBottomReached: () -> Unit = {},
+) {
+    val listState = rememberLazyListState()
+
+    if (!mainScreenState?.challengeList.isNullOrEmpty()) {
+        LazyColumn(
+            modifier = Modifier
+                .padding(24.dp, 0.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            itemsIndexed(
+                mainScreenState?.challengeList!!,
+                key = { _, item -> item.id }) { index, item ->
+                val startDay = Utils.getRemainTimeDays(item.start_date.toString())
+                val type = challengeVerificationPeriodMap[item.verification_period_type]
+                val weekType = if (type.isNullOrEmpty()) "주${item.per_week}회 인증" else type
+                ChallengeCardItem(
+                    index,
+                    item.id,
+                    item.goal.toString(),
+                    item.user?.getUserName(),
+                    startDay.toString(),
+                    item.period.toString(),
+                    weekType.toString(),
+                    item.summary?.total_user_cnt,
+                    getAuthType(item),
+                    getOpenType(item),
+                    item.is_adult_only,
+                    onClick = {
+                        Timber.e("chall id : ${item.id}")
+                        clickListener?.onClickChallengeItem(it)
+                    },
+                )
+            }
+        }
+    } else {
+        Spacer(modifier = Modifier.height(20.dp))
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(24.dp, 0.dp),
+            text = "저장한 챌린지가 없습니다.",
+            style = myTypography.w500,
+            fontSize = dpToSp(dp = 20.dp),
+            color = Color(0xff828282)
+        )
+    }
+
+    listState.OnBottomReached {
+        Timber.e("bottom reached!!")
+        onBottomReached()
     }
 }
