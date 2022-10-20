@@ -23,7 +23,6 @@ class RegisterRepo @Inject constructor(
 ) {
     suspend fun createChallenge(userId: String, challengeData: ChallengeData, imageFileId: String?): Flow<FlowResult> {
         val jsonObject = JsonObject()
-        jsonObject.addProperty("user_id", userId)
         jsonObject.addProperty("goal", challengeData.goal)
         jsonObject.addProperty("caution", challengeData.caution)
         jsonObject.addProperty("apply_start_date", challengeData.apply_start_date)
