@@ -14,7 +14,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -41,7 +40,6 @@ class ParticipationViewModel @Inject constructor(
                     _participationResult.value = it as ParticipationResult
                 } ?: run {
                     _participationResult.value = null
-                    isLoading(false)
                     setErrorData(result.errorCode, result.errorMessage)
                 }
             }
