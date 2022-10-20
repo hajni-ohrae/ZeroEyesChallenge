@@ -3,6 +3,7 @@ package biz.ohrae.challenge_screen.ui.mychallenge
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -38,11 +39,12 @@ fun SavedChallengeScreen(
                     .padding(24.dp, 0.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                items(mainScreenState?.challengeList!!, key = { item -> item.id }) { item ->
+                itemsIndexed(mainScreenState?.challengeList!!, key = { _, item -> item.id }) { index, item ->
                     val startDay = Utils.getRemainTimeDays(item.start_date.toString())
                     val type = challengeVerificationPeriodMap[item.verification_period_type]
                     val weekType = if (type.isNullOrEmpty()) "주${item.per_week}회 인증" else type
                     ChallengeCardItem(
+                        index,
                         item.id,
                         item.goal.toString(),
                         item.user?.getUserName(),

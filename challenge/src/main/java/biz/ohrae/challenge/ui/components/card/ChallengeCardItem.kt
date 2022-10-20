@@ -26,6 +26,7 @@ import biz.ohrae.challenge.ui.components.avatar.Avatar
 import biz.ohrae.challenge.ui.components.avatar.circularAvatar
 import biz.ohrae.challenge.ui.components.label.ChallengeDurationLabel
 import biz.ohrae.challenge.ui.theme.*
+import biz.ohrae.challenge_component.BuildConfig
 import biz.ohrae.challenge_component.R
 
 @Preview(
@@ -92,6 +93,7 @@ private fun ChallengeCardItemGallery() {
         ) {
             items(list) { item ->
                 ChallengeCardItem(
+                    0,
                     item.id,
                     item.title,
                     item.userName,
@@ -110,6 +112,7 @@ private fun ChallengeCardItemGallery() {
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ChallengeCardItem(
+    index: Int = 0,
     id: String,
     title: String,
     userName: String?,
@@ -138,7 +141,12 @@ fun ChallengeCardItem(
                 .padding(20.dp)
                 .background(DefaultWhite)
         ) {
-            Row() {
+            Row {
+                if (BuildConfig.DEBUG) {
+                    Text(
+                        text = index.toString()
+                    )
+                }
                 CategorySurFace(
                     modifier = Modifier,
                     text = "$openType",

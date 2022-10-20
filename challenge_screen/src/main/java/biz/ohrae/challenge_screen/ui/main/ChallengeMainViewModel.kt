@@ -31,7 +31,8 @@ class ChallengeMainViewModel @Inject constructor(
     private val _filterState = MutableLiveData<FilterState>()
     private val _tokenValid = MutableLiveData<Boolean>()
     private val _userData = MutableLiveData<User>()
-    private val _listPage = MutableLiveData(1)
+    private val _challengeListPage = MutableLiveData(1)
+    private val _userChallengeListPage = MutableLiveData(1)
     private val _isRefreshing = MutableLiveData(false)
 
     val filterState get() = _filterState
@@ -39,7 +40,9 @@ class ChallengeMainViewModel @Inject constructor(
     val tokenValid get() = _tokenValid
     val userChallengeListState get() = _userChallengeListState
     val userData get() = _userData
-    val listPage get() = _listPage
+    val userChallengeListPage get() = _userChallengeListPage
+    val challengeListPage get() = _challengeListPage
+
     val isRefreshing get() = _isRefreshing
 
     init {
@@ -84,9 +87,9 @@ class ChallengeMainViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             if (isInit) {
-                _listPage.value = 1
+                _challengeListPage.value = 1
             }
-            val page = listPage.value ?: 1
+            val page = _challengeListPage.value ?: 1
 
             val response = challengeMainRepo.getChallenges(
                 paymentType,
@@ -104,23 +107,25 @@ class ChallengeMainViewModel @Inject constructor(
                     val pager = it.pager
 
                     if (it.pager?.page == page) {
-                        _listPage.value = page + 1
-                        Timber.e("current page : ${_listPage.value}")
+                        _challengeListPage.value = page + 1
+                        Timber.d("current page : ${_challengeListPage.value}")
                     }
 
-                    Timber.e("pager : ${gson.toJson(pager)}")
+                    Timber.d("pager : ${gson.toJson(pager)}")
                     val topBannerList = MainScreenState.mock().topBannerList
                     val challengeList = data as MutableList<ChallengeData>
                     val state = mainScreenState.value?.copy()
-                    state?.let {
+                    state?.let { screenState ->
                         if (isInit) {
-                            state.challengeList = challengeList
+                            screenState.challengeList = challengeList
                         } else {
-                            state.challengeList?.addAll(challengeList)
+                            val list = mutableListOf<ChallengeData>()
+                            screenState.challengeList?.addAll(challengeList)
+                            screenState.challengePage = pager?.page
                         }
-                        _mainScreenState.value = state
+                        _mainScreenState.value = screenState
                     } ?: run {
-                        _mainScreenState.value = MainScreenState(challengeList, topBannerList)
+                        _mainScreenState.value = MainScreenState(challengeList, topBannerList, challengePage = 1)
                     }
                 } ?: run {
                     setErrorData(it.errorCode, it.errorMessage)
@@ -133,7 +138,7 @@ class ChallengeMainViewModel @Inject constructor(
         viewModelScope.launch {
             val filterState = FilterState.mock().copy()
 
-            filterState?.let {
+            filterState.let {
                 it.selectFilterType = filterNameEn
                 _filterState.value = it
             }
@@ -190,9 +195,9 @@ class ChallengeMainViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             if (isInit) {
-                _listPage.value = 1
+                _userChallengeListPage.value = 1
             }
-            val page = listPage.value ?: 1
+            val page = _userChallengeListPage.value ?: 1
             val response = challengeMainRepo.getUserChallengeList()
             response.flowOn(Dispatchers.IO).collect {
                 isLoading(false)
@@ -201,8 +206,8 @@ class ChallengeMainViewModel @Inject constructor(
                     val pager = it.pager
 
                     if (it.pager?.page == page) {
-                        _listPage.value = page + 1
-                        Timber.e("current page : ${_listPage.value}")
+                        _userChallengeListPage.value = page + 1
+                        Timber.d("current page : ${_userChallengeListPage.value}")
                     }
                     val userChallengeList = data as MutableList<ChallengeData>
                     val state = userChallengeListState.value?.copy()
