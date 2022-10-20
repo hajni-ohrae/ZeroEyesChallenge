@@ -31,13 +31,14 @@ class ChallengeDetailViewModel @Inject constructor(
     private val gson: Gson
 ) : BaseViewModel(prefs) {
     private val _challengeData = MutableLiveData<ChallengeData>()
-    private val _challengeVerifiedList = MutableLiveData<List<VerifyData>>()
+    private val _challengeVerifiedList = MutableLiveData<MutableList<VerifyData>>()
     private val _verifyListState = MutableLiveData<VerifyListState>()
     private val _challengeVerificationState = MutableLiveData<VerificationState>()
     private val _challengers = MutableLiveData<List<User>>()
     private val _isJoined = MutableLiveData<Boolean>()
     private val _challengeAuthImageUri = MutableLiveData<Uri?>(null)
     private val _verified = MutableLiveData<Boolean?>(false)
+    private val _verifiedListPage = MutableLiveData(1)
 
     val challengeData get() = _challengeData
     val verifyListState get() = _verifyListState
@@ -47,6 +48,7 @@ class ChallengeDetailViewModel @Inject constructor(
     val challengeVerificationState get() = _challengeVerificationState
     val challengeVerifiedList get() = _challengeVerifiedList
     val verified get() = _verified
+    val verifiedListPage get() = _verifiedListPage
 
     fun getChallenge(id: String) {
         viewModelScope.launch {
@@ -121,15 +123,29 @@ class ChallengeDetailViewModel @Inject constructor(
         }
     }
 
-    fun getVerifyList(id: String) {
+    fun getVerifyList(id: String, isInit: Boolean = false) {
         viewModelScope.launch {
-            repo.getVerifyList(id, "desc", "0").flowOn(Dispatchers.IO).collect {
+            if (isInit) {
+                _verifiedListPage.value = 1
+            }
+            val page = _verifiedListPage.value ?: 1
+
+            repo.getVerifyList(id, "desc", "0", page).flowOn(Dispatchers.IO).collect {
                 Timber.e("getVerifyList result : ${gson.toJson(it.data)}")
                 if (it.data != null) {
+                    val pager = it.pager
+
+                    if (it.pager?.page == page) {
+                        _verifiedListPage.value = page + 1
+                    }
+
+                    val challengeVerifiedList = it.data as MutableList<VerifyData>
+                    if (isInit) {
+                        _challengeVerifiedList.value = challengeVerifiedList
+                    } else {
+                        _challengeVerifiedList.value?.addAll(challengeVerifiedList)
+                    }
                     isLoading(false)
-                    val challengeVerifiedList = it.data as List<VerifyData>
-                    _challengeVerifiedList.value = challengeVerifiedList
-                    _challengeVerifiedList.postValue(challengeVerifiedList)
                 }
             }
         }
@@ -160,20 +176,5 @@ class ChallengeDetailViewModel @Inject constructor(
 
     fun setChallengeAuthImage(uri: Uri) {
         _challengeAuthImageUri.value = uri
-    }
-
-    fun getVerifyList(
-        challengeId: String, order: String, isMine: String
-    ) {
-        viewModelScope.launch {
-            repo.getVerifyList(challengeId,order,isMine).flowOn(Dispatchers.IO).collect(){
-                if (it.data != null) {
-                    val verifyListState =  it.data as List<VerifyData>
-                    val state = VerifyListState(verifyListState)
-
-                    _verifyListState.value = state
-                }
-            }
-        }
     }
 }

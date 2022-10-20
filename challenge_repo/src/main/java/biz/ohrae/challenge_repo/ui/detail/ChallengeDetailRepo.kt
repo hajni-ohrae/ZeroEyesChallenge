@@ -106,7 +106,14 @@ class ChallengeDetailRepo @Inject constructor(
         val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
         val multipartBody = MultipartBody.Part.createFormData("image", file.path, requestFile)
 
-        val response = apiService.verify(accessToken.toString(), multipartBody, challengeIdData, userIdData, typeData, commentData)
+        val response = apiService.verify(
+            accessToken.toString(),
+            multipartBody,
+            challengeIdData,
+            userIdData,
+            typeData,
+            commentData
+        )
         when (response) {
             is NetworkResponse.Success -> {
                 return if (response.body.success) {
@@ -128,7 +135,7 @@ class ChallengeDetailRepo @Inject constructor(
     }
 
     suspend fun getVerifyList(
-        challengeId: String, order: String, isMine: String
+        challengeId: String, order: String, isMine: String, page: Int
     ): Flow<FlowResult> {
         val accessToken = prefs.getUserData()?.access_token
 
@@ -138,18 +145,20 @@ class ChallengeDetailRepo @Inject constructor(
         filter.addProperty("is_mine", isMine)
         jsonObject.add("filter", filter)
         val response =
-            apiService.getVerifyList(challengeId, accessToken.toString(), body = jsonObject, 1, 10)
+            apiService.getVerifyList(challengeId, accessToken.toString(), body = jsonObject, page, 10)
         when (response) {
             is NetworkResponse.Success -> {
                 return if (response.body.success) {
                     val dataSet = response.body.dataset?.asJsonObject
                     val array = dataSet?.get("array")?.asJsonArray
+                    val pager =
+                        gson.fromJson(dataSet?.get("meta").toString(), PagerMeta::class.java)
 
                     val listType = object : TypeToken<List<VerifyData?>?>() {}.type
                     val verifyList = gson.fromJson<List<VerifyData>>(array, listType)
 
                     flow {
-                        emit(FlowResult(verifyList, "", ""))
+                        emit(FlowResult(verifyList, "", "", pager))
                     }
                 } else {
                     flow {

@@ -192,7 +192,7 @@ class ChallengeDetailActivity : BaseActivity() {
         viewModel.isLoading(true)
         viewModel.getChallenge(challengeId.toString())
         viewModel.getUserByChallenge(challengeId.toString(), 1, 11)
-        viewModel.getVerifyList(challengeId.toString())
+        viewModel.getVerifyList(challengeId.toString(), isInit = true)
     }
 
     override fun onBack() {
@@ -348,7 +348,7 @@ class ChallengeDetailActivity : BaseActivity() {
     }
 
     private fun onBottomReached() {
-
+        viewModel.getVerifyList(id = challengeId.toString())
     }
 
     private fun showAuthCancelDialog() {

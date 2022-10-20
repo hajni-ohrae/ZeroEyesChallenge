@@ -55,7 +55,7 @@ class ChallengeMainRepo @Inject constructor(
                     val dataset = response.body.dataset
                     dataset?.let {
 
-                        val dataSet: JsonElement = dataset?.getAsJsonArray("array")!!.asJsonArray
+                        val dataSet: JsonElement = dataset.getAsJsonArray("array")!!.asJsonArray
                         val pager =
                             gson.fromJson(dataset.get("meta").toString(), PagerMeta::class.java)
 
