@@ -108,6 +108,9 @@ buildscript {
 
         /** kalendar **/
         kalendar = 'com.himanshoe:kalendar:1.0.0-RC5'
+
+        /** composeCalendar **/
+        composeCalendar = 'com.kizitonwose.calendar:compose:2.0.0'
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.2.2'

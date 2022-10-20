@@ -2,7 +2,6 @@ package biz.ohrae.challenge_screen.ui.participation
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import biz.ohrae.challenge_repo.model.FlowResult
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.model.participation.ParticipationResult
 import biz.ohrae.challenge_repo.ui.main.UserRepo
@@ -23,11 +22,9 @@ class ParticipationViewModel @Inject constructor(
     private val prefs: SharedPreference,
     private val gson: Gson
 ) : BaseViewModel(prefs) {
-    private val _registerResult = MutableLiveData<FlowResult>()
-    private val _cancelResult = MutableLiveData<FlowResult>()
+    private val _cancelResult = MutableLiveData<Boolean?>()
     private val _participationResult = MutableLiveData<ParticipationResult>()
 
-    val registerResult get() = _registerResult
     val cancelResult get() = _cancelResult
     val participationResult get() = _participationResult
 
@@ -50,8 +47,12 @@ class ParticipationViewModel @Inject constructor(
         viewModelScope.launch {
             val response = participationRepo.cancelChallenge(challengeData)
 
-            response.flowOn(Dispatchers.IO).collect { result ->
+            response.flowOn(Dispatchers.IO).collect {
+                val result = it.data as Boolean?
                 _cancelResult.value = result
+                if (result != true) {
+                    setErrorData(it.errorCode, it.errorMessage)
+                }
             }
         }
     }

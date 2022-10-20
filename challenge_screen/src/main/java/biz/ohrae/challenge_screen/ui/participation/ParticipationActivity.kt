@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,8 +35,10 @@ class ParticipationActivity : BaseActivity() {
     private lateinit var viewModel: ParticipationViewModel
     private lateinit var navController: NavHostController
     private lateinit var clickListener: ParticipationClickListener
+    private lateinit var paymentLauncher: ActivityResultLauncher<Intent>
 
     private var isCancelChallenge = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +60,19 @@ class ParticipationActivity : BaseActivity() {
 
         challengeId = intent.getStringExtra("challengeId")
         isCancelChallenge = intent.getBooleanExtra("isCancel", false)
+
+        paymentLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                it.data?.let { intent ->
+                    val code = intent.getStringExtra("code")
+                    val message = intent.getStringExtra("message")
+                    showSnackBar(code, message)
+                } ?: run {
+                    init()
+                    navController.navigate(ChallengeParticipationNavScreen.ParticipationFinish.route)
+                }
+            }
+        }
 
         initClickListeners()
         observeViewModels()
@@ -152,16 +169,8 @@ class ParticipationActivity : BaseActivity() {
         clickListener = object : ParticipationClickListener {
             override fun onClickPayment(paidAmount: Int, rewardAmount: Int, depositAmount: Int) {
                 detailViewModel.challengeData.value?.let {
-                    if (it.min_deposit_amount > 0) {
-                        val userId = prefs.getUserData()?.id
-                        val intent = Intent(this@ParticipationActivity, ChallengePaymentActivity::class.java)
-                        intent.putExtra("challengeId", challengeId)
-                        intent.putExtra("userId", userId)
-                        startActivity(intent)
-                    } else {
-                        viewModel.isLoading(true)
-                        viewModel.registerChallenge(challengeData = it, paidAmount, rewardAmount, depositAmount)
-                    }
+                    viewModel.isLoading(true)
+                    viewModel.registerChallenge(challengeData = it, paidAmount, rewardAmount, depositAmount)
                 }
             }
 
@@ -198,10 +207,22 @@ class ParticipationActivity : BaseActivity() {
     override fun observeViewModels() {
         viewModel.participationResult.observe(this) { result ->
             viewModel.isLoading(false)
-
             result?.let {
-                init()
-                navController.navigate(ChallengeParticipationNavScreen.ParticipationFinish.route)
+                val minDepositAmount = detailViewModel.challengeData.value?.min_deposit_amount ?: 0
+                if (minDepositAmount > 0) {
+                    val userId = prefs.getUserData()?.id
+                    val intent = Intent(this@ParticipationActivity, ChallengePaymentActivity::class.java)
+                    intent.putExtra("challengeId", challengeId)
+                    intent.putExtra("userId", userId)
+                    intent.putExtra("userInChallengeId", it.user_in_challenge_id)
+                    intent.putExtra("paidAmount", it.paid_amount)
+                    intent.putExtra("rewardsAmount", it.rewards_amount)
+
+                    paymentLauncher.launch(intent)
+                } else {
+                    init()
+                    navController.navigate(ChallengeParticipationNavScreen.ParticipationFinish.route)
+                }
             } ?: run {
                 val code = viewModel.errorData.value?.code
                 val message = viewModel.errorData.value?.message
@@ -209,24 +230,15 @@ class ParticipationActivity : BaseActivity() {
             }
         }
 
-        viewModel.registerResult.observe(this) { result ->
+        viewModel.cancelResult.observe(this) { result ->
             viewModel.isLoading(false)
-            result.data?.let {
-                navController.navigate(ChallengeParticipationNavScreen.ParticipationFinish.route)
-            } ?: run {
-                val message = "code : ${result.errorCode}, message : ${result.errorMessage}"
-                showSnackBar(message)
+            if (result == true) {
+                navController.navigate(ChallengeParticipationNavScreen.ParticipationCancelResult.route)
             }
         }
 
-        viewModel.cancelResult.observe(this) { result ->
-            viewModel.isLoading(false)
-            result.data?.let {
-                navController.navigate(ChallengeParticipationNavScreen.ParticipationCancelResult.route)
-            } ?: run {
-                val message = "code : ${result.errorCode}, message : ${result.errorMessage}"
-                showSnackBar(message)
-            }
+        viewModel.errorData.observe(this) {
+            showSnackBar(it.code, it.message)
         }
     }
 

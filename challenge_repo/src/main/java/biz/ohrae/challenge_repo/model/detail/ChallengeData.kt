@@ -94,6 +94,7 @@ data class InChallenge(
     val today_verified_cnt: Int,
     val verified_cnt: Int,
     val ranking: Int?,
+    val deposit_amount: Int?,
     var verifications: List<ChallengeVerification>?
 )
 

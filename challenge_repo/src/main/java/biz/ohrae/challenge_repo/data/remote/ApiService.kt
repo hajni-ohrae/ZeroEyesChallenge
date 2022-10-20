@@ -56,11 +56,10 @@ interface ApiService {
     @POST(Routes.FAVORITE_CHALLENGE)
     suspend fun favoriteChallenge(@Body body: JsonObject?): NetworkResponse<Result, Error>
 
-    @POST(Routes.CANCEL_CHALLENGE)
+    @DELETE(Routes.CANCEL_CHALLENGE)
     suspend fun cancelChallenge(
         @Header("x-access-token") accessToken: String,
         @Path("challenge_id") challengeId: String,
-        @Path("user_id") userId: String,
     ): NetworkResponse<Result, Error>
 
     @GET(Routes.GET_USERS_BY_CHALLENGE)

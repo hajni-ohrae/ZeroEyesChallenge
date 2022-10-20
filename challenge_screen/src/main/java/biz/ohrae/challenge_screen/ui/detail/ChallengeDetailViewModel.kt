@@ -57,7 +57,7 @@ class ChallengeDetailViewModel @Inject constructor(
                 if (it.data != null) {
                     val challengeData = it.data as ChallengeData
                     _challengeData.value = challengeData
-                    val isJoined = !challengeData.inChallenge.isNullOrEmpty()
+                    val isJoined = !challengeData.inChallenge.isNullOrEmpty() && challengeData.status == "opened"
                     _isJoined.value = isJoined
                     if (isJoined) {
                         val verifications = challengeData.inChallenge?.get(0)?.verifications

@@ -16,6 +16,7 @@ import biz.ohrae.challenge.ui.theme.TextBlack
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
+import biz.ohrae.challenge_repo.util.prefs.Utils
 
 @Preview(
     widthDp = 360,
@@ -65,7 +66,7 @@ fun ParticipationCancelResultScreen(
                     color = Color(0xffc6c6c6)
                 )
                 Text(
-                    text = "현대카드 (신용카드)",
+                    text = "신용카드",
                     style = myTypography.bold,
                     fontSize = dpToSp(dp = 16.dp),
                     color = TextBlack
@@ -84,7 +85,7 @@ fun ParticipationCancelResultScreen(
                     color = Color(0xffc6c6c6)
                 )
                 Text(
-                    text = "10,000원",
+                    text = "${Utils.numberFormat(challengeData.inChallenge?.get(0)?.deposit_amount)}원",
                     style = myTypography.bold,
                     fontSize = dpToSp(dp = 16.dp),
                     color = Color(0xff4985f8)

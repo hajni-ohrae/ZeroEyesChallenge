@@ -1,3 +1,5 @@
+@file:Suppress("OverrideDeprecatedMigration")
+
 package biz.ohrae.challenge_screen.ui.payment
 
 import android.content.Intent
@@ -23,6 +25,9 @@ class ChallengePaymentActivity : AppCompatActivity() {
 
     private var challengeId: String? = null
     private var userId: String? = null
+    private var userInChallengeId: Int? = null
+    private var paidAmount: Int? = null
+    private var rewardsAmount: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +36,9 @@ class ChallengePaymentActivity : AppCompatActivity() {
 
         challengeId = intent.getStringExtra("challengeId")
         userId = intent.getStringExtra("userId")
+        userInChallengeId = intent.getIntExtra("userInChallengeId", 0)
+        paidAmount = intent.getIntExtra("paidAmount", 0)
+        rewardsAmount = intent.getIntExtra("rewardsAmount", 0)
 
         init()
     }
@@ -39,6 +47,7 @@ class ChallengePaymentActivity : AppCompatActivity() {
         super.onResume()
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -100,10 +109,11 @@ class ChallengePaymentActivity : AppCompatActivity() {
         var postData = ""
         postData += "user_id=$userId"
         postData += "&challenge_id=$challengeId"
-        postData += "&paid_amount=100"
-        postData += "&rewards_amount=0"
+        postData += "&paid_amount=$paidAmount"
+        postData += "&rewards_amount=$rewardsAmount"
         postData += "&pay_method=card"
         postData += "&pg=nice"
+        postData += "&user_in_challenge_id=$userInChallengeId"
         val url = Routes.PAYMENT_HOST_NAME.dropLast(1) + Routes.REQUEST_PAYMENT
         Timber.e("url : $url, postData : $postData")
         binding.webView.postUrl(url, postData.toByteArray())

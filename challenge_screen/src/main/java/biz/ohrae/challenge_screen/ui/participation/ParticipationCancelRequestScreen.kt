@@ -76,7 +76,7 @@ fun ParticipationCancelRequestScreen(
                     color = TextBlack
                 )
                 Text(
-                    text = "500,000원",
+                    text = "${Utils.numberFormat(challengeData.inChallenge?.get(0)?.deposit_amount)}원",
                     style = myTypography.bold,
                     fontSize = dpToSp(dp = 16.dp),
                     color = Color(0xff4985f8)

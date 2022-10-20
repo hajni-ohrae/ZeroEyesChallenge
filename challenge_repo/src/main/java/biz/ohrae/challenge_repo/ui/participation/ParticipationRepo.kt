@@ -89,20 +89,18 @@ class ParticipationRepo @Inject constructor(
     suspend fun cancelChallenge(challengeData: ChallengeData): Flow<FlowResult> {
         val user = prefs.getUserData()
         val challengeId = challengeData.id
-        val userId = user?.id.toString()
         val accessToken = user?.access_token.toString()
 
-        val response = apiService.cancelChallenge(accessToken, challengeId, userId)
+        val response = apiService.cancelChallenge(accessToken, challengeId)
         when (response) {
             is NetworkResponse.Success -> {
                 return if (response.body.success) {
-                    val resultObject = response.body.dataset?.asJsonObject
                     flow {
-                        emit(FlowResult(resultObject, "", ""))
+                        emit(FlowResult(true, "", ""))
                     }
                 } else {
                     flow {
-                        emit(FlowResult(null, response.body.code, response.body.message))
+                        emit(FlowResult(false, response.body.code, response.body.message))
                     }
                 }
             }

@@ -1,26 +1,32 @@
 package biz.ohrae.challenge_screen.ui.dialog
 
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Card
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.DialogFragment
 import androidx.window.layout.WindowMetricsCalculator
 import biz.ohrae.challenge.ui.components.button.FlatDoubleButton
 import biz.ohrae.challenge.ui.theme.DefaultWhite
+import biz.ohrae.challenge.ui.theme.dpToSp
+import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.ui.register.ChallengeRegisterViewModel
 import com.himanshoe.kalendar.common.KalendarKonfig
@@ -29,7 +35,15 @@ import com.himanshoe.kalendar.common.KalendarStyle
 import com.himanshoe.kalendar.common.YearRange
 import com.himanshoe.kalendar.ui.Kalendar
 import com.himanshoe.kalendar.ui.KalendarType
+import com.kizitonwose.calendar.compose.HorizontalCalendar
+import com.kizitonwose.calendar.compose.rememberCalendarState
+import com.kizitonwose.calendar.core.CalendarDay
+import com.kizitonwose.calendar.core.DayPosition
+import com.kizitonwose.calendar.core.daysOfWeek
 import timber.log.Timber
+import java.time.DayOfWeek
+import java.time.YearMonth
+import java.time.format.TextStyle
 import java.util.*
 
 class CalendarDialog(private val challengeRegisterViewModel: ChallengeRegisterViewModel) :
@@ -158,4 +172,78 @@ fun Calendar(
         }
     }
 }
+
+@Preview(
+    widthDp = 360,
+    showBackground = true
+)
+@Composable
+private fun ComposeCalendar() {
+    val selections = remember { mutableStateListOf<CalendarDay>() }
+    val state = rememberCalendarState(
+        startMonth = YearMonth.now(),
+        endMonth = YearMonth.of(2202, 12),
+    )
+    val daysOfWeek = remember { daysOfWeek() }
+
+    HorizontalCalendar(
+        modifier = Modifier.fillMaxWidth(),
+        state = state,
+        dayContent = { day ->
+            Day(day, isSelected = selections.contains(day)) { clicked ->
+                if (selections.contains(clicked)) {
+                    selections.remove(clicked)
+                } else {
+                    selections.add(clicked)
+                }
+            }
+        },
+        monthHeader = {
+            MonthHeader(daysOfWeek = daysOfWeek)
+        }
+    )
+}
+
+@Composable
+private fun MonthHeader(daysOfWeek: List<DayOfWeek>) {
+    Row(Modifier.fillMaxWidth()) {
+        for (dayOfWeek in daysOfWeek) {
+            Text(
+                modifier = Modifier.weight(1f),
+                textAlign = TextAlign.Center,
+                fontSize = dpToSp(dp = 16.dp),
+                text = dayOfWeek.getDisplayName(TextStyle.FULL, Locale.KOREA),
+                style = myTypography.bold,
+            )
+        }
+    }
+}
+
+@Composable
+private fun Day(day: CalendarDay, isSelected: Boolean, onClick: (CalendarDay) -> Unit) {
+    Box(
+        modifier = Modifier
+            .aspectRatio(1f) // This is important for square-sizing!
+            .padding(6.dp)
+            .clip(CircleShape)
+            .background(color = if (isSelected) Color(0xff005bad) else Color.Transparent)
+            .clickable(
+                enabled = day.position == DayPosition.MonthDate,
+                onClick = { onClick(day) }
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        val textColor = when (day.position) {
+            // Color.Unspecified will use the default text color from the current theme
+            DayPosition.MonthDate -> if (isSelected) Color.White else Color.Unspecified
+            DayPosition.InDate, DayPosition.OutDate -> Color(0xff6c6c6c)
+        }
+        Text(
+            text = day.date.dayOfMonth.toString(),
+            color = textColor,
+            fontSize = dpToSp(dp = 14.dp),
+        )
+    }
+}
+
 

@@ -82,7 +82,7 @@ fun ParticipationFinishScreen(
                     color = Color(0xff6c6c6c)
                 )
                 Text(
-                    text = "${Utils.numberFormat(participationResult?.actual_pay_amount)}원",
+                    text = "${Utils.numberFormat(participationResult?.paid_amount)}원",
                     style = myTypography.bold,
                     fontSize = dpToSp(dp = 16.dp),
                     color = Color(0xff4985f8)
