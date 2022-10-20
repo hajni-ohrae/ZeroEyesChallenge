@@ -303,6 +303,10 @@ class RegisterActivity : BaseActivity() {
             }
 
             override fun onClickCalendar() {
+                if (!isClickable()) {
+                    return
+                }
+
                 val dialog = CalendarDialog(viewModel)
                 dialog.setListener(object : CalendarDialogListener {
                     override fun clickPositive() {
@@ -315,7 +319,7 @@ class RegisterActivity : BaseActivity() {
                     }
 
                     override fun clickDay(day: String) {
-                        viewModel?.selectDay(day)
+                        viewModel.selectDay(day)
                     }
                 })
                 dialog.isCancelable = false

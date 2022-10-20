@@ -1,5 +1,6 @@
 package biz.ohrae.challenge_screen.ui.dialog
 
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,14 +10,15 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,17 +31,10 @@ import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.ui.register.ChallengeRegisterViewModel
-import com.himanshoe.kalendar.common.KalendarKonfig
-import com.himanshoe.kalendar.common.KalendarSelector
-import com.himanshoe.kalendar.common.KalendarStyle
-import com.himanshoe.kalendar.common.YearRange
-import com.himanshoe.kalendar.ui.Kalendar
-import com.himanshoe.kalendar.ui.KalendarType
 import com.kizitonwose.calendar.compose.HorizontalCalendar
 import com.kizitonwose.calendar.compose.rememberCalendarState
-import com.kizitonwose.calendar.core.CalendarDay
-import com.kizitonwose.calendar.core.DayPosition
-import com.kizitonwose.calendar.core.daysOfWeek
+import com.kizitonwose.calendar.core.*
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.time.DayOfWeek
 import java.time.YearMonth
@@ -85,7 +80,7 @@ class CalendarDialog(private val challengeRegisterViewModel: ChallengeRegisterVi
         val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
         params?.width = (width * 0.95f).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
-//        dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.Transparent))
+        dialog!!.window!!.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
     }
 
 
@@ -110,7 +105,7 @@ class CalendarDialog(private val challengeRegisterViewModel: ChallengeRegisterVi
 }
 
 @Preview(
-    widthDp = 800,
+    widthDp = 360,
     showBackground = true
 )
 @Composable
@@ -124,37 +119,28 @@ fun Calendar(
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RectangleShape,
+        shape = RoundedCornerShape(16.dp),
         backgroundColor = DefaultWhite
     ) {
-        Column() {
-            Kalendar(
-                kalendarType = KalendarType.Firey(),
-                kalendarKonfig = KalendarKonfig(
-                    yearRange = YearRange(2022, 2023),
-                    weekCharacters = 1, locale = Locale.KOREA
-                ),
-                onCurrentDayClick = { day, event ->
-                    Timber.d("day : $day")
-                    if (Utils.isAfter(day.toString())) {
-                        enabled = true
-                        listener?.clickDay(day.toString())
-                    } else {
-                        enabled = false
+        Column(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(0.8f)
+            ) {
+                ComposeCalendar(
+                    onDayClick = { day ->
+                        if (Utils.isAfter(day.date.toString())) {
+                            enabled = true
+                            listener?.clickDay(day.date.toString())
+                        } else {
+                            enabled = false
+                        }
                     }
-                },
-                errorMessage = {
-                    //Handle the error if any
-                },
-                kalendarStyle = KalendarStyle(
-                    kalendarSelector = KalendarSelector.Circle(
-                        selectedColor = Color(0xff005bad),
-                        todayColor = Color(0x26005bad)
-                    ),
-                    kalendarBackgroundColor = DefaultWhite,
-                    elevation = 0.dp,
-                ),
-            )
+                )
+            }
             FlatDoubleButton(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -178,30 +164,109 @@ fun Calendar(
     showBackground = true
 )
 @Composable
-private fun ComposeCalendar() {
+private fun ComposeCalendar(
+    startMonth: YearMonth = YearMonth.now(),
+    endMonth: YearMonth = startMonth.plusMonths(3),
+    onDayClick: (day: CalendarDay) -> Unit = {}
+) {
+    val coroutineScope = rememberCoroutineScope()
     val selections = remember { mutableStateListOf<CalendarDay>() }
     val state = rememberCalendarState(
-        startMonth = YearMonth.now(),
-        endMonth = YearMonth.of(2202, 12),
+        startMonth = startMonth,
+        endMonth = endMonth,
     )
     val daysOfWeek = remember { daysOfWeek() }
+    var visibleMonth by remember { mutableStateOf(YearMonth.now()) }
 
-    HorizontalCalendar(
-        modifier = Modifier.fillMaxWidth(),
-        state = state,
-        dayContent = { day ->
-            Day(day, isSelected = selections.contains(day)) { clicked ->
-                if (selections.contains(clicked)) {
-                    selections.remove(clicked)
-                } else {
-                    selections.add(clicked)
+    LaunchedEffect(state.firstVisibleMonth) {
+        Timber.e("state : ${state.firstVisibleMonth.toString()}")
+        visibleMonth = state.firstVisibleMonth.yearMonth
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(DefaultWhite)
+    ) {
+        CalendarTitle(
+            modifier = Modifier.padding(vertical = 10.dp, horizontal = 8.dp),
+            currentMonth = visibleMonth,
+            goToPrevious = {
+                coroutineScope.launch {
+                    if (visibleMonth.isAfter(startMonth)) {
+                        visibleMonth = visibleMonth.minusMonths(1)
+                        state.animateScrollToMonth(state.firstVisibleMonth.yearMonth.previousMonth)
+                    }
+                }
+            },
+            goToNext = {
+                coroutineScope.launch {
+                    if (visibleMonth.isBefore(endMonth)) {
+                        visibleMonth = visibleMonth.plusMonths(1)
+                        state.animateScrollToMonth(state.firstVisibleMonth.yearMonth.nextMonth)
+                    }
                 }
             }
-        },
-        monthHeader = {
-            MonthHeader(daysOfWeek = daysOfWeek)
+        )
+        HorizontalCalendar(
+            modifier = Modifier.fillMaxWidth(),
+            state = state,
+            dayContent = { day ->
+                Day(day, isSelected = selections.contains(day)) { clicked ->
+                    selections.clear()
+                    selections.add(clicked)
+                    onDayClick(clicked)
+                }
+            },
+            monthHeader = {
+                MonthHeader(daysOfWeek = daysOfWeek)
+            },
+        )
+    }
+}
+
+@Composable
+private fun CalendarTitle(
+    modifier: Modifier,
+    currentMonth: YearMonth,
+    goToPrevious: () -> Unit,
+    goToNext: () -> Unit,
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        TextButton(
+            onClick = {
+                goToPrevious()
+            }
+        ) {
+            Text(
+                text = "이전",
+                fontSize = dpToSp(dp = 14.dp),
+                color = Color(0xff005bad)
+            )
         }
-    )
+        Text(
+            modifier = Modifier
+                .weight(1f),
+            text = currentMonth.toString(),
+            fontSize = dpToSp(dp = 22.dp),
+            textAlign = TextAlign.Center,
+            style = myTypography.bold
+        )
+        TextButton(
+            onClick = {
+                goToNext()
+            }
+        ) {
+            Text(
+                text = "다음",
+                fontSize = dpToSp(dp = 14.dp),
+                color = Color(0xff005bad)
+            )
+        }
+    }
 }
 
 @Composable
@@ -212,7 +277,7 @@ private fun MonthHeader(daysOfWeek: List<DayOfWeek>) {
                 modifier = Modifier.weight(1f),
                 textAlign = TextAlign.Center,
                 fontSize = dpToSp(dp = 16.dp),
-                text = dayOfWeek.getDisplayName(TextStyle.FULL, Locale.KOREA),
+                text = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.KOREA),
                 style = myTypography.bold,
             )
         }

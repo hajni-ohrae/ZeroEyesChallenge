@@ -138,9 +138,6 @@ dependencies {
     implementation glideAnnotations
     kapt glideCompiler
 
-    // kalendar
-    implementation kalendar
-
     // The compose calendar implementation
     implementation composeCalendar
 
