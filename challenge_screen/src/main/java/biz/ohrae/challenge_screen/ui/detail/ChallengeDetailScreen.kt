@@ -72,6 +72,8 @@ fun ChallengeDetailScreen(
             }
         )
     }
+    var checked by remember { mutableStateOf(false) }
+
 
     Column(
         modifier = Modifier
@@ -154,7 +156,10 @@ fun ChallengeDetailScreen(
                 .aspectRatio(6f),
             text = bottomBtnName,
             onClick = { clickListener?.onClickParticipation() },
-            onClickBookMark = { clickListener?.onClickBookMark() }
+            onClickBookMark = {
+                checked = !checked
+                clickListener?.onClickBookMark(checked)
+            }
         )
     }
 }
@@ -237,7 +242,7 @@ fun ChallengeDescription(
         )
         Spacer(modifier = Modifier.height(8.dp))
         var days by remember { mutableStateOf(challengeVerificationDayMap[challengeData.verification_period_type]) }
-        if(days.isNullOrEmpty()) days = "월,화,수,목,금,토,일"
+        if (days.isNullOrEmpty()) days = "월,화,수,목,금,토,일"
         MiddleDotText(
             text = "인증 가능한 요일은 $days 입니다",
             fontSize = dpToSp(dp = 14.dp),

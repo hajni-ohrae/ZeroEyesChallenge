@@ -223,7 +223,8 @@ fun FlatBookMarkButton(
     textStyle: TextStyle = myTypography.bold,
     enabled: Boolean = true,
     onClick: () -> Unit = {},
-    onClickBookMark: () -> Unit = {}
+    onClickBookMark: () -> Unit = {},
+    checked:Boolean = false
 ) {
     Row(
         modifier = modifier,
@@ -237,10 +238,17 @@ fun FlatBookMarkButton(
                 onClickBookMark()
             },
         ) {
-            Icon(
-                painter = painterResource(id = R.drawable.icon_like),
-                contentDescription = "icon_like"
-            )
+            if (!checked){
+                Icon(
+                    painter = painterResource(id = R.drawable.icon_like),
+                    contentDescription = "icon_like"
+                )
+            } else {
+                Icon(
+                    painter = painterResource(id = R.drawable.icon_like_on),
+                    contentDescription = "icon_like_on"
+                )
+            }
         }
         Button(
             modifier = Modifier

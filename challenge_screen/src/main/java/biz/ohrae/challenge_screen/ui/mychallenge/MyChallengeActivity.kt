@@ -55,7 +55,7 @@ class MyChallengeActivity : BaseActivity() {
     private fun init() {
         challengeMainViewModel.getUserChallengeList(isInit = true)
         challengeMainViewModel.getChallengeList("", "", "", "", "1", "", isInit = true)
-        myChallengeViewModel.getRedCardList()
+        myChallengeViewModel.getRedCardList(isInit = true)
         myChallengeViewModel.getPaymentHistory()
         myChallengeViewModel.getUserData()
         myChallengeViewModel.getRewardHistory()
@@ -136,7 +136,15 @@ class MyChallengeActivity : BaseActivity() {
                     myChallengeClickListener,
                     isRefreshing = isRefreshing,
                     onBottomReached = {
-                        onBottomReached()
+                        challengeMainViewModel.getChallengeList(
+                            "",
+                            "",
+                            "",
+                            "",
+                            "1",
+                            "",
+                            isInit = true
+                        )
                     },
                     onRefresh = {
                         challengeMainViewModel.isRefreshing(true)
@@ -144,7 +152,12 @@ class MyChallengeActivity : BaseActivity() {
                     })
             }
             composable(MyChallengeNavScreen.RedCard.route) {
-                RedCardScreen(clickListener = myChallengeClickListener, redCardListState)
+                RedCardScreen(
+                    clickListener = myChallengeClickListener,
+                    redCardListState,
+                    onBottomReached = {
+                        myChallengeViewModel.getRedCardList(isInit = true)
+                    })
             }
             composable(MyChallengeNavScreen.Policy.route) {
                 PolicyScreen(policyScreenType)

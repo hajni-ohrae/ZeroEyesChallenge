@@ -32,6 +32,7 @@ class MyChallengeViewModel @Inject constructor(
     private val _rewardList = MutableLiveData<List<RewardData>>()
     private val _userData = MutableLiveData<User>()
     private val _userRedCardListPage = MutableLiveData(1)
+    private val _userPaymentHistoryListPage = MutableLiveData(1)
 
 
     val redCardListState get() = _redCardListState
@@ -39,6 +40,7 @@ class MyChallengeViewModel @Inject constructor(
     val userData get() = _userData
     val rewardList get() = _rewardList
     val userRedCardListPage get() = _userRedCardListPage
+    val userPaymentHistoryListPage get() = _userPaymentHistoryListPage
 
     fun getAllBlock() {
         viewModelScope.launch {
@@ -72,17 +74,29 @@ class MyChallengeViewModel @Inject constructor(
                     val redCardState = data as List<RedCard>
                     val state = RedCardListState(redCardState)
                     _redCardListState.value = state
-
                 }
             }
         }
     }
 
-    fun getPaymentHistory() {
+    fun getPaymentHistory(
+        isInit: Boolean = false,
+    ) {
+        if (isInit) {
+            _userRedCardListPage.value = 1
+        }
+        val page = _userRedCardListPage.value ?: 1
+
         viewModelScope.launch {
             val response = userRepo.getPaymentHistory()
             response.flowOn(Dispatchers.IO).collect {
                 it.data?.let { data ->
+
+                    val pager = it.pager
+
+                    if (it.pager?.page == page) {
+                        _userPaymentHistoryListPage.value = page + 1
+                    }
                     val paymentHistoryState = data as List<PaymentHistoryData>
                     val state = PaymentHistoryState(paymentHistoryState)
                     _paymentHistoryState.value = state

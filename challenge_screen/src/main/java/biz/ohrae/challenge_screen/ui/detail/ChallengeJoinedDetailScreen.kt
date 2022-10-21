@@ -81,6 +81,7 @@ fun ChallengeJoinedDetailScreen(
         status = challengeDetailStatusMap[challengeData.status]
     }
     val listState = rememberLazyListState()
+    var checked by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -200,7 +201,9 @@ fun ChallengeJoinedDetailScreen(
                     enabled = challengeData.is_verification_photo == 1,
                     text = "인증하기",
                     onClick = { clickListener?.onClickAuth() },
-                    onClickBookMark = { clickListener?.onClickBookMark() }
+                    onClickBookMark = {
+                        checked = !checked
+                        clickListener?.onClickBookMark(checked) }
                 )
             }
         }

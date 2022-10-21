@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -13,9 +14,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.ui.components.button.ArrowTextButton
 import biz.ohrae.challenge.ui.components.list_item.PaidHistoryItem
+import biz.ohrae.challenge.ui.components.list_item.RedCardHistoryItem
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge_repo.model.user.PaymentHistoryState
+import biz.ohrae.challenge_screen.model.user.RedCardListState
+import biz.ohrae.challenge_screen.util.OnBottomReached
+import timber.log.Timber
 
 @Preview(
     widthDp = 360,
@@ -25,7 +30,8 @@ import biz.ohrae.challenge_repo.model.user.PaymentHistoryState
 @Composable
 fun PaymentDetailListScreen(
     paymentHistoryState: PaymentHistoryState? = null,
-    clickListener: MyChallengeClickListener? = null
+    clickListener: MyChallengeClickListener? = null,
+    onBottomReached: () -> Unit = {},
 ) {
     Column() {
         Column(modifier = Modifier.padding(24.dp, 0.dp)) {
@@ -51,34 +57,49 @@ fun PaymentDetailListScreen(
                     .height(1.dp)
                     .background(Color(0xfffafafa))
             )
-            if (paymentHistoryState?.paymentHistoryListState != null) {
-                LazyColumn(
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
-                    items(paymentHistoryState?.paymentHistoryListState!!) { item ->
-                        PaidHistoryItem(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .defaultMinSize(minHeight = 105.dp),
-                            date = "2022.04.25  09:33",
-                            title = item.challengeData.goal.toString(),
-                            price = "10,000원",
-                            state = "카드결제",
-                            cardInfo = "현대 1234"
-                        )
-                    }
-                }
-            } else {
-                Spacer(modifier = Modifier.height(20.dp))
-
-                Text(
-                    text = "결제내역이 없습니다.",
-                    style = myTypography.w500,
-                    fontSize = dpToSp(dp = 20.dp),
-                    color = Color(0xff828282)
-                )
-            }
-
+            PaymentDetailList(onBottomReached = onBottomReached, paymentHistoryState = paymentHistoryState)
         }
     }
+}
+
+@Composable
+fun PaymentDetailList(
+    onBottomReached: () -> Unit = {},
+    paymentHistoryState: PaymentHistoryState? = null,
+) {
+    val listState = rememberLazyListState()
+
+    if (paymentHistoryState?.paymentHistoryListState != null) {
+        LazyColumn(
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            items(paymentHistoryState?.paymentHistoryListState!!) { item ->
+                PaidHistoryItem(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .defaultMinSize(minHeight = 105.dp),
+                    date = "2022.04.25  09:33",
+                    title = item.challengeData.goal.toString(),
+                    price = "10,000원",
+                    state = "카드결제",
+                    cardInfo = "현대 1234"
+                )
+            }
+        }
+    } else {
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Text(
+            text = "결제내역이 없습니다.",
+            style = myTypography.w500,
+            fontSize = dpToSp(dp = 20.dp),
+            color = Color(0xff828282)
+        )
+    }
+
+    listState.OnBottomReached {
+        Timber.e("bottom reached!!")
+        onBottomReached()
+    }
+
 }

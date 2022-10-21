@@ -262,8 +262,9 @@ class ChallengeDetailActivity : BaseActivity() {
                 }
             }
 
-            override fun onClickBookMark() {
-                showSnackBar("준비중입니다.")
+            override fun onClickBookMark(like:Boolean) {
+                viewModel.favoriteChallenge(challengeId.toString(),like)
+//                showSnackBar("준비중입니다.")
             }
 
             override fun onClickReTakePhoto() {

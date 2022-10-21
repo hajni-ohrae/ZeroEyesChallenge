@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -19,6 +20,8 @@ import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge_screen.model.user.RedCardListState
+import biz.ohrae.challenge_screen.util.OnBottomReached
+import timber.log.Timber
 
 
 @Preview(
@@ -29,7 +32,8 @@ import biz.ohrae.challenge_screen.model.user.RedCardListState
 @Composable
 fun RedCardScreen(
     clickListener: MyChallengeClickListener? = null,
-    redCardListState: RedCardListState? = null
+    redCardListState: RedCardListState? = null,
+    onBottomReached: () -> Unit = {},
 ) {
     Column(modifier = Modifier.background(DefaultWhite)) {
         Column(modifier = Modifier.padding(24.dp, 0.dp)) {
@@ -69,43 +73,56 @@ fun RedCardScreen(
                 .fillMaxHeight()
                 .background(Color(0xfffafafa))
         ) {
-            if (redCardListState?.redCardList != null) {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(24.dp, 0.dp),
-                ) {
-                    items(redCardListState?.redCardList!!) { item ->
-                        RedCardHistoryItem(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .defaultMinSize(minHeight = 99.dp),
-                            date = item.canceled_date,
-                            title = item.reason,
-                            content = item.canceled_reason
-                        )
-                        Divider(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(1.dp)
-                                .background(Color(0xfffafafa))
-                        )
-                    }
-                }
-            } else {
-                Spacer(modifier = Modifier.height(20.dp))
+            RedCardList(onBottomReached = onBottomReached,redCardListState)
+        }
+    }
+}
 
-                Text(
+@Composable
+fun RedCardList(
+    onBottomReached: () -> Unit = {},
+    redCardListState: RedCardListState? = null){
+    val listState = rememberLazyListState()
+
+    if (redCardListState?.redCardList != null) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(24.dp, 0.dp),
+        ) {
+            items(redCardListState?.redCardList!!) { item ->
+                RedCardHistoryItem(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(24.dp, 0.dp),
-                    text = "내역이 없습니다.",
-                    style = myTypography.w500,
-                    fontSize = dpToSp(dp = 20.dp),
-                    color = Color(0xff828282)
+                        .defaultMinSize(minHeight = 99.dp),
+                    date = item.canceled_date,
+                    title = item.reason,
+                    content = item.canceled_reason
+                )
+                Divider(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(1.dp)
+                        .background(Color(0xfffafafa))
                 )
             }
-
         }
+    } else {
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(24.dp, 0.dp),
+            text = "내역이 없습니다.",
+            style = myTypography.w500,
+            fontSize = dpToSp(dp = 20.dp),
+            color = Color(0xff828282)
+        )
+    }
+
+    listState.OnBottomReached {
+        Timber.e("bottom reached!!")
+        onBottomReached()
     }
 }

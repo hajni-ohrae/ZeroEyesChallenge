@@ -145,7 +145,13 @@ class ChallengeDetailRepo @Inject constructor(
         filter.addProperty("is_mine", isMine)
         jsonObject.add("filter", filter)
         val response =
-            apiService.getVerifyList(challengeId, accessToken.toString(), body = jsonObject, page, 10)
+            apiService.getVerifyList(
+                challengeId,
+                accessToken.toString(),
+                body = jsonObject,
+                page,
+                10
+            )
         when (response) {
             is NetworkResponse.Success -> {
                 return if (response.body.success) {
@@ -174,8 +180,34 @@ class ChallengeDetailRepo @Inject constructor(
         }
     }
 
-    suspend fun favoriteChallenge(){
+    suspend fun favoriteChallenge(
+        challengeId: String, like: Int
+    ): Flow<FlowResult> {
+        val userId = prefs.getUserData()?.id
+        val jsonObject = JsonObject()
+        jsonObject.addProperty("user_id", userId)
+        jsonObject.addProperty("challenge_id", challengeId)
+        jsonObject.addProperty("like", like)
 
+        val response = apiService.favoriteChallenge(jsonObject)
+        when (response) {
+            is NetworkResponse.Success -> {
+                return if (response.body.success) {
+
+                    flow {
+                        emit(FlowResult(true, "", ""))
+                    }
+                } else {
+                    flow {
+                        emit(FlowResult(false, response.body.code, response.body.message))
+                    }
+                }
+            }
+            else -> {
+                return flow {
+                    emit(FlowResult(null, "", ""))
+                }
+            }
+        }
     }
-
 }

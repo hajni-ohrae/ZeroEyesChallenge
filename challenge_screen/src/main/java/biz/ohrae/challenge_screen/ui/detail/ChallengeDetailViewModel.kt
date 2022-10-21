@@ -38,6 +38,7 @@ class ChallengeDetailViewModel @Inject constructor(
     private val _isJoined = MutableLiveData<Boolean>()
     private val _challengeAuthImageUri = MutableLiveData<Uri?>(null)
     private val _verified = MutableLiveData<Boolean?>(false)
+    private val _favorite = MutableLiveData<Boolean?>(false)
     private val _verifiedListPage = MutableLiveData(1)
 
     val challengeData get() = _challengeData
@@ -48,6 +49,7 @@ class ChallengeDetailViewModel @Inject constructor(
     val challengeVerificationState get() = _challengeVerificationState
     val challengeVerifiedList get() = _challengeVerifiedList
     val verified get() = _verified
+    val favorite get() = _favorite
     val verifiedListPage get() = _verifiedListPage
 
     fun getChallenge(id: String) {
@@ -57,7 +59,8 @@ class ChallengeDetailViewModel @Inject constructor(
                 if (it.data != null) {
                     val challengeData = it.data as ChallengeData
                     _challengeData.value = challengeData
-                    val isJoined = !challengeData.inChallenge.isNullOrEmpty() && challengeData.status == "opened"
+                    val isJoined =
+                        !challengeData.inChallenge.isNullOrEmpty() && challengeData.status == "opened"
                     _isJoined.value = isJoined
                     if (isJoined) {
                         val verifications = challengeData.inChallenge?.get(0)?.verifications
@@ -157,19 +160,46 @@ class ChallengeDetailViewModel @Inject constructor(
                 val id = challengeData.value?.id.toString()
                 val type = Utils.getAuthTypeEnglish(challengeData = it)
 
-                repo.verifyChallenge(id, type, content, filePath).flowOn(Dispatchers.IO).collect { result ->
-                    Timber.e("_verified result : ${gson.toJson(result.data)}")
-                    if (result.data != null) {
-                        val success = result.data as Boolean
-                        _verified.value = success
-                        if (!success) {
-                            setErrorData(result.errorCode, result.errorMessage)
+                repo.verifyChallenge(id, type, content, filePath).flowOn(Dispatchers.IO)
+                    .collect { result ->
+                        Timber.e("_verified result : ${gson.toJson(result.data)}")
+                        if (result.data != null) {
+                            val success = result.data as Boolean
+                            _verified.value = success
+                            if (!success) {
+                                setErrorData(result.errorCode, result.errorMessage)
+                            }
+                        } else {
+                            _verified.value = null
+                            setErrorData(null, result.errorMessage)
                         }
-                    } else {
-                        _verified.value = null
-                        setErrorData(null, result.errorMessage)
                     }
+            }
+        }
+    }
+
+    fun favoriteChallenge(challengeId: String, like: Boolean) {
+        viewModelScope.launch {
+            challengeData.value?.let {
+                val favorite: Int = if (like) {
+                    1
+                } else {
+                    0
                 }
+
+                repo.favoriteChallenge(challengeId, favorite).flowOn(Dispatchers.IO)
+                    .collect { result ->
+                        if (result.data != null) {
+                            val success = result.data as Boolean
+                            _favorite.value = success
+                            if (!success) {
+                                setErrorData(result.errorCode, result.errorMessage)
+                            }
+                        } else {
+                            _favorite.value = null
+                            setErrorData(null, result.errorMessage)
+                        }
+                    }
             }
         }
     }
