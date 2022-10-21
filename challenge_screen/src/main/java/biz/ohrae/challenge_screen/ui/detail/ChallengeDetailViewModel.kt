@@ -178,16 +178,10 @@ class ChallengeDetailViewModel @Inject constructor(
         }
     }
 
-    fun favoriteChallenge(challengeId: String, like: Boolean) {
+    fun favoriteChallenge(challengeId: String, like: Int) {
         viewModelScope.launch {
             challengeData.value?.let {
-                val favorite: Int = if (like) {
-                    1
-                } else {
-                    0
-                }
-
-                repo.favoriteChallenge(challengeId, favorite).flowOn(Dispatchers.IO)
+                repo.favoriteChallenge(challengeId, like).flowOn(Dispatchers.IO)
                     .collect { result ->
                         if (result.data != null) {
                             val success = result.data as Boolean

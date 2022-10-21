@@ -54,7 +54,9 @@ interface ApiService {
     ): NetworkResponse<Result2, Error>
 
     @POST(Routes.FAVORITE_CHALLENGE)
-    suspend fun favoriteChallenge(@Body body: JsonObject?): NetworkResponse<Result, Error>
+    suspend fun favoriteChallenge(
+        @Header("x-access-token") accessToken: String, @Body body: JsonObject?,
+    ): NetworkResponse<Result, Error>
 
     @DELETE(Routes.CANCEL_CHALLENGE)
     suspend fun cancelChallenge(
@@ -208,7 +210,7 @@ interface ApiService {
         @Header("x-access-token") accessToken: String,
         @Query("page") page: Int,
         @Query("per_page") perPage: Int,
-        @Query("status") status:String = ""
+        @Query("status") status: String = ""
     ): NetworkResponse<Result2, Error>
 
 }

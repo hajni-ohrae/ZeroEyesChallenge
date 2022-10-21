@@ -81,7 +81,9 @@ fun ChallengeJoinedDetailScreen(
         status = challengeDetailStatusMap[challengeData.status]
     }
     val listState = rememberLazyListState()
+    var like by remember { mutableStateOf(challengeData.inChallengeLike?.like) }
     var checked by remember { mutableStateOf(false) }
+
 
     Column(
         modifier = Modifier
@@ -202,8 +204,9 @@ fun ChallengeJoinedDetailScreen(
                     text = "인증하기",
                     onClick = { clickListener?.onClickAuth() },
                     onClickBookMark = {
-                        checked = !checked
-                        clickListener?.onClickBookMark(checked) }
+                        checked?.let { clickListener?.onClickBookMark(it) }
+                    },
+                    checked = checked
                 )
             }
         }

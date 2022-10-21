@@ -48,6 +48,7 @@ fun ChallengeDetailScreen(
     challengeData: ChallengeData? = ChallengeData.mock(),
     clickListener: ChallengeDetailClickListener? = null,
     isParticipant: Boolean = false,
+    like : Int
 ) {
     if (challengeData == null) {
         return
@@ -72,9 +73,9 @@ fun ChallengeDetailScreen(
             }
         )
     }
-    var checked by remember { mutableStateOf(false) }
-
-
+    val checked = remember {
+        mutableStateOf(challengeData.inChallengeLike?.like == 1)
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -157,9 +158,10 @@ fun ChallengeDetailScreen(
             text = bottomBtnName,
             onClick = { clickListener?.onClickParticipation() },
             onClickBookMark = {
-                checked = !checked
-                clickListener?.onClickBookMark(checked)
-            }
+                checked.value = !checked.value
+                clickListener?.onClickBookMark(checked.value)
+            },
+            checked = checked.value
         )
     }
 }

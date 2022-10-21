@@ -79,8 +79,9 @@ private fun ButtonGallery() {
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(6f),
-        leftText = "",
-        rightText = "")
+            leftText = "",
+            rightText = ""
+        )
     }
 }
 
@@ -158,7 +159,7 @@ fun FlatBorderButton(
 fun FlatDoubleButton(
     modifier: Modifier = Modifier,
     rightText: String = "확인",
-    leftText:String = "",
+    leftText: String = "",
     textStyle: TextStyle = myTypography.bold,
     enabled: Boolean = true,
     onClickRight: () -> Unit = {},
@@ -216,6 +217,7 @@ fun FlatDoubleButton(
         }
     }
 }
+
 @Composable
 fun FlatBookMarkButton(
     modifier: Modifier = Modifier,
@@ -224,7 +226,7 @@ fun FlatBookMarkButton(
     enabled: Boolean = true,
     onClick: () -> Unit = {},
     onClickBookMark: () -> Unit = {},
-    checked:Boolean = false
+    checked: Boolean = false
 ) {
     Row(
         modifier = modifier,
@@ -238,7 +240,7 @@ fun FlatBookMarkButton(
                 onClickBookMark()
             },
         ) {
-            if (!checked){
+            if (!checked || checked == null) {
                 Icon(
                     painter = painterResource(id = R.drawable.icon_like),
                     contentDescription = "icon_like"

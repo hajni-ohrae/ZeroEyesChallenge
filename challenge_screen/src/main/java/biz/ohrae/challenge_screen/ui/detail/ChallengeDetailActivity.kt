@@ -135,7 +135,8 @@ class ChallengeDetailActivity : BaseActivity() {
                 ChallengeDetailScreen(
                     challengeData = challengeData,
                     clickListener = detailClickListener,
-                    isParticipant = isParticipant
+                    isParticipant = isParticipant,
+
                 )
             }
             composable(ChallengeDetailNavScreen.JoinedDetail.route) {
@@ -147,7 +148,7 @@ class ChallengeDetailActivity : BaseActivity() {
                     challengeData = challengeData,
                     challengers = challengers,
                     challengeVerifiedList = challengeVerifiedList,
-                    verificationState =  challengeVerificationState,
+                    verificationState = challengeVerificationState,
                     clickListener = detailClickListener,
                     onBottomReached = {
                         onBottomReached()
@@ -194,7 +195,7 @@ class ChallengeDetailActivity : BaseActivity() {
     }
 
     override fun onBack() {
-        when(navController.currentBackStackEntry?.destination?.route) {
+        when (navController.currentBackStackEntry?.destination?.route) {
             ChallengeDetailNavScreen.Detail.route,
             ChallengeDetailNavScreen.JoinedDetail.route -> {
                 finish()
@@ -230,7 +231,8 @@ class ChallengeDetailActivity : BaseActivity() {
             override fun onClickParticipation() {
                 viewModel.challengeData.value?.let {
                     if (it.status == "register") {
-                        intent = Intent(this@ChallengeDetailActivity, ParticipationActivity::class.java)
+                        intent =
+                            Intent(this@ChallengeDetailActivity, ParticipationActivity::class.java)
                         intent.putExtra("challengeId", challengeId)
                         intent.putExtra("isCancel", !it.inChallenge.isNullOrEmpty())
                         launcher.launch(intent)
@@ -256,14 +258,23 @@ class ChallengeDetailActivity : BaseActivity() {
                 }
 
                 if (permissionResults.isNotEmpty()) {
-                    ActivityCompat.requestPermissions(this@ChallengeDetailActivity, permissionResults.toTypedArray(), 100)
+                    ActivityCompat.requestPermissions(
+                        this@ChallengeDetailActivity,
+                        permissionResults.toTypedArray(),
+                        100
+                    )
                 } else {
                     navController.navigate(ChallengeDetailNavScreen.AuthCameraPreview.route)
                 }
             }
 
-            override fun onClickBookMark(like:Boolean) {
-                viewModel.favoriteChallenge(challengeId.toString(),like)
+            override fun onClickBookMark(like: Boolean) {
+                val fa :Int = if (like) {
+                    1
+                } else {
+                    0
+                }
+                viewModel.favoriteChallenge(challengeId.toString(), fa)
 //                showSnackBar("준비중입니다.")
             }
 
@@ -293,7 +304,8 @@ class ChallengeDetailActivity : BaseActivity() {
             }
 
             override fun onClickAuthItemCard() {
-                val intent = Intent(this@ChallengeDetailActivity, ChallengeAuthFeedActivity::class.java)
+                val intent =
+                    Intent(this@ChallengeDetailActivity, ChallengeAuthFeedActivity::class.java)
                 intent.putExtra("challengeId", challengeId)
                 startActivity(intent)
             }
@@ -324,10 +336,18 @@ class ChallengeDetailActivity : BaseActivity() {
                 if (grantedCount == grantResults.size) {
                     navController.navigate(ChallengeDetailNavScreen.AuthCameraPreview.route)
                 } else {
-                    Snackbar.make(findViewById(android.R.id.content), "Permission Denied", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(
+                        findViewById(android.R.id.content),
+                        "Permission Denied",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
                 }
             } else {
-                Snackbar.make(findViewById(android.R.id.content), "Permission Denied", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(
+                    findViewById(android.R.id.content),
+                    "Permission Denied",
+                    Snackbar.LENGTH_SHORT
+                ).show()
             }
         }
     }
@@ -356,7 +376,8 @@ class ChallengeDetailActivity : BaseActivity() {
     }
 
     private fun showAuthCancelDialog() {
-        val dialog = ConfirmDialog(positiveBtnName = "계속 작성", content = "인증이 완료되지 않았습니다\n인증을 취소하시겠습니까?")
+        val dialog =
+            ConfirmDialog(positiveBtnName = "계속 작성", content = "인증이 완료되지 않았습니다\n인증을 취소하시겠습니까?")
         dialog.isCancelable = false
         dialog.setListener(object : CustomDialogListener {
             override fun clickPositive() {

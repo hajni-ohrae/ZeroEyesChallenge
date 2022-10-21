@@ -42,6 +42,7 @@ data class ChallengeData(
     val is_canceled: Int,
     val is_valid: Int,
     val summary: Summary? = null,
+    val inChallengeLike : InChallengeLike? = null
 ) {
     companion object {
         fun mock(id: String = "2d4033ab-244b-47f3-84e9-6af72be39d9f") = ChallengeData(
@@ -103,4 +104,8 @@ data class ImageFile(
     val type: String,
     var path: String,
     val thumbnail_path: String
+)
+
+data class InChallengeLike(
+    val like: Int?,
 )

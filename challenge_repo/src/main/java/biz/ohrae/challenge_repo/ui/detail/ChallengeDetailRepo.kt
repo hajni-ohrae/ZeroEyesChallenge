@@ -183,13 +183,12 @@ class ChallengeDetailRepo @Inject constructor(
     suspend fun favoriteChallenge(
         challengeId: String, like: Int
     ): Flow<FlowResult> {
-        val userId = prefs.getUserData()?.id
+        val accessToken = prefs.getUserData()?.access_token
         val jsonObject = JsonObject()
-        jsonObject.addProperty("user_id", userId)
         jsonObject.addProperty("challenge_id", challengeId)
         jsonObject.addProperty("like", like)
 
-        val response = apiService.favoriteChallenge(jsonObject)
+        val response = apiService.favoriteChallenge(accessToken.toString(),jsonObject)
         when (response) {
             is NetworkResponse.Success -> {
                 return if (response.body.success) {
