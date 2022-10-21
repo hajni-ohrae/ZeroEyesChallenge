@@ -39,7 +39,6 @@ import java.lang.Math.min
 import java.text.NumberFormat
 import java.util.*
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Preview(
     widthDp = 360,
     heightDp = 720,
@@ -50,7 +49,6 @@ fun ParticipationScreen(
     challengeData: ChallengeData = ChallengeData.mock(),
     clickListener: ParticipationClickListener? = null,
 ) {
-
     val scrollState = rememberScrollState()
 
     val list = listOf(
@@ -79,14 +77,37 @@ fun ParticipationScreen(
             Spacer(modifier = Modifier.height(16.dp))
             ParticipationDetailCard(challengeData = challengeData)
             Spacer(modifier = Modifier.height(24.dp))
-            InputParticipationAmount(
-                isFree = isFree,
-                availableRewards = availableRewards,
-                participationAmount = participationAmount,
-                onParticipationAmountChange = { text, checked ->
-                    val price = numberToString(text)
-                    participationAmount = price
-                    if (checked) {
+            if (isFree) {
+                Text(
+                    text = "무료 챌린지입니다.",
+                    style = myTypography.w500,
+                    fontSize = dpToSp(dp = 20.dp),
+                    color = Color(0xffff5800),
+                )
+            } else {
+                InputParticipationAmount(
+                    isFree = isFree,
+                    availableRewards = availableRewards,
+                    participationAmount = participationAmount,
+                    onParticipationAmountChange = { text, checked ->
+                        val price = numberToString(text)
+                        participationAmount = price
+                        if (checked) {
+                            val amount = try {
+                                participationAmount.replace(",", "").toInt()
+                            } catch (e: Exception) {
+                                0
+                            }
+                            val ownRewards = challengeData.user?.rewards_amount ?: 0
+                            val min = min(amount, ownRewards)
+                            rewards = numberToString(text, min)
+                            paidAmount = calculatePaidAmount(participationAmount, rewards)
+                        } else {
+                            paidAmount = calculatePaidAmount(participationAmount, rewards)
+                        }
+                    },
+                    rewards = rewards,
+                    onParticipationRewardChange = {
                         val amount = try {
                             participationAmount.replace(",", "").toInt()
                         } catch (e: Exception) {
@@ -94,67 +115,56 @@ fun ParticipationScreen(
                         }
                         val ownRewards = challengeData.user?.rewards_amount ?: 0
                         val min = min(amount, ownRewards)
-                        rewards = numberToString(text, min)
+                        rewards = numberToString(it, min)
                         paidAmount = calculatePaidAmount(participationAmount, rewards)
-                    } else {
+                    },
+                    onCheckUseAllRewards = {
+                        val amount = try {
+                            participationAmount.replace(",", "").toInt()
+                        } catch (e: Exception) {
+                            0
+                        }
+                        var ownRewards = challengeData.user?.rewards_amount ?: 0
+                        if (ownRewards >= amount) {
+                            ownRewards = amount
+                        }
+
+                        if (!it) {
+                            ownRewards = 0
+                        }
+
+                        rewards = Utils.numberFormat(ownRewards)
                         paidAmount = calculatePaidAmount(participationAmount, rewards)
                     }
-                },
-                rewards = rewards,
-                onParticipationRewardChange = {
-                    val amount = try {
-                        participationAmount.replace(",", "").toInt()
-                    } catch (e: Exception) {
-                        0
-                    }
-                    val ownRewards = challengeData.user?.rewards_amount ?: 0
-                    val min = min(amount, ownRewards)
-                    rewards = numberToString(it, min)
-                    paidAmount = calculatePaidAmount(participationAmount, rewards)
-                },
-                onCheckUseAllRewards = {
-                    val amount = try {
-                        participationAmount.replace(",", "").toInt()
-                    } catch (e: Exception) {
-                        0
-                    }
-                    var ownRewards = challengeData.user?.rewards_amount ?: 0
-                    if (ownRewards >= amount) {
-                        ownRewards = amount
-                    }
-
-                    if (!it) {
-                        ownRewards = 0
-                    }
-
-                    rewards = Utils.numberFormat(ownRewards)
-                    paidAmount = calculatePaidAmount(participationAmount, rewards)
-                }
-            )
-            Spacer(modifier = Modifier.height(24.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = CenterVertically
-            ) {
-                Text(text = "최종 결제 금액", style = myTypography.bold, fontSize = dpToSp(dp = 16.dp))
-                Text(
-                    text = "${Utils.numberFormat(paidAmount)}원",
-                    style = myTypography.bold,
-                    fontSize = dpToSp(dp = 18.dp),
-                    color = Color(0xff4985f8)
                 )
             }
-            Spacer(modifier = Modifier.height(24.dp))
-            Text(text = "결제 수단")
-            MyDropDown(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(7.1f),
-                label = "", list = list
-            )
-            Spacer(modifier = Modifier.height(185.dp))
+            if (!isFree) {
+                Spacer(modifier = Modifier.height(24.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = CenterVertically
+                ) {
+                    Text(text = "최종 결제 금액", style = myTypography.bold, fontSize = dpToSp(dp = 16.dp))
+                    Text(
+                        text = "${Utils.numberFormat(paidAmount)}원",
+                        style = myTypography.bold,
+                        fontSize = dpToSp(dp = 18.dp),
+                        color = Color(0xff4985f8)
+                    )
+                }
+                Spacer(modifier = Modifier.height(24.dp))
+                Text(text = "결제 수단")
+                MyDropDown(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(7.1f),
+                    label = "", list = list
+                )
+                Spacer(modifier = Modifier.height(141.dp))
+            }
         }
+        Spacer(modifier = Modifier.weight(1f))
         FlatBottomButton(
             modifier = Modifier
                 .fillMaxWidth()
