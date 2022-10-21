@@ -3,7 +3,6 @@ package biz.ohrae.challenge_screen.ui.mychallenge
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,16 +18,14 @@ import androidx.navigation.compose.rememberNavController
 import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge.ui.theme.DefaultWhite
-import biz.ohrae.challenge_repo.util.prefs.SharedPreference
+import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailActivity
 import biz.ohrae.challenge_screen.ui.main.ChallengeMainViewModel
 import biz.ohrae.challenge_screen.ui.policy.PolicyActivity
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
-class MyChallengeActivity : AppCompatActivity() {
-
+class MyChallengeActivity : BaseActivity() {
     companion object {
         const val REWARD: String = "reward"
         const val RED_CARD: String = "redCard"
@@ -38,7 +35,6 @@ class MyChallengeActivity : AppCompatActivity() {
     private lateinit var myChallengeViewModel: MyChallengeViewModel
     private lateinit var navController: NavHostController
     private lateinit var myChallengeClickListener: MyChallengeClickListener
-    private lateinit var prefs: SharedPreference
 
     private var policyScreenType: String = ""
 
@@ -48,7 +44,7 @@ class MyChallengeActivity : AppCompatActivity() {
         challengeMainViewModel = ViewModelProvider(this)[ChallengeMainViewModel::class.java]
         myChallengeViewModel = ViewModelProvider(this)[MyChallengeViewModel::class.java]
         init()
-        initClickListener()
+        initClickListeners()
         setContent {
             ChallengeInTheme {
                 BuildContent()
@@ -81,7 +77,7 @@ class MyChallengeActivity : AppCompatActivity() {
         }
     }
 
-    private fun onBack() {
+    override fun onBack() {
         if (navController.currentBackStackEntry?.destination?.route == MyChallengeNavScreen.MyChallenge.route) {
             finish()
         }
@@ -117,7 +113,10 @@ class MyChallengeActivity : AppCompatActivity() {
                 )
             }
             composable(MyChallengeNavScreen.MyReward.route) {
-                MyRewardScreen(clickListener = myChallengeClickListener)
+                MyRewardScreen(
+                    user = userData,
+                    clickListener = myChallengeClickListener
+                )
             }
             composable(MyChallengeNavScreen.Withdraw.route) {
                 WithdrawScreen(clickListener = myChallengeClickListener)
@@ -153,7 +152,7 @@ class MyChallengeActivity : AppCompatActivity() {
         }
     }
 
-    private fun initClickListener() {
+    override fun initClickListeners() {
         myChallengeClickListener = object : MyChallengeClickListener {
             override fun onClickReward() {
                 navController.navigate(MyChallengeNavScreen.MyReward.route)
@@ -172,7 +171,8 @@ class MyChallengeActivity : AppCompatActivity() {
             }
 
             override fun onClickApplyWithdraw() {
-                navController.navigate(MyChallengeNavScreen.Withdraw.route)
+                showSnackBar("준비중입니다.")
+//                navController.navigate(MyChallengeNavScreen.Withdraw.route)
             }
 
             override fun onClickApplyWithdrawDetail() {

@@ -2,7 +2,6 @@ package biz.ohrae.challenge_screen.ui.mychallenge
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -17,14 +16,12 @@ import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.ui.components.banner.FlatBanner
 import biz.ohrae.challenge.ui.components.button.ArrowTextButton
 import biz.ohrae.challenge.ui.components.button.FlatBottomButton
-import biz.ohrae.challenge.ui.components.card.CertificationImageItem
 import biz.ohrae.challenge.ui.components.list_item.RewardHistoryItem
 import biz.ohrae.challenge.ui.theme.TextBlack
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
-import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.model.user.RewardData
-import biz.ohrae.challenge_repo.model.verify.VerifyData
+import biz.ohrae.challenge_repo.model.user.User
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.ui.mychallenge.MyChallengeActivity.Companion.REWARD
@@ -39,14 +36,14 @@ import com.google.accompanist.flowlayout.FlowRow
 )
 @Composable
 fun MyRewardScreen(
-    challengeData: ChallengeData = ChallengeData.mock(),
+    user: User? = null,
     prefs: SharedPreference? = null,
     select: Boolean = true,
     clickListener: MyChallengeClickListener? = null,
     rewardList: List<RewardData>? = null,
 ) {
     val availableRewards by remember {
-        mutableStateOf(challengeData.user?.rewards_amount ?: 0)
+        mutableStateOf(user?.rewards_amount ?: 0)
     }
     Column() {
         Column(modifier = Modifier.padding(24.dp, 0.dp)) {

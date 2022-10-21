@@ -39,6 +39,7 @@ import biz.ohrae.challenge_screen.ui.dialog.CustomDialogListener
 import biz.ohrae.challenge_screen.ui.dialog.LoadingDialog
 import biz.ohrae.challenge_screen.ui.mychallenge.PolicyScreen
 import biz.ohrae.challenge_screen.ui.participation.ParticipationActivity
+import biz.ohrae.challenge_screen.ui.policy.PolicyActivity
 import biz.ohrae.challenge_screen.ui.register.ChallengeCameraScreen
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -182,9 +183,6 @@ class ChallengeDetailActivity : BaseActivity() {
             composable(ChallengeDetailNavScreen.RedCardInfo.route) {
                 PolicyScreen(screen = "")
             }
-            composable(ChallengeDetailNavScreen.Caution.route) {
-                ChallengeCautionScreen()
-            }
         }
     }
 
@@ -300,7 +298,9 @@ class ChallengeDetailActivity : BaseActivity() {
             }
 
             override fun onClickCaution() {
-                navController.navigate(ChallengeDetailNavScreen.Caution.route)
+                val intent = Intent(this@ChallengeDetailActivity, PolicyActivity::class.java)
+                intent.putExtra("policyType", "Caution")
+                startActivity(intent)
             }
         }
     }
@@ -402,5 +402,4 @@ sealed class ChallengeDetailNavScreen(val route: String) {
     object AuthCameraPreview : ChallengeDetailNavScreen("AuthCameraPreview")
     object AuthCameraResult : ChallengeDetailNavScreen("AuthCameraResult")
     object AuthWrite : ChallengeDetailNavScreen("AuthWrite")
-    object Caution : ChallengeDetailNavScreen("Caution")
 }

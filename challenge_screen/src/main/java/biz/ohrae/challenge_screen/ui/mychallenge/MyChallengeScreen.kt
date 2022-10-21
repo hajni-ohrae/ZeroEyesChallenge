@@ -29,9 +29,9 @@ import biz.ohrae.challenge_repo.model.user.User
 import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.model.user.UserChallengeListState
 import biz.ohrae.challenge_screen.util.OnBottomReached
-import timber.log.Timber
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import timber.log.Timber
 
 
 @Preview(
@@ -70,7 +70,6 @@ fun MyChallengeScreen(
             ) {
                 if (userChallengeListState != null) {
                     UserChallengeList(
-                        challengeData = challengeData,
                         user = user,
                         clickListener = clickListener,
                         userChallengeListState = userChallengeListState,
@@ -167,7 +166,6 @@ fun ItemHeader(
 
 @Composable
 fun UserChallengeList(
-    challengeData: ChallengeData = ChallengeData.mock(),
     user: User? = null,
     clickListener: MyChallengeClickListener? = null,
     userChallengeListState: UserChallengeListState? = null,
@@ -177,7 +175,7 @@ fun UserChallengeList(
     val listState = rememberLazyListState()
 
     val availableRewards by remember {
-        mutableStateOf(challengeData.user?.rewards_amount ?: 0)
+        mutableStateOf(user?.rewards_amount ?: 0)
     }
     LazyColumn(
         modifier = Modifier
