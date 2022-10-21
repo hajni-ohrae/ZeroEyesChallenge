@@ -164,17 +164,19 @@ fun ChallengeJoinedDetailsTitle(
 @Composable
 fun ChallengeRemainTime(startDay: String) {
     var remainTime by remember { mutableStateOf(getRemainTime(startDay)) }
+    var isRemainTime by remember { mutableStateOf(!remainTime.startsWith("-")) }
 
     LaunchedEffect(remainTime) {
         delay(1000 * 60)
         remainTime = getRemainTime(startDay)
+        isRemainTime = !remainTime.startsWith("-")
     }
 
     ChallengeProgressStatus(
         modifier = Modifier.fillMaxWidth(),
         textColor = Color(0xff4985f8),
-        text = remainTime,
-        isRemainTime = true,
+        text = remainTime.replace("-", ""),
+        isRemainTime = isRemainTime,
         backgroundColor = Color(0xfff3f8ff)
     )
 }
@@ -199,9 +201,15 @@ private fun getRemainTime(startDay: String): String {
         val date = inputFormat.parse(dateString)
         var remain: Long = 0
         val result = StringBuilder()
+        var preFix = ""
 
         if (date != null) {
             remain = date.time - Date().time
+            if (remain < 0) {
+                remain *= -1
+                preFix = "-"
+            }
+
             if (remain > 0) {
                 val days = ((((remain / 1000) / 60) / 60) / 24)
                 val hours = ((((remain / 1000) / 60) / 60) % 24)
@@ -214,7 +222,7 @@ private fun getRemainTime(startDay: String): String {
                 result.append(minutes.toString().padStart(2, '0') + "분")
             }
         }
-        result.toString()
+        preFix + result.toString()
     } catch (ignore: Exception) {
         ignore.printStackTrace()
         ""

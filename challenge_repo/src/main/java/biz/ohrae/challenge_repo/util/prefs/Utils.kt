@@ -12,6 +12,9 @@ import java.io.FileOutputStream
 import java.text.DateFormat
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 import java.util.*
 import java.util.concurrent.TimeUnit
 import java.util.regex.Pattern
@@ -507,26 +510,22 @@ object Utils {
     fun getRemainTimeDays(startDate: String): String {
         return try {
             val dateString = startDate.replace("T", " ").replace("Z", "")
-            val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
-            val date = inputFormat.parse(dateString)
-            var remain: Long = 0
-            var result = ""
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
 
-            if (date != null) {
-                remain = date.time - Date().time
-                if (remain > 0) {
-                    val days = ((((remain / 1000) / 60) / 60) / 24)
+            val targetDate = LocalDate.parse(dateString, formatter)
+            val today = LocalDate.now()
 
-                    result = if (days <= 0L) {
-                        "오늘부터 시작"
-                    } else if (days == 1L) {
-                        "내일부터 시작"
-                    } else {
-                        "D - $days"
-                    }
-                }
+            val days = ChronoUnit.DAYS.between(today, targetDate)
+
+            return if (days < 0L) {
+                "D + ${days * -1}"
+            } else if (days == 0L) {
+                "오늘부터 시작"
+            } else if (days == 1L) {
+                "내일부터 시작"
+            } else {
+                "D - $days"
             }
-            result
         } catch (ignore: Exception) {
             ignore.printStackTrace()
             ""

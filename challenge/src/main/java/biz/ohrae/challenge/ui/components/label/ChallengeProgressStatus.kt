@@ -1,5 +1,6 @@
 package biz.ohrae.challenge.ui.components.label
 
+import android.content.IntentSender
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -31,7 +32,11 @@ private fun ChallengeProgressStatusGallery() {
 
     Column() {
         ChallengeProgressStatus(
-            modifier = Modifier.fillMaxWidth(), text = "챌린지가 완료되었습니다.", borderStroke = BorderStroke(1.dp, Color(0xffececec))
+            modifier = Modifier.fillMaxWidth(),
+            text = "챌린지가 완료되었습니다.",
+            isRemainTime = false,
+            borderStroke = BorderStroke(1.dp, Color(0xffececec)),
+            isFinished = true,
         )
     }
 
@@ -44,17 +49,22 @@ fun ChallengeProgressStatus(
     text: String = "",
     borderStroke: BorderStroke = BorderStroke(0.dp, Color(0xffececec)),
     backgroundColor: Color = DefaultWhite,
-    isRemainTime: Boolean = false
+    isRemainTime: Boolean = false,
+    isFinished: Boolean = false,
 ) {
     val annotatedString = buildAnnotatedString {
         append(text)
-        if (isRemainTime) {
+        if (!isFinished) {
             withStyle(style = SpanStyle(fontWeight = FontWeight.ExtraBold, color = TextBlack)) {
-                append(" 남음")
+                if (isRemainTime) {
+                    append(" 남음")
+                } else {
+                    append(" 지남")
+                }
             }
         }
     }
-    
+
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(6.dp),
