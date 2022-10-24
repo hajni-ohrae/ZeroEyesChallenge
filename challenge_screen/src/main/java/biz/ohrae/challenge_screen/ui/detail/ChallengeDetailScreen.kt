@@ -8,6 +8,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -48,7 +49,7 @@ fun ChallengeDetailScreen(
     challengeData: ChallengeData? = ChallengeData.mock(),
     clickListener: ChallengeDetailClickListener? = null,
     isParticipant: Boolean = false,
-    like : Int
+    viewModel: ChallengeDetailViewModel? = null
 ) {
     if (challengeData == null) {
         return
@@ -76,6 +77,8 @@ fun ChallengeDetailScreen(
     val checked = remember {
         mutableStateOf(challengeData.inChallengeLike?.like == 1)
     }
+    val favorite = viewModel!!.favorite?.observeAsState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()

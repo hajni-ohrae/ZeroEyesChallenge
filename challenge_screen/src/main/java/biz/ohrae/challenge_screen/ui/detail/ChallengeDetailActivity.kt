@@ -136,7 +136,7 @@ class ChallengeDetailActivity : BaseActivity() {
                     challengeData = challengeData,
                     clickListener = detailClickListener,
                     isParticipant = isParticipant,
-
+                    viewModel = viewModel
                 )
             }
             composable(ChallengeDetailNavScreen.JoinedDetail.route) {

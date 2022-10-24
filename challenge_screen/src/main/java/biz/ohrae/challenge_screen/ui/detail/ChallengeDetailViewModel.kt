@@ -36,6 +36,7 @@ class ChallengeDetailViewModel @Inject constructor(
     private val _challengeVerificationState = MutableLiveData<VerificationState>()
     private val _challengers = MutableLiveData<List<User>>()
     private val _isJoined = MutableLiveData<Boolean>()
+    private val _isFinished = MutableLiveData<Boolean>()
     private val _challengeAuthImageUri = MutableLiveData<Uri?>(null)
     private val _verified = MutableLiveData<Boolean?>(false)
     private val _favorite = MutableLiveData<Boolean?>(false)
@@ -45,6 +46,7 @@ class ChallengeDetailViewModel @Inject constructor(
     val verifyListState get() = _verifyListState
     val challengers get() = _challengers
     val isJoined get() = _isJoined
+    val isFinished get() = _isFinished
     val challengeAuthImageUri get() = _challengeAuthImageUri
     val challengeVerificationState get() = _challengeVerificationState
     val challengeVerifiedList get() = _challengeVerifiedList
@@ -61,6 +63,9 @@ class ChallengeDetailViewModel @Inject constructor(
                     _challengeData.value = challengeData
                     val isJoined =
                         !challengeData.inChallenge.isNullOrEmpty() && challengeData.status == "opened"
+                    _isJoined.value = isJoined
+                    val isFinished =
+                        !challengeData.inChallenge.isNullOrEmpty() && challengeData.status == "finished"
                     _isJoined.value = isJoined
                     if (isJoined) {
                         val verifications = challengeData.inChallenge?.get(0)?.verifications
