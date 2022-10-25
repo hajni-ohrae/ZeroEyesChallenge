@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
+import biz.ohrae.challenge_repo.model.report.ReportDetail
 import biz.ohrae.challenge_repo.model.user.User
 import biz.ohrae.challenge_repo.model.verify.VerifyData
 import biz.ohrae.challenge_repo.model.verify.VerifyListState
@@ -41,6 +42,8 @@ class ChallengeDetailViewModel @Inject constructor(
     private val _verified = MutableLiveData<Boolean?>(false)
     private val _favorite = MutableLiveData<Boolean?>(false)
     private val _verifiedListPage = MutableLiveData(1)
+    private val _reportList = MutableLiveData<List<ReportDetail>>()
+
 
     val challengeData get() = _challengeData
     val verifyListState get() = _verifyListState
@@ -53,6 +56,7 @@ class ChallengeDetailViewModel @Inject constructor(
     val verified get() = _verified
     val favorite get() = _favorite
     val verifiedListPage get() = _verifiedListPage
+    val reportList get() = _reportList
 
     fun getChallenge(id: String) {
         viewModelScope.launch {
@@ -199,6 +203,17 @@ class ChallengeDetailViewModel @Inject constructor(
                             setErrorData(null, result.errorMessage)
                         }
                     }
+            }
+        }
+    }
+
+    fun getRegisterReport() {
+        viewModelScope.launch {
+            repo.getRegisterReport().flowOn(Dispatchers.IO).collect {
+                if (it.data != null) {
+                    val reportDetailList = it.data as List<ReportDetail>
+                    _reportList.value = reportDetailList
+                }
             }
         }
     }

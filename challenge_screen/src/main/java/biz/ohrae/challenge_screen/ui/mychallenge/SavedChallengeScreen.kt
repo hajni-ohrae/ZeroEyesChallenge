@@ -1,5 +1,6 @@
 package biz.ohrae.challenge_screen.ui.mychallenge
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -39,7 +40,9 @@ fun SavedChallengeScreen(
     isRefreshing: Boolean = false,
     onRefresh: () -> Unit = {}
 ) {
-    Column() {
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .background(Color(0xfff9f9f9))) {
         SwipeRefresh(
             state = rememberSwipeRefreshState(isRefreshing = isRefreshing),
             onRefresh = {
@@ -66,7 +69,7 @@ fun SavedChallengeList(
     if (!mainScreenState?.challengeList.isNullOrEmpty()) {
         LazyColumn(
             modifier = Modifier
-                .padding(24.dp, 0.dp),
+                .padding(24.dp, 17.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             itemsIndexed(

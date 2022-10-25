@@ -37,6 +37,7 @@ class MyChallengeActivity : BaseActivity() {
     private lateinit var myChallengeClickListener: MyChallengeClickListener
 
     private var policyScreenType: String = ""
+    private var headerTitle: String = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,13 +65,12 @@ class MyChallengeActivity : BaseActivity() {
     @Composable
     private fun BuildContent() {
         navController = rememberNavController()
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(DefaultWhite)
         ) {
-            BackButton(onBack = { onBack() })
+            BackButton(onBack = { onBack() }, title = headerTitle)
             Column() {
                 Navigation()
             }

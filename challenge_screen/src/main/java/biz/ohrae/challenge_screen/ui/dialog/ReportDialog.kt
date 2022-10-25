@@ -26,7 +26,9 @@ import biz.ohrae.challenge.ui.components.avatar.circularAvatar
 import biz.ohrae.challenge.ui.components.button.FlatDoubleButton
 import biz.ohrae.challenge.ui.components.checkBox.MyCheckBox
 import biz.ohrae.challenge.ui.components.filter.ChallengeFilterItemList
+import biz.ohrae.challenge.ui.components.list_item.ChallengersItem
 import biz.ohrae.challenge.ui.theme.*
+import biz.ohrae.challenge_repo.model.user.User
 import biz.ohrae.challenge_screen.model.main.FilterState
 import biz.ohrae.challenge_screen.ui.main.ChallengeMainViewModel
 
@@ -97,7 +99,8 @@ fun Report(
     listener: ReportDialogListener? = null,
     positiveBtnName: String = "신고하기",
     negativeBtnName: String = "취소",
-    userName: String = ""
+    userName: String = "",
+    user:User? = null
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -105,45 +108,47 @@ fun Report(
         backgroundColor = DefaultWhite
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(20.dp, 30.dp)
-                .background(DefaultWhite)
         ) {
-            Text(
-                text = "신고하기",
-                style = myTypography.bold,
-                fontSize = dpToSp(dp = 20.dp),
-                color = DefaultBlack
-            )
-            Row() {
-                circularAvatar(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .aspectRatio(1f)
-                )
-                Spacer(modifier = Modifier.weight(1f))
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp, 30.dp)
+                    .background(DefaultWhite)
+            ) {
                 Text(
-                    text = userName,
-                    style = myTypography.default,
-                    fontSize = dpToSp(dp = 14.dp),
-                    color = TextBlack
+                    text = "신고하기",
+                    style = myTypography.bold,
+                    fontSize = dpToSp(dp = 20.dp),
+                    color = DefaultBlack
+                )
+                ChallengersItem(
+                    userName = user?.getUserName().toString(),
+                    imagePath = user?.imageFile?.path
+                )
+
+                Text(
+                    text = "신고 사유 선택",
+                    style = myTypography.bold,
+                    fontSize = dpToSp(dp = 20.dp),
+                    color = DefaultBlack
                 )
             }
+
+            FlatDoubleButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(6f),
+                "신고하기",
+                "취소",
+                onClickRight = {
+                    listener?.clickPositive()
+                },
+                onClickLeft = {
+                    listener?.clickNegative()
+                }
+            )
         }
-        FlatDoubleButton(
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(6f),
-            "신고하기",
-            "취소",
-            onClickRight = {
-                listener?.clickPositive()
-            },
-            onClickLeft = {
-                listener?.clickNegative()
-            }
-        )
+
     }
 }
 

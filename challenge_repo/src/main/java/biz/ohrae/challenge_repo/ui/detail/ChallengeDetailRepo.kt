@@ -4,6 +4,7 @@ import biz.ohrae.challenge_repo.data.remote.ApiService
 import biz.ohrae.challenge_repo.data.remote.NetworkResponse
 import biz.ohrae.challenge_repo.model.FlowResult
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
+import biz.ohrae.challenge_repo.model.report.ReportDetail
 import biz.ohrae.challenge_repo.model.user.User
 import biz.ohrae.challenge_repo.model.verify.VerifyData
 import biz.ohrae.challenge_repo.util.PagerMeta
@@ -188,7 +189,7 @@ class ChallengeDetailRepo @Inject constructor(
         jsonObject.addProperty("challenge_id", challengeId)
         jsonObject.addProperty("like", like)
 
-        val response = apiService.favoriteChallenge(accessToken.toString(),jsonObject)
+        val response = apiService.favoriteChallenge(accessToken.toString(), jsonObject)
         when (response) {
             is NetworkResponse.Success -> {
                 return if (response.body.success) {
@@ -199,6 +200,36 @@ class ChallengeDetailRepo @Inject constructor(
                 } else {
                     flow {
                         emit(FlowResult(false, response.body.code, response.body.message))
+                    }
+                }
+            }
+            else -> {
+                return flow {
+                    emit(FlowResult(null, "", ""))
+                }
+            }
+        }
+    }
+
+    suspend fun getRegisterReport(): Flow<FlowResult> {
+        val accessToken = prefs.getUserData()?.access_token
+
+        val response = apiService.getRegisterReport(accessToken.toString())
+        when (response) {
+            is NetworkResponse.Success -> {
+                return if (response.body.success) {
+                    val dataSet = response.body.dataset?.asJsonObject
+                    val array = dataSet?.get("array")?.asJsonArray
+
+                    val listType = object : TypeToken<List<ReportDetail?>?>() {}.type
+                    val reportDetailList = gson.fromJson<List<ReportDetail>>(array, listType)
+
+                    flow {
+                        emit(FlowResult(reportDetailList, "", ""))
+                    }
+                } else {
+                    flow {
+                        emit(FlowResult(null, response.body.code, response.body.message))
                     }
                 }
             }
