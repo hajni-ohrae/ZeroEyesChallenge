@@ -315,6 +315,10 @@ class ChallengeDetailActivity : BaseActivity() {
                 intent.putExtra("policyType", "Caution")
                 startActivity(intent)
             }
+
+            override fun onClickChallengersResults() {
+
+            }
         }
     }
 

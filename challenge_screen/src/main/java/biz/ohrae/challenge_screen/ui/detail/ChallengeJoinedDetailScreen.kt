@@ -458,7 +458,7 @@ private fun ChallengeJoinedDescription(
 }
 
 @Composable
-private fun ColumnForLazy(
+fun ColumnForLazy(
     content: @Composable ColumnScope.() -> Unit
 ) {
     Column(
@@ -471,7 +471,7 @@ private fun ColumnForLazy(
 }
 
 @Composable
-private fun Challengers(
+fun Challengers(
     challengers: List<User>,
     clickListener: ChallengeDetailClickListener? = null
 ) {
@@ -531,7 +531,7 @@ private fun Challengers(
 }
 
 @Composable
-private fun ChallengeAuthPage(
+fun ChallengeAuthPage(
     challengeVerifiedList: List<VerifyData>? = null,
     verifyListState: VerifyListState? = null,
     clickListener: ChallengeDetailClickListener? = null

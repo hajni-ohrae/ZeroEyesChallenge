@@ -11,4 +11,6 @@ interface ChallengeDetailClickListener {
     fun onDone(content: String)
     fun onClickAuthItemCard()
     fun onClickCaution()
+    fun onClickChallengersResults()
+
 }
