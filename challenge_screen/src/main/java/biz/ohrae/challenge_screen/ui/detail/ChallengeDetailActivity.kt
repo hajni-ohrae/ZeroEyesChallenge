@@ -191,7 +191,7 @@ class ChallengeDetailActivity : BaseActivity() {
         viewModel.isLoading(true)
         viewModel.getChallenge(challengeId.toString())
         viewModel.getUserByChallenge(challengeId.toString(), 1, 11)
-        viewModel.getVerifyList(challengeId.toString(), isInit = true)
+        viewModel.getVerifyList(challengeId.toString(), isInit = true,"desc",0)
     }
 
     override fun onBack() {

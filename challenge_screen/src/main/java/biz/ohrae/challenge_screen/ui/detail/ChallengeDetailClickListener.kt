@@ -15,6 +15,6 @@ interface ChallengeDetailClickListener {
 }
 
 interface ChallengeAuthFeedClickListener {
-    fun onClickMine()
-    fun onClickOrder()
+    fun onClickMine(isMine: Boolean)
+    fun onClickOrder(isOrder: Boolean)
 }

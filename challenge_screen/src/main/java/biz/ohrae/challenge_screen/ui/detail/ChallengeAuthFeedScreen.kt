@@ -7,7 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,10 +39,18 @@ import timber.log.Timber
 @Composable
 fun ChallengeAuthFeedScreen(
     challengeVerifiedList: List<VerifyData>? = null,
-    clickListener: ChallengeDetailClickListener? = null
+    clickListener: ChallengeAuthFeedClickListener? = null
 ) {
+    var isMine by remember { mutableStateOf(false) }
+    var isOrder by remember { mutableStateOf(false) }
     Column(modifier = Modifier.background(Color(0xfff7f7f7))) {
-        FeedFilter()
+        FeedFilter(onOrder = {
+            isMine = !isMine
+            clickListener?.onClickOrder(isMine)
+        }, onMine = {
+            isOrder = !isOrder
+            clickListener?.onClickMine(isOrder)
+        })
         Column(modifier = Modifier.fillMaxWidth()) {
             VerifiedList(challengeVerifiedList)
         }
@@ -56,6 +64,7 @@ fun VerifiedList(
     onBottomReached: () -> Unit = {},
 ) {
     val listState = rememberLazyListState()
+
     if (challengeVerifiedList != null) {
         LazyColumn(
             modifier = Modifier,
@@ -69,6 +78,7 @@ fun VerifiedList(
                     username = item.user?.getUserName().toString(),
                     date = Utils.convertDate(item.updated_date),
                     count = item.cnt,
+                    comment = item.comment
                 )
             }
         }
