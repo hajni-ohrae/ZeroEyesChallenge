@@ -224,11 +224,20 @@ private fun ChallengeProgressDetail(
     verificationState: VerificationState
 ) {
     Column {
-        Text(
-            text = "달성률",
-            style = myTypography.bold,
-            fontSize = dpToSp(dp = 18.dp)
-        )
+        Row {
+            Text(
+                text = "달성률",
+                style = myTypography.bold,
+                fontSize = dpToSp(dp = 18.dp)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = "${verificationState.achievement}%",
+                style = myTypography.bold,
+                color = Color(0xff4985f8),
+                fontSize = dpToSp(dp = 18.dp)
+            )
+        }
         Spacer(modifier = Modifier.height(16.dp))
         Row {
             Text(

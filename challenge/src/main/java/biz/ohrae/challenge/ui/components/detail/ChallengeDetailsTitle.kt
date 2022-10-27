@@ -196,8 +196,10 @@ private fun convertDate(dateStr: String): String {
 
 private fun getRemainTime(startDay: String): String {
     return try {
-        val dateString = startDay.replace("T", " ").replace("Z", "")
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.KOREA)
+        var dateString = startDay.replace("T", " ").replace("Z", "")
+        dateString = dateString.substring(0, 19)
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
+
         val date = inputFormat.parse(dateString)
         var remain: Long = 0
         val result = StringBuilder()

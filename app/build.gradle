@@ -91,6 +91,11 @@ dependencies {
     implementation firebaseCrashlytics
     implementation firebaseAnalytics
 
+    // glide
+    implementation landscapistGlide
+    implementation glideAnnotations
+    kapt glideCompiler
+
     // timber
     implementation timber
 

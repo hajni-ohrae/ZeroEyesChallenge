@@ -4,5 +4,6 @@ data class VerificationState(
     val successCount: Int,
     val remainCount: Int,
     val failCount: Int,
+    val achievement: String,
     var verifications: List<Verification>? = null
 )
