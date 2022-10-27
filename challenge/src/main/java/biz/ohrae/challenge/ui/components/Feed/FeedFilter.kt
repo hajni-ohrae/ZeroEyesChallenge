@@ -39,6 +39,8 @@ private fun FeedFilterGallery() {
 fun FeedFilter(
     modifier: Modifier = Modifier,
     order: String = "최신순",
+    onOrder: () -> Unit = {},
+    onMine: () -> Unit = {},
 ) {
     Column(
         modifier
@@ -54,7 +56,7 @@ fun FeedFilter(
             IconButton(
                 modifier = Modifier,
                 onClick = {
-//                    onClickLike()
+                    onOrder()
                 },
             ) {
                 Row(
@@ -74,7 +76,7 @@ fun FeedFilter(
                     )
                 }
             }
-            TextButton(onClick = { /*TODO*/ }) {
+            TextButton(onClick = { onMine() }) {
                 Text(
                     text = "내 인증만 보기",
                     fontSize = dpToSp(dp = 14.dp),

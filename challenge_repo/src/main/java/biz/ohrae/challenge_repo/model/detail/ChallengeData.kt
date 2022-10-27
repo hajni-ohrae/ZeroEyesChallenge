@@ -22,7 +22,7 @@ data class ChallengeData(
     var is_adult_only: Int = 0,
     val is_feed_open: Int = 0,
     val achievement_percent: Number = 0,
-    val rewards_percent: Int = 0,
+    val rewards_percent: Number = 0,
     val today: Int = 0,
     var period: Int = 0,
     var verification_period_type: String? = null,
@@ -92,8 +92,10 @@ data class Summary(
 data class InChallenge(
     val id: Int = 0,
     val achievement_percent: String,
-    val today_verified_cnt: Int,
-    val verified_cnt: Int,
+    val verification_cnt: Int,
+    val today_verification_cnt: Int,
+    val total_verification_count: Int,
+    val total_verification_cnt: Int,
     val ranking: Int?,
     val deposit_amount: Int?,
     var verifications: List<ChallengeVerification>?

@@ -12,5 +12,9 @@ interface ChallengeDetailClickListener {
     fun onClickAuthItemCard()
     fun onClickCaution()
     fun onClickChallengersResults()
+}
 
+interface ChallengeAuthFeedClickListener {
+    fun onClickMine()
+    fun onClickOrder()
 }

@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
@@ -46,6 +47,7 @@ class MyChallengeActivity : BaseActivity() {
         myChallengeViewModel = ViewModelProvider(this)[MyChallengeViewModel::class.java]
         init()
         initClickListeners()
+
         setContent {
             ChallengeInTheme {
                 BuildContent()

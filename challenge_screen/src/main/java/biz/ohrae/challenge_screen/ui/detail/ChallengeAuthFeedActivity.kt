@@ -31,7 +31,7 @@ class ChallengeAuthFeedActivity : BaseActivity() {
     private lateinit var navController: NavHostController
     private var challengeId: String? = null
 
-    private lateinit var detailClickListener: ChallengeDetailClickListener
+    private lateinit var authFeedClickListener: ChallengeAuthFeedClickListener
     private lateinit var capturedCallback: ImageCapture.OnImageSavedCallback
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,7 +83,7 @@ class ChallengeAuthFeedActivity : BaseActivity() {
 
     private fun init() {
         viewModel.isLoading(true)
-        viewModel.getVerifyList(challengeId.toString())
+        viewModel.getVerifyList(challengeId.toString(), isInit = true)
     }
 
     @Composable
@@ -112,7 +112,16 @@ class ChallengeAuthFeedActivity : BaseActivity() {
     }
 
     override fun initClickListeners() {
+        authFeedClickListener = object : ChallengeAuthFeedClickListener {
+            override fun onClickMine() {
+                TODO("Not yet implemented")
+            }
 
+            override fun onClickOrder() {
+                TODO("Not yet implemented")
+            }
+
+        }
     }
 
     override fun observeViewModels() {

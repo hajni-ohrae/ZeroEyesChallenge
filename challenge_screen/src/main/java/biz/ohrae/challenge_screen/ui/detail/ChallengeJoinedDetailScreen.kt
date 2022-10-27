@@ -563,7 +563,7 @@ fun ChallengeAuthPage(
                     val item = challengeVerifiedList[index]
                     CertificationImageItem(
                         modifier = Modifier.fillMaxWidth(0.49f),
-                        imageUrl = item.imageFile?.thumbnail_path.toString(),
+                        imageUrl = item.imageFile?.path.toString(),
                         username = item.user?.getUserName().toString(),
                         date = Utils.convertDate(item.updated_date),
                         count = item.cnt,
