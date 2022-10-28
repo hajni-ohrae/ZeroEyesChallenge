@@ -44,13 +44,15 @@ fun ChallengeAuthFeedScreen(
     var isMine by remember { mutableStateOf(false) }
     var isOrder by remember { mutableStateOf(false) }
     Column(modifier = Modifier.background(Color(0xfff7f7f7))) {
-        FeedFilter(onOrder = {
-            isMine = !isMine
-            clickListener?.onClickOrder(isMine)
-        }, onMine = {
-            isOrder = !isOrder
-            clickListener?.onClickMine(isOrder)
-        })
+        FeedFilter(
+            onOrder = {
+                isMine = !isMine
+                clickListener?.onClickOrder(isMine)
+            },
+            onMine = {
+                isOrder = !isOrder
+                clickListener?.onClickMine(isOrder)
+            })
         Column(modifier = Modifier.fillMaxWidth()) {
             VerifiedList(challengeVerifiedList)
         }
@@ -60,7 +62,7 @@ fun ChallengeAuthFeedScreen(
 @Composable
 fun VerifiedList(
     challengeVerifiedList: List<VerifyData>? = null,
-    clickListener: ChallengeDetailClickListener? = null,
+    clickListener: ChallengeAuthFeedClickListener? = null,
     onBottomReached: () -> Unit = {},
 ) {
     val listState = rememberLazyListState()
@@ -70,15 +72,14 @@ fun VerifiedList(
             modifier = Modifier,
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            itemsIndexed(
-                challengeVerifiedList,
-                key = { _, item -> item.id }) { index, item ->
+            items(challengeVerifiedList) {  item ->
                 FeedItem(
                     imageUrl = item.imageFile?.path.toString(),
                     username = item.user?.getUserName().toString(),
                     date = Utils.convertDate(item.updated_date),
                     count = item.cnt,
-                    comment = item.comment
+                    comment = item.comment,
+                    onReport = { clickListener?.onClickReport() }
                 )
             }
         }
