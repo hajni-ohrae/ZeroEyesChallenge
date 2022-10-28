@@ -46,15 +46,15 @@ fun ChallengeAuthFeedScreen(
     Column(modifier = Modifier.background(Color(0xfff7f7f7))) {
         FeedFilter(
             onOrder = {
-                isMine = !isMine
-                clickListener?.onClickOrder(isMine)
+                isOrder = !isOrder
+                clickListener?.onClickOrder(isOrder)
             },
             onMine = {
-                isOrder = !isOrder
-                clickListener?.onClickMine(isOrder)
+                isMine = !isMine
+                clickListener?.onClickMine(isMine)
             })
         Column(modifier = Modifier.fillMaxWidth()) {
-            VerifiedList(challengeVerifiedList)
+            VerifiedList(challengeVerifiedList, clickListener)
         }
     }
 }
@@ -72,14 +72,16 @@ fun VerifiedList(
             modifier = Modifier,
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            items(challengeVerifiedList) {  item ->
+            items(challengeVerifiedList) { item ->
                 FeedItem(
                     imageUrl = item.imageFile?.path.toString(),
                     username = item.user?.getUserName().toString(),
                     date = Utils.convertDate(item.updated_date),
                     count = item.cnt,
                     comment = item.comment,
-                    onReport = { clickListener?.onClickReport() }
+                    onReport = {
+                        clickListener?.onClickReport()
+                    }
                 )
             }
         }

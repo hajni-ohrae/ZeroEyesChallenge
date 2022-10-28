@@ -193,7 +193,7 @@ interface ApiService {
     @POST(Routes.CREATE_REPORT)
     suspend fun createReport(@Body body: JsonObject?): NetworkResponse<Result, Error>
 
-    @POST(Routes.GET_REGISTER_REPORT)
+    @GET(Routes.GET_REGISTER_REPORT)
     suspend fun getRegisterReport(
         @Header("x-access-token") accessToken: String
     ): NetworkResponse<Result, Error>

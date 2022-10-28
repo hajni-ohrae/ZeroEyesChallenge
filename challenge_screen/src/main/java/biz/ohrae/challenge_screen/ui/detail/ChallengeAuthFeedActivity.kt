@@ -19,10 +19,7 @@ import androidx.navigation.compose.rememberNavController
 import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge_screen.ui.BaseActivity
-import biz.ohrae.challenge_screen.ui.dialog.FilterDialog
-import biz.ohrae.challenge_screen.ui.dialog.LoadingDialog
-import biz.ohrae.challenge_screen.ui.dialog.Report
-import biz.ohrae.challenge_screen.ui.dialog.ReportDialog
+import biz.ohrae.challenge_screen.ui.dialog.*
 import biz.ohrae.challenge_screen.ui.mychallenge.PolicyScreen
 import biz.ohrae.challenge_screen.ui.register.ChallengeCameraScreen
 import biz.ohrae.challenge_screen.ui.register.ChallengeRegisterNavScreen
@@ -35,9 +32,8 @@ class ChallengeAuthFeedActivity : BaseActivity() {
     private var challengeId: String? = null
 
     private lateinit var authFeedClickListener: ChallengeAuthFeedClickListener
-    private lateinit var capturedCallback: ImageCapture.OnImageSavedCallback
 
-    private var order: String = ""
+    private var order: String = "desc"
     private var mine: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -125,7 +121,7 @@ class ChallengeAuthFeedActivity : BaseActivity() {
                 } else {
                     0
                 }
-                viewModel.getVerifyList(challengeId.toString(),true,order,mine)
+                viewModel.getVerifyList(challengeId.toString(), true, order, mine)
             }
 
             override fun onClickOrder(isOrder: Boolean) {
@@ -134,11 +130,28 @@ class ChallengeAuthFeedActivity : BaseActivity() {
                 } else {
                     "asc"
                 }
-                viewModel.getVerifyList(challengeId.toString(),true,order,mine)
+                viewModel.getVerifyList(challengeId.toString(), true, order, mine)
             }
 
             override fun onClickReport() {
                 val dialog = ReportDialog(viewModel)
+                dialog.setListener(object : ReportDialogListener {
+                    override fun clickPositive() {
+                        dialog.dismiss()
+                    }
+
+                    override fun clickNegative() {
+                        dialog.dismiss()
+                    }
+
+                    override fun clickItem(item: String) {
+                        TODO("Not yet implemented")
+                    }
+
+                })
+
+                dialog.isCancelable = false
+                dialog.show(supportFragmentManager, "ReportDialog")
             }
 
         }
