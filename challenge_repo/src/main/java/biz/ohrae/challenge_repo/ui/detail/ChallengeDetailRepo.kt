@@ -136,7 +136,7 @@ class ChallengeDetailRepo @Inject constructor(
     }
 
     suspend fun getVerifyList(
-        challengeId: String, order: String, isMine: String, page: Int
+        challengeId: String, order: String, isMine: Int, page: Int
     ): Flow<FlowResult> {
         val accessToken = prefs.getUserData()?.access_token
 

@@ -135,14 +135,14 @@ class ChallengeDetailViewModel @Inject constructor(
         }
     }
 
-    fun getVerifyList(id: String, isInit: Boolean = false) {
+    fun getVerifyList(id: String, isInit: Boolean = false, isOrder: String = "desc", isMine: Int = 0) {
         viewModelScope.launch {
             if (isInit) {
                 _verifiedListPage.value = 1
             }
             val page = _verifiedListPage.value ?: 1
 
-            repo.getVerifyList(id, "desc", "0", page).flowOn(Dispatchers.IO).collect {
+            repo.getVerifyList(id, isOrder, isMine, page).flowOn(Dispatchers.IO).collect {
                 Timber.e("getVerifyList result : ${gson.toJson(it.data)}")
                 if (it.data != null) {
                     val pager = it.pager

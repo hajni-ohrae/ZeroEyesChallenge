@@ -34,6 +34,8 @@ class ChallengeAuthFeedActivity : BaseActivity() {
     private lateinit var authFeedClickListener: ChallengeAuthFeedClickListener
     private lateinit var capturedCallback: ImageCapture.OnImageSavedCallback
 
+    private var order: String = ""
+    private var mine: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this)[ChallengeDetailViewModel::class.java]
@@ -96,7 +98,7 @@ class ChallengeAuthFeedActivity : BaseActivity() {
             startDestination = ChallengeAuthFeedNavScreen.AuthFeed.route
         ) {
             composable(ChallengeAuthFeedNavScreen.AuthFeed.route) {
-                ChallengeAuthFeedScreen(challengeVerifiedList)
+                ChallengeAuthFeedScreen(challengeVerifiedList, authFeedClickListener)
 
             }
         }
@@ -113,12 +115,22 @@ class ChallengeAuthFeedActivity : BaseActivity() {
 
     override fun initClickListeners() {
         authFeedClickListener = object : ChallengeAuthFeedClickListener {
-            override fun onClickMine() {
-                TODO("Not yet implemented")
+            override fun onClickMine(isMine: Boolean) {
+                mine = if (isMine) {
+                    1
+                } else {
+                    0
+                }
+                viewModel.getVerifyList(challengeId.toString(),true,order,mine)
             }
 
-            override fun onClickOrder() {
-                TODO("Not yet implemented")
+            override fun onClickOrder(isOrder: Boolean) {
+                order = if (isOrder) {
+                    "desc"
+                } else {
+                    "asc"
+                }
+                viewModel.getVerifyList(challengeId.toString(),true,order,mine)
             }
 
         }

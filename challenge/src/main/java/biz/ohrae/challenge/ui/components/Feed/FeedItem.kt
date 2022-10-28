@@ -47,6 +47,7 @@ fun FeedItem(
     username: String = "아이오",
     count: Int = 1,
     date: String = "2022.05.09",
+    comment: String = "123",
 ) {
     Column(
         modifier = Modifier
@@ -56,7 +57,6 @@ fun FeedItem(
             modifier = Modifier
                 .padding(24.dp)
         ) {
-
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -74,20 +74,22 @@ fun FeedItem(
                         style = myTypography.bold,
                         fontSize = dpToSp(dp = 13.dp)
                     )
+                    Spacer(modifier = Modifier.height(3.dp))
                     Text(
-                        text = username,
+                        text = date,
                         color = Color(0xff9a9a9a),
                         style = myTypography.w500,
                         fontSize = dpToSp(dp = 12.dp)
                     )
                 }
             }
+            Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = username,
-                color = DefaultWhite,
-                style = myTypography.bold,
+                text = comment,
+                style = myTypography.w700,
                 fontSize = dpToSp(dp = 12.dp)
             )
+            Spacer(modifier = Modifier.height(16.dp))
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
