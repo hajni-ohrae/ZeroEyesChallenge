@@ -141,6 +141,9 @@ dependencies {
     // The compose calendar implementation
     implementation composeCalendar
 
+    // resizer
+    implementation 'com.github.respecu:Resizer:1.0.1'
+
     implementation project(':challenge')
     implementation project(':challenge_repo')
 }

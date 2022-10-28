@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.SystemClock
 import android.provider.MediaStore
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResult
@@ -42,6 +43,7 @@ import biz.ohrae.challenge_screen.ui.main.MainActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import me.echodev.resizer.Resizer
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
@@ -247,8 +249,18 @@ class RegisterActivity : BaseActivity() {
 
                     Timber.e("image path : $imagePath")
                     if (!imagePath.isNullOrEmpty()) {
+                        val originFile = File(imagePath)
+                        val resizedImage = Resizer(this@RegisterActivity)
+                            .setTargetLength(1080)
+                            .setQuality(80)
+                            .setOutputFormat("JPEG")
+                            .setOutputFilename("resized_image")
+                            .setOutputDirPath(originFile.parent)
+                            .setSourceImage(originFile)
+                            .resizedFile
+
                         viewModel.isLoading(true)
-                        viewModel.uploadChallengeImage(imagePath)
+                        viewModel.uploadChallengeImage(resizedImage.path)
                     }
                 } else {
                     viewModel.isLoading(true)
