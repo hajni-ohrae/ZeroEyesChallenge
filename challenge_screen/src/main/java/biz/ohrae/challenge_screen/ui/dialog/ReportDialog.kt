@@ -8,6 +8,9 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
@@ -26,13 +29,18 @@ import biz.ohrae.challenge.ui.components.avatar.circularAvatar
 import biz.ohrae.challenge.ui.components.button.FlatDoubleButton
 import biz.ohrae.challenge.ui.components.checkBox.MyCheckBox
 import biz.ohrae.challenge.ui.components.filter.ChallengeFilterItemList
+import biz.ohrae.challenge.ui.components.filter.FeedItem
 import biz.ohrae.challenge.ui.components.list_item.ChallengersItem
+import biz.ohrae.challenge.ui.components.selectable.LabeledCircleCheck
 import biz.ohrae.challenge.ui.theme.*
+import biz.ohrae.challenge_repo.model.report.ReportDetail
 import biz.ohrae.challenge_repo.model.user.User
+import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.model.main.FilterState
+import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailViewModel
 import biz.ohrae.challenge_screen.ui.main.ChallengeMainViewModel
 
-class ReportDialog(private val viewModel: ChallengeMainViewModel) : DialogFragment() {
+class ReportDialog(private val viewModel: ChallengeDetailViewModel) : DialogFragment() {
     private lateinit var reportDialogListener: ReportDialogListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,8 +54,12 @@ class ReportDialog(private val viewModel: ChallengeMainViewModel) : DialogFragme
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                val filterState by viewModel.filterState.observeAsState()
+                val reportList by viewModel.reportList.observeAsState()
 
+                Report(
+                    listener = reportDialogListener,
+                    reportList = reportList
+                )
 
             }
         }
@@ -100,8 +112,11 @@ fun Report(
     positiveBtnName: String = "신고하기",
     negativeBtnName: String = "취소",
     userName: String = "",
-    user:User? = null
+    user: User? = null,
+    reportList: List<ReportDetail>? = null
 ) {
+    var checked by remember { mutableStateOf(false) }
+
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(10.dp),
@@ -121,17 +136,50 @@ fun Report(
                     fontSize = dpToSp(dp = 20.dp),
                     color = DefaultBlack
                 )
-                ChallengersItem(
-                    userName = user?.getUserName().toString(),
-                    imagePath = user?.imageFile?.path
-                )
-
+                Spacer(modifier = Modifier.height(20.dp))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(20.66f),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    circularAvatar(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .aspectRatio(1.0f),
+                        url = user?.imageFile?.path.toString()
+                    )
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Text(
+                        text = "하진!",
+                        style = myTypography.default,
+                        fontSize = dpToSp(dp = 14.dp),
+                        color = DefaultBlack
+                    )
+                }
+                Spacer(modifier = Modifier.height(20.dp))
                 Text(
                     text = "신고 사유 선택",
                     style = myTypography.bold,
-                    fontSize = dpToSp(dp = 20.dp),
+                    fontSize = dpToSp(dp = 16.dp),
                     color = DefaultBlack
                 )
+                if (reportList != null) {
+                    LazyColumn(
+                        modifier = Modifier,
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        items(reportList) { item ->
+                            LabeledCircleCheck(
+                                label = item.name,
+                                checked = checked,
+                                onClick = {
+                                    checked = !checked
+                                }
+                            )
+                        }
+                    }
+                }
             }
 
             FlatDoubleButton(

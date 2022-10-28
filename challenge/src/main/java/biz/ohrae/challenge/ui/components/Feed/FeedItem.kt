@@ -2,6 +2,7 @@ package biz.ohrae.challenge.ui.components.filter
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -48,6 +49,8 @@ fun FeedItem(
     count: Int = 1,
     date: String = "2022.05.09",
     comment: String = "123",
+    onReport: () -> Unit = {},
+    onLike: () -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -155,7 +158,7 @@ fun FeedItem(
             IconButton(
                 modifier = Modifier,
                 onClick = {
-//                    onClickLike()
+                    onLike()
                 },
             ) {
                 Row(
@@ -177,10 +180,11 @@ fun FeedItem(
                 }
             }
             Text(
+                modifier = Modifier.clickable(onClick = onReport),
                 text = "신고",
                 fontSize = dpToSp(dp = 13.dp),
                 style = myTypography.w500,
-                color = Color(0xff606060)
+                color = Color(0xff606060),
             )
         }
     }

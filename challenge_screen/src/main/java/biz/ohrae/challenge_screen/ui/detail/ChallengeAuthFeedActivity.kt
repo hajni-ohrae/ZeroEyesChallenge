@@ -19,7 +19,10 @@ import androidx.navigation.compose.rememberNavController
 import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge_screen.ui.BaseActivity
+import biz.ohrae.challenge_screen.ui.dialog.FilterDialog
 import biz.ohrae.challenge_screen.ui.dialog.LoadingDialog
+import biz.ohrae.challenge_screen.ui.dialog.Report
+import biz.ohrae.challenge_screen.ui.dialog.ReportDialog
 import biz.ohrae.challenge_screen.ui.mychallenge.PolicyScreen
 import biz.ohrae.challenge_screen.ui.register.ChallengeCameraScreen
 import biz.ohrae.challenge_screen.ui.register.ChallengeRegisterNavScreen
@@ -86,6 +89,7 @@ class ChallengeAuthFeedActivity : BaseActivity() {
     private fun init() {
         viewModel.isLoading(true)
         viewModel.getVerifyList(challengeId.toString(), isInit = true)
+        viewModel.getRegisterReport()
     }
 
     @Composable
@@ -125,12 +129,16 @@ class ChallengeAuthFeedActivity : BaseActivity() {
             }
 
             override fun onClickOrder(isOrder: Boolean) {
-                order = if (isOrder) {
+                order = if (!isOrder) {
                     "desc"
                 } else {
                     "asc"
                 }
                 viewModel.getVerifyList(challengeId.toString(),true,order,mine)
+            }
+
+            override fun onClickReport() {
+                val dialog = ReportDialog(viewModel)
             }
 
         }
