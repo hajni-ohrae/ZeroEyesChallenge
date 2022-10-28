@@ -53,7 +53,7 @@ fun ChallengersItem(
                 .aspectRatio(1f),
             url = imagePath.toString()
         )
-        Spacer(modifier = Modifier.fillMaxWidth(0.108f))
+        Spacer(modifier = Modifier.fillMaxWidth(0.058f))
         Text(
             text = userName,
             style = myTypography.default,

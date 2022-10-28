@@ -5,6 +5,7 @@ import biz.ohrae.challenge_repo.data.remote.NetworkResponse
 import biz.ohrae.challenge_repo.model.FlowResult
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.model.report.ReportDetail
+import biz.ohrae.challenge_repo.model.user.PaymentHistoryState
 import biz.ohrae.challenge_repo.model.user.User
 import biz.ohrae.challenge_repo.model.verify.VerifyData
 import biz.ohrae.challenge_repo.util.PagerMeta
@@ -218,11 +219,10 @@ class ChallengeDetailRepo @Inject constructor(
         when (response) {
             is NetworkResponse.Success -> {
                 return if (response.body.success) {
-                    val dataSet = response.body.dataset?.asJsonObject
-                    val array = dataSet?.get("array")?.asJsonArray
+                    val dataSet = response.body.dataset?.asJsonArray
 
                     val listType = object : TypeToken<List<ReportDetail?>?>() {}.type
-                    val reportDetailList = gson.fromJson<List<ReportDetail>>(array, listType)
+                    val reportDetailList = gson.fromJson<List<ReportDetail>>(dataSet, listType)
 
                     flow {
                         emit(FlowResult(reportDetailList, "", ""))

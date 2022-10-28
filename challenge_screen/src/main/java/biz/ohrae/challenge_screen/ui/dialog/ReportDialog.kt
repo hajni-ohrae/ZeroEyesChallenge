@@ -111,7 +111,7 @@ fun Report(
     listener: ReportDialogListener? = null,
     positiveBtnName: String = "신고하기",
     negativeBtnName: String = "취소",
-    userName: String = "",
+    userName: String = "하진!",
     user: User? = null,
     reportList: List<ReportDetail>? = null
 ) {
@@ -137,26 +137,10 @@ fun Report(
                     color = DefaultBlack
                 )
                 Spacer(modifier = Modifier.height(20.dp))
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(20.66f),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    circularAvatar(
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .aspectRatio(1.0f),
-                        url = user?.imageFile?.path.toString()
-                    )
-                    Spacer(modifier = Modifier.width(12.dp))
-                    Text(
-                        text = "하진!",
-                        style = myTypography.default,
-                        fontSize = dpToSp(dp = 14.dp),
-                        color = DefaultBlack
-                    )
-                }
+                ChallengersItem(
+                    userName = userName,
+                    imagePath = user?.imageFile?.path.toString()
+                )
                 Spacer(modifier = Modifier.height(20.dp))
                 Text(
                     text = "신고 사유 선택",
@@ -167,7 +151,6 @@ fun Report(
                 if (reportList != null) {
                     LazyColumn(
                         modifier = Modifier,
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         items(reportList) { item ->
                             LabeledCircleCheck(
