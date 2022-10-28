@@ -132,8 +132,11 @@ class ChallengeDetailActivity : BaseActivity() {
             startDestination = if (isJoined == true) ChallengeDetailNavScreen.JoinedDetail.route else ChallengeDetailNavScreen.Detail.route
         ) {
             composable(ChallengeDetailNavScreen.Detail.route) {
+                val challengers by viewModel.challengers.observeAsState()
+
                 ChallengeDetailScreen(
                     challengeData = challengeData,
+                    challengers = challengers,
                     clickListener = detailClickListener,
                     isParticipant = isParticipant,
                     viewModel = viewModel

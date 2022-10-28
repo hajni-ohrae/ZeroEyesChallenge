@@ -523,7 +523,7 @@ fun Challengers(
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
-        if (challengers.size > 0) {
+        if (challengers.isNotEmpty()) {
             Spacer(modifier = Modifier.height(17.dp))
             FlatBorderButton(
                 modifier = Modifier

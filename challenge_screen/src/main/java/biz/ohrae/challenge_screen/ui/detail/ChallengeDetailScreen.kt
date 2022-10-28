@@ -38,6 +38,7 @@ import biz.ohrae.challenge.util.challengeDetailStatusMap
 import biz.ohrae.challenge.util.challengeVerificationDayMap
 import biz.ohrae.challenge.util.challengeVerificationPeriodMap
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
+import biz.ohrae.challenge_repo.model.user.User
 
 @Preview(
     showBackground = true,
@@ -47,6 +48,7 @@ import biz.ohrae.challenge_repo.model.detail.ChallengeData
 @Composable
 fun ChallengeDetailScreen(
     challengeData: ChallengeData? = ChallengeData.mock(),
+    challengers: List<User>? = null,
     clickListener: ChallengeDetailClickListener? = null,
     isParticipant: Boolean = false,
     viewModel: ChallengeDetailViewModel? = null
@@ -136,6 +138,14 @@ fun ChallengeDetailScreen(
                     .height(1.dp)
                     .background(Color(0xffebebeb))
             )
+            if (!challengers.isNullOrEmpty()) {
+                Spacer(modifier = Modifier.height(32.dp))
+                Challengers(
+                    challengers = challengers,
+                    clickListener = clickListener
+                )
+                Spacer(modifier = Modifier.height(32.dp))
+            }
             ArrowTextButton2(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -301,17 +311,6 @@ fun ChallengeDescription(
                 fontSize = dpToSp(dp = 14.dp),
                 lineHeight = dpToSp(dp = 19.6.dp)
             )
-//            MiddleDotText(
-//                text = "만화책은 안됩니다.",
-//                fontSize = dpToSp(dp = 14.dp),
-//                lineHeight = dpToSp(dp = 19.6.dp)
-//            )
-//            Spacer(modifier = Modifier.height(4.dp))
-//            MiddleDotText(
-//                text = "손은 어떤 제스처든 모두 가능해요.",
-//                fontSize = dpToSp(dp = 14.dp),
-//                lineHeight = dpToSp(dp = 19.6.dp)
-//            )
             Spacer(modifier = Modifier.height(32.dp))
         }
     }
