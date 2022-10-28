@@ -26,7 +26,7 @@ import biz.ohrae.challenge.ui.theme.TextBlack
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 
-class ChallengeCreateDialog() : DialogFragment() {
+class ChallengeCreateDialog : DialogFragment() {
     private lateinit var dialogListener: CustomDialogListener
 
     override fun onCreate(savedInstanceState: Bundle?) {

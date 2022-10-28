@@ -31,7 +31,6 @@ import biz.ohrae.challenge.ui.theme.GrayColor6
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge_repo.util.prefs.Utils
-import biz.ohrae.challenge_screen.ui.register.ChallengeRegisterViewModel
 import com.kizitonwose.calendar.compose.HorizontalCalendar
 import com.kizitonwose.calendar.compose.rememberCalendarState
 import com.kizitonwose.calendar.core.*
@@ -43,10 +42,10 @@ import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.*
 
-class CalendarDialog(private val challengeRegisterViewModel: ChallengeRegisterViewModel) :
-    DialogFragment() {
+class CalendarDialog() : DialogFragment() {
     private lateinit var calendarDialogListener: CalendarDialogListener
 
+    private var calendarDay: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +62,7 @@ class CalendarDialog(private val challengeRegisterViewModel: ChallengeRegisterVi
                     listener = calendarDialogListener,
                     "선택",
                     "취소",
-                    viewModel = challengeRegisterViewModel
+                    selectedCalendarDay = calendarDay
                 )
             }
         }
@@ -85,7 +84,6 @@ class CalendarDialog(private val challengeRegisterViewModel: ChallengeRegisterVi
         dialog!!.window!!.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
     }
 
-
     private fun hideSystemUI() {
         // Enables regular immersive mode.
         // For "lean back" mode, remove SYSTEM_UI_FLAG_IMMERSIVE.
@@ -104,6 +102,10 @@ class CalendarDialog(private val challengeRegisterViewModel: ChallengeRegisterVi
     fun setListener(listener: CalendarDialogListener) {
         this.calendarDialogListener = listener
     }
+
+    fun setCalendarDay(day: String) {
+        calendarDay = day
+    }
 }
 
 @Preview(
@@ -115,7 +117,7 @@ fun Calendar(
     listener: CalendarDialogListener? = null,
     positiveBtnName: String = "",
     negativeBtnName: String = "",
-    viewModel: ChallengeRegisterViewModel? = null
+    selectedCalendarDay: String? = null
 ) {
     var enabled by remember { mutableStateOf(false) }
 
@@ -133,9 +135,11 @@ fun Calendar(
                     .aspectRatio(0.8f)
             ) {
                 ComposeCalendar(
+                    selectedCalendarDay = selectedCalendarDay,
                     onDayClick = { day ->
                         if (Utils.isAfter(day.date.toString())) {
                             enabled = true
+                            Timber.e("day : ${day.date.toString()}")
                             listener?.clickDay(day.date.toString())
                         } else {
                             enabled = false
@@ -167,11 +171,15 @@ fun Calendar(
 )
 @Composable
 private fun ComposeCalendar(
-    startMonth: YearMonth = YearMonth.now(),
-    endMonth: YearMonth = startMonth.plusMonths(3),
-    onDayClick: (day: CalendarDay) -> Unit = {}
+    onDayClick: (day: CalendarDay) -> Unit = {},
+    selectedCalendarDay: String? = null,
 ) {
-    val now by remember { mutableStateOf(LocalDate.now()) }
+    val now by remember { mutableStateOf(LocalDate.now().plusDays(1)) }
+    val limitDay by remember { mutableStateOf(LocalDate.now().plusDays(11)) }
+
+    val startMonth by remember { mutableStateOf(now.yearMonth) }
+    val endMonth by remember { mutableStateOf(limitDay.yearMonth) }
+
     val coroutineScope = rememberCoroutineScope()
     val selections = remember { mutableStateListOf<CalendarDay>() }
     val state = rememberCalendarState(
@@ -184,6 +192,14 @@ private fun ComposeCalendar(
     LaunchedEffect(state.firstVisibleMonth) {
         Timber.e("state : ${state.firstVisibleMonth.toString()}")
         visibleMonth = state.firstVisibleMonth.yearMonth
+    }
+
+    LaunchedEffect(selectedCalendarDay) {
+        if (selectedCalendarDay != null) {
+            val calendarDay = CalendarDay(LocalDate.parse(selectedCalendarDay), DayPosition.MonthDate)
+            selections.add(calendarDay)
+            state.scrollToMonth(calendarDay.date.yearMonth)
+        }
     }
 
     Column(
@@ -219,6 +235,7 @@ private fun ComposeCalendar(
                     day = day,
                     isSelected = selections.contains(day),
                     isAfter = day.date.isAfter(now),
+                    isBefore = day.date.isBefore(limitDay)
                 ) { clicked ->
                     selections.clear()
                     selections.add(clicked)
@@ -296,6 +313,7 @@ private fun Day(
     day: CalendarDay,
     isSelected: Boolean,
     isAfter: Boolean,
+    isBefore: Boolean,
     onClick: (CalendarDay) -> Unit
 ) {
     Box(
@@ -307,7 +325,8 @@ private fun Day(
             .clickable(
                 enabled = day.position == DayPosition.MonthDate,
                 onClick = {
-                    if (day.date.isAfter(LocalDate.now())) {
+                    if (day.date.isAfter(LocalDate.now().plusDays(1))
+                        && day.date.isBefore(LocalDate.now().plusDays(11))) {
                         onClick(day)
                     }
                 }
@@ -320,14 +339,14 @@ private fun Day(
                 if (isSelected) {
                     Color.White
                 } else {
-                    if (isAfter) {
+                    if (isAfter && isBefore) {
                         Color.Unspecified
                     } else {
                         GrayColor6
                     }
                 }
             }
-            DayPosition.InDate, DayPosition.OutDate -> GrayColor6
+            DayPosition.InDate, DayPosition.OutDate -> Color.White
         }
         Text(
             text = day.date.dayOfMonth.toString(),
@@ -336,5 +355,3 @@ private fun Day(
         )
     }
 }
-
-

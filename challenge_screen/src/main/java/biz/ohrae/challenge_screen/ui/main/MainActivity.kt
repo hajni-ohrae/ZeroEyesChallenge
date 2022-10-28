@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import biz.ohrae.challenge.ui.components.header.Header
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge.ui.theme.DefaultBackground
+import biz.ohrae.challenge_screen.BuildConfig
 import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailActivity
 import biz.ohrae.challenge_screen.ui.dialog.*
@@ -112,7 +113,12 @@ class MainActivity : BaseActivity() {
             }
 
             override fun onClickRegister() {
-                showCreateDialog()
+                if (BuildConfig.DEBUG) {
+                    val intent = Intent(this@MainActivity, RegisterActivity::class.java)
+                    startActivity(intent)
+                } else {
+                    showCreateDialog()
+                }
             }
 
             override fun onClickChallengeItem(id: String) {
