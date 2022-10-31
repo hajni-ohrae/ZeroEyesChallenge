@@ -46,6 +46,7 @@ class ChallengeDetailViewModel @Inject constructor(
     private val _verifiedListPage = MutableLiveData(1)
     private val _reportList = MutableLiveData<List<ReportDetail>>()
     private val _reportState = MutableLiveData<ReportListState>()
+    private val _report = MutableLiveData<Boolean?>(false)
 
 
     val challengeData get() = _challengeData
@@ -61,6 +62,7 @@ class ChallengeDetailViewModel @Inject constructor(
     val verifiedListPage get() = _verifiedListPage
     val reportList get() = _reportList
     val reportState get() = _reportState
+    val report get() = _report
 
     fun getChallenge(id: String) {
         viewModelScope.launch {
@@ -139,7 +141,12 @@ class ChallengeDetailViewModel @Inject constructor(
         }
     }
 
-    fun getVerifyList(id: String, isInit: Boolean = false, isOrder: String = "desc", isMine: Int = 0) {
+    fun getVerifyList(
+        id: String,
+        isInit: Boolean = false,
+        isOrder: String = "desc",
+        isMine: Int = 0
+    ) {
         viewModelScope.launch {
             if (isInit) {
                 _verifiedListPage.value = 1
@@ -221,6 +228,28 @@ class ChallengeDetailViewModel @Inject constructor(
                     _reportState.value = state
                 }
             }
+        }
+    }
+
+    fun createReport(
+        verificationId: String,
+        userId: String,
+        reportReasonCode: String
+    ) {
+        viewModelScope.launch {
+            repo.createReport(verificationId, userId, reportReasonCode).flowOn(Dispatchers.IO)
+                .collect { result ->
+                    if (result.data != null) {
+                        val success = result.data as Boolean
+                        _report.value = success
+                        if (!success) {
+                            setErrorData(result.errorCode, result.errorMessage)
+                        }
+                    } else {
+                        _report.value = null
+                        setErrorData(null, result.errorMessage)
+                    }
+                }
         }
     }
 

@@ -26,7 +26,7 @@ interface CalendarDialogListener {
     fun clickDay(day: String)
 }
 interface ReportDialogListener {
-    fun clickPositive()
+    fun clickPositive(code:String)
     fun clickNegative()
     fun clickItem(item: String)
 }

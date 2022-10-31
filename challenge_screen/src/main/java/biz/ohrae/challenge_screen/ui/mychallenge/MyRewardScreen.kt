@@ -37,7 +37,6 @@ import com.google.accompanist.flowlayout.FlowRow
 @Composable
 fun MyRewardScreen(
     user: User? = null,
-    prefs: SharedPreference? = null,
     select: Boolean = true,
     clickListener: MyChallengeClickListener? = null,
     rewardList: List<RewardData>? = null,

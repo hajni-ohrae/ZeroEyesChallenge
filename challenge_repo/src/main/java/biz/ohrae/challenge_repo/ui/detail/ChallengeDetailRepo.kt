@@ -240,4 +240,39 @@ class ChallengeDetailRepo @Inject constructor(
             }
         }
     }
+
+    suspend fun createReport(
+        verificationId: String,
+        userId: String,
+        reportReasonCode: String
+    ): Flow<FlowResult> {
+        val accessToken = prefs.getUserData()?.access_token
+        val jsonObject = JsonObject()
+
+        jsonObject.addProperty("verification_id", verificationId)
+        jsonObject.addProperty("user_id", userId)
+        jsonObject.addProperty("report_reason_code", reportReasonCode)
+
+        val response = apiService.createReport(accessToken.toString(),jsonObject)
+
+        when (response) {
+            is NetworkResponse.Success -> {
+                return if (response.body.success) {
+
+                    flow {
+                        emit(FlowResult(true, "", ""))
+                    }
+                } else {
+                    flow {
+                        emit(FlowResult(false, response.body.code, response.body.message))
+                    }
+                }
+            }
+            else -> {
+                return flow {
+                    emit(FlowResult(null, "", ""))
+                }
+            }
+        }
+    }
 }

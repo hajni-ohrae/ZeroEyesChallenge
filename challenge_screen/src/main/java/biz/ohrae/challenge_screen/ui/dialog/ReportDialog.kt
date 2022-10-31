@@ -29,7 +29,11 @@ import biz.ohrae.challenge_repo.model.report.ReportListState
 import biz.ohrae.challenge_repo.model.user.User
 import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailViewModel
 
-class ReportDialog(private val viewModel: ChallengeDetailViewModel) : DialogFragment() {
+class ReportDialog(
+    private val viewModel: ChallengeDetailViewModel,
+    private val verificationId: String,
+    private val user: User?
+) : DialogFragment() {
     private lateinit var reportDialogListener: ReportDialogListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,7 +51,9 @@ class ReportDialog(private val viewModel: ChallengeDetailViewModel) : DialogFrag
 
                 Report(
                     listener = reportDialogListener,
-                    reportListState = reportList
+                    reportListState = reportList,
+                    user = user,
+                    verificationId = verificationId
                 )
 
             }
@@ -100,8 +106,8 @@ fun Report(
     listener: ReportDialogListener? = null,
     positiveBtnName: String = "신고하기",
     negativeBtnName: String = "취소",
-    userName: String = "하진!",
     user: User? = null,
+    verificationId: String,
     reportListState: ReportListState? = null
 ) {
     var checked by remember { mutableStateOf(false) }
@@ -127,7 +133,7 @@ fun Report(
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 ChallengersItem(
-                    userName = userName,
+                    userName = user?.getUserName().toString(),
                     imagePath = user?.imageFile?.path.toString()
                 )
                 Spacer(modifier = Modifier.height(20.dp))
@@ -162,7 +168,9 @@ fun Report(
                 "신고하기",
                 "취소",
                 onClickRight = {
-                    listener?.clickPositive()
+                    if (reportListState != null) {
+                        listener?.clickPositive(reportListState.selectReport)
+                    }
                 },
                 onClickLeft = {
                     listener?.clickNegative()

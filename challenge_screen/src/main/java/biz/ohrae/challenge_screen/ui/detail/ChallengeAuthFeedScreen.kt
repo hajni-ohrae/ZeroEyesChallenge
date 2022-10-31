@@ -80,7 +80,12 @@ fun VerifiedList(
                     count = item.cnt,
                     comment = item.comment,
                     onReport = {
-                        clickListener?.onClickReport()
+                        item.user?.let {
+                            clickListener?.onClickReport(
+                                item.id,
+                                it
+                            )
+                        }
                     }
                 )
             }

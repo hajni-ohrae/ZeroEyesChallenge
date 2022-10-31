@@ -1,6 +1,6 @@
 package biz.ohrae.challenge_screen.ui.detail
 
-import biz.ohrae.challenge_repo.model.verify.VerifyData
+import biz.ohrae.challenge_repo.model.user.User
 
 interface ChallengeDetailClickListener {
     fun onClickParticipation()
@@ -19,5 +19,8 @@ interface ChallengeDetailClickListener {
 interface ChallengeAuthFeedClickListener {
     fun onClickMine(isMine: Boolean)
     fun onClickOrder(isOrder: Boolean)
-    fun onClickReport()
+    fun onClickReport(
+        verificationId: String,
+        user: User
+    )
 }

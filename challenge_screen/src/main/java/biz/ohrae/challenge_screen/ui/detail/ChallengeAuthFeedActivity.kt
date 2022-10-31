@@ -18,6 +18,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
+import biz.ohrae.challenge_repo.model.user.User
 import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.dialog.*
 import biz.ohrae.challenge_screen.ui.mychallenge.PolicyScreen
@@ -133,10 +134,11 @@ class ChallengeAuthFeedActivity : BaseActivity() {
                 viewModel.getVerifyList(challengeId.toString(), true, order, mine)
             }
 
-            override fun onClickReport() {
-                val dialog = ReportDialog(viewModel)
+            override fun onClickReport(verificationId: String,user: User) {
+                val dialog = ReportDialog(viewModel,verificationId,user)
                 dialog.setListener(object : ReportDialogListener {
-                    override fun clickPositive() {
+                    override fun clickPositive(code: String) {
+                        viewModel.createReport(verificationId,user.id,code)
                         dialog.dismiss()
                     }
 
