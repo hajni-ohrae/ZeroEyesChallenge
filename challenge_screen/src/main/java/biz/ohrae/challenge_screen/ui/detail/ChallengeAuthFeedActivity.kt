@@ -145,7 +145,7 @@ class ChallengeAuthFeedActivity : BaseActivity() {
                     }
 
                     override fun clickItem(item: String) {
-                        TODO("Not yet implemented")
+                        viewModel.selectReport(item)
                     }
 
                 })

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.model.report.ReportDetail
+import biz.ohrae.challenge_repo.model.report.ReportListState
 import biz.ohrae.challenge_repo.model.user.User
 import biz.ohrae.challenge_repo.model.verify.VerifyData
 import biz.ohrae.challenge_repo.model.verify.VerifyListState
@@ -14,6 +15,7 @@ import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.model.detail.Verification
 import biz.ohrae.challenge_screen.model.detail.VerificationState
+import biz.ohrae.challenge_screen.model.user.RedCardListState
 import biz.ohrae.challenge_screen.ui.BaseViewModel
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -43,6 +45,7 @@ class ChallengeDetailViewModel @Inject constructor(
     private val _favorite = MutableLiveData<Boolean?>(false)
     private val _verifiedListPage = MutableLiveData(1)
     private val _reportList = MutableLiveData<List<ReportDetail>>()
+    private val _reportState = MutableLiveData<ReportListState>()
 
 
     val challengeData get() = _challengeData
@@ -57,6 +60,7 @@ class ChallengeDetailViewModel @Inject constructor(
     val favorite get() = _favorite
     val verifiedListPage get() = _verifiedListPage
     val reportList get() = _reportList
+    val reportState get() = _reportState
 
     fun getChallenge(id: String) {
         viewModelScope.launch {
@@ -212,7 +216,9 @@ class ChallengeDetailViewModel @Inject constructor(
             repo.getRegisterReport().flowOn(Dispatchers.IO).collect {
                 if (it.data != null) {
                     val reportDetailList = it.data as List<ReportDetail>
-                    _reportList.value = reportDetailList
+                    val state = ReportListState(reportDetailList)
+
+                    _reportState.value = state
                 }
             }
         }
@@ -220,5 +226,20 @@ class ChallengeDetailViewModel @Inject constructor(
 
     fun setChallengeAuthImage(uri: Uri) {
         _challengeAuthImageUri.value = uri
+    }
+
+    fun selectReport(item: String) {
+        viewModelScope.launch {
+            val reportListState = _reportState.value?.copy()
+
+            reportListState?.let {
+                if (it.selectReport == item) {
+                    it.selectReport = ""
+                } else {
+                    it.selectReport = item
+                }
+                _reportState.value = it
+            }
+        }
     }
 }

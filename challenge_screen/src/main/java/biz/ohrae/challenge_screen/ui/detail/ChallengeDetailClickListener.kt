@@ -1,5 +1,7 @@
 package biz.ohrae.challenge_screen.ui.detail
 
+import biz.ohrae.challenge_repo.model.verify.VerifyData
+
 interface ChallengeDetailClickListener {
     fun onClickParticipation()
     fun onClickAuth()

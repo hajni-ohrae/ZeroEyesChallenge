@@ -10,35 +10,24 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.DialogFragment
 import androidx.window.layout.WindowMetricsCalculator
-import biz.ohrae.challenge.ui.components.avatar.circularAvatar
 import biz.ohrae.challenge.ui.components.button.FlatDoubleButton
-import biz.ohrae.challenge.ui.components.checkBox.MyCheckBox
-import biz.ohrae.challenge.ui.components.filter.ChallengeFilterItemList
-import biz.ohrae.challenge.ui.components.filter.FeedItem
 import biz.ohrae.challenge.ui.components.list_item.ChallengersItem
 import biz.ohrae.challenge.ui.components.selectable.LabeledCircleCheck
 import biz.ohrae.challenge.ui.theme.*
-import biz.ohrae.challenge_repo.model.report.ReportDetail
+import biz.ohrae.challenge_repo.model.report.ReportListState
 import biz.ohrae.challenge_repo.model.user.User
-import biz.ohrae.challenge_repo.util.prefs.Utils
-import biz.ohrae.challenge_screen.model.main.FilterState
 import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailViewModel
-import biz.ohrae.challenge_screen.ui.main.ChallengeMainViewModel
 
 class ReportDialog(private val viewModel: ChallengeDetailViewModel) : DialogFragment() {
     private lateinit var reportDialogListener: ReportDialogListener
@@ -54,11 +43,11 @@ class ReportDialog(private val viewModel: ChallengeDetailViewModel) : DialogFrag
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                val reportList by viewModel.reportList.observeAsState()
+                val reportList by viewModel.reportState.observeAsState()
 
                 Report(
                     listener = reportDialogListener,
-                    reportList = reportList
+                    reportListState = reportList
                 )
 
             }
@@ -113,7 +102,7 @@ fun Report(
     negativeBtnName: String = "취소",
     userName: String = "하진!",
     user: User? = null,
-    reportList: List<ReportDetail>? = null
+    reportListState: ReportListState? = null
 ) {
     var checked by remember { mutableStateOf(false) }
 
@@ -148,16 +137,17 @@ fun Report(
                     fontSize = dpToSp(dp = 16.dp),
                     color = DefaultBlack
                 )
-                if (reportList != null) {
+                if (reportListState != null) {
                     LazyColumn(
                         modifier = Modifier,
                     ) {
-                        items(reportList) { item ->
+                        items(reportListState.reportList) { item ->
                             LabeledCircleCheck(
                                 label = item.name,
-                                checked = checked,
+                                checked = item.code == reportListState.selectReport,
                                 onClick = {
                                     checked = !checked
+                                    listener?.clickItem(item.code)
                                 }
                             )
                         }
