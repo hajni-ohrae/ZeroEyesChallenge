@@ -43,7 +43,9 @@ import biz.ohrae.challenge_screen.ui.policy.PolicyActivity
 import biz.ohrae.challenge_screen.ui.register.ChallengeCameraScreen
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import me.echodev.resizer.Resizer
 import timber.log.Timber
+import java.io.File
 
 @AndroidEntryPoint
 class ChallengeDetailActivity : BaseActivity() {
@@ -302,7 +304,19 @@ class ChallengeDetailActivity : BaseActivity() {
             override fun onDone(content: String) {
                 viewModel.challengeAuthImageUri.value?.let {
                     viewModel.isLoading(true)
-                    viewModel.verifyChallenge(content, uriToFilePath(it))
+
+                    val imagePath = uriToFilePath(it)
+                    val originFile = File(imagePath)
+                    val resizedImage = Resizer(this@ChallengeDetailActivity)
+                        .setTargetLength(1080)
+                        .setQuality(80)
+                        .setOutputFormat("JPEG")
+                        .setOutputFilename("resized_image")
+                        .setOutputDirPath(originFile.parent)
+                        .setSourceImage(originFile)
+                        .resizedFile
+
+                    viewModel.verifyChallenge(content, resizedImage.path)
                 }
             }
 
