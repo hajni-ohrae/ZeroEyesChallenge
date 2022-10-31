@@ -121,7 +121,10 @@ class MyChallengeActivity : BaseActivity() {
                 )
             }
             composable(MyChallengeNavScreen.Withdraw.route) {
-                WithdrawScreen(clickListener = myChallengeClickListener)
+                WithdrawScreen(
+                    rewardsAmount = userData?.rewards_amount ?: 0,
+                    clickListener = myChallengeClickListener
+                )
             }
             composable(MyChallengeNavScreen.PhoneAuth.route) {
                 PhoneAuthScreenWebView()
@@ -186,8 +189,8 @@ class MyChallengeActivity : BaseActivity() {
             }
 
             override fun onClickApplyWithdraw() {
-                showSnackBar("준비중입니다.")
-//                navController.navigate(MyChallengeNavScreen.Withdraw.route)
+//                showSnackBar("준비중입니다.")
+                navController.navigate(MyChallengeNavScreen.Withdraw.route)
             }
 
             override fun onClickApplyWithdrawDetail() {
