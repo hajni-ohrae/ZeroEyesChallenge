@@ -133,7 +133,16 @@ class ChallengeMainViewModel @Inject constructor(
             }
         }
     }
+    fun selectUserFilter(filterNameEn: String) {
+        viewModelScope.launch {
+            val filterState = FilterState.mock().copy()
 
+            filterState.let {
+                it.selectUserChallengeType = filterNameEn
+                _filterState.value = it
+            }
+        }
+    }
     fun selectFilter(filterNameEn: String) {
         viewModelScope.launch {
             val filterState = FilterState.mock().copy()
@@ -191,6 +200,7 @@ class ChallengeMainViewModel @Inject constructor(
     }
 
     fun getUserChallengeList(
+        type: String,
         isInit: Boolean = false,
     ) {
         viewModelScope.launch {
@@ -198,7 +208,7 @@ class ChallengeMainViewModel @Inject constructor(
                 _userChallengeListPage.value = 1
             }
             val page = _userChallengeListPage.value ?: 1
-            val response = challengeMainRepo.getUserChallengeList()
+            val response = challengeMainRepo.getUserChallengeList(type)
             response.flowOn(Dispatchers.IO).collect {
                 isLoading(false)
                 _isRefreshing.value = false

@@ -3,6 +3,7 @@ package biz.ohrae.challenge_screen.ui.mychallenge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Text
@@ -10,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -17,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.ui.components.avatar.circularAvatar
 import biz.ohrae.challenge.ui.components.card.ChallengesInParticipationCard
 import biz.ohrae.challenge.ui.components.card.MyChallengeIngoBox
+import biz.ohrae.challenge.ui.components.filter.PaidFilterCard
 import biz.ohrae.challenge.ui.components.menu.MenuItem
 import biz.ohrae.challenge.ui.theme.DefaultBlack
 import biz.ohrae.challenge.ui.theme.DefaultWhite
@@ -26,7 +29,9 @@ import biz.ohrae.challenge.util.challengeDetailStatusMap
 import biz.ohrae.challenge_component.R
 import biz.ohrae.challenge_repo.model.user.User
 import biz.ohrae.challenge_repo.util.prefs.Utils
+import biz.ohrae.challenge_screen.model.main.FilterState
 import biz.ohrae.challenge_screen.model.user.UserChallengeListState
+import biz.ohrae.challenge_screen.ui.main.MainClickListener
 import biz.ohrae.challenge_screen.util.OnBottomReached
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -43,6 +48,7 @@ fun MyChallengeScreen(
     user: User? = null,
     clickListener: MyChallengeClickListener? = null,
     userChallengeListState: UserChallengeListState? = null,
+    filterState: FilterState = FilterState.mock(),
     onBottomReached: () -> Unit = {},
     isRefreshing: Boolean = false,
     onRefresh: () -> Unit = {}
@@ -74,6 +80,7 @@ fun MyChallengeScreen(
                         user = user,
                         clickListener = clickListener,
                         userChallengeListState = userChallengeListState,
+                        filterState = filterState,
                         onBottomReached = onBottomReached
                     )
                 }
@@ -87,9 +94,8 @@ fun MyChallengeScreen(
 fun ItemHeader(
     user: User? = null,
     availableRewards: String,
-    select: Boolean = true,
     clickListener: MyChallengeClickListener? = null,
-    userChallengeListState: UserChallengeListState? = null
+    filterState: FilterState = FilterState.mock(),
 ) {
 
     Column(Modifier.fillMaxWidth()) {
@@ -162,6 +168,7 @@ fun ItemHeader(
             color = DefaultBlack
         )
         Spacer(modifier = Modifier.height(17.dp))
+        UserFilterCard(clickListener = clickListener, filterState, filterState.selectUserChallengeType)
     }
 }
 
@@ -170,8 +177,9 @@ fun UserChallengeList(
     user: User? = null,
     clickListener: MyChallengeClickListener? = null,
     userChallengeListState: UserChallengeListState? = null,
+    filterState: FilterState = FilterState.mock(),
     onBottomReached: () -> Unit = {},
-) {
+    ) {
 
     val listState = rememberLazyListState()
 
@@ -190,7 +198,7 @@ fun UserChallengeList(
                 user = user,
                 availableRewards = availableRewards.toString(),
                 clickListener = clickListener,
-                userChallengeListState = userChallengeListState
+                filterState = filterState,
             )
         }
         if (userChallengeListState != null) {
@@ -213,5 +221,34 @@ fun UserChallengeList(
     listState.OnBottomReached {
         Timber.e("bottom reached!!")
         onBottomReached()
+    }
+}
+
+@Composable
+fun UserFilterCard(
+    clickListener: MyChallengeClickListener?,
+    filterState: FilterState = FilterState.mock(),
+    selectFilter: String
+) {
+    Row(
+        modifier = Modifier
+            .padding(0.dp, 22.dp)
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Row() {
+            LazyRow(
+                modifier = Modifier,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                items(filterState?.userChallengeFilter!!) { item ->
+                    PaidFilterCard(modifier = Modifier,
+                        text = item.name,
+                        select = item.name_en == selectFilter,
+                        onClick = { clickListener?.onClickFilterType(item.name_en) })
+                }
+            }
+        }
     }
 }

@@ -56,7 +56,7 @@ class MyChallengeActivity : BaseActivity() {
     }
 
     private fun init() {
-        challengeMainViewModel.getUserChallengeList(isInit = true)
+        challengeMainViewModel.getUserChallengeList("", isInit = true)
         challengeMainViewModel.getChallengeList("", "", "", "", "1", "", isInit = true)
         myChallengeViewModel.getRedCardList(isInit = true)
         myChallengeViewModel.getPaymentHistory()
@@ -94,6 +94,7 @@ class MyChallengeActivity : BaseActivity() {
         val paymentHistoryState by myChallengeViewModel.paymentHistoryState.observeAsState()
         val saveChallengeList by challengeMainViewModel.mainScreenState.observeAsState()
         val isRefreshing by challengeMainViewModel.isRefreshing.observeAsState(false)
+        val filterState by challengeMainViewModel.filterState.observeAsState()
 
         NavHost(
             navController = navController,
@@ -104,6 +105,7 @@ class MyChallengeActivity : BaseActivity() {
                     user = userData,
                     clickListener = myChallengeClickListener,
                     userChallengeListState = state,
+                    filterState = filterState!!,
                     isRefreshing = isRefreshing,
                     onBottomReached = {
                         onBottomReached()
@@ -224,11 +226,18 @@ class MyChallengeActivity : BaseActivity() {
                 intent.putExtra("challengeId", id)
                 startActivity(intent)
             }
+
+            override fun onClickFilterType(type: String) {
+                if(!type.isNullOrEmpty()){
+                    challengeMainViewModel.selectUserFilter(type)
+                    challengeMainViewModel.getUserChallengeList(type, isInit = true)
+                }
+            }
         }
     }
 
     private fun onBottomReached() {
-        challengeMainViewModel.getUserChallengeList(isInit = true)
+        challengeMainViewModel.getUserChallengeList("", isInit = true)
     }
 }
 

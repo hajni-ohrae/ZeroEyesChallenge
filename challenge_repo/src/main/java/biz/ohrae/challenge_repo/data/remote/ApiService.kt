@@ -212,7 +212,7 @@ interface ApiService {
         @Header("x-access-token") accessToken: String,
         @Query("page") page: Int,
         @Query("per_page") perPage: Int,
-        @Query("status") status: String = ""
+        @Query("status") status: String
     ): NetworkResponse<Result2, Error>
 
 }

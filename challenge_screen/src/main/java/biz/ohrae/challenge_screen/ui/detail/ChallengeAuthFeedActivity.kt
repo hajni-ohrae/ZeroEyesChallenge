@@ -134,11 +134,11 @@ class ChallengeAuthFeedActivity : BaseActivity() {
                 viewModel.getVerifyList(challengeId.toString(), true, order, mine)
             }
 
-            override fun onClickReport(verificationId: String,user: User) {
-                val dialog = ReportDialog(viewModel,verificationId,user)
+            override fun onClickReport(verificationId: String, user: User) {
+                val dialog = ReportDialog(viewModel, verificationId, user)
                 dialog.setListener(object : ReportDialogListener {
                     override fun clickPositive(code: String) {
-                        viewModel.createReport(verificationId,user.id,code)
+                        viewModel.createReport(verificationId, user.id, code)
                         dialog.dismiss()
                     }
 
@@ -162,6 +162,13 @@ class ChallengeAuthFeedActivity : BaseActivity() {
     override fun observeViewModels() {
         viewModel.challengeData.observe(this) {
             viewModel.isLoading(false)
+        }
+        viewModel.report.observe(this) {
+            if (it == true) {
+                showSnackBar("신고가 완료되었습니다.")
+            } else {
+                showSnackBar("신고가 되지 않았습니다 다시 시도해주세요.")
+            }
         }
     }
 }
