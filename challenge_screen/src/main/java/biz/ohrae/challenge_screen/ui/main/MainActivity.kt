@@ -76,7 +76,9 @@ class MainActivity : BaseActivity() {
         val isRefreshing by viewModel.isRefreshing.observeAsState(false)
 
         Column(
-            modifier = Modifier.fillMaxSize().background(DefaultBackground)
+            modifier = Modifier
+                .fillMaxSize()
+                .background(DefaultBackground)
         ) {
             Header(goMyChallenge = { goMyChallenge() })
             if (mainScreenState != null) {
@@ -100,7 +102,7 @@ class MainActivity : BaseActivity() {
 
     private fun init() {
         viewModel.getChallengeList()
-        viewModel.getUserChallengeList(isInit = true)
+        viewModel.getUserChallengeList("", isInit = true)
         viewModel.selectPeriodType("")
         viewModel.selectPeriod("")
         viewModel.selectIsAdultOnly("")

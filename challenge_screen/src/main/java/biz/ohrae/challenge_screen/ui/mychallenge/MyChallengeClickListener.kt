@@ -11,4 +11,5 @@ interface MyChallengeClickListener {
     fun onClickPolicyRefund()
     fun onClickChallengeAuthItem(challengeId: String)
     fun onClickChallengeItem(id: String)
+    fun onClickFilterType(type: String)
 }
