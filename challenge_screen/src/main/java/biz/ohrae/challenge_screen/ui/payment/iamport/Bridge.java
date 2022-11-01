@@ -4,6 +4,7 @@ import android.content.Context;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 
+import biz.ohrae.challenge_screen.ui.niceid.NiceIdActivity;
 import biz.ohrae.challenge_screen.ui.payment.ChallengePaymentActivity;
 
 public class Bridge {
@@ -18,5 +19,10 @@ public class Bridge {
     @JavascriptInterface
     public void paymentResult(boolean isSuccess, String code, String message) {
         ((ChallengePaymentActivity) context).paymentResult(isSuccess, code, message);
+    }
+
+    @JavascriptInterface
+    public void checkPlusClose() {
+        ((NiceIdActivity) context).close();
     }
 }

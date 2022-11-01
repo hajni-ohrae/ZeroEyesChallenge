@@ -56,4 +56,8 @@ class NiceIdActivity : AppCompatActivity() {
         val url = "${Routes.HOST_NAME.dropLast(1)}/views/checkplus/main/$userId"
         webView.loadUrl(url)
     }
+
+    fun close() {
+        finish()
+    }
 }
