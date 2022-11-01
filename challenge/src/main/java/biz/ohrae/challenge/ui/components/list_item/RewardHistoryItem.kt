@@ -136,7 +136,7 @@ fun RewardHistoryItem(
             )
             Spacer(modifier = Modifier.weight(1f))
             Text(
-                text = price,
+                text = "$price 원",
                 style = myTypography.bold,
                 color = priceColor.value,
                 fontSize = dpToSp(dp = 16.dp)

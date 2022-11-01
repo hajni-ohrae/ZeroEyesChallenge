@@ -91,6 +91,7 @@ class MyChallengeActivity : BaseActivity() {
         val state by challengeMainViewModel.userChallengeListState.observeAsState()
         val userData by myChallengeViewModel.userData.observeAsState()
         val redCardListState by myChallengeViewModel.redCardListState.observeAsState()
+        val rewardList by myChallengeViewModel.rewardList.observeAsState()
         val paymentHistoryState by myChallengeViewModel.paymentHistoryState.observeAsState()
         val saveChallengeList by challengeMainViewModel.mainScreenState.observeAsState()
         val isRefreshing by challengeMainViewModel.isRefreshing.observeAsState(false)
@@ -119,7 +120,8 @@ class MyChallengeActivity : BaseActivity() {
             composable(MyChallengeNavScreen.MyReward.route) {
                 MyRewardScreen(
                     user = userData,
-                    clickListener = myChallengeClickListener
+                    clickListener = myChallengeClickListener,
+                    rewardList = rewardList
                 )
             }
             composable(MyChallengeNavScreen.Withdraw.route) {

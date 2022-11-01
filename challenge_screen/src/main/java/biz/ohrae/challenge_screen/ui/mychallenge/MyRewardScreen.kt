@@ -39,7 +39,7 @@ fun MyRewardScreen(
     user: User? = null,
     select: Boolean = true,
     clickListener: MyChallengeClickListener? = null,
-    rewardList: List<RewardData>? = null,
+    rewardList: List<RewardData>? = null
 ) {
     val availableRewards by remember {
         mutableStateOf(user?.rewards_amount ?: 0)
@@ -128,12 +128,15 @@ fun MyRewardScreen(
                                     .fillMaxWidth()
                                     .defaultMinSize(minHeight = 105.dp),
                                 date = "",
-                                progress = item.inChallenge.achievement_percent,
-                                title = "",
-                                price = "",
+                                progress = item.type,
+                                title = item.challenge.goal.toString(),
+                                price = item.amount.toString(),
                                 progressStatus = item.type,
                                 background = Utils.userChallengeBackground(item.type),
                                 textColor = Utils.userChallengeTextColor(item.type),
+                            )
+                            Divider(
+                                modifier = Modifier.fillMaxWidth().height(1.dp).background(Color(0xfff6f6f6))
                             )
                         }
                     }

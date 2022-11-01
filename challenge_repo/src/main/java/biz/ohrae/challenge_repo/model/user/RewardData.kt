@@ -11,7 +11,7 @@ data class RewardData(
     val free_rewards: Int,
     val created_date: String,
     val updated_date: String,
-    val challengeData: ChallengeData,
+    val challenge: ChallengeData,
     val inChallenge: InChallenge
 ) {
 
