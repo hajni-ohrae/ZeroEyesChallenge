@@ -127,7 +127,9 @@ class MyChallengeActivity : BaseActivity() {
                 )
             }
             composable(MyChallengeNavScreen.PhoneAuth.route) {
-                PhoneAuthScreenWebView()
+                PhoneAuthScreenWebView(
+                    userId = userData?.id.toString()
+                )
             }
             composable(MyChallengeNavScreen.MyPaymentDetail.route) {
                 PaymentDetailListScreen(

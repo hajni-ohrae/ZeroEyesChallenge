@@ -28,9 +28,9 @@ import timber.log.Timber
 
 
 @Composable
-fun PhoneAuthScreenWebView() {
+fun PhoneAuthScreenWebView(userId: String) {
     Column(modifier = Modifier.fillMaxSize()) {
-        val state = rememberWebViewState(Routes.HOST_NAME.dropLast(1) + "/api/challenge/views/checkplus/main/" + "3a6ce792-d0cb-4567-8dd6-f08cb64a1039")
+        val state = rememberWebViewState(Routes.HOST_NAME.dropLast(1) + "/api/challenge/views/checkplus/main/$userId")
         WebView(
             state = state,
             onCreated = {
@@ -39,7 +39,7 @@ fun PhoneAuthScreenWebView() {
                 val cookieManager = CookieManager.getInstance()
                 cookieManager.setAcceptCookie(true)
                 cookieManager.setAcceptThirdPartyCookies(it, true)
-                val url = Routes.HOST_NAME.dropLast(1) + "/api/challenge/views/checkplus/main/" + "3a6ce792-d0cb-4567-8dd6-f08cb64a1039"
+                val url = Routes.HOST_NAME.dropLast(1) + "/api/challenge/views/checkplus/main/$userId"
                 Timber.e("url : $url")
                 it.postUrl(url, byteArrayOf())
             }
