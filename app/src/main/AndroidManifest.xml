@@ -86,5 +86,10 @@
             android:screenOrientation = "portrait"
             android:exported="true">
         </activity>
+        <activity
+            android:name="biz.ohrae.challenge_screen.ui.niceid.NiceIdActivity"
+            android:screenOrientation = "portrait"
+            android:exported="true">
+        </activity>
     </application>
 </manifest>

@@ -14,7 +14,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
@@ -22,6 +21,7 @@ import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailActivity
 import biz.ohrae.challenge_screen.ui.main.ChallengeMainViewModel
+import biz.ohrae.challenge_screen.ui.niceid.NiceIdActivity
 import biz.ohrae.challenge_screen.ui.policy.PolicyActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -196,7 +196,10 @@ class MyChallengeActivity : BaseActivity() {
             }
 
             override fun onClickApplyWithdrawDetail() {
-                navController.navigate(MyChallengeNavScreen.PhoneAuth.route)
+//                navController.navigate(MyChallengeNavScreen.PhoneAuth.route)
+                val intent = Intent(this@MyChallengeActivity, NiceIdActivity::class.java)
+                intent.putExtra("userId", myChallengeViewModel.userData.value?.id)
+                startActivity(intent)
             }
 
             override fun onClickPolicy(screen: String) {
