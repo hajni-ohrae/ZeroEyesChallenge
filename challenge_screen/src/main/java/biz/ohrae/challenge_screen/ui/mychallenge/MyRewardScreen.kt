@@ -45,7 +45,7 @@ fun MyRewardScreen(
     rewardList: List<RewardData>? = null
 ) {
     val availableRewards by remember {
-        mutableStateOf(user?.rewards_amount ?: 0)
+        mutableStateOf(user?.monthly_expire_rewards_amount ?: 0)
     }
     Column() {
         Column(modifier = Modifier.padding(24.dp, 0.dp)) {
