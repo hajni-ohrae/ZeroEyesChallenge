@@ -1,4 +1,4 @@
-package biz.ohrae.challenge.ui.screen.welcome
+package biz.ohrae.challenge_screen.ui.welcome
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

@@ -111,4 +111,12 @@ class SharedPreference @Inject constructor(@ApplicationContext context: Context,
         val listType = object : TypeToken<ArrayList<String?>?>() {}.type
         return gson.fromJson(listString, listType)
     }
+
+    fun setIsFirstLaunch(boolean: Boolean) {
+        setBoolean("isFirstLaunch", boolean)
+    }
+
+    fun getIsFirstLaunch(): Boolean {
+        return getBoolean("isFirstLaunch", true)
+    }
 }

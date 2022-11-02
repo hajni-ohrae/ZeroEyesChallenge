@@ -23,6 +23,7 @@ import biz.ohrae.challenge_screen.ui.login.LoginActivity
 import biz.ohrae.challenge_screen.ui.mychallenge.MyChallengeActivity
 import biz.ohrae.challenge_screen.ui.policy.PolicyActivity
 import biz.ohrae.challenge_screen.ui.register.RegisterActivity
+import biz.ohrae.challenge_screen.ui.welcome.WelcomeActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -106,6 +107,11 @@ class MainActivity : BaseActivity() {
         viewModel.selectPeriodType("")
         viewModel.selectPeriod("")
         viewModel.selectIsAdultOnly("")
+
+        if (prefs.getIsFirstLaunch()) {
+            val intent = Intent(this, WelcomeActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun initClickListeners() {

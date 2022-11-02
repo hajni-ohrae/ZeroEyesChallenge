@@ -1,10 +1,9 @@
-package biz.ohrae.challenge.ui.screen.welcome
+package biz.ohrae.challenge_screen.ui.welcome
 
 import WelcomeScreen
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -22,17 +21,19 @@ import androidx.lifecycle.ViewModelProvider
 import biz.ohrae.challenge.model.WelcomeScreenState
 import biz.ohrae.challenge.ui.components.button.FlatButton
 import biz.ohrae.challenge.ui.components.card.BottomSheetCard
+import biz.ohrae.challenge.ui.components.indicator.DotIndicator
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge.ui.theme.DefaultBlack
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
+import biz.ohrae.challenge_screen.ui.BaseActivity
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AndroidEntryPoint
-class WelcomeActivity : AppCompatActivity() {
+class WelcomeActivity : BaseActivity() {
     private lateinit var viewModel: WelcomeViewModel
     private lateinit var welcomeScreenClickListener: WelcomeScreenClickListener
 
@@ -40,13 +41,14 @@ class WelcomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this)[WelcomeViewModel::class.java]
 
-        initClickListeners()
-
         setContent {
             ChallengeInTheme {
                 BuildContent()
             }
         }
+
+        initClickListeners()
+        prefs.setIsFirstLaunch(false)
     }
 
     @SuppressLint("CoroutineCreationDuringComposition")
@@ -128,13 +130,19 @@ class WelcomeActivity : AppCompatActivity() {
                         color = DefaultBlack,
                         textAlign = TextAlign.Center
                     )
-                    Spacer(modifier = Modifier.height(92.dp))
+                    Spacer(modifier = Modifier.height(24.dp))
+                    DotIndicator(
+                        modifier = Modifier.fillMaxWidth(),
+                        size = state.list.size,
+                        currentIndex = state.currentPage
+                    )
+                    Spacer(modifier = Modifier.height(60.dp))
                     FlatButton(
                         modifier = Modifier.fillMaxWidth().aspectRatio(6.5f),
                         text = state.list[state.currentPage].buttonName,
                         backgroundColor = Color(0xff4985F8),
                         onClick = {
-                            welcomeScreenClickListener.onClickButton()
+                            welcomeScreenClickListener.onClickButton(state.currentPage == state.list.size - 1)
                         }
                     )
                     Spacer(modifier = Modifier.height(30.dp))
@@ -143,10 +151,14 @@ class WelcomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun initClickListeners() {
+    override fun initClickListeners() {
         welcomeScreenClickListener = object : WelcomeScreenClickListener {
-            override fun onClickButton() {
-                viewModel.nextPage()
+            override fun onClickButton(isDone: Boolean) {
+                if (isDone) {
+                    finish()
+                } else {
+                    viewModel.nextPage()
+                }
             }
         }
     }
