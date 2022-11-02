@@ -31,6 +31,7 @@ data class User(
     val refresh_token: String,
     val thumbnail_path: String,
     val ranking: String?,
+    val is_identified: Int,
     val inChallenge: List<InChallenge>?,
 
     ) {
