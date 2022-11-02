@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.model.card.CertificationItemData
 import biz.ohrae.challenge.ui.components.avatar.circularAvatar
+import biz.ohrae.challenge.ui.theme.DefaultBlack
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
@@ -73,6 +74,7 @@ fun CertificationImageItem(
     username: String = "",
     count: Int = 0,
     date: String = "",
+    type:String ="",
     onClick: () -> Unit = {}
 ) {
     Card(
@@ -82,12 +84,14 @@ fun CertificationImageItem(
         backgroundColor = Color(0xfff9f9f9),
         onClick = onClick
     ) {
-        GlideImage(
-            modifier = Modifier.fillMaxSize(),
-            imageModel = imageUrl,
-            contentScale = ContentScale.Crop,
-            previewPlaceholder = R.drawable.img_example,
-        )
+        if (type == "photo1"){
+            GlideImage(
+                modifier = Modifier.fillMaxSize(),
+                imageModel = imageUrl,
+                contentScale = ContentScale.Crop,
+                previewPlaceholder = R.drawable.img_example,
+            )
+        }
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -112,19 +116,23 @@ fun CertificationImageItem(
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
                         text = username,
-                        color = DefaultWhite,
+                        color = if (type == "photo")DefaultWhite else DefaultBlack,
                         style = myTypography.bold,
                         fontSize = dpToSp(dp = 12.dp)
                     )
                 }
-                Spacer(modifier = Modifier.weight(1f))
+                if (type == "photo"){
+                    Spacer(modifier = Modifier.weight(1f))
+                } else {
+                    Spacer(modifier = Modifier.height(14.dp))
+                }
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
                 ) {
                     CategorySurFace(
-                        backgroundColor = Color(0x99121212),
-                        textColor = DefaultWhite,
+                        backgroundColor = if (type == "photo")Color(0x99121212) else Color(0x335c94ff),
+                        textColor = if (type == "photo")DefaultWhite else Color(0xff5c94ff),
                         textStyle = myTypography.extraBold,
                         text = "${count}회"
                     )
@@ -133,7 +141,7 @@ fun CertificationImageItem(
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = date,
-                    color = DefaultWhite,
+                    color = if (type == "photo")DefaultWhite else Color(0xff4a4a4a),
                     style = myTypography.extraBold,
                     fontSize = dpToSp(dp = 16.dp),
                     textAlign = TextAlign.Center

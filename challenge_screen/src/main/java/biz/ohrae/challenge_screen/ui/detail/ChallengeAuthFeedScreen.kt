@@ -79,6 +79,7 @@ fun VerifiedList(
                     date = Utils.convertDate(item.updated_date),
                     count = item.cnt,
                     comment = item.comment,
+                    type = item.type,
                     onReport = {
                         item.user?.let {
                             clickListener?.onClickReport(

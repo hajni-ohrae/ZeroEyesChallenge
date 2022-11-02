@@ -49,6 +49,7 @@ fun FeedItem(
     count: Int = 1,
     date: String = "2022.05.09",
     comment: String = "123",
+    type: String = "photo",
     onReport: () -> Unit = {},
     onLike: () -> Unit = {}
 ) {
@@ -93,55 +94,78 @@ fun FeedItem(
                 fontSize = dpToSp(dp = 12.dp)
             )
             Spacer(modifier = Modifier.height(16.dp))
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(1f),
-                shape = RoundedCornerShape(10.dp),
-                elevation = 0.dp,
-                backgroundColor = Color(0xfff9f9f9)
-            ) {
-                GlideImage(
-                    modifier = Modifier.fillMaxSize(),
-                    imageModel = imageUrl,
-                    contentScale = ContentScale.Crop,
-                    previewPlaceholder = R.drawable.img_example,
-                )
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
+
+            if (type == "photo") {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(1f),
+                    shape = RoundedCornerShape(10.dp),
+                    elevation = 0.dp,
+                    backgroundColor = Color(0xfff9f9f9)
                 ) {
+                    GlideImage(
+                        modifier = Modifier.fillMaxSize(),
+                        imageModel = imageUrl,
+                        contentScale = ContentScale.Crop,
+                        previewPlaceholder = R.drawable.img_example,
+                    )
                     Column(
-                        modifier = Modifier
-                            .fillMaxWidth(0.89f)
-                            .fillMaxHeight(0.842f)
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
                     ) {
-                        Spacer(modifier = Modifier.weight(1f))
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.Center
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth(0.89f)
+                                .fillMaxHeight(0.842f)
                         ) {
-                            CategorySurFace(
-                                backgroundColor = Color(0x99121212),
-                                textColor = DefaultWhite,
-                                textStyle = myTypography.extraBold,
-                                text = "${count}회"
+                            Spacer(modifier = Modifier.weight(1f))
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.Center
+                            ) {
+                                CategorySurFace(
+                                    backgroundColor = Color(0x99121212),
+                                    textColor = DefaultWhite,
+                                    textStyle = myTypography.extraBold,
+                                    text = "${count}회"
+                                )
+                            }
+                            Spacer(modifier = Modifier.fillMaxHeight(0.106f))
+                            Text(
+                                modifier = Modifier.fillMaxWidth(),
+                                text = date,
+                                color = DefaultWhite,
+                                style = myTypography.extraBold,
+                                fontSize = dpToSp(dp = 16.dp),
+                                textAlign = TextAlign.Center
                             )
+                            Spacer(modifier = Modifier.fillMaxHeight(0.068f))
                         }
-                        Spacer(modifier = Modifier.fillMaxHeight(0.106f))
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = date,
-                            color = DefaultWhite,
-                            style = myTypography.extraBold,
-                            fontSize = dpToSp(dp = 16.dp),
-                            textAlign = TextAlign.Center
-                        )
-                        Spacer(modifier = Modifier.fillMaxHeight(0.068f))
                     }
                 }
+            } else {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    CategorySurFace(
+                        backgroundColor = Color(0x335c94ff),
+                        textColor = Color(0xff5c94ff),
+                        textStyle = myTypography.extraBold,
+                        text = "${count}회"
+                    )
+                    Spacer(modifier = Modifier.fillMaxWidth(0.025f))
+                    Text(
+                        text = date,
+                        style = myTypography.extraBold,
+                        fontSize = dpToSp(dp = 20.dp),
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
+
         }
         Divider(
             modifier = Modifier
