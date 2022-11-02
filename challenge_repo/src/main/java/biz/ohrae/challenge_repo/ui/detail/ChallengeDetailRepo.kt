@@ -253,8 +253,37 @@ class ChallengeDetailRepo @Inject constructor(
         jsonObject.addProperty("user_id", userId)
         jsonObject.addProperty("report_reason_code", reportReasonCode)
 
-        val response = apiService.createReport(accessToken.toString(),jsonObject)
+        val response = apiService.createReport(accessToken.toString(), jsonObject)
 
+        when (response) {
+            is NetworkResponse.Success -> {
+                return if (response.body.success) {
+
+                    flow {
+                        emit(FlowResult(true, "", ""))
+                    }
+                } else {
+                    flow {
+                        emit(FlowResult(false, response.body.code, response.body.message))
+                    }
+                }
+            }
+            else -> {
+                return flow {
+                    emit(FlowResult(null, "", ""))
+                }
+            }
+        }
+    }
+
+    suspend fun feedLike(verificationId: String, like: Int): Flow<FlowResult> {
+        val accessToken = prefs.getUserData()?.access_token
+        val jsonObject = JsonObject()
+
+        jsonObject.addProperty("verification_id", verificationId)
+        jsonObject.addProperty("like", like)
+
+        val response = apiService.feedLike(accessToken.toString(), jsonObject)
         when (response) {
             is NetworkResponse.Success -> {
                 return if (response.body.success) {

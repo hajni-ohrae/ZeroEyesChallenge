@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,10 +39,12 @@ private fun FeedFilterGallery() {
 @Composable
 fun FeedFilter(
     modifier: Modifier = Modifier,
-    order: String = "최신순",
     onOrder: () -> Unit = {},
     onMine: () -> Unit = {},
+    isMine: Boolean = false,
+    isOrder: Boolean = false,
 ) {
+    val rotate = if (isOrder) 180F else 0F
     Column(
         modifier
             .fillMaxWidth()
@@ -63,7 +66,7 @@ fun FeedFilter(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = order,
+                        text = if (isOrder) "오래된순" else "최신순",
                         fontSize = dpToSp(dp = 14.dp),
                         style = myTypography.w500,
                         color = Color(0xff606060)
@@ -71,8 +74,9 @@ fun FeedFilter(
                     Spacer(modifier = Modifier.width(4.dp))
                     Image(
                         painter = painterResource(id = R.drawable.s_icon_sorting),
-                        modifier = modifier.size(18.dp),
-                        contentDescription = "s_icon_sorting"
+                        modifier = modifier.size(18.dp).rotate(rotate),
+                        contentDescription = "s_icon_sorting",
+
                     )
                 }
             }
@@ -81,7 +85,7 @@ fun FeedFilter(
                     text = "내 인증만 보기",
                     fontSize = dpToSp(dp = 14.dp),
                     style = myTypography.w500,
-                    color = Color(0xff606060)
+                    color = if (!isMine) Color(0xff606060) else Color(0xffff8900)
                 )
             }
         }

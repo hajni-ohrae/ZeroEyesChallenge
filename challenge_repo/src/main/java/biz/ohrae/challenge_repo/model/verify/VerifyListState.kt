@@ -20,6 +20,7 @@ data class VerifyListState(
                     comment = "gg",
                     created_date = "",
                     updated_date = "",
+                    isLike = 0
                 )
             ),
         )
@@ -36,7 +37,8 @@ data class VerifyData(
     val created_date: String,
     val updated_date: String,
     val user: User? = null,
-    val imageFile: ImageFile? = null
+    val imageFile: ImageFile? = null,
+    val isLike:Int,
 ) {
     companion object {
         fun mock() = VerifyData(
@@ -47,6 +49,7 @@ data class VerifyData(
             comment = "gg",
             created_date = "",
             updated_date = "",
+            isLike = 0
         )
     }
 }

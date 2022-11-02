@@ -51,8 +51,10 @@ fun FeedItem(
     comment: String = "123",
     type: String = "photo",
     onReport: () -> Unit = {},
-    onLike: () -> Unit = {}
+    onLike: () -> Unit = {},
+    isLike: Int = 0
 ) {
+    val like = isLike == 1
     Column(
         modifier = Modifier
             .background(DefaultWhite)
@@ -189,7 +191,9 @@ fun FeedItem(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Image(
-                        painter = painterResource(id = R.drawable.s_icon_good),
+                        painter = if (like) painterResource(id = R.drawable.s_icon_good) else painterResource(
+                            id = R.drawable.s_icon_good_1
+                        ),
                         modifier = Modifier.size(18.dp),
                         contentDescription = "s_icon_sorting"
                     )

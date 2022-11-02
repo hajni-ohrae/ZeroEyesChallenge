@@ -215,4 +215,10 @@ interface ApiService {
         @Query("status") status: String
     ): NetworkResponse<Result2, Error>
 
+    @POST(Routes.FEED_LIKE)
+    suspend fun feedLike(
+        @Header("x-access-token") accessToken: String,
+        @Body body: JsonObject?,
+    ): NetworkResponse<Result, Error>
+
 }

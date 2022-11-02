@@ -52,7 +52,10 @@ fun ChallengeAuthFeedScreen(
             onMine = {
                 isMine = !isMine
                 clickListener?.onClickMine(isMine)
-            })
+            },
+            isMine = isMine,
+            isOrder = isOrder,
+        )
         Column(modifier = Modifier.fillMaxWidth()) {
             VerifiedList(challengeVerifiedList, clickListener)
         }
@@ -87,7 +90,9 @@ fun VerifiedList(
                                 it
                             )
                         }
-                    }
+                    },
+                    onLike = { clickListener?.onClickLike(true) },
+                    isLike = item.isLike
                 )
             }
         }

@@ -79,7 +79,6 @@ fun ChallengeDetailScreen(
     val checked = remember {
         mutableStateOf(challengeData.inChallengeLike?.like == 1)
     }
-    val favorite = viewModel!!.favorite?.observeAsState()
 
     Column(
         modifier = Modifier

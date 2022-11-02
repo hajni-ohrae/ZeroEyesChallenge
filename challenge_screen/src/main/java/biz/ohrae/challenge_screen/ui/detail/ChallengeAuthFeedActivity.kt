@@ -156,6 +156,10 @@ class ChallengeAuthFeedActivity : BaseActivity() {
                 dialog.show(supportFragmentManager, "ReportDialog")
             }
 
+            override fun onClickLike(like: Boolean) {
+
+            }
+
         }
     }
 
@@ -166,8 +170,6 @@ class ChallengeAuthFeedActivity : BaseActivity() {
         viewModel.report.observe(this) {
             if (it == true) {
                 showSnackBar("신고가 완료되었습니다.")
-            } else {
-                showSnackBar("신고가 되지 않았습니다 다시 시도해주세요.")
             }
         }
     }

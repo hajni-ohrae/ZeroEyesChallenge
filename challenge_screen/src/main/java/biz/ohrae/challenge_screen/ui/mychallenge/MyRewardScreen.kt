@@ -129,7 +129,7 @@ fun MyRewardScreen(
                                     .defaultMinSize(minHeight = 105.dp),
                                 date = "",
                                 progress = item.type,
-                                title = item.challenge.goal.toString(),
+                                title = item.challenge?.goal.toString(),
                                 price = item.amount.toString(),
                                 progressStatus = item.type,
                                 background = Utils.userChallengeBackground(item.type),
