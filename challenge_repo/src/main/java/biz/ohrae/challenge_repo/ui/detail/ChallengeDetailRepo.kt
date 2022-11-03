@@ -304,4 +304,31 @@ class ChallengeDetailRepo @Inject constructor(
             }
         }
     }
+
+
+    suspend fun getChallengeResult(id: String): Flow<FlowResult> {
+        val accessToken = prefs.getUserData()?.access_token
+        val response = apiService.getChallenge(accessToken.toString(), id)
+
+        when (response) {
+            is NetworkResponse.Success -> {
+                return if (response.body.success) {
+                    val challengeData =
+                        gson.fromJson(response.body.dataset, ChallengeData::class.java)
+                    flow {
+                        emit(FlowResult(challengeData, "", ""))
+                    }
+                } else {
+                    flow {
+                        emit(FlowResult(null, "", ""))
+                    }
+                }
+            }
+            else -> {
+                return flow {
+                    emit(FlowResult(null, "", ""))
+                }
+            }
+        }
+    }
 }

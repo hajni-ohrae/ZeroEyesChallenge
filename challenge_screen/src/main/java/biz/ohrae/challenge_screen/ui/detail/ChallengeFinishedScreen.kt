@@ -51,14 +51,15 @@ fun ChallengeFinishedScreen(
 ) {
     val scrollState = rememberScrollState()
 
-    Column(
-        modifier = Modifier
-            .padding(24.dp, 0.dp)
-            .fillMaxSize()
-            .verticalScroll(scrollState)
-            .background(DefaultWhite)
-    ) {
-        Spacer(modifier = Modifier.height(23.dp))
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .verticalScroll(scrollState)
+        .background(DefaultWhite)) {
+        Column(
+            modifier = Modifier
+                .padding(24.dp, 0.dp)
+        ) {
+            Spacer(modifier = Modifier.height(23.dp))
 //        Image(
 //            modifier = Modifier
 //                .width(100.dp)
@@ -68,71 +69,75 @@ fun ChallengeFinishedScreen(
 //            contentScale = ContentScale.Crop,
 //            painter = painterResource(id = resourceId),
 //        )
-        Spacer(modifier = Modifier.height(32.dp))
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center,
-            text = challengeData?.goal.toString(), fontSize = dpToSp(dp = 16.dp),
-            style = myTypography.w500,
-            color = Color(0xff6c6c6c),
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center,
-            text = "원 환급되었어요!", fontSize = dpToSp(dp = 20.dp),
-            style = myTypography.extraBold,
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        ProgressLabel(
-            modifier = Modifier.align(CenterHorizontally),
-            text = "100% 환급 + 리워즈",
-            backgroundColor = Color(0xfff3f8ff),
-            textColor = Color(0xff4985f8)
-        )
-        Spacer(modifier = Modifier.height(40.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
+            Spacer(modifier = Modifier.height(32.dp))
             Text(
-                text = "나의 달성률", fontSize = dpToSp(dp = 16.dp),
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center,
+                text = challengeData?.goal.toString(), fontSize = dpToSp(dp = 16.dp),
+                style = myTypography.w500,
+                color = Color(0xff6c6c6c),
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center,
+                text = "${challengeData?.inChallenge?.get(0)?.refund_amount}원 환급되었어요!", fontSize = dpToSp(dp = 20.dp),
                 style = myTypography.extraBold,
             )
-            Row() {
+            Spacer(modifier = Modifier.height(16.dp))
+            ProgressLabel(
+                modifier = Modifier.align(CenterHorizontally),
+                text = "100% 환급 + 리워즈",
+                backgroundColor = Color(0xfff3f8ff),
+                textColor = Color(0xff4985f8)
+            )
+            Spacer(modifier = Modifier.height(40.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
                 Text(
-                    text = "위 ", fontSize = dpToSp(dp = 16.dp),
-                    style = myTypography.bold,
+                    text = "나의 달성률", fontSize = dpToSp(dp = 16.dp),
+                    style = myTypography.extraBold,
                 )
-                Text(
-                    text = "%", fontSize = dpToSp(dp = 16.dp),
-                    style = myTypography.bold,
-                    color = Color(0xffff5800)
-                )
+                Row() {
+                    Text(
+                        text = "${challengeData?.inChallenge?.get(0)?.ranking} 위 ", fontSize = dpToSp(dp = 16.dp),
+                        style = myTypography.bold,
+                    )
+                    Text(
+                        text = "${challengeData?.inChallenge?.get(0)?.achievement_percent} %", fontSize = dpToSp(dp = 16.dp),
+                        style = myTypography.bold,
+                        color = Color(0xffff5800)
+                    )
+                }
             }
-        }
-        if (verificationState != null) {
-            ChallengeProgressFinishDetail(verificationState)
-        }
-
-        MyRewardsAndResults()
-        Spacer(modifier = Modifier.height(22.dp))
-        FlatBorderButton(
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(7.1f),
-            text = "챌린저스 결과 보기",
-            onClick = {
-                clickListener?.onClickChallengersResults()
+            if (verificationState != null) {
+                ChallengeProgressFinishDetail(verificationState)
             }
-        )
 
+            MyRewardsAndResults(challengeData)
+            Spacer(modifier = Modifier.height(22.dp))
+            FlatBorderButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(7.1f),
+                text = "챌린저스 결과 보기",
+                onClick = {
+                    clickListener?.onClickChallengersResults()
+                }
+            )
+            Spacer(modifier = Modifier.height(30.dp))
+
+        }
     }
+
 }
 
 @Composable
 private fun MyRewardsAndResults(
+    challengeData: ChallengeData? = null,
 ) {
     Column() {
         Spacer(modifier = Modifier.height(24.dp))
@@ -158,7 +163,7 @@ private fun MyRewardsAndResults(
                 style = myTypography.w500,
             )
             Text(
-                text = "원", fontSize = dpToSp(dp = 14.dp),
+                text = "${challengeData?.inChallenge?.get(0)?.deposit_amount} 원", fontSize = dpToSp(dp = 14.dp),
                 style = myTypography.w500,
             )
         }
@@ -189,7 +194,7 @@ private fun MyRewardsAndResults(
                 color = Color(0xffff5800)
             )
             Text(
-                text = "원", fontSize = dpToSp(dp = 14.dp),
+                text = "${challengeData?.inChallenge?.get(0)?.refund_amount} 원", fontSize = dpToSp(dp = 14.dp),
                 style = myTypography.w500,
                 color = Color(0xffff5800)
             )
@@ -242,7 +247,7 @@ private fun MyRewardsAndResults(
                 style = myTypography.w500,
             )
             Text(
-                text = "명", fontSize = dpToSp(dp = 14.dp),
+                text = "${challengeData?.summary?.total_user_cnt}명", fontSize = dpToSp(dp = 14.dp),
                 style = myTypography.w500,
             )
         }
@@ -257,7 +262,7 @@ private fun MyRewardsAndResults(
                 style = myTypography.w500,
             )
             Text(
-                text = "명", fontSize = dpToSp(dp = 14.dp),
+                text = "${challengeData?.summary?.total_amount}명", fontSize = dpToSp(dp = 14.dp),
                 style = myTypography.w500,
             )
         }
@@ -272,7 +277,7 @@ private fun MyRewardsAndResults(
                 style = myTypography.w500,
             )
             Text(
-                text = "명", fontSize = dpToSp(dp = 14.dp),
+                text = "${challengeData?.summary?.total_amount}원", fontSize = dpToSp(dp = 14.dp),
                 style = myTypography.w500,
             )
         }
@@ -287,7 +292,8 @@ private fun MyRewardsAndResults(
                 style = myTypography.w500,
             )
             Text(
-                text = "명", fontSize = dpToSp(dp = 14.dp),
+                text = "${challengeData?.summary?.total_rewards_amount}원",
+                fontSize = dpToSp(dp = 14.dp),
                 style = myTypography.w500,
             )
         }
@@ -302,7 +308,7 @@ private fun MyRewardsAndResults(
                 style = myTypography.w500,
             )
             Text(
-                text = "", fontSize = dpToSp(dp = 14.dp),
+                text = "(1만원 기준) ${challengeData?.summary?.per_rewards_amount}원", fontSize = dpToSp(dp = 14.dp),
                 style = myTypography.w500,
             )
         }

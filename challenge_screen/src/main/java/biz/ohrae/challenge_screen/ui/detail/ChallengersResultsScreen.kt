@@ -62,17 +62,6 @@ fun ChallengersResultsScreen(
                 .fillMaxWidth(),
             state = listState
         ) {
-            item {
-                Column {
-                    ImageBox(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .aspectRatio(1.51f),
-                        imagePath = ""
-                    )
-                    Spacer(modifier = Modifier.height(24.dp))
-                }
-            }
             stickyHeader {
                 ColumnForLazy {
                     TabRow(
@@ -131,7 +120,10 @@ fun ChallengersResultsScreen(
                     ) { page ->
                         if (page == 0) {
                             if (challengers != null) {
-                                Challengers(challengers = challengers, clickListener = clickListener)
+                                Challengers(
+                                    challengers = challengers,
+                                    clickListener = clickListener
+                                )
                             }
                         } else {
                             ChallengeAuthPage(

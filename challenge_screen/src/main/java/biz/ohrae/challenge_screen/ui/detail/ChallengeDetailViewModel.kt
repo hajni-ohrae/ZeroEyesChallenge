@@ -129,6 +129,21 @@ class ChallengeDetailViewModel @Inject constructor(
         }
     }
 
+
+    fun getChallengeResult(id: String) {
+        viewModelScope.launch {
+            repo.getChallengeResult(id).flowOn(Dispatchers.IO).collect { it ->
+                Timber.e("getResult : ${gson.toJson(it.data)}")
+                if (it.data != null) {
+                    val challengeData = it.data as ChallengeData
+                    _challengeData.value = challengeData
+                } else {
+                    _challengeData.value = null
+                }
+            }
+        }
+    }
+
     fun getUserByChallenge(id: String, page: Int = 1, count: Int = 10) {
         viewModelScope.launch {
             repo.getUserByChallenge(id, page, count).flowOn(Dispatchers.IO).collect {
@@ -238,6 +253,27 @@ class ChallengeDetailViewModel @Inject constructor(
     ) {
         viewModelScope.launch {
             repo.createReport(verificationId, userId, reportReasonCode).flowOn(Dispatchers.IO)
+                .collect { result ->
+                    if (result.data != null) {
+                        val success = result.data as Boolean
+                        _report.value = success
+                        if (!success) {
+                            setErrorData(result.errorCode, result.errorMessage)
+                        }
+                    } else {
+                        _report.value = null
+                        setErrorData(null, result.errorMessage)
+                    }
+                }
+        }
+    }
+
+    fun feedLike(
+        verificationId: String,
+        like: Int,
+    ) {
+        viewModelScope.launch {
+            repo.feedLike(verificationId, like).flowOn(Dispatchers.IO)
                 .collect { result ->
                     if (result.data != null) {
                         val success = result.data as Boolean

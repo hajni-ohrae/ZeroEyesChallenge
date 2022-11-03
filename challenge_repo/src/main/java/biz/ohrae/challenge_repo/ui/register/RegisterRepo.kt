@@ -30,7 +30,7 @@ class RegisterRepo @Inject constructor(
         jsonObject.addProperty("start_date", challengeData.start_date)
         jsonObject.addProperty("min_deposit_amount", challengeData.min_deposit_amount)
         jsonObject.addProperty("free_rewards", challengeData.free_rewards)
-        jsonObject.addProperty("free_winners", challengeData.free_winners)
+        jsonObject.addProperty("free_rewards_winners", challengeData.free_rewards_winners)
         jsonObject.addProperty("free_rewards_offer_way", challengeData.free_rewards_offer_way)
         jsonObject.addProperty("is_verification_photo", challengeData.is_verification_photo)
         jsonObject.addProperty("is_verification_checkin", challengeData.is_verification_checkin)

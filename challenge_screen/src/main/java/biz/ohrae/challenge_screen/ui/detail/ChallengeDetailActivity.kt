@@ -130,7 +130,7 @@ class ChallengeDetailActivity : BaseActivity() {
             return
         }
         val startPage =
-            if (isFinished == false) {
+            if (isFinished == true) {
                 ChallengeDetailNavScreen.Finished.route
             } else {
                 if (isJoined == true) ChallengeDetailNavScreen.JoinedDetail.route else ChallengeDetailNavScreen.Detail.route
@@ -197,7 +197,7 @@ class ChallengeDetailActivity : BaseActivity() {
                 PolicyScreen(screen = "")
             }
             composable(ChallengeDetailNavScreen.Finished.route) {
-                ChallengeFinishedScreen()
+                ChallengeFinishedScreen(challengeData = challengeData)
             }
         }
     }
@@ -205,6 +205,7 @@ class ChallengeDetailActivity : BaseActivity() {
     private fun init() {
         viewModel.isLoading(true)
         viewModel.getChallenge(challengeId.toString())
+        viewModel.getChallengeResult(challengeId.toString())
         viewModel.getUserByChallenge(challengeId.toString(), 1, 11)
         viewModel.getVerifyList(challengeId.toString(), isInit = true, "desc", 0)
     }

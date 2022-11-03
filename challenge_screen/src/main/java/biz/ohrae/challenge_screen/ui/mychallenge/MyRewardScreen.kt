@@ -79,7 +79,7 @@ fun MyRewardScreen(
                                 .fillMaxWidth()
                                 .defaultMinSize(minHeight = 105.dp),
                             date = "",
-                            progress = item.type,
+                            progress = item.inChallenge?.achievement_percent.toString(),
                             title = item.challenge?.goal.toString(),
                             price = item.amount.toString(),
                             progressStatus = item.type,
