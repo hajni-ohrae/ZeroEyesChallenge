@@ -14,7 +14,7 @@ data class ChallengeData(
     var end_date: String? = null,
     val min_deposit_amount: Int = 0,
     val free_rewards: String? = null,
-    val free_winners: String? = null,
+    val free_rewards_winners: String? = null,
     val free_rewards_offer_way: String? = null,
     var is_verification_photo: Int = 0,
     var is_verification_checkin: Int = 0,
@@ -32,9 +32,9 @@ data class ChallengeData(
     val status: String,
     var caution: String? = null,
     val created_date: String,
+    val updated_date: String,
     val inChallenge: List<InChallenge>? = null,
     val total_verification_cnt: Int,
-    val updated_date: String,
     var verification_daily_staying_time: Int,
     val remaining_time: String? = null,
     val user: User? = null,
@@ -56,7 +56,7 @@ data class ChallengeData(
             end_date = "2022-09-29",
             min_deposit_amount = 1000,
             free_rewards = "",
-            free_winners = "",
+            free_rewards_winners = "",
             free_rewards_offer_way = "",
             is_verification_photo = 0,
             is_verification_checkin = 0,
@@ -86,7 +86,12 @@ data class Summary(
     val achievement_cnt: Int = 0,
     val achievement_percent: Int = 0,
     val total_amount: Int? = 0,
-    val average_amount: Int? = 0
+    val average_amount: Int? = 0,
+    val total_rewards_amount: Int? = 0,
+    val per_rewards_amount:Int? = 0,
+    val average_verification_time:String,
+    val total_verification_time:String,
+    val time_user_cnt:Int,
 )
 
 data class InChallenge(

@@ -72,6 +72,12 @@ interface ApiService {
         @Query("per_page") count: Int,
     ): NetworkResponse<Result2, Error>
 
+    @GET(Routes.GET_CHALLENGE_RESULT)
+    suspend fun getChallengeResult(
+        @Header("x-access-token") accessToken: String,
+        @Path("challenge_id") challengeId: String,
+    ): NetworkResponse<Result2, Error>
+
     @POST(Routes.REQUEST_PAYMENT)
     suspend fun requestPayment(@Body body: JsonObject?): NetworkResponse<Result, Error>
 

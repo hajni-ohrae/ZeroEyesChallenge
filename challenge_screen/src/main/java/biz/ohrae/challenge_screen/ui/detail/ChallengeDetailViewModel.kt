@@ -76,7 +76,7 @@ class ChallengeDetailViewModel @Inject constructor(
                     _isJoined.value = isJoined
                     val isFinished =
                         !challengeData.inChallenge.isNullOrEmpty() && challengeData.status == "finished"
-                    _isJoined.value = isJoined
+                    _isFinished.value = isFinished
                     if (isJoined) {
                         val verifications = challengeData.inChallenge?.get(0)?.verifications
                         val totalVerificationCount = challengeData.total_verification_cnt

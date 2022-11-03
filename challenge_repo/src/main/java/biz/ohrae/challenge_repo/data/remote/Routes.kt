@@ -20,6 +20,7 @@ object Routes {
     const val GET_USER_CHALLENGE_LIST = "${CHALLENGE}/api/challenge/user/get/all"
     const val CANCEL_CHALLENGE = "${CHALLENGE}/api/challenge/cancel/{challenge_id}"
     const val GET_USERS_BY_CHALLENGE = "${CHALLENGE}/api/user/challenge/get/{challenge_id}"
+    const val GET_CHALLENGE_RESULT = "${CHALLENGE}/api/challenge/result/get/{challenge_id}"
 
     // 결제
     const val REQUEST_PAYMENT = "/api/payment/request"

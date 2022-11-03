@@ -123,15 +123,22 @@ class ChallengeDetailActivity : BaseActivity() {
     private fun Navigation() {
         navController = rememberNavController()
         val isJoined by viewModel.isJoined.observeAsState()
+        val isFinished by viewModel.isFinished.observeAsState()
         val challengeData by viewModel.challengeData.observeAsState()
 
         if (isJoined == null || challengeData == null) {
             return
         }
+        val startPage =
+            if (isFinished == false) {
+                ChallengeDetailNavScreen.Finished.route
+            } else {
+                if (isJoined == true) ChallengeDetailNavScreen.JoinedDetail.route else ChallengeDetailNavScreen.Detail.route
+            }
 
         NavHost(
             navController = navController,
-            startDestination = if (isJoined == true) ChallengeDetailNavScreen.JoinedDetail.route else ChallengeDetailNavScreen.Detail.route
+            startDestination = startPage
         ) {
             composable(ChallengeDetailNavScreen.Detail.route) {
                 val challengers by viewModel.challengers.observeAsState()
@@ -189,6 +196,9 @@ class ChallengeDetailActivity : BaseActivity() {
             composable(ChallengeDetailNavScreen.RedCardInfo.route) {
                 PolicyScreen(screen = "")
             }
+            composable(ChallengeDetailNavScreen.Finished.route) {
+                ChallengeFinishedScreen()
+            }
         }
     }
 
@@ -196,7 +206,7 @@ class ChallengeDetailActivity : BaseActivity() {
         viewModel.isLoading(true)
         viewModel.getChallenge(challengeId.toString())
         viewModel.getUserByChallenge(challengeId.toString(), 1, 11)
-        viewModel.getVerifyList(challengeId.toString(), isInit = true,"desc",0)
+        viewModel.getVerifyList(challengeId.toString(), isInit = true, "desc", 0)
     }
 
     override fun onBack() {
@@ -274,7 +284,7 @@ class ChallengeDetailActivity : BaseActivity() {
             }
 
             override fun onClickBookMark(like: Boolean) {
-                val fa :Int = if (like) {
+                val fa: Int = if (like) {
                     1
                 } else {
                     0
@@ -445,4 +455,5 @@ sealed class ChallengeDetailNavScreen(val route: String) {
     object AuthCameraPreview : ChallengeDetailNavScreen("AuthCameraPreview")
     object AuthCameraResult : ChallengeDetailNavScreen("AuthCameraResult")
     object AuthWrite : ChallengeDetailNavScreen("AuthWrite")
+    object Finished : ChallengeDetailNavScreen("Finished")
 }

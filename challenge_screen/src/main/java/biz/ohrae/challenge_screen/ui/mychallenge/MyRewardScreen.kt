@@ -113,10 +113,13 @@ private fun RewardsHeader(
     user: User? = null,
     clickListener: MyChallengeClickListener? = null,
 ) {
-    val availableRewards by remember {
+    val expireRewards by remember {
         mutableStateOf(user?.monthly_expire_rewards_amount ?: 0)
     }
 
+    val availableRewards by remember {
+        mutableStateOf(user?.rewards_amount ?: 0)
+    }
     Column {
         Spacer(modifier = Modifier.height(16.dp))
         Text(text = "보유 리워즈", style = myTypography.w700, fontSize = dpToSp(dp = 20.dp))
@@ -158,7 +161,7 @@ private fun RewardsHeader(
                 color = Color(0xff6c6c6c)
             )
             Text(
-                text = "0원",
+                text = "${Utils.numberToString(expireRewards.toString())}원",
                 style = myTypography.bold,
                 fontSize = dpToSp(dp = 14.dp),
                 color = Color(0xffff5800)
