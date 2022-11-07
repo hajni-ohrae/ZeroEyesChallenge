@@ -67,7 +67,8 @@ fun ChallengersResultsScreen(
                     TabRow(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .aspectRatio(6.42f),
+                            .aspectRatio(6.42f)
+                            ,
                         selectedTabIndex = pagerState.currentPage,
                         backgroundColor = DefaultWhite,
                         indicator = {
@@ -89,7 +90,7 @@ fun ChallengersResultsScreen(
                             },
                         ) {
                             Text(
-                                text = "상세보기",
+                                text = "챌린저스",
                                 fontSize = dpToSp(dp = 16.dp),
                                 style = myTypography.bold
                             )

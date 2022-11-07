@@ -131,12 +131,13 @@ class ChallengeDetailActivity : BaseActivity() {
         val isJoined by viewModel.isJoined.observeAsState()
         val isFinished by viewModel.isFinished.observeAsState()
         val challengeData by viewModel.challengeData.observeAsState()
+        val challengeVerificationState by viewModel.challengeVerificationState.observeAsState()
 
         if (isJoined == null || challengeData == null) {
             return
         }
         val startPage =
-            if (isFinished == true) {
+            if (isFinished == false) {
                 ChallengeDetailNavScreen.Finished.route
             } else {
                 if (isJoined == true) ChallengeDetailNavScreen.JoinedDetail.route else ChallengeDetailNavScreen.Detail.route
@@ -160,7 +161,6 @@ class ChallengeDetailActivity : BaseActivity() {
             composable(ChallengeDetailNavScreen.JoinedDetail.route) {
                 val challengers by viewModel.challengers.observeAsState()
                 val challengeVerifiedList by viewModel.challengeVerifiedList.observeAsState()
-                val challengeVerificationState by viewModel.challengeVerificationState.observeAsState()
 
                 ChallengeJoinedDetailScreen(
                     challengeData = challengeData,
@@ -203,8 +203,19 @@ class ChallengeDetailActivity : BaseActivity() {
                 PolicyScreen(screen = "")
             }
             composable(ChallengeDetailNavScreen.Finished.route) {
-                ChallengeFinishedScreen(challengeData = challengeData)
+                ChallengeFinishedScreen(
+                    challengeData = challengeData,
+                    verificationState = challengeVerificationState,
+                    clickListener = detailClickListener
+                )
             }
+            composable(ChallengeDetailNavScreen.ChallengersResults.route) {
+                ChallengersResultsScreen(
+                    challengeData = challengeData,
+                    verificationState = challengeVerificationState,
+                )
+            }
+
         }
     }
 
@@ -351,7 +362,7 @@ class ChallengeDetailActivity : BaseActivity() {
             }
 
             override fun onClickChallengersResults() {
-
+                navController.navigate(ChallengeDetailNavScreen.ChallengersResults.route)
             }
         }
     }
@@ -504,4 +515,5 @@ sealed class ChallengeDetailNavScreen(val route: String) {
     object AuthCameraResult : ChallengeDetailNavScreen("AuthCameraResult")
     object AuthWrite : ChallengeDetailNavScreen("AuthWrite")
     object Finished : ChallengeDetailNavScreen("Finished")
+    object ChallengersResults : ChallengeDetailNavScreen("ChallengersResults")
 }

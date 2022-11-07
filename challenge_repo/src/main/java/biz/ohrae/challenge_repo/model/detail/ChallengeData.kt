@@ -104,6 +104,7 @@ data class InChallenge(
     val ranking: Int?,
     val refund_amount:Int,
     val deposit_amount: Int?,
+    val rewards_amount:Int?,
     var verifications: List<ChallengeVerification>?
 )
 
