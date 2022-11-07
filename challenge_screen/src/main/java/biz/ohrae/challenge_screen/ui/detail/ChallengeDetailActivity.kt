@@ -42,10 +42,14 @@ import biz.ohrae.challenge_screen.ui.participation.ParticipationActivity
 import biz.ohrae.challenge_screen.ui.policy.PolicyActivity
 import biz.ohrae.challenge_screen.ui.register.ChallengeCameraScreen
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.dynamiclinks.ktx.*
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import me.echodev.resizer.Resizer
 import timber.log.Timber
 import java.io.File
+import java.net.URLEncoder
+
 
 @AndroidEntryPoint
 class ChallengeDetailActivity : BaseActivity() {
@@ -105,9 +109,11 @@ class ChallengeDetailActivity : BaseActivity() {
         ) {
             BackButton(
                 title = "",
-                isShare = false,
+                isShare = true,
                 onBack = { onBack() },
-                onShare = {}
+                onShare = {
+                    onShare()
+                }
             )
             Column(
                 modifier = Modifier
@@ -401,6 +407,47 @@ class ChallengeDetailActivity : BaseActivity() {
                 showSnackBar(errorData?.code, errorData?.message)
             }
         }
+    }
+
+    private fun onShare() {
+//        val dynamicLink = Firebase.dynamicLinks.dynamicLink {
+//            link = Uri.parse("https://challenge.mooin.kr?id=$challengeId")
+//            domainUriPrefix = "https://mooin.page.link"
+//            // Open links with this app on Android
+//            androidParameters {
+//            }
+//            // Open links with com.example.ios on iOS
+//            iosParameters("com.example.ios") { }
+//        }
+
+        val shortLinkTask = Firebase.dynamicLinks.shortLinkAsync {
+            link = Uri.parse("https://challenge.mooin.kr")
+            longLink = Uri.parse("https://mooin.page.link/?link=" +
+                    "https://challenge.mooin.kr/?id=$challengeId&apn=com.example.android&ibn=com.example.ios")
+            domainUriPrefix = "https://mooin.page.link"
+        }.addOnSuccessListener { (shortLink, flowchartLink) ->
+            Timber.e("shortLink : $shortLink, flowchartLink : $flowchartLink")
+
+            val link = shortLink.toString() + "?id=$challengeId"
+
+            // Short link created
+            val intent = Intent(Intent.ACTION_SEND)
+            intent.addCategory(Intent.CATEGORY_DEFAULT)
+            intent.type = "text/plain"
+            intent.putExtra(Intent.EXTRA_TEXT, link)
+
+            val shareIntent = Intent.createChooser(intent, "공유하기")
+            startActivity(shareIntent)
+        }.addOnFailureListener {
+            // Error
+            // ...
+            showSnackBar("공유 링크 생성에 실패했습니다.")
+        }
+//
+//        val i = Intent(Intent.ACTION_VIEW, dynamicLink.uri)
+//        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//        i.setPackage("com.android.chrome")
+//        startActivity(i)
     }
 
     private fun onBottomReached() {

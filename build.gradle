@@ -92,6 +92,7 @@ buildscript {
         firebaseBom = "com.google.firebase:firebase-bom:$firebase_version"
         firebaseCrashlytics = 'com.google.firebase:firebase-crashlytics-ktx'
         firebaseAnalytics = 'com.google.firebase:firebase-analytics-ktx'
+        firebaseDynamicLinks = 'com.google.firebase:firebase-dynamic-links-ktx'
 
         /** timber **/
         timber = 'com.jakewharton.timber:timber:5.0.1'

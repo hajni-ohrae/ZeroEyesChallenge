@@ -1,6 +1,7 @@
 package biz.ohrae.challenge_screen.ui.main
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -24,7 +25,11 @@ import biz.ohrae.challenge_screen.ui.mychallenge.MyChallengeActivity
 import biz.ohrae.challenge_screen.ui.policy.PolicyActivity
 import biz.ohrae.challenge_screen.ui.register.RegisterActivity
 import biz.ohrae.challenge_screen.ui.welcome.WelcomeActivity
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData
+import com.google.firebase.dynamiclinks.ktx.dynamicLinks
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
@@ -54,6 +59,9 @@ class MainActivity : BaseActivity() {
 
         initClickListeners()
         observeViewModels()
+        if (intent != null && intent.data != null) {
+            handleDeepLink(intent.data)
+        }
     }
 
     override fun onResume() {
@@ -63,6 +71,12 @@ class MainActivity : BaseActivity() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
+        Timber.e("intent data : ${intent?.data.toString()}")
+        val uri = intent?.data
+        if (uri != null) {
+            handleDeepLink(uri)
+        }
+
         val challengeId = intent?.getStringExtra("challengeId")
         if (challengeId != null) {
             goDetail(challengeId, true)
@@ -274,6 +288,36 @@ class MainActivity : BaseActivity() {
         })
 
         dialog.show(supportFragmentManager, "ChallengeCreateDialog")
+    }
+
+    private fun handleDeepLink(uri: Uri? = null) {
+        if (uri != null) {
+            val challengeId = uri.getQueryParameter("id")
+            if (!challengeId.isNullOrEmpty()) {
+                goDetail(challengeId)
+            }
+        } else {
+            Firebase.dynamicLinks
+                .getDynamicLink(intent)
+                .addOnSuccessListener(this) { pendingDynamicLinkData: PendingDynamicLinkData? ->
+                    // Get deep link from result (may be null if no link is found)
+                    var deepLink: Uri? = null
+                    if (pendingDynamicLinkData != null) {
+                        deepLink = pendingDynamicLinkData.link
+                    }
+
+                    // Handle the deep link. For example, open the linked
+                    // content, or apply promotional credit to the user's
+                    // account.
+                    // ...
+                    Timber.e("deepLink : $deepLink")
+                    val challengeId = deepLink?.getQueryParameter("id")
+                    if (!challengeId.isNullOrEmpty()) {
+                        goDetail(challengeId)
+                    }
+                }
+                .addOnFailureListener(this) { e -> Timber.w("getDynamicLink:onFailure", e) }
+        }
     }
 }
 

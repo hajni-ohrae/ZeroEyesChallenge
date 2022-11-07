@@ -3,6 +3,8 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'dagger.hilt.android.plugin'
     id 'kotlin-kapt'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -90,6 +92,7 @@ dependencies {
     implementation platform(firebaseBom)
     implementation firebaseCrashlytics
     implementation firebaseAnalytics
+    implementation firebaseDynamicLinks
 
     // glide
     implementation landscapistGlide
