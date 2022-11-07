@@ -137,7 +137,7 @@ class ChallengeDetailActivity : BaseActivity() {
             return
         }
         val startPage =
-            if (isFinished == false) {
+            if (isFinished == true) {
                 ChallengeDetailNavScreen.Finished.route
             } else {
                 if (isJoined == true) ChallengeDetailNavScreen.JoinedDetail.route else ChallengeDetailNavScreen.Detail.route
