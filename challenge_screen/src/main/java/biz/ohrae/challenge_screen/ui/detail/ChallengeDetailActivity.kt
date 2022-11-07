@@ -420,21 +420,24 @@ class ChallengeDetailActivity : BaseActivity() {
 //            iosParameters("com.example.ios") { }
 //        }
 
-        val shortLinkTask = Firebase.dynamicLinks.shortLinkAsync {
+        val shareTitle = URLEncoder.encode(viewModel.challengeData.value?.goal ?: "", Charsets.UTF_8.name())
+        val imageUrl = viewModel.challengeData.value?.imageFile?.path ?: ""
+
+        Firebase.dynamicLinks.shortLinkAsync {
             link = Uri.parse("https://challenge.mooin.kr")
-            longLink = Uri.parse("https://mooin.page.link/?link=" +
-                    "https://challenge.mooin.kr/?id=$challengeId&apn=com.example.android&ibn=com.example.ios")
+            longLink = Uri.parse(
+                "https://mooin.page.link/?link=" +
+                        "https://challenge.mooin.kr/?id=$challengeId&apn=$packageName&ibn=$packageName&si=$imageUrl&st=$shareTitle"
+            )
             domainUriPrefix = "https://mooin.page.link"
+            title = shareTitle
         }.addOnSuccessListener { (shortLink, flowchartLink) ->
-            Timber.e("shortLink : $shortLink, flowchartLink : $flowchartLink")
-
-            val link = shortLink.toString() + "?id=$challengeId"
-
+            Timber.d("shortLink : $shortLink, flowchartLink : $flowchartLink")
             // Short link created
             val intent = Intent(Intent.ACTION_SEND)
             intent.addCategory(Intent.CATEGORY_DEFAULT)
             intent.type = "text/plain"
-            intent.putExtra(Intent.EXTRA_TEXT, link)
+            intent.putExtra(Intent.EXTRA_TEXT, shortLink.toString())
 
             val shareIntent = Intent.createChooser(intent, "공유하기")
             startActivity(shareIntent)

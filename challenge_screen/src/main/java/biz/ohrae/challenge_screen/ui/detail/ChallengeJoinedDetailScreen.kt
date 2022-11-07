@@ -11,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -100,8 +101,10 @@ fun ChallengeJoinedDetailScreen(
                     ImageBox(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .aspectRatio(1.51f),
-                        imagePath = ""
+                            .aspectRatio(1.51f)
+                            .background(TextBlack),
+                        imagePath = challengeData.imageFile?.path.toString(),
+                        contentScale = ContentScale.Crop
                     )
                     Spacer(modifier = Modifier.height(24.dp))
                 }
