@@ -410,16 +410,6 @@ class ChallengeDetailActivity : BaseActivity() {
     }
 
     private fun onShare() {
-//        val dynamicLink = Firebase.dynamicLinks.dynamicLink {
-//            link = Uri.parse("https://challenge.mooin.kr?id=$challengeId")
-//            domainUriPrefix = "https://mooin.page.link"
-//            // Open links with this app on Android
-//            androidParameters {
-//            }
-//            // Open links with com.example.ios on iOS
-//            iosParameters("com.example.ios") { }
-//        }
-
         val shareTitle = URLEncoder.encode(viewModel.challengeData.value?.goal ?: "", Charsets.UTF_8.name())
         val imageUrl = viewModel.challengeData.value?.imageFile?.path ?: ""
 
@@ -442,15 +432,8 @@ class ChallengeDetailActivity : BaseActivity() {
             val shareIntent = Intent.createChooser(intent, "공유하기")
             startActivity(shareIntent)
         }.addOnFailureListener {
-            // Error
-            // ...
             showSnackBar("공유 링크 생성에 실패했습니다.")
         }
-//
-//        val i = Intent(Intent.ACTION_VIEW, dynamicLink.uri)
-//        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//        i.setPackage("com.android.chrome")
-//        startActivity(i)
     }
 
     private fun onBottomReached() {
