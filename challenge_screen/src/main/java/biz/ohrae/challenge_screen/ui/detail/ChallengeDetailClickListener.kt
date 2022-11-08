@@ -9,7 +9,7 @@ interface ChallengeDetailClickListener {
     fun onClickReTakePhoto()
     fun onClickUsePhoto()
     fun onClickRedCardInfo()
-    fun onClickShowAllChallengers()
+    fun onClickShowAllChallengers(authType:String ="")
     fun onDone(content: String)
     fun onClickAuthItemCard()
     fun onClickCaution()

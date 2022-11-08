@@ -53,6 +53,8 @@ fun ChallengersResultsScreen(
     val listState = rememberLazyListState()
     val scope = rememberCoroutineScope()
 
+    val authType =
+        if (challengeData?.is_verification_photo == 1) "photo" else if (challengeData?.is_verification_checkin == 1) "checkin" else "time"
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -124,7 +126,8 @@ fun ChallengersResultsScreen(
                             if (challengers != null) {
                                 ResultChallengers(
                                     challengers = challengers,
-                                    clickListener = clickListener
+                                    clickListener = clickListener,
+                                    authType = authType
                                 )
                             }
                         } else {
@@ -149,15 +152,21 @@ fun ChallengersResultsScreen(
 @Composable
 fun ResultChallengers(
     challengers: List<User>,
-    clickListener: ChallengeDetailClickListener? = null
+    clickListener: ChallengeDetailClickListener? = null,
+    authType:String
 ) {
     Column {
         challengers.forEachIndexed { index, user ->
             if (index < 10) {
+                val timeDays = when (authType) {
+                    "photo" -> "${user.inChallenge?.get(0)?.verification_cnt.toString()}회"
+                    "checkin" -> "${user.inChallenge?.get(0)?.verification_cnt.toString()}일"
+                    else -> "${user.inChallenge?.get(0)?.verification_time.toString()}"
+                }
                 RankItem(
                     userName = user.getUserName(),
                     rank = user.inChallenge?.get(0)?.ranking.toString(),
-                    timeDays = "${user.inChallenge?.get(0)?.verification_cnt.toString()}회",
+                    timeDays = timeDays,
                     progress = "${user.inChallenge?.get(0)?.achievement_percent.toString()}%"
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -171,7 +180,7 @@ fun ResultChallengers(
                     .aspectRatio(7.1f),
                 text = "+더보기",
                 onClick = {
-                    clickListener?.onClickShowAllChallengers()
+                    clickListener?.onClickShowAllChallengers(authType)
                 }
             )
         }

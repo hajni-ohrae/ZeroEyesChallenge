@@ -32,6 +32,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
+import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.challengers.ChallengersActivity
 import biz.ohrae.challenge_screen.ui.dialog.ConfirmDialog
@@ -60,6 +61,8 @@ class ChallengeDetailActivity : BaseActivity() {
 
     private var challengeId: String? = null
     private var isParticipant: Boolean = false
+    private var type: String? = null
+    private var authType: String? = null
 
     private lateinit var launcher: ActivityResultLauncher<Intent>
 
@@ -327,15 +330,16 @@ class ChallengeDetailActivity : BaseActivity() {
                 navController.navigate(ChallengeDetailNavScreen.RedCardInfo.route)
             }
 
-            override fun onClickShowAllChallengers() {
+            override fun onClickShowAllChallengers(authType: String) {
                 val intent = Intent(this@ChallengeDetailActivity, ChallengersActivity::class.java)
                 intent.putExtra("challengeId", challengeId)
-                val type: String = if (viewModel.isFinished.value == false) {
+                type = if (viewModel.isFinished.value == false) {
                     "finish"
                 } else {
                     if (viewModel.isJoined.value == true) "join" else ""
                 }
                 intent.putExtra("type", type)
+                intent.putExtra("authType", authType)
                 startActivity(intent)
             }
 

@@ -534,7 +534,7 @@ fun Challengers(
                     .aspectRatio(7.1f),
                 text = "전체보기",
                 onClick = {
-                    clickListener?.onClickShowAllChallengers()
+                    clickListener?.onClickShowAllChallengers("")
                 }
             )
         }

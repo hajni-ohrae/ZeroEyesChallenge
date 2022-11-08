@@ -25,18 +25,29 @@ import biz.ohrae.challenge_repo.model.user.User
 fun ChallengersScreen(
     challengeData: ChallengeData? = null,
     challengers: List<User>? = null,
-    type:String? = ""
+    type: String? = "",
+    authType: String? = ""
 ) {
     if (challengers == null) {
         return
     }
-    LazyColumn(modifier = Modifier.fillMaxSize().background(DefaultWhite)) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(DefaultWhite)
+    ) {
         if (type == "finish")
             items(challengers) { item ->
+
+                val timeDays = when (authType) {
+                    "photo" -> "${item.inChallenge?.get(0)?.verification_cnt.toString()}회"
+                    "checkin" -> "${item.inChallenge?.get(0)?.verification_cnt.toString()}일"
+                    else -> "${item.inChallenge?.get(0)?.verification_time.toString()}"
+                }
                 RankItem(
                     userName = item.getUserName(),
                     rank = item.inChallenge?.get(0)?.ranking.toString(),
-                    timeDays = "${item.inChallenge?.get(0)?.verification_cnt.toString()}회",
+                    timeDays = timeDays,
                     progress = "${item.inChallenge?.get(0)?.achievement_percent.toString()}%"
                 )
             } else {
@@ -45,7 +56,7 @@ fun ChallengersScreen(
                     userName = item.getUserName(),
                     rank = item.inChallenge?.get(0)?.ranking.toString(),
 
-                )
+                    )
             }
         }
     }

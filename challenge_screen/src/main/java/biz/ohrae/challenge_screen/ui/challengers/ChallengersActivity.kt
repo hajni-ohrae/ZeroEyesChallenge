@@ -28,12 +28,14 @@ class ChallengersActivity: BaseActivity() {
 
     private var challengeId: String? = null
     private var type: String? = null
+    private var authType: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this)[ChallengeDetailViewModel::class.java]
         challengeId = intent.getStringExtra("challengeId")
         type = intent.getStringExtra("type")
+        authType = intent.getStringExtra("authType")
 
         setContent {
             ChallengeInTheme {
@@ -91,7 +93,8 @@ class ChallengersActivity: BaseActivity() {
                 ChallengersScreen(
                     challengers = challengers,
                     challengeData = challengeData,
-                    type = type
+                    type = type,
+                    authType = authType
                 )
             }
         }
