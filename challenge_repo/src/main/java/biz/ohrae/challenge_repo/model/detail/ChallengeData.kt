@@ -105,7 +105,8 @@ data class InChallenge(
     val refund_amount:Int,
     val deposit_amount: Int?,
     val rewards_amount:Int?,
-    var verifications: List<ChallengeVerification>?
+    var verifications: List<ChallengeVerification>?,
+    val verification_time:String?,
 )
 
 data class ImageFile(

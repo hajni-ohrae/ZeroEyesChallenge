@@ -308,7 +308,7 @@ class ChallengeDetailRepo @Inject constructor(
 
     suspend fun getChallengeResult(id: String): Flow<FlowResult> {
         val accessToken = prefs.getUserData()?.access_token
-        val response = apiService.getChallenge(accessToken.toString(), id)
+        val response = apiService.getChallengeResult(accessToken.toString(), id)
 
         when (response) {
             is NetworkResponse.Success -> {

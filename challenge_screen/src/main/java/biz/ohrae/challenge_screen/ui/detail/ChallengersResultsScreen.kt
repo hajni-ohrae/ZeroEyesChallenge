@@ -12,14 +12,15 @@ import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import biz.ohrae.challenge.ui.components.button.FlatBookMarkButton
-import biz.ohrae.challenge.ui.components.detail.ChallengeJoinedDetailsTitle
-import biz.ohrae.challenge.ui.components.image.ImageBox
+import biz.ohrae.challenge.ui.components.button.FlatGrayButton
+import biz.ohrae.challenge.ui.components.list_item.RankItem
 import biz.ohrae.challenge.ui.theme.DefaultWhite
+import biz.ohrae.challenge.ui.theme.TextBlack
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
@@ -121,7 +122,7 @@ fun ChallengersResultsScreen(
                     ) { page ->
                         if (page == 0) {
                             if (challengers != null) {
-                                Challengers(
+                                ResultChallengers(
                                     challengers = challengers,
                                     clickListener = clickListener
                                 )
@@ -142,5 +143,38 @@ fun ChallengersResultsScreen(
                 onBottomReached()
             }
         }
+    }
+}
+
+@Composable
+fun ResultChallengers(
+    challengers: List<User>,
+    clickListener: ChallengeDetailClickListener? = null
+) {
+    Column {
+        challengers.forEachIndexed { index, user ->
+            if (index < 10) {
+                RankItem(
+                    userName = user.getUserName(),
+                    rank = user.inChallenge?.get(0)?.ranking.toString(),
+                    timeDays = "${user.inChallenge?.get(0)?.verification_cnt.toString()}회",
+                    progress = "${user.inChallenge?.get(0)?.achievement_percent.toString()}%"
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+        }
+        if (challengers.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(17.dp))
+            FlatGrayButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(7.1f),
+                text = "+더보기",
+                onClick = {
+                    clickListener?.onClickShowAllChallengers()
+                }
+            )
+        }
+        Spacer(modifier = Modifier.height(100.dp))
     }
 }

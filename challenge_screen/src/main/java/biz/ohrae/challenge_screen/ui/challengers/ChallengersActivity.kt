@@ -17,6 +17,7 @@ import androidx.navigation.compose.rememberNavController
 import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge_screen.ui.BaseActivity
+import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailNavScreen
 import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailViewModel
 import biz.ohrae.challenge_screen.ui.dialog.LoadingDialog
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,11 +27,13 @@ class ChallengersActivity: BaseActivity() {
     private lateinit var viewModel: ChallengeDetailViewModel
 
     private var challengeId: String? = null
+    private var type: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this)[ChallengeDetailViewModel::class.java]
         challengeId = intent.getStringExtra("challengeId")
+        type = intent.getStringExtra("type")
 
         setContent {
             ChallengeInTheme {
@@ -78,6 +81,7 @@ class ChallengersActivity: BaseActivity() {
     private fun Navigation() {
         val navController = rememberNavController()
         val challengers by viewModel.challengers.observeAsState()
+        val challengeData by viewModel.challengeData.observeAsState()
 
         NavHost(
             navController = navController,
@@ -85,7 +89,9 @@ class ChallengersActivity: BaseActivity() {
         ) {
             composable(ChallengersNavScreen.Challengers.route) {
                 ChallengersScreen(
-                    challengers = challengers
+                    challengers = challengers,
+                    challengeData = challengeData,
+                    type = type
                 )
             }
         }

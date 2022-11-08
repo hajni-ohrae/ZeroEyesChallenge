@@ -116,7 +116,7 @@ fun ChallengeFinishedScreen(
                         style = myTypography.bold,
                     )
                     Text(
-                        text = "${challengeData?.inChallenge?.get(0)?.achievement_percent} %",
+                        text = "${challengeData?.inChallenge?.get(0)?.achievement_percent}%",
                         fontSize = dpToSp(dp = 16.dp),
                         style = myTypography.bold,
                         color = Color(0xffff5800)
@@ -135,7 +135,7 @@ fun ChallengeFinishedScreen(
                         style = myTypography.w500,
                     )
                     Text(
-                        text = "${challengeData?.inChallenge?.get(0)?.ranking} 위 ",
+                        text = "${challengeData?.inChallenge?.get(0)?.verification_time} 위 ",
                         fontSize = dpToSp(dp = 16.dp),
                         style = myTypography.bold,
                     )
@@ -378,62 +378,6 @@ private fun ChallengeProgressFinishDetail(
         Row {
             Text(
                 text = "인증성공 ${verificationState.successCount}개",
-                style = myTypography.bold,
-                fontSize = dpToSp(dp = 14.dp)
-            )
-            Spacer(modifier = Modifier.width(16.dp))
-            Text(
-                text = "인증실패 ${verificationState.failCount}개",
-                style = myTypography.bold,
-                fontSize = dpToSp(dp = 14.dp)
-            )
-        }
-        Spacer(modifier = Modifier.height(8.dp))
-
-        val spacing by remember { mutableStateOf(3.5.dp) }
-        val itemSize = (LocalConfiguration.current.screenWidthDp.dp - 48.dp - (spacing * 9)) / 10
-
-        FlowRow(
-            mainAxisSize = SizeMode.Expand,
-            crossAxisAlignment = FlowCrossAxisAlignment.Start,
-            mainAxisSpacing = 3.5.dp,
-            crossAxisSpacing = 3.5.dp
-        ) {
-            verificationState.verifications?.forEach { item ->
-                when (item.state) {
-                    Verification.NORMAL, Verification.SUCCESS -> {
-                        ProgressRatioItem(
-                            modifier = Modifier.size(itemSize),
-                            isSuccess = item.state == Verification.SUCCESS,
-                            number = item.day.toString()
-                        )
-                    }
-                    Verification.FAIL -> {
-                        ProgressRatioFailItem(
-                            modifier = Modifier.size(itemSize),
-                        )
-                    }
-                }
-            }
-        }
-        Spacer(modifier = Modifier.height(24.dp))
-    }
-}
-
-@Composable
-private fun ProgressDetail(
-    verificationState: VerificationState
-) {
-    Column {
-        Row {
-            Text(
-                text = "인증성공 ${verificationState.successCount}개",
-                style = myTypography.bold,
-                fontSize = dpToSp(dp = 14.dp)
-            )
-            Spacer(modifier = Modifier.width(16.dp))
-            Text(
-                text = "남은인증 ${verificationState.remainCount}개",
                 style = myTypography.bold,
                 fontSize = dpToSp(dp = 14.dp)
             )

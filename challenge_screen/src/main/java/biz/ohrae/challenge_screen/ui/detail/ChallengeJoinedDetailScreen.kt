@@ -545,7 +545,6 @@ fun Challengers(
 @Composable
 fun ChallengeAuthPage(
     challengeVerifiedList: List<VerifyData>? = null,
-    verifyListState: VerifyListState? = null,
     clickListener: ChallengeDetailClickListener? = null
 ) {
     if (challengeVerifiedList.isNullOrEmpty()) {

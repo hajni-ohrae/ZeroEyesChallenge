@@ -153,7 +153,39 @@ fun FlatBorderButton(
         )
     }
 }
-
+@Composable
+fun FlatGrayButton(
+    modifier: Modifier = Modifier,
+    text: String = "확인",
+    textStyle: TextStyle = myTypography.extraBold,
+    enabled: Boolean = true,
+    onClick: () -> Unit = {}
+) {
+    Button(
+        modifier = modifier,
+        colors = ButtonDefaults.textButtonColors(
+            backgroundColor = Color(0xfff3f3f3),
+            contentColor = TextBlack
+        ),
+        shape = RoundedCornerShape(24.dp),
+        elevation = ButtonDefaults.elevation(
+            defaultElevation = 0.dp,
+            pressedElevation = 0.dp,
+            disabledElevation = 0.dp
+        ),
+        onClick = {
+            if (enabled) {
+                onClick()
+            }
+        }
+    ) {
+        Text(
+            text = text,
+            style = textStyle,
+            fontSize = dpToSp(dp = 14.dp)
+        )
+    }
+}
 @Composable
 fun FlatDoubleButton(
     modifier: Modifier = Modifier,

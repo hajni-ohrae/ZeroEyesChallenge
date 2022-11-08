@@ -69,6 +69,7 @@ fun VerifiedList(
     onBottomReached: () -> Unit = {},
 ) {
     val listState = rememberLazyListState()
+    var like by remember { mutableStateOf(false) }
 
     if (challengeVerifiedList != null) {
         LazyColumn(
@@ -91,7 +92,11 @@ fun VerifiedList(
                             )
                         }
                     },
-                    onLike = { clickListener?.onClickLike(true) },
+                    onLike = {
+                        like = !like
+                        clickListener?.onClickLike(
+                            item.id,true)
+                    },
                     isLike = item.isLike
                 )
             }

@@ -132,6 +132,8 @@ class ChallengeDetailActivity : BaseActivity() {
         val isFinished by viewModel.isFinished.observeAsState()
         val challengeData by viewModel.challengeData.observeAsState()
         val challengeVerificationState by viewModel.challengeVerificationState.observeAsState()
+        val challengers by viewModel.challengers.observeAsState()
+        val challengeVerifiedList by viewModel.challengeVerifiedList.observeAsState()
 
         if (isJoined == null || challengeData == null) {
             return
@@ -148,7 +150,6 @@ class ChallengeDetailActivity : BaseActivity() {
             startDestination = startPage
         ) {
             composable(ChallengeDetailNavScreen.Detail.route) {
-                val challengers by viewModel.challengers.observeAsState()
 
                 ChallengeDetailScreen(
                     challengeData = challengeData,
@@ -160,7 +161,6 @@ class ChallengeDetailActivity : BaseActivity() {
             }
             composable(ChallengeDetailNavScreen.JoinedDetail.route) {
                 val challengers by viewModel.challengers.observeAsState()
-                val challengeVerifiedList by viewModel.challengeVerifiedList.observeAsState()
 
                 ChallengeJoinedDetailScreen(
                     challengeData = challengeData,
@@ -213,6 +213,10 @@ class ChallengeDetailActivity : BaseActivity() {
                 ChallengersResultsScreen(
                     challengeData = challengeData,
                     verificationState = challengeVerificationState,
+                    challengeVerifiedList = challengeVerifiedList,
+                    challengers = challengers,
+                    clickListener = detailClickListener
+
                 )
             }
 
@@ -326,6 +330,12 @@ class ChallengeDetailActivity : BaseActivity() {
             override fun onClickShowAllChallengers() {
                 val intent = Intent(this@ChallengeDetailActivity, ChallengersActivity::class.java)
                 intent.putExtra("challengeId", challengeId)
+                val type: String = if (viewModel.isFinished.value == false) {
+                    "finish"
+                } else {
+                    if (viewModel.isJoined.value == true) "join" else ""
+                }
+                intent.putExtra("type", type)
                 startActivity(intent)
             }
 
@@ -421,7 +431,8 @@ class ChallengeDetailActivity : BaseActivity() {
     }
 
     private fun onShare() {
-        val shareTitle = URLEncoder.encode(viewModel.challengeData.value?.goal ?: "", Charsets.UTF_8.name())
+        val shareTitle =
+            URLEncoder.encode(viewModel.challengeData.value?.goal ?: "", Charsets.UTF_8.name())
         val imageUrl = viewModel.challengeData.value?.imageFile?.path ?: ""
 
         Firebase.dynamicLinks.shortLinkAsync {

@@ -156,8 +156,9 @@ class ChallengeAuthFeedActivity : BaseActivity() {
                 dialog.show(supportFragmentManager, "ReportDialog")
             }
 
-            override fun onClickLike(like: Boolean) {
-
+            override fun onClickLike(verificationId: String, like: Boolean) {
+                val isLike = if (like) 1 else 0
+                viewModel.feedLike(verificationId = verificationId, like = isLike)
             }
 
         }

@@ -23,5 +23,8 @@ interface ChallengeAuthFeedClickListener {
         verificationId: String,
         user: User
     )
-    fun onClickLike(like:Boolean)
+
+    fun onClickLike(
+        verificationId: String, like: Boolean
+    )
 }
