@@ -309,12 +309,12 @@ class ChallengeDetailActivity : BaseActivity() {
             }
 
             override fun onClickBookMark(like: Boolean) {
-                val fa: Int = if (like) {
+                val favorite: Int = if (like) {
                     1
                 } else {
                     0
                 }
-                viewModel.favoriteChallenge(challengeId.toString(), fa)
+                viewModel.favoriteChallenge(challengeId.toString(), favorite)
 //                showSnackBar("준비중입니다.")
             }
 

@@ -54,7 +54,7 @@ fun FeedItem(
     onLike: () -> Unit = {},
     isLike: Int = 0
 ) {
-    val like = isLike == 1
+    val like = isLike == 0
     Column(
         modifier = Modifier
             .background(DefaultWhite)

@@ -277,12 +277,12 @@ class ChallengeDetailViewModel @Inject constructor(
                 .collect { result ->
                     if (result.data != null) {
                         val success = result.data as Boolean
-                        _report.value = success
+                        _favorite.value = success
                         if (!success) {
                             setErrorData(result.errorCode, result.errorMessage)
                         }
                     } else {
-                        _report.value = null
+                        _favorite.value = null
                         setErrorData(null, result.errorMessage)
                     }
                 }
