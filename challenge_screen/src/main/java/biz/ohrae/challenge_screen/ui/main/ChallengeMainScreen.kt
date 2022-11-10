@@ -56,7 +56,6 @@ fun ChallengeMainScreen(
     onRefresh: () -> Unit = {}
 ) {
     Timber.e("list refresh? : ${mainScreenState?.challengeList?.size}")
-    Spacer(modifier = Modifier.height(16.dp))
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -122,6 +121,9 @@ private fun ChallengeList(
         state = listState,
     ) {
         item {
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+        item {
             ItemHeader(
                 mainScreenState = mainScreenState,
                 clickListener = clickListener,
@@ -150,6 +152,9 @@ private fun ChallengeList(
                     clickListener?.onClickChallengeItem(it)
                 },
             )
+        }
+        item {
+            Spacer(modifier = Modifier.height(24.dp))
         }
     }
     listState.OnBottomReached {
