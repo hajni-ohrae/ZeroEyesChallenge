@@ -40,10 +40,11 @@ fun MyRewardScreen(
     rewardList: List<RewardData>? = null
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .weight(1f)
-            .padding(24.dp, 0.dp)
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .padding(24.dp, 0.dp)
         ) {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
@@ -74,15 +75,17 @@ fun MyRewardScreen(
                     }
                 } else {
                     items(rewardList) { item ->
+                        val type =
+                            if (item.type == "earn") "적립" else if (item.type == "expire") "소멸" else ""
                         RewardHistoryItem(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .defaultMinSize(minHeight = 105.dp),
-                            date = "",
+                            date =  Utils.convertDate8(item?.created_date.toString()),
                             progress = item.inChallenge?.achievement_percent.toString(),
                             title = item.challenge?.goal.toString(),
                             price = item.amount.toString(),
-                            progressStatus = item.type,
+                            progressStatus = type,
                             background = Utils.userChallengeBackground(item.type),
                             textColor = Utils.userChallengeTextColor(item.type),
                         )

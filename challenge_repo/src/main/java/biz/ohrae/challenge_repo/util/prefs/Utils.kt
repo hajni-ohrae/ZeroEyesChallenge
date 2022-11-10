@@ -228,6 +228,18 @@ object Utils {
         }
     }
 
+    fun convertDate8(dateStr: String): String {
+            return try {
+                val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
+                val date = inputFormat.parse(dateStr)
+                val outputFormat = SimpleDateFormat("yyyy.MM.dd HH:mm", Locale.KOREA)
+                outputFormat.timeZone = TimeZone.getTimeZone("Asia/Seoul")
+                outputFormat.format(date!!)
+            } catch (ignore: Exception) {
+                ""
+            }
+    }
+
     fun endDateCalculation(startDate: String, week: Int): String {
         return try {
             val cal = Calendar.getInstance()

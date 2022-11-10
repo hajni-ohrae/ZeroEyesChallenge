@@ -20,8 +20,6 @@ data class MainScreenState(
             ),
             topBannerList = listOf(
                 TopBannerData.mock(),
-                TopBannerData.mock(),
-                TopBannerData.mock(),
             ),
             authCycleList = listOf(
                 AuthCycle("1주동안"),
