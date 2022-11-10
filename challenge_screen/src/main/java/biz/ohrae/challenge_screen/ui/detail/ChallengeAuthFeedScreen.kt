@@ -95,9 +95,9 @@ fun VerifiedList(
                     onLike = {
                         like = !like
                         clickListener?.onClickLike(
-                            item.id,true)
+                            item.id,like)
                     },
-                    isLike = item.isLike
+                    isLike = item.is_like
                 )
             }
         }
