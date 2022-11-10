@@ -154,7 +154,7 @@ private fun ChallengeList(
             )
         }
         item {
-            Spacer(modifier = Modifier.height(48.dp))
+            Spacer(modifier = Modifier.height(100.dp))
         }
     }
     listState.OnBottomReached {
