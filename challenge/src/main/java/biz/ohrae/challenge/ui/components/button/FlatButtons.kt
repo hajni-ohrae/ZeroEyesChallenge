@@ -153,6 +153,7 @@ fun FlatBorderButton(
         )
     }
 }
+
 @Composable
 fun FlatGrayButton(
     modifier: Modifier = Modifier,
@@ -186,6 +187,7 @@ fun FlatGrayButton(
         )
     }
 }
+
 @Composable
 fun FlatDoubleButton(
     modifier: Modifier = Modifier,
@@ -279,8 +281,10 @@ fun FlatBookMarkButton(
             } else {
                 Icon(
                     painter = painterResource(id = R.drawable.icon_like_on),
-                    contentDescription = "icon_like_on"
-                )
+                    contentDescription = "icon_like_on",
+                    tint = Color.Unspecified,
+
+                    )
             }
         }
         Button(

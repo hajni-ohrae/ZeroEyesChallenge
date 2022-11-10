@@ -113,7 +113,7 @@ interface ApiService {
         @Body body: JsonObject?
     ): NetworkResponse<Result, Error>
 
-    @POST(Routes.GET_RADCARD_LIST)
+    @GET(Routes.GET_RADCARD_LIST)
     suspend fun getRedCardList(
         @Header("x-access-token") accessToken: String,
         @Query("page") page: Int,
