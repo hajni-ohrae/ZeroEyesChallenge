@@ -401,14 +401,14 @@ class ChallengeDetailActivity : BaseActivity() {
                 } else {
                     Snackbar.make(
                         findViewById(android.R.id.content),
-                        "Permission Denied",
+                        "앱 설정에서 권한을 확인해주세요.",
                         Snackbar.LENGTH_SHORT
                     ).show()
                 }
             } else {
                 Snackbar.make(
                     findViewById(android.R.id.content),
-                    "Permission Denied",
+                    "앱 설정에서 권한을 확인해주세요.",
                     Snackbar.LENGTH_SHORT
                 ).show()
             }

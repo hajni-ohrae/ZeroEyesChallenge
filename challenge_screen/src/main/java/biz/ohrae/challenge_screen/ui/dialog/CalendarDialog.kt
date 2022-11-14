@@ -175,7 +175,7 @@ private fun ComposeCalendar(
     selectedCalendarDay: String? = null,
 ) {
     val now by remember { mutableStateOf(LocalDate.now().plusDays(1)) }
-    val limitDay by remember { mutableStateOf(LocalDate.now().plusDays(11)) }
+    val limitDay by remember { mutableStateOf(LocalDate.now().plusDays(15)) }
 
     val startMonth by remember { mutableStateOf(now.yearMonth) }
     val endMonth by remember { mutableStateOf(limitDay.yearMonth) }

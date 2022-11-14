@@ -2,13 +2,15 @@ package biz.ohrae.challenge_screen.ui.register
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.annotation.TargetApi
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
-import android.os.SystemClock
+import android.os.Environment
 import android.provider.MediaStore
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResult
@@ -48,6 +50,7 @@ import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
+
 
 @AndroidEntryPoint
 class RegisterActivity : BaseActivity() {
@@ -301,7 +304,9 @@ class RegisterActivity : BaseActivity() {
                         permissionResults.toTypedArray(),
                         100
                     )
+                    Timber.e("here!!")
                 } else {
+                    Timber.e("here??")
                     callImageSelector()
                 }
             }
@@ -411,9 +416,11 @@ class RegisterActivity : BaseActivity() {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 callImageSelector()
             } else {
+                Timber.e("permissions : ${Gson().toJson(permissions)}")
+                Timber.e("grantResults : ${Gson().toJson(grantResults)}")
                 Snackbar.make(
                     findViewById(android.R.id.content),
-                    "Permission Denied",
+                    "앱 설정에서 권한을 확인해주세요.",
                     Snackbar.LENGTH_SHORT
                 ).show()
             }
@@ -447,7 +454,7 @@ class RegisterActivity : BaseActivity() {
         uri.authority?.let {
             try {
                 context.contentResolver.openInputStream(uri).use {
-                    val photoFile: File? = FileUtils.createTemporalFileFrom(it)
+                    val photoFile: File? = FileUtils.createTemporalFileFrom(it, context)
                     filePath = photoFile?.path
                 }
             } catch (e: FileNotFoundException) {
@@ -518,6 +525,19 @@ class RegisterActivity : BaseActivity() {
         }
         startActivity(intent)
         finish()
+    }
+
+    @TargetApi(Build.VERSION_CODES.R)
+    private fun isFileGranted(mContext: Context): Boolean {
+        var granted = false // 권한 부여 상태값 저장
+        try {
+            // [파일 접근 권한이 허용 된 경우]
+            granted = Environment.isExternalStorageManager() == true
+        } catch (why: Throwable) {
+            //why.printStackTrace();
+        }
+        // [결과 반환 실시]
+        return granted
     }
 }
 
