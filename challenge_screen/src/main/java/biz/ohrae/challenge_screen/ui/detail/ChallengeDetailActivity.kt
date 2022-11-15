@@ -32,13 +32,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
-import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.challengers.ChallengersActivity
 import biz.ohrae.challenge_screen.ui.dialog.ConfirmDialog
 import biz.ohrae.challenge_screen.ui.dialog.CustomDialogListener
 import biz.ohrae.challenge_screen.ui.dialog.LoadingDialog
+import biz.ohrae.challenge_screen.ui.mychallenge.MyChallengeViewModel
 import biz.ohrae.challenge_screen.ui.mychallenge.PolicyScreen
+import biz.ohrae.challenge_screen.ui.niceid.NiceIdActivity
 import biz.ohrae.challenge_screen.ui.participation.ParticipationActivity
 import biz.ohrae.challenge_screen.ui.policy.PolicyActivity
 import biz.ohrae.challenge_screen.ui.register.ChallengeCameraScreen
@@ -55,6 +56,8 @@ import java.net.URLEncoder
 @AndroidEntryPoint
 class ChallengeDetailActivity : BaseActivity() {
     private lateinit var viewModel: ChallengeDetailViewModel
+    private lateinit var myChallengeViewModel: MyChallengeViewModel
+
     private lateinit var navController: NavHostController
     private lateinit var detailClickListener: ChallengeDetailClickListener
     private lateinit var capturedCallback: ImageCapture.OnImageSavedCallback
@@ -69,6 +72,7 @@ class ChallengeDetailActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this)[ChallengeDetailViewModel::class.java]
+        myChallengeViewModel = ViewModelProvider(this)[MyChallengeViewModel::class.java]
 
         setContent {
             ChallengeInTheme {
@@ -227,6 +231,7 @@ class ChallengeDetailActivity : BaseActivity() {
     }
 
     private fun init() {
+        myChallengeViewModel.getUserData()
         viewModel.isLoading(true)
         viewModel.getChallenge(challengeId.toString())
         viewModel.getChallengeResult(challengeId.toString())
@@ -270,6 +275,16 @@ class ChallengeDetailActivity : BaseActivity() {
         detailClickListener = object : ChallengeDetailClickListener {
             override fun onClickParticipation() {
                 viewModel.challengeData.value?.let {
+                    val userData = prefs.getUserData()
+                    userData?.let { user ->
+                        if (user.is_identified <= 0) {
+                            val intent = Intent(this@ChallengeDetailActivity, NiceIdActivity::class.java)
+                            intent.putExtra("userId", user.id)
+                            startActivity(intent)
+                            return
+                        }
+                    }
+
                     if (it.status == "register") {
                         intent =
                             Intent(this@ChallengeDetailActivity, ParticipationActivity::class.java)

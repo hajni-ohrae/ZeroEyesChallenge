@@ -17,6 +17,7 @@ import biz.ohrae.challenge.ui.components.card.CategorySurFace
 import biz.ohrae.challenge.ui.components.label.ChallengeProgressStatus
 import biz.ohrae.challenge.ui.components.label.ProgressLabel
 import biz.ohrae.challenge.ui.theme.DefaultWhite
+import biz.ohrae.challenge.ui.theme.GrayColor10
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge_component.R
@@ -27,6 +28,7 @@ import java.util.*
 
 @Preview(
     showBackground = true,
+    backgroundColor = 0xffb9b9b9,
     widthDp = 360
 )
 @Composable
@@ -39,9 +41,10 @@ private fun ChallengeDetailsTitleGallery() {
             challengeItemData.personnel,
             challengeItemData.title,
             challengeItemData.startDate,
-            challengeItemData.endDate
+            challengeItemData.endDate,
+            "사진인증 (즉석 촬영으로만 인증 가능)"
         )
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(20.dp))
         ChallengeJoinedDetailsTitle(
             challengeItemData.state,
             challengeItemData.personnel,
@@ -50,7 +53,8 @@ private fun ChallengeDetailsTitleGallery() {
             isAdult = true,
             isPhoto = true,
             challengeItemData.startDate,
-            challengeItemData.endDate
+            challengeItemData.endDate,
+            "출석 인증 (입실 시 자동 인증)\n이용권 필요"
         )
     }
 }
@@ -61,7 +65,8 @@ fun ChallengeDetailsTitle(
     personnel: Int,
     detailTitle: String,
     startDay: String,
-    endDay: String
+    endDay: String,
+    authMethod: String,
 ) {
     Column {
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -97,6 +102,16 @@ fun ChallengeDetailsTitle(
         ChallengeRemainTime(startDay = startDay)
         Spacer(modifier = Modifier.height(24.dp))
         Text(
+            text = "인증 방법", fontSize = dpToSp(dp = 16.dp),
+            style = myTypography.bold,
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = authMethod,
+            fontSize = dpToSp(dp = 16.dp)
+        )
+        Spacer(modifier = Modifier.height(24.dp))
+        Text(
             text = "챌린지 기간", fontSize = dpToSp(dp = 16.dp),
             style = myTypography.bold,
         )
@@ -117,8 +132,9 @@ fun ChallengeJoinedDetailsTitle(
     isAdult: Boolean,
     isPhoto: Boolean,
     startDay: String,
-    endDay: String
-) {
+    endDay: String,
+    authMethod: String,
+    ) {
     Column {
         Row(verticalAlignment = Alignment.CenterVertically) {
             CategorySurFace(
@@ -147,6 +163,16 @@ fun ChallengeJoinedDetailsTitle(
         Text(
             text = detailTitle, fontSize = dpToSp(dp = 20.dp),
             style = myTypography.extraBold,
+        )
+        Spacer(modifier = Modifier.height(24.dp))
+        Text(
+            text = "인증 방법", fontSize = dpToSp(dp = 16.dp),
+            style = myTypography.bold,
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = authMethod,
+            fontSize = dpToSp(dp = 16.dp)
         )
         Spacer(modifier = Modifier.height(24.dp))
         Text(

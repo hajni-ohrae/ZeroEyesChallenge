@@ -22,6 +22,8 @@ import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailActivity
 import biz.ohrae.challenge_screen.ui.dialog.*
 import biz.ohrae.challenge_screen.ui.login.LoginActivity
 import biz.ohrae.challenge_screen.ui.mychallenge.MyChallengeActivity
+import biz.ohrae.challenge_screen.ui.mychallenge.MyChallengeViewModel
+import biz.ohrae.challenge_screen.ui.niceid.NiceIdActivity
 import biz.ohrae.challenge_screen.ui.policy.PolicyActivity
 import biz.ohrae.challenge_screen.ui.register.RegisterActivity
 import biz.ohrae.challenge_screen.ui.welcome.WelcomeActivity
@@ -34,6 +36,8 @@ import timber.log.Timber
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
     private lateinit var viewModel: ChallengeMainViewModel
+    private lateinit var myChallengeViewModel: MyChallengeViewModel
+
     private lateinit var mainClickListener: MainClickListener
     private var periodTypeValue: String = ""
     private var perWeekValue: String = ""
@@ -44,6 +48,7 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this)[ChallengeMainViewModel::class.java]
+        myChallengeViewModel = ViewModelProvider(this)[MyChallengeViewModel::class.java]
 
         setContent {
             ChallengeInTheme {
@@ -116,6 +121,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun init() {
+        myChallengeViewModel.getUserData()
         viewModel.getChallengeList()
         viewModel.getUserChallengeList("", isInit = true)
         viewModel.selectPeriodType("")
@@ -135,6 +141,16 @@ class MainActivity : BaseActivity() {
             }
 
             override fun onClickRegister() {
+                val user = prefs.getUserData()
+                user?.let {
+                    if (it.is_identified <= 0) {
+                        val intent = Intent(this@MainActivity, NiceIdActivity::class.java)
+                        intent.putExtra("userId", it.id)
+                        startActivity(intent)
+                        return
+                    }
+                }
+
                 if (BuildConfig.DEBUG) {
                     val intent = Intent(this@MainActivity, RegisterActivity::class.java)
                     startActivity(intent)

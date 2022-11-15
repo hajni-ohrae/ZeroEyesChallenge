@@ -628,10 +628,22 @@ object Utils {
             "photo"
         } else (if (challengeData.is_verification_time == 1) {
             "staying_time"
-        } else if (challengeData.is_verification_time == 1) {
+        } else if (challengeData.is_verification_checkin == 1) {
             "checkin"
         } else {
             ""
+        })
+    }
+
+    fun getAuthMethodText(challengeData: ChallengeData): String {
+        return if (challengeData.is_verification_photo == 1) {
+            "사진인증 (즉석 촬영으로만 인증 가능)"
+        } else (if (challengeData.is_verification_checkin == 1) {
+            "출석 인증 (입실 시 자동 인증)\n이용권 필요"
+        } else if (challengeData.is_verification_time == 1) {
+            "이용시간 인증 ( 입실~퇴실 시간으로 자동 인증)\n이용권 필요"
+        } else {
+            "알 수 없음"
         })
     }
 }

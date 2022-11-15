@@ -112,6 +112,7 @@ fun ChallengeJoinedDetailScreen(
             if (status != null) {
                 item {
                     ColumnForLazy {
+                        val authMethod = Utils.getAuthMethodText(challengeData)
                         ChallengeJoinedDetailsTitle(
                             status = status!!,
                             personnel = 0,
@@ -120,7 +121,8 @@ fun ChallengeJoinedDetailScreen(
                             isAdult = challengeData.is_adult_only == 1,
                             isPhoto = challengeData.is_verification_photo == 1,
                             startDay = challengeData.start_date.toString(),
-                            endDay = challengeData.end_date.toString()
+                            endDay = challengeData.end_date.toString(),
+                            authMethod = authMethod
                         )
                         Spacer(modifier = Modifier.height(24.dp))
                     }
@@ -346,32 +348,41 @@ private fun ChallengeJoinedDescription(
 
         val week by remember { mutableStateOf(challengeData.period) }
         val periodType by remember { mutableStateOf(challengeVerificationPeriodMap[challengeData.verification_period_type]) }
-        MiddleDotText(
-            text = "${week}주 동안 $periodType, 이용권 사용 내역이 이용시간으로 자동 인증됩니다.",
-            fontSize = dpToSp(dp = 14.dp),
-            lineHeight = dpToSp(dp = 19.6.dp),
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        val days by remember { mutableStateOf(challengeVerificationDayMap[challengeData.verification_period_type]) }
+        val weekType = if (periodType.isNullOrEmpty()) "${challengeData.per_week}회" else periodType
+
+        val topText = if (challengeData.is_verification_photo == 1) {
+            val subText = if (weekType == "매일") {
+                "하루에 한번 인증샷을 촬영하셔야 합니다."
+            } else {
+                "인증샷을 촬영하셔야 합니다."
+            }
+
+            "${week}주 동안 $weekType, $subText"
+        } else if (challengeData.is_verification_time == 1) {
+            "${week}주 동안 $weekType, 이용권 사용 내역이 이용시간으로 자동 인증됩니다."
+        } else if (challengeData.is_verification_checkin == 1) {
+            "${week}주 동안 $weekType, 출입한 내역이 출석으로  자동 인증됩니다"
+        } else {
+            ""
+        }
+
+        if (topText.isNotEmpty()) {
+            MiddleDotText(
+                text = topText,
+                fontSize = dpToSp(dp = 14.dp),
+                lineHeight = dpToSp(dp = 19.6.dp),
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+        }
+        var days by remember { mutableStateOf(challengeVerificationDayMap[challengeData.verification_period_type]) }
+        if (days.isNullOrEmpty()) days = "월,화,수,목,금,토,일"
         MiddleDotText(
             text = "인증 가능한 요일은 $days 입니다",
             fontSize = dpToSp(dp = 14.dp),
             lineHeight = dpToSp(dp = 19.6.dp)
         )
         Spacer(modifier = Modifier.height(8.dp))
-        MiddleDotText(
-            text = "이용시간은 이용권으로 입실한 시점부터 퇴실까지의 시간이 자동 누적됩니다 (외출시간 포함)",
-            fontSize = dpToSp(dp = 14.dp),
-            lineHeight = dpToSp(dp = 19.6.dp)
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        MiddleDotText(
-            text = "인증샷 피드에 이용권 사용 시간이 공개됩니다",
-            fontSize = dpToSp(dp = 14.dp),
-            lineHeight = dpToSp(dp = 19.6.dp)
-        )
         if (challengeData.is_verification_photo == 1) {
-            Spacer(modifier = Modifier.height(8.dp))
             MiddleDotText(
                 text = "사진첩은 사용하실 수 없습니다",
                 fontSize = dpToSp(dp = 14.dp),
@@ -383,35 +394,47 @@ private fun ChallengeJoinedDescription(
                 fontSize = dpToSp(dp = 14.dp),
                 lineHeight = dpToSp(dp = 19.6.dp)
             )
+        } else if (challengeData.is_verification_time == 1) {
+            MiddleDotText(
+                text = "이용시간은 이용권으로 입실한 시점부터 퇴실까지의 시간이 자동 누적됩니다 (외출시간 포함)",
+                fontSize = dpToSp(dp = 14.dp),
+                lineHeight = dpToSp(dp = 19.6.dp)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            MiddleDotText(
+                text = "인증샷 피드에 이용권 사용 시간이 공개됩니다",
+                fontSize = dpToSp(dp = 14.dp),
+                lineHeight = dpToSp(dp = 19.6.dp)
+            )
+        } else if (challengeData.is_verification_checkin == 1) {
+            MiddleDotText(
+                text = "출석은 매일 00시를 기준으로 처음 입실한 시각이 자동 체크됩니다",
+                fontSize = dpToSp(dp = 14.dp),
+                lineHeight = dpToSp(dp = 19.6.dp)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            MiddleDotText(
+                text = "인증샷 피드에 이용권 입실 시간이 공개됩니다",
+                fontSize = dpToSp(dp = 14.dp),
+                lineHeight = dpToSp(dp = 19.6.dp)
+            )
         }
+
         Spacer(modifier = Modifier.height(32.dp))
-        RedCardInfo(
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(13f),
-            onClick = {
-                clickListener?.onClickRedCardInfo()
-            }
-        )
-        Spacer(modifier = Modifier.height(32.dp))
-        Text(
-            text = "인증 방법 및 주의사항",
-            style = myTypography.bold,
-            fontSize = dpToSp(dp = 18.dp)
-        )
-        Spacer(modifier = Modifier.height(13.dp))
-        MiddleDotText(
-            text = challengeData.caution.toString(),
-            fontSize = dpToSp(dp = 14.dp),
-            lineHeight = dpToSp(dp = 19.6.dp)
-        )
-        Spacer(modifier = Modifier.height(4.dp))
-        MiddleDotText(
-            text = "손은 어떤 제스처든 모두 가능해요.",
-            fontSize = dpToSp(dp = 14.dp),
-            lineHeight = dpToSp(dp = 19.6.dp)
-        )
-        Spacer(modifier = Modifier.height(32.dp))
+        if (!challengeData.caution.isNullOrEmpty()) {
+            Text(
+                text = "인증 방법 및 주의사항",
+                style = myTypography.bold,
+                fontSize = dpToSp(dp = 18.dp)
+            )
+            Spacer(modifier = Modifier.height(13.dp))
+            Text(
+                text = challengeData.caution.toString(),
+                fontSize = dpToSp(dp = 14.dp),
+                lineHeight = dpToSp(dp = 19.6.dp)
+            )
+            Spacer(modifier = Modifier.height(32.dp))
+        }
         if (challengeData.is_verification_photo == 1) {
             ChallengePhotoAuthentication()
         }

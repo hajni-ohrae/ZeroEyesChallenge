@@ -4,20 +4,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import biz.ohrae.challenge_repo.model.user.*
-import biz.ohrae.challenge_repo.model.verify.VerifyData
 import biz.ohrae.challenge_repo.ui.main.ChallengeMainRepo
 import biz.ohrae.challenge_repo.ui.main.UserRepo
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import biz.ohrae.challenge_screen.model.user.RedCard
 import biz.ohrae.challenge_screen.model.user.RedCardListState
-import biz.ohrae.challenge_screen.model.user.UserChallengeListState
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -112,6 +108,10 @@ class MyChallengeViewModel @Inject constructor(
                 it.data?.let { data ->
                     val userData = data as User
                     _userData.value = userData
+                    val tempUserData = prefs.getUserData()
+                    userData.access_token = tempUserData?.access_token.toString()
+                    userData.refresh_token = tempUserData?.refresh_token.toString()
+                    prefs.setUserData(userData)
                 }
             }
         }
