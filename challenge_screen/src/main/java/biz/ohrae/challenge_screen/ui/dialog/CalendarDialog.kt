@@ -42,7 +42,12 @@ import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.*
 
-class CalendarDialog() : DialogFragment() {
+class CalendarDialog : DialogFragment() {
+    companion object {
+        const val MIN_DAYS = 1
+        const val MAX_DAYS = 15
+    }
+
     private lateinit var calendarDialogListener: CalendarDialogListener
 
     private var calendarDay: String? = null
@@ -174,8 +179,8 @@ private fun ComposeCalendar(
     onDayClick: (day: CalendarDay) -> Unit = {},
     selectedCalendarDay: String? = null,
 ) {
-    val now by remember { mutableStateOf(LocalDate.now().plusDays(1)) }
-    val limitDay by remember { mutableStateOf(LocalDate.now().plusDays(15)) }
+    val now by remember { mutableStateOf(LocalDate.now().plusDays(CalendarDialog.MIN_DAYS.toLong())) }
+    val limitDay by remember { mutableStateOf(LocalDate.now().plusDays(CalendarDialog.MAX_DAYS.toLong())) }
 
     val startMonth by remember { mutableStateOf(now.yearMonth) }
     val endMonth by remember { mutableStateOf(limitDay.yearMonth) }
@@ -325,8 +330,8 @@ private fun Day(
             .clickable(
                 enabled = day.position == DayPosition.MonthDate,
                 onClick = {
-                    if (day.date.isAfter(LocalDate.now().plusDays(1))
-                        && day.date.isBefore(LocalDate.now().plusDays(11))) {
+                    if (day.date.isAfter(LocalDate.now().plusDays(CalendarDialog.MIN_DAYS.toLong()))
+                        && day.date.isBefore(LocalDate.now().plusDays(CalendarDialog.MAX_DAYS.toLong()))) {
                         onClick(day)
                     }
                 }
