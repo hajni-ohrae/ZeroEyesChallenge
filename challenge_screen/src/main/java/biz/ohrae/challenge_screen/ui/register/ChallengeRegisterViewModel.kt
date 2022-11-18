@@ -219,6 +219,14 @@ class ChallengeRegisterViewModel @Inject constructor(
         }
     }
 
+    fun setAgeLimitType(type: String) {
+        val state = _challengeData.value?.copy()
+        state?.let {
+            it.age_limit_type = type
+            _challengeData.value = it
+        }
+    }
+
     fun selectDay(day:String){
         _selectDay.value = day
     }

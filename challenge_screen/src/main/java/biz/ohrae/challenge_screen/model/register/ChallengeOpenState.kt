@@ -8,6 +8,7 @@ data class ChallengeOpenState(
     val challengeRadioOptions: List<RadioOptions>,
     var recruitPeriod: List<DropDownItem>,
     var hoursOfUseList: List<DropDownItem>,
+    var ageList: List<DropDownItem>,
 ) {
     companion object {
         fun mock() = ChallengeOpenState(
@@ -41,6 +42,11 @@ data class ChallengeOpenState(
             ),
             hoursOfUseList = listOf(
                 DropDownItem("1일 누적 4시간 이상", "4"),
+            ),
+            ageList = listOf(
+                DropDownItem("제한없음","all"),
+                DropDownItem("18세 이상 참여","minor"),
+                DropDownItem("18세 미만 참여","adult"),
             )
         )
     }

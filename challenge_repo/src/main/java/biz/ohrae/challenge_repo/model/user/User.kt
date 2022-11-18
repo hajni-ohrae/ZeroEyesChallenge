@@ -1,5 +1,6 @@
 package biz.ohrae.challenge_repo.model.user
 
+import androidx.compose.ui.graphics.Color
 import biz.ohrae.challenge_repo.model.detail.ImageFile
 import biz.ohrae.challenge_repo.model.detail.InChallenge
 import biz.ohrae.challenge_repo.model.detail.Summary
@@ -33,8 +34,9 @@ data class User(
     val ranking: String?,
     val is_identified: Int,
     val inChallenge: List<InChallenge>?,
+    val main_color: String
 
-    ) {
+) {
     fun getUserName(): String {
         return nickname ?: (name ?: "이름없음")
     }

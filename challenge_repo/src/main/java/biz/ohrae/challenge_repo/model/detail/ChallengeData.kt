@@ -20,6 +20,7 @@ data class ChallengeData(
     var is_verification_checkin: Int = 0,
     var is_verification_time: Int = 0,
     var is_adult_only: Int = 0,
+    var age_limit_type: String? = null,
     val is_feed_open: Int = 0,
     val achievement_percent: Number = 0,
     val rewards_percent: Number = 0,

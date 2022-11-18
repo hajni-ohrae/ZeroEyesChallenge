@@ -111,12 +111,14 @@ fun ChallengeJoinedDetailScreen(
                 item {
                     ColumnForLazy {
                         val authMethod = Utils.getAuthMethodText(challengeData)
+                        val ageType = Utils.getAgeType(challengeData.age_limit_type.toString())
+
                         ChallengeJoinedDetailsTitle(
                             status = status!!,
                             personnel = 0,
                             detailTitle = challengeData.goal.toString(),
                             isFree = challengeData.min_deposit_amount == 0,
-                            isAdult = challengeData.is_adult_only == 1,
+                            ageType = ageType,
                             isPhoto = challengeData.is_verification_photo == 1,
                             startDay = challengeData.start_date.toString(),
                             endDay = challengeData.end_date.toString(),

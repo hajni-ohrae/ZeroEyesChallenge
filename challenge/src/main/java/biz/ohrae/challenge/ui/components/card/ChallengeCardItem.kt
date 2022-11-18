@@ -28,6 +28,7 @@ import biz.ohrae.challenge.ui.components.label.ChallengeDurationLabel
 import biz.ohrae.challenge.ui.theme.*
 import biz.ohrae.challenge_component.BuildConfig
 import biz.ohrae.challenge_component.R
+import com.bumptech.glide.util.Util
 
 @Preview(
     showBackground = true,
@@ -122,10 +123,13 @@ fun ChallengeCardItem(
     personnel: Int?,
     authType: String = "",
     openType: String = "",
-    adultType:Int = 0,
+    ageType: String = "",
     onClick: (id: String) -> Unit,
+    nicknameColor: String? = null
 ) {
-
+    val nameColor = nicknameColor ?: DefaultBlack
+    val ageBackgroundColor = if (ageType == "18세 미만 이용") Color(0x33c27247) else Color(0x33d4a03a)
+    val ageTextColor = if (ageType == "18세 미만 이용") Color(0xffc27247) else Color(0xffd4a03a)
     Card(
         modifier = Modifier
             .fillMaxWidth(),
@@ -161,12 +165,12 @@ fun ChallengeCardItem(
                     textColor = Color(0xff7c7c7c)
                 )
                 Spacer(modifier = Modifier.width(5.dp))
-                if (adultType == 1) {
+                if (ageType != "제한없음") {
                     CategorySurFace(
                         modifier = Modifier,
-                        text = "18세미만 참여불가",
-                        backgroundColor = Color(0x33c27247),
-                        textColor = Color(0xffc27247)
+                        text = ageType,
+                        backgroundColor = ageBackgroundColor,
+                        textColor = ageTextColor
                     )
 
                 }
@@ -198,13 +202,16 @@ fun ChallengeCardItem(
                         text = userName.toString(),
                         textAlign = TextAlign.Center,
                         style = myTypography.bold,
-                        fontSize = dpToSp(dp = 12.dp), color = DefaultBlack
+                        fontSize = dpToSp(dp = 12.dp),
+                        color = DefaultBlack
                     )
                 }
                 Row() {
                     Image(
                         painter = painterResource(id = R.drawable.icon_user),
-                        modifier = Modifier.clip(CircleShape).size(20.dp),
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .size(20.dp),
                         contentDescription = "avatar_fail"
                     )
                     Text(

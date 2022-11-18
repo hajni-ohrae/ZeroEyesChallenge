@@ -102,13 +102,15 @@ fun ChallengeDetailScreen(
             Spacer(modifier = Modifier.height(24.dp))
             if (status != null) {
                 val authMethod = Utils.getAuthMethodText(challengeData)
+                val ageType = Utils.getAgeType(challengeData.age_limit_type.toString())
                 ChallengeDetailsTitle(
                     status = status!!,
                     personnel = challengeData.summary?.total_user_cnt ?: 0,
                     detailTitle = challengeData.goal.toString(),
                     startDay = challengeData.start_date.toString(),
                     endDay = challengeData.end_date.toString(),
-                    authMethod = authMethod
+                    authMethod = authMethod,
+                    ageLimitType = ageType
                 )
             }
             Spacer(modifier = Modifier.height(32.dp))

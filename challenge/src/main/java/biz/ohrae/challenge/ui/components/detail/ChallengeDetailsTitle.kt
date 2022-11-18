@@ -50,7 +50,7 @@ private fun ChallengeDetailsTitleGallery() {
             challengeItemData.personnel,
             challengeItemData.title,
             isFree = true,
-            isAdult = true,
+            ageType = "",
             isPhoto = true,
             challengeItemData.startDate,
             challengeItemData.endDate,
@@ -67,6 +67,7 @@ fun ChallengeDetailsTitle(
     startDay: String,
     endDay: String,
     authMethod: String,
+    ageLimitType:String = ""
 ) {
     Column {
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -112,6 +113,16 @@ fun ChallengeDetailsTitle(
         )
         Spacer(modifier = Modifier.height(24.dp))
         Text(
+            text = "참여 나이", fontSize = dpToSp(dp = 16.dp),
+            style = myTypography.bold,
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = ageLimitType,
+            fontSize = dpToSp(dp = 16.dp)
+        )
+        Spacer(modifier = Modifier.height(24.dp))
+        Text(
             text = "챌린지 기간", fontSize = dpToSp(dp = 16.dp),
             style = myTypography.bold,
         )
@@ -129,12 +140,15 @@ fun ChallengeJoinedDetailsTitle(
     personnel: Int,
     detailTitle: String,
     isFree: Boolean,
-    isAdult: Boolean,
+    ageType: String,
     isPhoto: Boolean,
     startDay: String,
     endDay: String,
     authMethod: String,
     ) {
+    val ageBackgroundColor = if (ageType == "18세 미만 이용") Color(0x33c27247) else Color(0x33d4a03a)
+    val ageTextColor = if (ageType == "18세 미만 이용") Color(0xffc27247) else Color(0xffd4a03a)
+
     Column {
         Row(verticalAlignment = Alignment.CenterVertically) {
             CategorySurFace(
@@ -150,13 +164,15 @@ fun ChallengeJoinedDetailsTitle(
                     textColor = Color(0xff7c7c7c)
                 )
             }
-            if (isAdult) {
+            if (ageType != "제한없음") {
                 Spacer(modifier = Modifier.width(4.dp))
                 CategorySurFace(
-                    text = "18세미만 참여불가",
-                    backgroundColor = Color(0x33c27247),
-                    textColor = Color(0xffc27247)
+                    modifier = Modifier,
+                    text = ageType,
+                    backgroundColor = ageBackgroundColor,
+                    textColor = ageTextColor
                 )
+
             }
         }
         Spacer(modifier = Modifier.height(8.dp))

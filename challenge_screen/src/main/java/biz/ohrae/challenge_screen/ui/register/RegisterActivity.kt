@@ -352,6 +352,10 @@ class RegisterActivity : BaseActivity() {
                 viewModel.setRecruitDays(item.value.toInt())
             }
 
+            override fun onClickAgeLimitType(item: DropDownItem) {
+                viewModel.setAgeLimitType(item.value.toString())
+            }
+
             override fun onClickHoursOfUse(item: String) {
                 viewModel.setHourOfUse(item.toInt())
             }

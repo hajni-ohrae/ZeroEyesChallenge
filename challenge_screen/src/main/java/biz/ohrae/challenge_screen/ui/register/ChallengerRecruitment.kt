@@ -117,40 +117,49 @@ fun ChallengerRecruitment(
         )
         Spacer(modifier = Modifier.height(28.dp))
         Text(
-            text = "미성년자 이용제한",
+            text = "참여 나이 설정",
             style = myTypography.w700,
             fontSize = dpToSp(dp = 16.dp),
             color = DefaultBlack
         )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = "성인이 아닌 회원에게는 챌린지가 노출되지 않습니다",
-            style = myTypography.w500,
-            fontSize = dpToSp(dp = 12.dp),
-            color = Color(0xff828282)
+        MyDropDown(
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(7.1f),
+            label = "",
+            list = challengeOpenState.ageList,
+            onSelectItem = {
+                clickListener?.onClickAgeLimitType(it)
+            }
         )
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            text = "제한 나이 : 18세 미만",
-            style = myTypography.w500,
-            fontSize = dpToSp(dp = 12.dp),
-            color = Color(0xff005bad)
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        MyCheckBox(
-            checkBoxSize = 20.dp,
-            label = "이용제한",
-            labelStyle = myTypography.w700,
-            onClick = {
-                checked = !checked
-                viewModel?.checkAdultOnly(checked)
-            },
-            onChecked = {
-                checked = !checked
-                viewModel?.checkAdultOnly(checked)
-            },
-            checked = checked,
-        )
+//        Text(
+//            text = "성인이 아닌 회원에게는 챌린지가 노출되지 않습니다",
+//            style = myTypography.w500,
+//            fontSize = dpToSp(dp = 12.dp),
+//            color = Color(0xff828282)
+//        )
+//        Spacer(modifier = Modifier.height(4.dp))
+//        Text(
+//            text = "제한 나이 : 18세 미만",
+//            style = myTypography.w500,
+//            fontSize = dpToSp(dp = 12.dp),
+//            color = Color(0xff005bad)
+//        )
+//        Spacer(modifier = Modifier.height(16.dp))
+//        MyCheckBox(
+//            checkBoxSize = 20.dp,
+//            label = "이용제한",
+//            labelStyle = myTypography.w700,
+//            onClick = {
+//                checked = !checked
+//                viewModel?.checkAdultOnly(checked)
+//            },
+//            onChecked = {
+//                checked = !checked
+//                viewModel?.checkAdultOnly(checked)
+//            },
+//            checked = checked,
+//        )
     }
     Column(modifier = Modifier.fillMaxHeight(), Arrangement.Bottom) {
         FlatBottomButton(

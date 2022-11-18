@@ -122,7 +122,7 @@ class MainActivity : BaseActivity() {
 
     private fun init() {
         myChallengeViewModel.getUserData()
-        viewModel.getChallengeList()
+        viewModel.getChallengeList("", "", "", "", "", "", isInit = true)
         viewModel.getUserChallengeList("", isInit = true)
         viewModel.selectPeriodType("")
         viewModel.selectPeriod("")
