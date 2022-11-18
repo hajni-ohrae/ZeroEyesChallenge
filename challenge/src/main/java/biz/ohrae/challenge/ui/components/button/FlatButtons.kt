@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
@@ -273,7 +271,7 @@ fun FlatBookMarkButton(
                 onClickBookMark()
             },
         ) {
-            if (!checked || checked == null) {
+            if (!checked) {
                 Icon(
                     painter = painterResource(id = R.drawable.icon_like),
                     contentDescription = "icon_like"
@@ -292,12 +290,14 @@ fun FlatBookMarkButton(
                 .fillMaxHeight()
                 .weight(1f),
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color(0xff003865),
+                backgroundColor = if (enabled) Color(0xff003865) else (Color(0xff6c6c6c)),
                 contentColor = DefaultWhite
             ),
             shape = RectangleShape,
             onClick = {
-                onClick()
+                if(enabled) {
+                    onClick()
+                }
             }
         ) {
             Text(

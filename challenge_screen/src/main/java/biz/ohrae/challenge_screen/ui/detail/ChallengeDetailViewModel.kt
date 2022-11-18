@@ -80,17 +80,15 @@ class ChallengeDetailViewModel @Inject constructor(
                     if (isJoined) {
                         val verifications = challengeData.inChallenge?.get(0)?.verifications
                         val totalVerificationCount = challengeData.total_verification_cnt
-//                        val total = (ceil(totalVerificationCount.toDouble() / 10f) * 10).toInt()
-                        val total = totalVerificationCount
 
                         var successCount = 0
                         var failCount = 0
                         val today = challengeData.today ?: 0
-                        val remainCount = challengeData.total_verification_cnt - today - 1
+                        val remainCount = totalVerificationCount - today - 1
                         val verificationList = mutableListOf<Verification>()
-                        Timber.e("total : $total, today : $today")
+                        Timber.e("total : $totalVerificationCount, today : $today")
 
-                        for (i in 0 until total) {
+                        for (i in 0 until totalVerificationCount) {
                             val verification = Verification(i + 1, Verification.NORMAL)
                             if (i <= today) {
                                 if (verifications.isNullOrEmpty()) {

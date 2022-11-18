@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.ui.components.button.FlatBookMarkButton
 import biz.ohrae.challenge.ui.components.button.FlatBorderButton
 import biz.ohrae.challenge.ui.components.card.CertificationImageItem
-import biz.ohrae.challenge.ui.components.card.RedCardInfo
 import biz.ohrae.challenge.ui.components.detail.ChallengeDetailFreeDescription
 import biz.ohrae.challenge.ui.components.detail.ChallengeDetailRefundDescription
 import biz.ohrae.challenge.ui.components.detail.ChallengeJoinedDetailsTitle
@@ -41,7 +40,6 @@ import biz.ohrae.challenge.util.challengeVerificationPeriodMap
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.model.user.User
 import biz.ohrae.challenge_repo.model.verify.VerifyData
-import biz.ohrae.challenge_repo.model.verify.VerifyListState
 import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.model.detail.Verification
 import biz.ohrae.challenge_screen.model.detail.VerificationState
@@ -209,7 +207,7 @@ fun ChallengeJoinedDetailScreen(
                     text = "인증하기",
                     onClick = { clickListener?.onClickAuth() },
                     onClickBookMark = {
-                        checked?.let { clickListener?.onClickBookMark(it) }
+                        checked.let { clickListener?.onClickBookMark(it) }
                     },
                     checked = checked
                 )
