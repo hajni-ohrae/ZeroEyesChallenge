@@ -407,7 +407,7 @@ fun ChallengeHost(challengeData: ChallengeData) {
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
-                text = challengeData.user?.getUserName().toString(),
+                text = challengeData.owner?.getUserName().toString(),
                 style = myTypography.extraBold,
                 fontSize = dpToSp(dp = 20.dp)
             )

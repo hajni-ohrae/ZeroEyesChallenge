@@ -139,7 +139,7 @@ private fun ChallengeList(
                 index,
                 item.id,
                 item.goal.toString(),
-                item.user?.getUserName(),
+                item.owner?.getUserName(),
                 startDay.toString(),
                 item.period.toString(),
                 weekType.toString(),

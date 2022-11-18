@@ -38,6 +38,7 @@ data class ChallengeData(
     var verification_daily_staying_time: Int,
     val remaining_time: String? = null,
     val user: User? = null,
+    val owner: User? = null,
     val is_cancelable: Int,
     val is_canceled: Int,
     val is_valid: Int,
