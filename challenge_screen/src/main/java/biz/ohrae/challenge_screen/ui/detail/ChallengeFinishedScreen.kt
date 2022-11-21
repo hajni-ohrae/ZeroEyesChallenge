@@ -1,6 +1,5 @@
 package biz.ohrae.challenge_screen.ui.detail
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -19,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,7 +31,7 @@ import biz.ohrae.challenge.ui.theme.TextBlack
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
-import biz.ohrae.challenge_screen.model.detail.Verification
+import biz.ohrae.challenge_repo.model.detail.Verification
 import biz.ohrae.challenge_screen.model.detail.VerificationState
 import com.google.accompanist.flowlayout.FlowCrossAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
@@ -400,15 +398,15 @@ private fun ChallengeProgressFinishDetail(
             crossAxisSpacing = 3.5.dp
         ) {
             verificationState.verifications?.forEach { item ->
-                when (item.state) {
-                    Verification.NORMAL, Verification.SUCCESS -> {
+                when (item.status) {
+                    Verification.REMAINING, Verification.SUCCESS -> {
                         ProgressRatioItem(
                             modifier = Modifier.size(itemSize),
-                            isSuccess = item.state == Verification.SUCCESS,
+                            isSuccess = item.status == Verification.SUCCESS,
                             number = item.day.toString()
                         )
                     }
-                    Verification.FAIL -> {
+                    Verification.FAILURE -> {
                         ProgressRatioFailItem(
                             modifier = Modifier.size(itemSize),
                         )

@@ -41,7 +41,7 @@ import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.model.user.User
 import biz.ohrae.challenge_repo.model.verify.VerifyData
 import biz.ohrae.challenge_repo.util.prefs.Utils
-import biz.ohrae.challenge_screen.model.detail.Verification
+import biz.ohrae.challenge_repo.model.detail.Verification
 import biz.ohrae.challenge_screen.model.detail.VerificationState
 import biz.ohrae.challenge_screen.util.OnBottomReached
 import com.google.accompanist.flowlayout.FlowCrossAxisAlignment
@@ -282,15 +282,15 @@ private fun ChallengeProgressDetail(
             crossAxisSpacing = 3.5.dp
         ) {
             verificationState.verifications?.forEach { item ->
-                when (item.state) {
-                    Verification.NORMAL, Verification.SUCCESS -> {
+                when (item.status) {
+                    Verification.REMAINING, Verification.SUCCESS -> {
                         ProgressRatioItem(
                             modifier = Modifier.size(itemSize),
-                            isSuccess = item.state == Verification.SUCCESS,
+                            isSuccess = item.status == Verification.SUCCESS,
                             number = item.day.toString()
                         )
                     }
-                    Verification.FAIL -> {
+                    Verification.FAILURE -> {
                         ProgressRatioFailItem(
                             modifier = Modifier.size(itemSize),
                         )

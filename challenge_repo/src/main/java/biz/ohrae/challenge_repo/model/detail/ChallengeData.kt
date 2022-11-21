@@ -44,7 +44,7 @@ data class ChallengeData(
     val is_canceled: Int,
     val is_valid: Int,
     val summary: Summary? = null,
-    val inChallengeLike : InChallengeLike? = null
+    val inChallengeLike : InChallengeLike? = null,
 ) {
     companion object {
         fun mock(id: String = "2d4033ab-244b-47f3-84e9-6af72be39d9f") = ChallengeData(
@@ -113,6 +113,7 @@ data class InChallenge(
     val rewards_amount:Int?,
     var verifications: List<ChallengeVerification>?,
     val verification_time:String?,
+    val verificationsListed: List<Verification>? = null
 )
 
 data class ImageFile(

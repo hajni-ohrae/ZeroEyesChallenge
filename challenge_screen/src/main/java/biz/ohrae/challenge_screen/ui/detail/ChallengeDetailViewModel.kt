@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
+import biz.ohrae.challenge_repo.model.detail.Verification
 import biz.ohrae.challenge_repo.model.report.ReportDetail
 import biz.ohrae.challenge_repo.model.report.ReportListState
 import biz.ohrae.challenge_repo.model.user.User
@@ -13,9 +14,7 @@ import biz.ohrae.challenge_repo.ui.detail.ChallengeDetailRepo
 import biz.ohrae.challenge_repo.ui.main.UserRepo
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import biz.ohrae.challenge_repo.util.prefs.Utils
-import biz.ohrae.challenge_screen.model.detail.Verification
 import biz.ohrae.challenge_screen.model.detail.VerificationState
-import biz.ohrae.challenge_screen.model.user.RedCardListState
 import biz.ohrae.challenge_screen.ui.BaseViewModel
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,7 +23,6 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
-import kotlin.math.ceil
 
 @HiltViewModel
 class ChallengeDetailViewModel @Inject constructor(
@@ -67,7 +65,6 @@ class ChallengeDetailViewModel @Inject constructor(
     fun getChallenge(id: String) {
         viewModelScope.launch {
             repo.getChallenge(id).flowOn(Dispatchers.IO).collect { it ->
-                Timber.e("getChallenge result : ${gson.toJson(it.data)}")
                 if (it.data != null) {
                     val challengeData = it.data as ChallengeData
                     _challengeData.value = challengeData
@@ -78,45 +75,30 @@ class ChallengeDetailViewModel @Inject constructor(
                         !challengeData.inChallenge.isNullOrEmpty() && challengeData.status == "finished"
                     _isFinished.value = isFinished
                     if (isJoined) {
-                        val verifications = challengeData.inChallenge?.get(0)?.verifications
-                        val totalVerificationCount = challengeData.total_verification_cnt
+                        val verifications = challengeData.inChallenge?.get(0)?.verificationsListed
+                        Timber.e("verifications : ${gson.toJson(verifications)}")
 
                         var successCount = 0
                         var failCount = 0
-                        val today = challengeData.today ?: 0
-                        val remainCount = totalVerificationCount - today - 1
-                        val verificationList = mutableListOf<Verification>()
-                        Timber.e("total : $totalVerificationCount, today : $today")
+                        var remainCount = 0
 
-                        for (i in 0 until totalVerificationCount) {
-                            val verification = Verification(i + 1, Verification.NORMAL)
-                            if (i <= today) {
-                                if (verifications.isNullOrEmpty()) {
-                                    failCount++
-                                    verification.state = Verification.FAIL
-                                } else {
-                                    verifications.forEach { item ->
-                                        Timber.e("verification : $i to ${item.day}")
-                                        if (i == item.day) {
-                                            successCount++
-                                            verification.state = Verification.SUCCESS
-                                        } else {
-                                            failCount++
-                                            verification.state = Verification.FAIL
-                                        }
-                                    }
+                        if (verifications != null) {
+                            for (verification in verifications) {
+                                when (verification.status) {
+                                    Verification.SUCCESS -> successCount++
+                                    Verification.FAILURE -> failCount++
+                                    Verification.REMAINING -> remainCount++
+                                    else -> {}
                                 }
-                            } else if (i >= challengeData.total_verification_cnt) {
-                                verification.state = Verification.HIDDEN
                             }
-                            verificationList.add(verification)
                         }
+
                         val state = VerificationState(
                             successCount,
                             remainCount,
                             failCount,
                             challengeData.inChallenge?.get(0)?.achievement_percent.toString(),
-                            verificationList
+                            verifications
                         )
                         _challengeVerificationState.value = state
                     }
