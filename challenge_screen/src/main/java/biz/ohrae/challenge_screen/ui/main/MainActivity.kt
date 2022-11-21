@@ -265,7 +265,7 @@ class MainActivity : BaseActivity() {
             periodTypeValue,
             perWeekValue,
             periodValue,
-            is_adult_only = adultOnlyValue
+            age_limit_type = adultOnlyValue
         )
     }
 
