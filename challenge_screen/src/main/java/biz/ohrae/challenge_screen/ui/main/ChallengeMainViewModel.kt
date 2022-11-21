@@ -82,7 +82,7 @@ class ChallengeMainViewModel @Inject constructor(
         per_week: String = "",
         period: String = "",
         is_like: String = "",
-        is_adult_only: String = "",
+        age_limit_type: String = "",
         isInit: Boolean = false,
     ) {
         viewModelScope.launch {
@@ -96,7 +96,7 @@ class ChallengeMainViewModel @Inject constructor(
                 verificationPeriodType,
                 per_week,
                 period,
-                is_adult_only,
+                age_limit_type,
                 is_like,
                 page
             )

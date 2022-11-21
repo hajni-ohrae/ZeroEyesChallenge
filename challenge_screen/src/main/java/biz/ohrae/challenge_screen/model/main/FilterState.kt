@@ -1,6 +1,7 @@
 package biz.ohrae.challenge_screen.model.main
 
 import biz.ohrae.challenge.model.filter.FilterItem
+import biz.ohrae.challenge.ui.components.dropdown.DropDownItem
 
 data class FilterState(
     val filterItem: List<FilterItem>,
@@ -49,7 +50,9 @@ data class FilterState(
                 FilterItem("주3회", "3"),
             ),
             etcList = listOf(
-                FilterItem("18세 미만 참여불가", "1"),
+                FilterItem("제한없음","all"),
+                FilterItem("18세 이상 이용","minor"),
+                FilterItem("18세 미만 이용","adult"),
             )
         )
     }
