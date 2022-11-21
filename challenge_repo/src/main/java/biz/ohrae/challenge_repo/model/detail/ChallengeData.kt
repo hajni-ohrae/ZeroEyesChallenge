@@ -80,6 +80,10 @@ data class ChallengeData(
             is_valid = 0
         )
     }
+
+    fun isAuthed(): Boolean {
+        return (inChallenge?.get(0)?.today_verification_cnt ?: 0) >= 1
+    }
 }
 
 data class Summary(

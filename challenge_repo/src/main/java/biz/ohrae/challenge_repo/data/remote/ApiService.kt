@@ -165,7 +165,6 @@ interface ApiService {
     suspend fun verify(
         @Header("x-access-token") accessToken: String,
         @Part file: MultipartBody.Part,
-//        @PartMap partMap: Map<String, RequestBody>
         @Part("challenge_id") challengeId: RequestBody,
         @Part("user_id") userId: RequestBody,
         @Part("type") type: RequestBody,

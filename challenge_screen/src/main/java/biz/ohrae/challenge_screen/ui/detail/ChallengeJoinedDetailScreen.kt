@@ -201,12 +201,19 @@ fun ChallengeJoinedDetailScreen(
                 }
             }
             item {
+                val buttonName = if (challengeData.isAuthed()) {
+                    "인증완료"
+                } else {
+                    "인증하기"
+                }
+                val enabled = challengeData.is_verification_photo == 1 && !challengeData.isAuthed()
+
                 FlatBookMarkButton(
                     modifier = Modifier
                         .fillMaxWidth()
                         .aspectRatio(6f),
-                    enabled = challengeData.is_verification_photo == 1,
-                    text = "인증하기",
+                    enabled = enabled,
+                    text = buttonName,
                     onClick = { clickListener?.onClickAuth() },
                     onClickBookMark = {
                         checked.let { clickListener?.onClickBookMark(it) }
