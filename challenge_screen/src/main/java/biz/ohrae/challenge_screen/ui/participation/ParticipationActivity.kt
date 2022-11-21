@@ -23,7 +23,11 @@ import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge_screen.ui.BaseActivity
+import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailNavScreen
 import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailViewModel
+import biz.ohrae.challenge_screen.ui.dialog.ConfirmDialog
+import biz.ohrae.challenge_screen.ui.dialog.CustomDialog
+import biz.ohrae.challenge_screen.ui.dialog.CustomDialogListener
 import biz.ohrae.challenge_screen.ui.dialog.LoadingDialog
 import biz.ohrae.challenge_screen.ui.payment.ChallengePaymentActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -61,18 +65,19 @@ class ParticipationActivity : BaseActivity() {
         challengeId = intent.getStringExtra("challengeId")
         isCancelChallenge = intent.getBooleanExtra("isCancel", false)
 
-        paymentLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == RESULT_OK) {
-                it.data?.let { intent ->
-                    val code = intent.getStringExtra("code")
-                    val message = intent.getStringExtra("message")
-                    showSnackBar(code, message)
-                } ?: run {
-                    init()
-                    navController.navigate(ChallengeParticipationNavScreen.ParticipationFinish.route)
+        paymentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                if (it.resultCode == RESULT_OK) {
+                    it.data?.let { intent ->
+                        val code = intent.getStringExtra("code")
+                        val message = intent.getStringExtra("message")
+                        showSnackBar(code, message)
+                    } ?: run {
+                        init()
+                        navController.navigate(ChallengeParticipationNavScreen.ParticipationFinish.route)
+                    }
                 }
             }
-        }
 
         initClickListeners()
         observeViewModels()
@@ -90,7 +95,7 @@ class ParticipationActivity : BaseActivity() {
                 .fillMaxSize()
                 .background(DefaultWhite)
         ) {
-            BackButton(onBack = { onBack() },"챌린지 참여")
+            BackButton(onBack = { onBack() }, "챌린지 참여")
             Column(modifier = Modifier) {
                 Navigation()
             }
@@ -170,7 +175,12 @@ class ParticipationActivity : BaseActivity() {
             override fun onClickPayment(paidAmount: Int, rewardAmount: Int, depositAmount: Int) {
                 detailViewModel.challengeData.value?.let {
                     viewModel.isLoading(true)
-                    viewModel.registerChallenge(challengeData = it, paidAmount, rewardAmount, depositAmount)
+                    viewModel.registerChallenge(
+                        challengeData = it,
+                        paidAmount,
+                        rewardAmount,
+                        depositAmount
+                    )
                 }
             }
 
@@ -212,7 +222,8 @@ class ParticipationActivity : BaseActivity() {
                 val paidAmount = viewModel.participationResult.value?.paid_amount ?: 0
                 if (minDepositAmount > 0 && paidAmount > 0) {
                     val userId = prefs.getUserData()?.id
-                    val intent = Intent(this@ParticipationActivity, ChallengePaymentActivity::class.java)
+                    val intent =
+                        Intent(this@ParticipationActivity, ChallengePaymentActivity::class.java)
                     intent.putExtra("challengeId", challengeId)
                     intent.putExtra("userId", userId)
                     intent.putExtra("userInChallengeId", it.user_in_challenge_id)
@@ -239,12 +250,16 @@ class ParticipationActivity : BaseActivity() {
         }
 
         viewModel.errorData.observe(this) {
-            showSnackBar(it.code, it.message)
+            if (it.code == "4352") {
+                showDialog()
+            } else {
+                showSnackBar(it.code, it.message)
+            }
         }
     }
 
     override fun onBack() {
-        when(navController.currentBackStackEntry?.destination?.route) {
+        when (navController.currentBackStackEntry?.destination?.route) {
             ChallengeParticipationNavScreen.Participation.route,
             ChallengeParticipationNavScreen.ParticipationCancelResult.route,
             ChallengeParticipationNavScreen.ParticipationFinish.route -> {
@@ -255,12 +270,30 @@ class ParticipationActivity : BaseActivity() {
             }
         }
     }
+
+    private fun showDialog() {
+        val dialog =
+            CustomDialog(positiveBtnName = "확인", content = "비슷한 유형의 챌린지를 이미 진행중입니다.")
+        dialog.isCancelable = false
+        dialog.setListener(object : CustomDialogListener {
+            override fun clickPositive() {
+                dialog.dismiss()
+            }
+
+            override fun clickNegative() {
+                dialog.dismiss()
+            }
+        })
+        dialog.show(supportFragmentManager, "showDialog")
+    }
 }
 
 sealed class ChallengeParticipationNavScreen(val route: String) {
     object Participation : ChallengeParticipationNavScreen("Participation")
     object ParticipationFinish : ChallengeParticipationNavScreen("ParticipationFinish")
     object ParticipationPayment : ChallengeParticipationNavScreen("ParticipationPayment")
-    object ParticipationCancelRequest : ChallengeParticipationNavScreen("ParticipationCancelRequest")
+    object ParticipationCancelRequest :
+        ChallengeParticipationNavScreen("ParticipationCancelRequest")
+
     object ParticipationCancelResult : ChallengeParticipationNavScreen("ParticipationCancelResult")
 }
