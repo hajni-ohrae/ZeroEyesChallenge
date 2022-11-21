@@ -48,7 +48,7 @@ fun FeedItem(
     username: String = "아이오",
     count: Int = 1,
     date: String = "2022.05.09",
-    comment: String = "123",
+    comment: String? = "123",
     type: String = "photo",
     onReport: () -> Unit = {},
     onLike: () -> Unit = {},
@@ -90,11 +90,13 @@ fun FeedItem(
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = comment,
-                style = myTypography.w700,
-                fontSize = dpToSp(dp = 12.dp)
-            )
+            comment?.let {
+                Text(
+                    text = it,
+                    style = myTypography.w700,
+                    fontSize = dpToSp(dp = 12.dp)
+                )
+            }
             Spacer(modifier = Modifier.height(16.dp))
 
             if (type == "photo") {
