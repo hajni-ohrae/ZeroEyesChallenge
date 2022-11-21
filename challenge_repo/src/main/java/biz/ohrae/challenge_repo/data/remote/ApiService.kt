@@ -32,7 +32,7 @@ interface ApiService {
         @Query("is_like") isLike: String,
         @Query("per_week") perWeek: String,
         @Query("period") period: String,
-        @Query("is_adult_only") isAdultOnly: String,
+        @Query("age_limit_type") ageLimitType: String,
     ): NetworkResponse<Result2, Error>
 
     @GET(Routes.GET_CHALLENGE)

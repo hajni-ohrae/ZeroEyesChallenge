@@ -25,13 +25,13 @@ class ChallengeMainRepo @Inject constructor(
         verificationPeriodType: String,
         per_week: String,
         period: String,
-        is_adult_only: String,
+        age_limit_type: String,
         is_like: String,
         page: Int = 1,
         perPage: Int = 10,
     ): Flow<FlowResult> {
         val accessToken = prefs.getUserData()?.access_token
-        Timber.e("getAllChallenge : ${paymentType}, ${verificationPeriodType}, ${per_week},${period},${is_adult_only}")
+        Timber.e("getAllChallenge : ${paymentType}, ${verificationPeriodType}, ${per_week},${period},${age_limit_type}")
 
         val response =
             apiService.getAllChallenge(
@@ -43,7 +43,7 @@ class ChallengeMainRepo @Inject constructor(
                 isLike = is_like,
                 perWeek = per_week,
                 period = period,
-                isAdultOnly = is_adult_only
+                ageLimitType = age_limit_type
             )
 
 
