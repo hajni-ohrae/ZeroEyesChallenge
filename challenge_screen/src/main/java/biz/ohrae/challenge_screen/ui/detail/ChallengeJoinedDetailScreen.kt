@@ -511,10 +511,15 @@ private fun ChallengeJoinedDescription(
                 lineHeight = dpToSp(dp = 21.dp)
             )
             Spacer(modifier = Modifier.height(32.dp))
+
             ChallengeDetailFreeDescription(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(1.90f)
+                    .aspectRatio(1.90f),
+                challengeData.achievement_percent.toInt(),
+                challengeData.free_rewards,
+                challengeData.free_rewards_winners,
+                challengeData.free_rewards_offer_way
             )
         }
     }

@@ -29,7 +29,11 @@ fun ChallengeDetailFreeDescriptionGallery() {
 
 @Composable
 fun ChallengeDetailFreeDescription(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    achievement:Int? = null,
+    product:String? = "",
+    numberOfPayers:String? = "",
+    paymentMethod:String? = "",
 ) {
     Surface(
         modifier = modifier,
@@ -49,13 +53,13 @@ fun ChallengeDetailFreeDescription(
             ) {
                 Text(
                     modifier = Modifier.fillMaxWidth(0.272f),
-                    text = "목표 당성률",
+                    text = "목표 달성률",
                     style = myTypography.extraBold,
                     color = TextBlack,
                     fontSize = dpToSp(dp = 14.dp),
                 )
                 Text(
-                    text = "90% 이상",
+                    text = "$achievement%",
                     color = TextBlack,
                     fontSize = dpToSp(dp = 14.dp),
                 )
@@ -73,7 +77,7 @@ fun ChallengeDetailFreeDescription(
                     fontSize = dpToSp(dp = 14.dp),
                 )
                 Text(
-                    text = "문화상품권 50,000원",
+                    text = product.toString(),
                     color = TextBlack,
                     fontSize = dpToSp(dp = 14.dp),
                 )
@@ -91,7 +95,7 @@ fun ChallengeDetailFreeDescription(
                     fontSize = dpToSp(dp = 14.dp),
                 )
                 Text(
-                    text = "90%이상 달성자중 추첨 10명",
+                    text = "${numberOfPayers}명",
                     color = TextBlack,
                     fontSize = dpToSp(dp = 14.dp),
                 )
@@ -109,7 +113,7 @@ fun ChallengeDetailFreeDescription(
                     fontSize = dpToSp(dp = 14.dp),
                 )
                 Text(
-                    text = "문자전송",
+                    text = paymentMethod.toString(),
                     color = TextBlack,
                     fontSize = dpToSp(dp = 14.dp),
                 )
