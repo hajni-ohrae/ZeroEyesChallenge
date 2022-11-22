@@ -467,8 +467,8 @@ class ChallengeDetailActivity : BaseActivity() {
         }.addOnSuccessListener { (shortLink, flowchartLink) ->
             val limitString = when (challengeData?.age_limit_type) {
                 "all" -> "전체 : 없음"
-                "adult" -> "18세 이상 : 성인(만 18세 이상)만 참여 가능"
-                "minor" -> "18세 미만 : 학생(만 18세 미만)만 참여 가능"
+                "minor" -> "18세 이상 : 성인(만 18세 이상)만 참여 가능"
+                "adult" -> "18세 미만 : 학생(만 18세 미만)만 참여 가능"
                 else -> "전체 : 없음"
             }
             val sb = StringBuilder()

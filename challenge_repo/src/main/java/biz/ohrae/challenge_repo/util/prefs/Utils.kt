@@ -649,8 +649,8 @@ object Utils {
 
     fun getAgeType(type: String): String {
         return when (type) {
-            "adult" -> "18세 미만 이용"
-            "minor" -> "18세 이상 이용"
+            "minor" -> "18세 미만 이용"
+            "adult" -> "18세 이상 이용"
             else -> {
                 "제한없음"
             }
