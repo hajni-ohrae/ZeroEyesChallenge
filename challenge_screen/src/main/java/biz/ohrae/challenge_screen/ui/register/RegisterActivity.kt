@@ -304,9 +304,7 @@ class RegisterActivity : BaseActivity() {
                         permissionResults.toTypedArray(),
                         100
                     )
-                    Timber.e("here!!")
                 } else {
-                    Timber.e("here??")
                     callImageSelector()
                 }
             }
@@ -494,8 +492,6 @@ class RegisterActivity : BaseActivity() {
         values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis())
         return contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
     }
-
-
 
     private fun showParticipantDialog(challengeId: String?) {
         val content = "챌린지가 성공적으로 개설되었습니다\n" +

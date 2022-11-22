@@ -38,10 +38,10 @@ import biz.ohrae.challenge.util.challengeDetailStatusMap
 import biz.ohrae.challenge.util.challengeVerificationDayMap
 import biz.ohrae.challenge.util.challengeVerificationPeriodMap
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
+import biz.ohrae.challenge_repo.model.detail.Verification
 import biz.ohrae.challenge_repo.model.user.User
 import biz.ohrae.challenge_repo.model.verify.VerifyData
 import biz.ohrae.challenge_repo.util.prefs.Utils
-import biz.ohrae.challenge_repo.model.detail.Verification
 import biz.ohrae.challenge_screen.model.detail.VerificationState
 import biz.ohrae.challenge_screen.util.OnBottomReached
 import com.google.accompanist.flowlayout.FlowCrossAxisAlignment
@@ -201,32 +201,7 @@ fun ChallengeJoinedDetailScreen(
                 }
             }
             item {
-                val buttonName = if (challengeData.is_verification_photo == 1) {
-                    if (challengeData.isAuthed()) {
-                        "인증완료"
-                    } else {
-                        "인증하기"
-                    }
-                } else if (challengeData.is_verification_time == 1) {
-                    if (challengeData.isAuthed()) {
-                        "인증완료"
-                    } else {
-                        "내일 새벽 1시에 자동 인증됩니다"
-                    }
-                } else if (challengeData.is_verification_checkin == 1) {
-                    if (challengeData.isAuthed()) {
-                        "인증완료"
-                    } else {
-                        "오늘 첫 입실시 자동 인증됩니다"
-                    }
-                } else {
-                    if (challengeData.isAuthed()) {
-                        "인증완료"
-                    } else {
-                        "인증하기"
-                    }
-                }
-
+                val buttonName = Utils.getAuthButtonName(challengeData)
                 val enabled = challengeData.is_verification_photo == 1 && !challengeData.isAuthed()
 
                 FlatBookMarkButton(

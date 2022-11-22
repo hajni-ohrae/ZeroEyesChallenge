@@ -212,6 +212,13 @@ interface ApiService {
         @Part file: MultipartBody.Part,
     ): NetworkResponse<Result2, Error>
 
+    @Multipart
+    @POST(Routes.USER_UPLOAD_IMAGE)
+    suspend fun uploadUserImage(
+        @Header("x-access-token") accessToken: String,
+        @Part file: MultipartBody.Part,
+    ): NetworkResponse<Result2, Error>
+
     @GET(Routes.GET_USER_CHALLENGE_LIST)
     suspend fun getUserChallengeList(
         @Header("x-access-token") accessToken: String,

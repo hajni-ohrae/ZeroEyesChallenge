@@ -1,6 +1,7 @@
 package biz.ohrae.challenge_screen.ui.mychallenge
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -96,12 +97,17 @@ fun ItemHeader(
     availableRewards: String,
     clickListener: MyChallengeClickListener? = null,
     filterState: FilterState = FilterState.mock(),
+    onClickProfile: () -> Unit = {}
 ) {
 
     Column(Modifier.fillMaxWidth()) {
 
         Column() {
-            Row {
+            Row(
+                modifier = Modifier.clickable {
+                    onClickProfile()
+                }
+            ) {
                 circularAvatar(modifier = Modifier.size(50.dp))
                 Spacer(modifier = Modifier.width(16.dp))
                 Column() {
@@ -199,6 +205,9 @@ fun UserChallengeList(
                 availableRewards = availableRewards.toString(),
                 clickListener = clickListener,
                 filterState = filterState,
+                onClickProfile = {
+                    clickListener?.onClickProfile()
+                }
             )
         }
         if (userChallengeListState != null) {

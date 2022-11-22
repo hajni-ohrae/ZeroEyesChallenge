@@ -12,4 +12,5 @@ interface MyChallengeClickListener {
     fun onClickChallengeAuthItem(challengeId: String)
     fun onClickChallengeItem(id: String)
     fun onClickFilterType(type: String)
+    fun onClickProfile()
 }

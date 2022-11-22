@@ -64,8 +64,11 @@ object Routes {
     //신고 이유 조회
     const val GET_REGISTER_REPORT = "${CHALLENGE}/api/verification/report/code/get/all"
 
-    // 이미지 업로드
+    // 챌린지 이미지 업로드
     const val CHALLENGE_UPLOAD_IMAGE = "${CHALLENGE}/api/file/upload/image/challenge"
+
+    // 사용자 이미지 업로드
+    const val USER_UPLOAD_IMAGE = "${CHALLENGE}/api/file/upload/image/user"
 
     // 피드 좋아요
     const val FEED_LIKE = "${CHALLENGE}/api/verification/feed/like"

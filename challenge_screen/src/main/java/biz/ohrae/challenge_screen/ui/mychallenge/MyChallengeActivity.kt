@@ -23,6 +23,7 @@ import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailActivity
 import biz.ohrae.challenge_screen.ui.main.ChallengeMainViewModel
 import biz.ohrae.challenge_screen.ui.niceid.NiceIdActivity
 import biz.ohrae.challenge_screen.ui.policy.PolicyActivity
+import biz.ohrae.challenge_screen.ui.profile.ChallengeProfileActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -234,6 +235,11 @@ class MyChallengeActivity : BaseActivity() {
                     challengeMainViewModel.selectUserFilter(type)
                     challengeMainViewModel.getUserChallengeList(type, isInit = true)
                 }
+            }
+
+            override fun onClickProfile() {
+                val intent = Intent(this@MyChallengeActivity, ChallengeProfileActivity::class.java)
+                startActivity(intent)
             }
         }
     }
