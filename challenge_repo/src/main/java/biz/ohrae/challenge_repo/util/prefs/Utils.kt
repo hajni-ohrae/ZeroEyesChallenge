@@ -616,7 +616,7 @@ object Utils {
     }
 
     fun getOpenType(challengeData: ChallengeData): String {
-        return if (challengeData.is_feed_open == 1) {
+        return if (challengeData.min_deposit_amount == 0) {
             "무료"
         } else {
             "유료"
