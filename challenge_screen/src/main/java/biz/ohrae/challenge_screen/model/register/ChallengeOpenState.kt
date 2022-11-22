@@ -45,8 +45,8 @@ data class ChallengeOpenState(
             ),
             ageList = listOf(
                 DropDownItem("제한없음","all"),
-                DropDownItem("18세 이상 참여","minor"),
-                DropDownItem("18세 미만 참여","adult"),
+                DropDownItem("18세 이상 참여","adult"),
+                DropDownItem("18세 미만 참여","minor"),
             )
         )
     }
