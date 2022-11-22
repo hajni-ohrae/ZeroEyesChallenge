@@ -201,11 +201,32 @@ fun ChallengeJoinedDetailScreen(
                 }
             }
             item {
-                val buttonName = if (challengeData.isAuthed()) {
-                    "인증완료"
+                val buttonName = if (challengeData.is_verification_photo == 1) {
+                    if (challengeData.isAuthed()) {
+                        "인증완료"
+                    } else {
+                        "인증하기"
+                    }
+                } else if (challengeData.is_verification_time == 1) {
+                    if (challengeData.isAuthed()) {
+                        "인증완료"
+                    } else {
+                        "내일 새벽 1시에 자동 인증됩니다"
+                    }
+                } else if (challengeData.is_verification_checkin == 1) {
+                    if (challengeData.isAuthed()) {
+                        "인증완료"
+                    } else {
+                        "오늘 첫 입실시 자동 인증됩니다"
+                    }
                 } else {
-                    "인증하기"
+                    if (challengeData.isAuthed()) {
+                        "인증완료"
+                    } else {
+                        "인증하기"
+                    }
                 }
+
                 val enabled = challengeData.is_verification_photo == 1 && !challengeData.isAuthed()
 
                 FlatBookMarkButton(

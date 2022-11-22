@@ -32,6 +32,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
+import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.challengers.ChallengersActivity
 import biz.ohrae.challenge_screen.ui.dialog.ConfirmDialog
@@ -450,9 +451,10 @@ class ChallengeDetailActivity : BaseActivity() {
     }
 
     private fun onShare() {
+        val challengeData = viewModel.challengeData.value
         val shareTitle =
             URLEncoder.encode(viewModel.challengeData.value?.goal ?: "", Charsets.UTF_8.name())
-        val imageUrl = viewModel.challengeData.value?.imageFile?.path ?: ""
+        val imageUrl = challengeData?.imageFile?.path ?: ""
 
         Firebase.dynamicLinks.shortLinkAsync {
             link = Uri.parse("https://challenge.mooin.kr")
@@ -463,12 +465,26 @@ class ChallengeDetailActivity : BaseActivity() {
             domainUriPrefix = "https://mooin.page.link"
             title = shareTitle
         }.addOnSuccessListener { (shortLink, flowchartLink) ->
+            val limitString = when (challengeData?.age_limit_type) {
+                "all" -> "전체 : 없음"
+                "adult" -> "18세 이상 : 성인(만 18세 이상)만 참여 가능"
+                "minor" -> "18세 미만 : 학생(만 18세 미만)만 참여 가능"
+                else -> "전체 : 없음"
+            }
+            val sb = StringBuilder()
+            sb.append("60만 스카족 친구들과 함께하는 제로아이즈 챌린지에 참여해보세요!\n")
+            sb.append("· 챌린지 : ${challengeData?.goal.toString()}\n")
+            sb.append("· 시작일 : ${Utils.convertDate(challengeData?.start_date.toString())}\n")
+            sb.append("· 모집기간 : ${Utils.convertDate(challengeData?.apply_start_date.toString())} ~ ${Utils.convertDate(challengeData?.apply_end_date.toString())}\n")
+            sb.append("· 참여제한\n    · $limitString\n")
+            sb.append(shortLink.toString())
+
             Timber.d("shortLink : $shortLink, flowchartLink : $flowchartLink")
             // Short link created
             val intent = Intent(Intent.ACTION_SEND)
             intent.addCategory(Intent.CATEGORY_DEFAULT)
             intent.type = "text/plain"
-            intent.putExtra(Intent.EXTRA_TEXT, shortLink.toString())
+            intent.putExtra(Intent.EXTRA_TEXT, sb.toString())
 
             val shareIntent = Intent.createChooser(intent, "공유하기")
             startActivity(shareIntent)
