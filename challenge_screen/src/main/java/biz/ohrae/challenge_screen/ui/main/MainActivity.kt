@@ -71,7 +71,6 @@ class MainActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        init()
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -238,17 +237,12 @@ class MainActivity : BaseActivity() {
     }
 
     override fun observeViewModels() {
-//        viewModel.isChallengeCreate.observe(this) {
-//            if (it) {
-//                val intent = Intent(this@RegisterActivity, MainActivity::class.java)
-//                startActivity(intent)
-//            }
-//        }
-
         viewModel.tokenValid.observe(this) {
             if (!it) {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
+            } else {
+                init()
             }
         }
 
