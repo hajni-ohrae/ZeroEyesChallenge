@@ -234,7 +234,7 @@ private fun ChallengeProgressDetail(
     Column {
         Row {
             Text(
-                text = "달성률",
+                text = "달성률 ",
                 style = myTypography.bold,
                 fontSize = dpToSp(dp = 18.dp)
             )
@@ -249,19 +249,53 @@ private fun ChallengeProgressDetail(
         Spacer(modifier = Modifier.height(16.dp))
         Row {
             Text(
-                text = "인증성공 ${verificationState.successCount}개",
+                text = "인증성공 ",
+                style = myTypography.bold,
+                fontSize = dpToSp(dp = 14.dp)
+            )
+            Text(
+                text = "${verificationState.successCount}",
+                style = myTypography.bold,
+                fontSize = dpToSp(dp = 14.dp),
+                color = Color (0xff4985f8)
+            )
+            Text(
+                text = "개",
                 style = myTypography.bold,
                 fontSize = dpToSp(dp = 14.dp)
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
-                text = "남은인증 ${verificationState.remainCount}개",
+                text = "남은인증 ",
+                style = myTypography.bold,
+                fontSize = dpToSp(dp = 14.dp)
+            )
+            Text(
+                text = "${verificationState.remainCount}",
+                style = myTypography.bold,
+                fontSize = dpToSp(dp = 14.dp),
+                color = Color (0xff4985f8)
+            )
+            Text(
+                text = "개",
                 style = myTypography.bold,
                 fontSize = dpToSp(dp = 14.dp)
             )
             Spacer(modifier = Modifier.width(16.dp))
+
             Text(
-                text = "인증실패 ${verificationState.failCount}개",
+                text = "인증실패 ",
+                style = myTypography.bold,
+                fontSize = dpToSp(dp = 14.dp)
+            )
+            Text(
+                text = "${verificationState.failCount}",
+                style = myTypography.bold,
+                fontSize = dpToSp(dp = 14.dp),
+                color = Color (0xff4985f8)
+            )
+            Text(
+                text = "개",
                 style = myTypography.bold,
                 fontSize = dpToSp(dp = 14.dp)
             )

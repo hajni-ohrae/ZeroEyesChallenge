@@ -1,5 +1,6 @@
 package biz.ohrae.challenge_screen.ui.dialog
 
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -73,7 +74,7 @@ class FilterDialog(private val viewModel: ChallengeMainViewModel) : DialogFragme
         val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
         params?.width = (width * 0.95f).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
-//        dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.Transparent))
+        dialog!!.window!!.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
     }
 
 
