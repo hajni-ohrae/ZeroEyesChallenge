@@ -45,26 +45,19 @@ class ChallengeMainViewModel @Inject constructor(
 
     val isRefreshing get() = _isRefreshing
 
-    init {
-//        login()
-        userData()
-        tokenCheck()
-        selectFilter("all")
-    }
-
     private fun login() {
         viewModelScope.launch {
             userRepo.login()
         }
     }
 
-    private fun userData() {
+    fun userData() {
         viewModelScope.launch {
             _userData.value = prefs.getUserData()
         }
     }
 
-    private fun tokenCheck() {
+    fun tokenCheck() {
         viewModelScope.launch {
             val response = userRepo.tokenCheck()
             response.flowOn(Dispatchers.IO).collect { result ->

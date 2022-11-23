@@ -67,10 +67,15 @@ class MainActivity : BaseActivity() {
         if (intent != null && intent.data != null) {
             handleDeepLink(intent.data)
         }
+
+        viewModel.selectFilter("all")
     }
 
     override fun onResume() {
         super.onResume()
+
+        viewModel.userData()
+        viewModel.tokenCheck()
     }
 
     override fun onNewIntent(intent: Intent?) {
