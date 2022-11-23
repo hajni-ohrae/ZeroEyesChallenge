@@ -87,12 +87,11 @@ class UserRepo @Inject constructor(
                 val isSuccess = response.body.success
                 if (isSuccess) {
                     return flow {
-                        emit(FlowResult(isSuccess, "", ""))
+                        emit(FlowResult(true, "", ""))
                     }
                 } else {
                     return flow {
-                        val isRefreshed = refreshToken()
-                        emit(FlowResult(isRefreshed, "", ""))
+                        emit(FlowResult(false, response.body.code, response.body.message))
                     }
                 }
             }
@@ -104,18 +103,32 @@ class UserRepo @Inject constructor(
         }
     }
 
-    suspend fun refreshToken(): Boolean {
+    suspend fun refreshToken(): Flow<FlowResult> {
         val user = prefs.getUserData()
         if (user == null) {
-            return false
+            return flow {
+                emit(FlowResult(false, "", ""))
+            }
         }
+
         val response = apiService.authTokenRefresh(user.refresh_token)
         when (response) {
             is NetworkResponse.Success -> {
-                return response.body.success
+                val isSuccess = response.body.success
+                if (isSuccess) {
+                    return flow {
+                        emit(FlowResult(true, "", ""))
+                    }
+                } else {
+                    return flow {
+                        emit(FlowResult(false, response.body.code, response.body.message))
+                    }
+                }
             }
             else -> {
-                return false
+                return flow {
+                    emit(FlowResult(null, "", ""))
+                }
             }
         }
     }

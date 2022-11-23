@@ -70,6 +70,26 @@ class ChallengeMainViewModel @Inject constructor(
             response.flowOn(Dispatchers.IO).collect { result ->
                 result.data?.let {
                     val success = it as Boolean
+                    if (success) {
+                        _tokenValid.value = true
+                    } else {
+                        if (result.errorCode == "2005" || result.errorCode == "2007") {
+                            refreshToken()
+                        } else {
+                            _tokenValid.value = false
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun refreshToken() {
+        viewModelScope.launch {
+            val response = userRepo.refreshToken()
+            response.flowOn(Dispatchers.IO).collect { result ->
+                result.data?.let {
+                    val success = it as Boolean
                     _tokenValid.value = success
                 }
             }
