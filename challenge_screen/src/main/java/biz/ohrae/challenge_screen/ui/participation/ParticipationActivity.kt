@@ -250,8 +250,8 @@ class ParticipationActivity : BaseActivity() {
         }
 
         viewModel.errorData.observe(this) {
-            if (it.code == "4352") {
-                showDialog()
+            if (it.code == "4352" || it.code == "6102") {
+                showDialog(it.code.toString())
             } else {
                 showSnackBar(it.code, it.message)
             }
@@ -271,9 +271,15 @@ class ParticipationActivity : BaseActivity() {
         }
     }
 
-    private fun showDialog() {
+    private fun showDialog(code: String) {
+        val content = if (code == "4352") {
+            "비슷한 유형의 챌린지를 이미 진행중입니다."
+        } else {
+            "해당 매장 이용중이 아닙니다."
+        }
+
         val dialog =
-            CustomDialog(positiveBtnName = "확인", content = "비슷한 유형의 챌린지를 이미 진행중입니다.")
+            CustomDialog(positiveBtnName = "확인", content = content)
         dialog.isCancelable = false
         dialog.setListener(object : CustomDialogListener {
             override fun clickPositive() {

@@ -283,7 +283,7 @@ private fun ChallengeProgressDetail(
                         ProgressRatioItem(
                             modifier = Modifier.size(itemSize),
                             isSuccess = item.status == Verification.SUCCESS,
-                            number = item.day.toString()
+                            number = (item.day + 1).toString()
                         )
                     }
                     Verification.FAILURE -> {
