@@ -229,15 +229,31 @@ object Utils {
     }
 
     fun convertDate8(dateStr: String): String {
-            return try {
-                val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
-                val date = inputFormat.parse(dateStr)
-                val outputFormat = SimpleDateFormat("yyyy.MM.dd HH:mm", Locale.KOREA)
-                outputFormat.timeZone = TimeZone.getTimeZone("Asia/Seoul")
-                outputFormat.format(date!!)
-            } catch (ignore: Exception) {
-                ""
+        return try {
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
+            val date = inputFormat.parse(dateStr)
+            val outputFormat = SimpleDateFormat("yyyy.MM.dd HH:mm", Locale.KOREA)
+            outputFormat.timeZone = TimeZone.getTimeZone("Asia/Seoul")
+            outputFormat.format(date!!)
+        } catch (ignore: Exception) {
+            ""
+        }
+    }
+
+    fun convertDate9(dateStr: String, isFeed: Boolean = false): String {
+        return try {
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
+            val date = inputFormat.parse(dateStr)
+            val outputFormat: SimpleDateFormat = if (isFeed) {
+                SimpleDateFormat("yyyy.MM.dd\nHH:mm a", Locale.US)
+            } else {
+                SimpleDateFormat("yyyy.MM.dd HH:mm a", Locale.US)
             }
+            outputFormat.timeZone = TimeZone.getTimeZone("Asia/Seoul")
+            outputFormat.format(date!!)
+        } catch (ignore: Exception) {
+            ""
+        }
     }
 
     fun endDateCalculation(startDate: String, week: Int): String {

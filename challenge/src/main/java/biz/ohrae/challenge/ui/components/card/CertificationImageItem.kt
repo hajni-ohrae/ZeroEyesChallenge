@@ -84,7 +84,7 @@ fun CertificationImageItem(
         backgroundColor = Color(0xfff9f9f9),
         onClick = onClick
     ) {
-        if (type == "photo1"){
+        if (type == "photo"){
             GlideImage(
                 modifier = Modifier.fillMaxSize(),
                 imageModel = imageUrl,

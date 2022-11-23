@@ -10,6 +10,9 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,6 +29,7 @@ import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge_component.R
 import com.skydoves.landscapist.glide.GlideImage
+import java.util.*
 
 
 @Preview(
@@ -47,7 +51,7 @@ fun FeedItem(
     imageUrl: String = "",
     username: String = "아이오",
     count: Int = 1,
-    date: String = "2022.05.09",
+    date: String = "",
     comment: String? = "123",
     type: String = "photo",
     onReport: () -> Unit = {},
@@ -55,6 +59,7 @@ fun FeedItem(
     isLike: Int = 0
 ) {
     val like = isLike == 0
+
     Column(
         modifier = Modifier
             .background(DefaultWhite)

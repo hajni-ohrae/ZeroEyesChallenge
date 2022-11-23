@@ -53,6 +53,7 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.util.*
 
 @OptIn(ExperimentalPagerApi::class, ExperimentalFoundationApi::class)
 @Preview(
@@ -637,11 +638,12 @@ fun ChallengeAuthPage(
             ) {
                 repeat(challengeVerifiedList.size) { index ->
                     val item = challengeVerifiedList[index]
+                    val time = if (item.type == "time") Utils.convertDate(item.updated_date) else Utils.convertDate9(item.updated_date,true)
                     CertificationImageItem(
                         modifier = Modifier.fillMaxWidth(0.49f),
                         imageUrl = item.imageFile?.path.toString(),
                         username = item.user?.getUserName().toString(),
-                        date = Utils.convertDate(item.updated_date),
+                        date = time,
                         count = item.cnt,
                         onClick = { clickListener?.onClickAuthItemCard() }
                     )
