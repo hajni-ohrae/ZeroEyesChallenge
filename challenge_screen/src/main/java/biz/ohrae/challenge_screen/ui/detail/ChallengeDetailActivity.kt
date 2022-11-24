@@ -349,7 +349,7 @@ class ChallengeDetailActivity : BaseActivity() {
             override fun onClickShowAllChallengers(authType: String) {
                 val intent = Intent(this@ChallengeDetailActivity, ChallengersActivity::class.java)
                 intent.putExtra("challengeId", challengeId)
-                type = if (viewModel.isFinished.value == false) {
+                type = if (viewModel.isFinished.value == true) {
                     "finish"
                 } else {
                     if (viewModel.isJoined.value == true) "join" else ""
