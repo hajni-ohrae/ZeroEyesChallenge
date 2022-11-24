@@ -82,8 +82,11 @@ class ChallengeMainViewModel @Inject constructor(
             val response = userRepo.refreshToken()
             response.flowOn(Dispatchers.IO).collect { result ->
                 result.data?.let {
-                    val success = it as Boolean
-                    _tokenValid.value = success
+                    val user = it as User
+                    prefs.setUserData(user)
+                    _tokenValid.value = true
+                } ?: run {
+                    _tokenValid.value = false
                 }
             }
         }

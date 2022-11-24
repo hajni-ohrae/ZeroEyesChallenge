@@ -115,13 +115,21 @@ class UserRepo @Inject constructor(
         when (response) {
             is NetworkResponse.Success -> {
                 val isSuccess = response.body.success
+                val dataSet = response.body.dataset
                 if (isSuccess) {
-                    return flow {
-                        emit(FlowResult(true, "", ""))
+                    if (dataSet != null) {
+                        val user = gson.fromJson(dataSet, User::class.java)
+                        return flow {
+                            emit(FlowResult(user, "", ""))
+                        }
+                    } else {
+                        return flow {
+                            emit(FlowResult(null, "", ""))
+                        }
                     }
                 } else {
                     return flow {
-                        emit(FlowResult(false, response.body.code, response.body.message))
+                        emit(FlowResult(null, response.body.code, response.body.message))
                     }
                 }
             }
