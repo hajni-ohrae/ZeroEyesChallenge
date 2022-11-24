@@ -108,7 +108,10 @@ fun ItemHeader(
                     onClickProfile()
                 }
             ) {
-                circularAvatar(modifier = Modifier.size(50.dp))
+                circularAvatar(
+                    modifier = Modifier.size(50.dp),
+                    url = user?.imageFile?.path.toString(),
+                )
                 Spacer(modifier = Modifier.width(16.dp))
                 Column() {
                     Text(

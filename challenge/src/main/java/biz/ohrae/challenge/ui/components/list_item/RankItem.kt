@@ -48,7 +48,8 @@ fun RankItem(
     userName: String = "",
     timeDays: String = "",
     progress: String = "",
-    count: String = ""
+    count: String = "",
+    profileImage: String? = null,
 ) {
     Row(
         modifier = Modifier
@@ -66,7 +67,8 @@ fun RankItem(
             circularAvatar(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .aspectRatio(1f)
+                    .aspectRatio(1f),
+                url = profileImage.toString()
             )
             Spacer(modifier = Modifier.fillMaxWidth(0.051f))
             Text(

@@ -17,10 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.ui.components.avatar.circularAvatar
-import biz.ohrae.challenge.ui.theme.DefaultWhite
-import biz.ohrae.challenge.ui.theme.TextBlack
-import biz.ohrae.challenge.ui.theme.dpToSp
-import biz.ohrae.challenge.ui.theme.myTypography
+import biz.ohrae.challenge.ui.theme.*
 import biz.ohrae.challenge_component.R
 
 @Preview(
@@ -46,6 +43,7 @@ private fun HeaderGallery() {
 
 @Composable
 fun Header(
+    profileImage: String? = null,
     goMyChallenge: () -> Unit = {},
 ) {
     Row(
@@ -64,7 +62,10 @@ fun Header(
                 goMyChallenge()
             }
         ) {
-            circularAvatar(Modifier.size(48.dp))
+            circularAvatar(
+                modifier = Modifier.size(48.dp),
+                url = profileImage.toString()
+            )
         }
     }
 }
@@ -119,7 +120,10 @@ fun BackButton(
             Text(
                 modifier = Modifier.wrapContentWidth(),
                 text = title,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                fontSize = dpToSp(dp = 18.dp),
+                color = TextBlack,
+                style = myTypography.bold
             )
             if (!isShare) {
                 IconButton(

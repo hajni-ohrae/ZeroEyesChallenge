@@ -36,9 +36,8 @@ fun ChallengersScreen(
             .fillMaxSize()
             .background(DefaultWhite)
     ) {
-        if (type == "finish")
+        if (type == "finish") {
             items(challengers) { item ->
-
                 val timeDays = when (authType) {
                     "photo" -> "${item.inChallenge?.get(0)?.verification_cnt.toString()}회"
                     "checkin" -> "${item.inChallenge?.get(0)?.verification_cnt.toString()}일"
@@ -48,14 +47,17 @@ fun ChallengersScreen(
                     userName = item.getUserName(),
                     rank = item.inChallenge?.get(0)?.ranking.toString(),
                     timeDays = timeDays,
-                    progress = "${item.inChallenge?.get(0)?.achievement_percent.toString()}%"
+                    progress = "${item.inChallenge?.get(0)?.achievement_percent.toString()}%",
+                    profileImage = item.imageFile?.path
                 )
-            } else {
+            }
+        } else {
             items(challengers) { item ->
                 RankItem(
                     userName = item.getUserName(),
                     rank = item.inChallenge?.get(0)?.ranking.toString(),
-                    )
+                    profileImage = item.imageFile?.path
+                )
             }
         }
     }

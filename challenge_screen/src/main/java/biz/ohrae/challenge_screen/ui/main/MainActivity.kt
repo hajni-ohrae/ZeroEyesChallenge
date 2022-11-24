@@ -98,13 +98,17 @@ class MainActivity : BaseActivity() {
         val filterState by viewModel.filterState.observeAsState()
         val state by viewModel.userChallengeListState.observeAsState()
         val isRefreshing by viewModel.isRefreshing.observeAsState(false)
+        val userData by viewModel.userData.observeAsState()
 
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(DefaultBackground)
         ) {
-            Header(goMyChallenge = { goMyChallenge() })
+            Header(
+                profileImage = userData?.imageFile?.path,
+                goMyChallenge = { goMyChallenge() },
+            )
             if (mainScreenState != null) {
                 ChallengeMainScreen(
                     mainScreenState = mainScreenState,
