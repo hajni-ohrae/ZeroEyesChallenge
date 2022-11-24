@@ -316,4 +316,30 @@ class UserRepo @Inject constructor(
             }
         }
     }
+
+    suspend fun updateUserProfile(nickName: String? = null, imageId: Int? = null): Flow<FlowResult> {
+        val jsonObject = JsonObject()
+        if (nickName != null) {
+            jsonObject.addProperty("nickname", nickName)
+        }
+        if (imageId != null) {
+            jsonObject.addProperty("image_file_id", imageId)
+        }
+        val accessToken = prefs.getUserData()?.access_token.toString()
+
+        val response = apiService.updateUserProfile(accessToken, jsonObject)
+        when (response) {
+            is NetworkResponse.Success -> {
+                val isSuccess = response.body.success
+                return flow {
+                    emit(FlowResult(isSuccess, response.body.code, response.body.message))
+                }
+            }
+            else -> {
+                return flow {
+                    emit(FlowResult(null, "", ""))
+                }
+            }
+        }
+    }
 }

@@ -70,6 +70,9 @@ object Routes {
     // 사용자 이미지 업로드
     const val USER_UPLOAD_IMAGE = "${CHALLENGE}/api/file/upload/image/user"
 
+    // 사용자 프로필 업데이트
+    const val UPDATE_USER_PROFILE = "${CHALLENGE}/api/user/update"
+
     // 피드 좋아요
     const val FEED_LIKE = "${CHALLENGE}/api/verification/feed/like"
 }

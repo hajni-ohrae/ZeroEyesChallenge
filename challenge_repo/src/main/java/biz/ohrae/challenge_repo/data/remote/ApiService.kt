@@ -233,4 +233,9 @@ interface ApiService {
         @Body body: JsonObject?,
     ): NetworkResponse<Result, Error>
 
+    @POST(Routes.UPDATE_USER_PROFILE)
+    suspend fun updateUserProfile(
+        @Header("x-access-token") accessToken: String,
+        @Body body: JsonObject?,
+    ): NetworkResponse<Result, Error>
 }

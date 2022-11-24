@@ -59,9 +59,26 @@ class ChallengeProfileViewModel @Inject constructor(
             response.flowOn(Dispatchers.IO).collect { it ->
                 it.data?.let { data ->
                     val imageBucket = data as ImageBucket
+                    updateUserProfile(imageId = imageBucket.id)
                     isLoading(false)
                 } ?: run {
                     isLoading(false)
+                }
+            }
+        }
+    }
+
+    fun updateUserProfile(nickName: String? = null, imageId: Int? = null) {
+        viewModelScope.launch {
+            val response = userRepo.updateUserProfile(nickName, imageId)
+            response.flowOn(Dispatchers.IO).collect { it ->
+                it.data?.let { data ->
+                    val success = data as Boolean
+                    if (!success) {
+                        setErrorData(it.errorCode, it.errorMessage)
+                    }
+                } ?: run {
+                    setErrorData(null, it.errorMessage)
                 }
             }
         }

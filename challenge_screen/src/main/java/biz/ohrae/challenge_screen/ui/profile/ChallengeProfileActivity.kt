@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.provider.ContactsContract.CommonDataKinds.Nickname
 import android.provider.MediaStore
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResult
@@ -173,6 +174,10 @@ class ChallengeProfileActivity : BaseActivity() {
                 val intent = Intent(this@ChallengeProfileActivity, NiceIdActivity::class.java)
                 intent.putExtra("userId", viewModel.user.value?.id)
                 startActivity(intent)
+            }
+
+            override fun onClickChangeNickname(nickname: String?) {
+                viewModel.updateUserProfile(nickname)
             }
         }
     }

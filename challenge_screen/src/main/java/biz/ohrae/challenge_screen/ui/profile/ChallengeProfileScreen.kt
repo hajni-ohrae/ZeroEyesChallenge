@@ -56,7 +56,10 @@ fun ChallengeProfileScreen(
             placeholder = "닉네임을 설정해주세요.",
             buttonName = "변경",
             defaultButtonEnabled = false,
-            canEdit = true
+            canEdit = true,
+            onClickButton = {
+                clickListener?.onClickChangeNickname(it)
+            }
         )
         SectionTitle(
             title = "휴대폰 번호",
@@ -169,7 +172,7 @@ private fun SectionContent(
     buttonName: String? = null,
     defaultButtonEnabled: Boolean = false,
     canEdit: Boolean = false,
-    onClickButton: () -> Unit = {},
+    onClickButton: (value: String?) -> Unit = {},
     onDone: () -> Unit = {},
 ) {
     var enabled by remember { mutableStateOf(defaultButtonEnabled) }
@@ -264,12 +267,13 @@ private fun SectionContent(
                                 keyboardController?.show()
                             }
                         } else {
+                            onClickButton(value)
                             onDone()
                             keyboardController?.hide()
                         }
                     } else {
                         if (enabled) {
-                            onClickButton()
+                            onClickButton(null)
                         }
                     }
                 }
