@@ -33,6 +33,7 @@ import biz.ohrae.challenge_screen.model.main.FilterState
 import biz.ohrae.challenge_screen.model.main.MainScreenState
 import biz.ohrae.challenge_screen.model.user.UserChallengeListState
 import biz.ohrae.challenge_screen.util.OnBottomReached
+import com.bumptech.glide.util.Util
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -234,6 +235,8 @@ fun InChallenges(
                 buttonName = buttonName,
                 startDay = item.start_date.toString(),
                 status = item.status.toString(),
+                buttonTextColor = Utils.getAuthBtnTextColor(item),
+                buttonColor = Utils.getAuthBtnColor(item)
             )
         }
     }

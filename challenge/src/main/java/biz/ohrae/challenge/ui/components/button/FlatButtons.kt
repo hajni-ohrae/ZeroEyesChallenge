@@ -363,19 +363,22 @@ fun ChallengeStatusButton(
     text: String = "확인",
     textStyle: TextStyle = myTypography.w700,
     backgroundColor: Color = Color(0xffeb712d),
+    textColor :Color = DefaultWhite,
     enabled: Boolean = true,
     onClick: () -> Unit = {},
     status:String = "",
     isRemainTime: Boolean = false,
     isFinished: Boolean = false,
 ) {
+    val border = if (text == "인증하기" || text == "인증완료") BorderStroke(0.dp, Color(0xffc7c7c7)) else BorderStroke(1.dp, Color(0xffc7c7c7))
     TextButton(
         modifier = modifier,
         colors = ButtonDefaults.textButtonColors(
             backgroundColor = if (enabled) backgroundColor else GrayColor7,
-            contentColor = DefaultWhite
+            contentColor = textColor
         ),
         shape = RoundedCornerShape(10.dp),
+        border = border,
         onClick = {
             if (enabled) {
                 onClick()
