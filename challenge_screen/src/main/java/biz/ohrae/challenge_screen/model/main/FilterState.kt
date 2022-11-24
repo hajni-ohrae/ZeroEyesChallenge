@@ -45,10 +45,10 @@ data class FilterState(
                 FilterItem("주6회", "6"),
             ),
             periodList = listOf(
-                FilterItem("주1회", "1"),
-                FilterItem("주2회", "2"),
-                FilterItem("주3회", "3"),
-                FilterItem("주4회", "4"),
+                FilterItem("1주", "1"),
+                FilterItem("2주", "2"),
+                FilterItem("3주", "3"),
+                FilterItem("4주", "4"),
             ),
             etcList = listOf(
                 FilterItem("제한없음","all"),
