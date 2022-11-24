@@ -5,16 +5,23 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import biz.ohrae.challenge.ui.components.detail.getRemainTime
+import biz.ohrae.challenge.ui.components.label.ChallengeProgressStatus
 import biz.ohrae.challenge.ui.theme.*
 import biz.ohrae.challenge_component.R
+import kotlinx.coroutines.delay
 
 @Preview(
     widthDp = 360,
@@ -342,5 +349,43 @@ fun FlatBottomButton(
                 fontSize = dpToSp(dp = 18.dp)
             )
         }
+    }
+}
+
+
+@Preview(
+    widthDp = 360,
+    showBackground = true
+)
+@Composable
+fun ChallengeStatusButton(
+    modifier: Modifier = Modifier,
+    text: String = "확인",
+    textStyle: TextStyle = myTypography.w700,
+    backgroundColor: Color = Color(0xffeb712d),
+    enabled: Boolean = true,
+    onClick: () -> Unit = {},
+    status:String = "",
+    isRemainTime: Boolean = false,
+    isFinished: Boolean = false,
+) {
+    TextButton(
+        modifier = modifier,
+        colors = ButtonDefaults.textButtonColors(
+            backgroundColor = if (enabled) backgroundColor else GrayColor7,
+            contentColor = DefaultWhite
+        ),
+        shape = RoundedCornerShape(10.dp),
+        onClick = {
+            if (enabled) {
+                onClick()
+            }
+        }
+    ) {
+        Text(
+            text = text,
+            style = textStyle,
+            fontSize = dpToSp(dp = 14.dp)
+        )
     }
 }

@@ -7,19 +7,22 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import biz.ohrae.challenge.ui.components.button.ChallengeStatusButton
 import biz.ohrae.challenge.ui.components.button.FlatButton
+import biz.ohrae.challenge.ui.components.detail.getRemainTime
 import biz.ohrae.challenge.ui.components.label.ProgressLabel
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.appColor
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
+import kotlinx.coroutines.delay
 import kotlin.math.roundToInt
 
 @Preview(
@@ -78,9 +81,22 @@ fun ChallengesInParticipationCard(
     achievementRate:String = "0.00",
     background: Color,
     textColor: Color,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
+    buttonName:String = "",
+    startDay:String = "",
+    status:String = "",
 ) {
 //    val achievementRate = (count.toDouble() / maxPeople.toDouble() * 100.0).roundToInt()
+    var remainTime by remember { mutableStateOf(getRemainTime(startDay)) }
+    var isRemainTime by remember { mutableStateOf(!remainTime.startsWith("-")) }
+
+    LaunchedEffect(remainTime) {
+        delay(1000 * 60)
+        remainTime = getRemainTime(startDay)
+        isRemainTime = !remainTime.startsWith("-")
+    }
+    var btnName = if (status == "register") remainTime.replace("-", "") + " 남음" else if(status == "finished") "챌린지가 완료되었습니다" else buttonName
+
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(10.dp),
@@ -136,13 +152,15 @@ fun ChallengesInParticipationCard(
                 )
 
             }
-            FlatButton(
+            ChallengeStatusButton(
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(6.5f),
-                text = "인증하기",
+                text = btnName,
                 backgroundColor = Color(0xff005bad),
-                onClick = { onClick() }
+                onClick = { onClick() },
+                isRemainTime = isRemainTime,
+                status = status
             )
         }
     }

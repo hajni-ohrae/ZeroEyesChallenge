@@ -48,6 +48,7 @@ data class FilterState(
                 FilterItem("주1회", "1"),
                 FilterItem("주2회", "2"),
                 FilterItem("주3회", "3"),
+                FilterItem("주4회", "4"),
             ),
             etcList = listOf(
                 FilterItem("제한없음","all"),

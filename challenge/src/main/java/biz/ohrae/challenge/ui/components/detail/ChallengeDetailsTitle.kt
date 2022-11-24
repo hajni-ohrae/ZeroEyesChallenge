@@ -236,7 +236,7 @@ private fun convertDate(dateStr: String): String {
     }
 }
 
-private fun getRemainTime(startDay: String): String {
+fun getRemainTime(startDay: String): String {
     return try {
         var dateString = startDay.replace("T", " ").replace("Z", "")
         dateString = dateString.substring(0, 19)
