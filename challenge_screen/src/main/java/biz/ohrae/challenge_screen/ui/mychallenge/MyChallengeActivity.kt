@@ -232,9 +232,11 @@ class MyChallengeActivity : BaseActivity() {
             }
 
             override fun onClickFilterType(type: String) {
-                if(!type.isNullOrEmpty()){
+                var filterType = type
+                if (!type.isNullOrEmpty()) {
+                    if (type == "all") filterType = ""
                     challengeMainViewModel.selectUserFilter(type)
-                    challengeMainViewModel.getUserChallengeList(type, isInit = true)
+                    challengeMainViewModel.getUserChallengeList(filterType, isInit = true)
                 }
             }
 
