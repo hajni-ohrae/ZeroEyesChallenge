@@ -80,16 +80,16 @@ fun ChallengerRecruitment(
             title = "챌린지 종료일",
             day = Utils.convertDate7(challengeData?.end_date.toString())
         )
-        Spacer(modifier = Modifier.height(12.dp))
-        ChallengeStartEndDateCard(
-            title = "모집 시작일",
-            day = Utils.convertDate7(challengeData?.apply_start_date.toString())
-        )
-        Spacer(modifier = Modifier.height(12.dp))
-        ChallengeStartEndDateCard(
-            title = "모집 종료일",
-            day = Utils.convertDate7(challengeData?.apply_end_date.toString())
-        )
+//        Spacer(modifier = Modifier.height(12.dp))
+//        ChallengeStartEndDateCard(
+//            title = "모집 시작일",
+//            day = Utils.convertDate7(challengeData?.apply_start_date.toString())
+//        )
+//        Spacer(modifier = Modifier.height(12.dp))
+//        ChallengeStartEndDateCard(
+//            title = "모집 종료일",
+//            day = Utils.convertDate7(challengeData?.apply_end_date.toString())
+//        )
         Spacer(modifier = Modifier.height(28.dp))
         Text(
             text = "모집 기한",

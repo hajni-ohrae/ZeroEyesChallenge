@@ -48,6 +48,7 @@ class MyChallengeActivity : BaseActivity() {
         myChallengeViewModel = ViewModelProvider(this)[MyChallengeViewModel::class.java]
         init()
         initClickListeners()
+        challengeMainViewModel.selectFilter("all")
 
         setContent {
             ChallengeInTheme {
