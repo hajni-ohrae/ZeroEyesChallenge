@@ -213,6 +213,7 @@ fun UserChallengeList(
         if (userChallengeListState != null) {
             items(userChallengeListState?.userChallengeList!!) { item ->
                 val inChallenge = item.inChallenge?.get(0)
+                val buttonName = Utils.getAuthButtonName(item,true)
                 ChallengesInParticipationCard(
                     modifier = Modifier.fillMaxWidth(),
                     title = item.goal.toString(),
@@ -222,6 +223,9 @@ fun UserChallengeList(
                     achievementRate = inChallenge?.achievement_percent.toString(),
                     Utils.userChallengeBackground(item.status),
                     Utils.userChallengeTextColor(item.status),
+                    startDay = item.start_date.toString(),
+                    status = item.status.toString(),
+                    buttonName = buttonName,
                     onClick = { clickListener?.onClickChallengeAuthItem(item.id) }
                 )
             }
