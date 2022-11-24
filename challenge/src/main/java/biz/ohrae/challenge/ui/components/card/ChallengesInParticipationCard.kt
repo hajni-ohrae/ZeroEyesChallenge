@@ -85,6 +85,8 @@ fun ChallengesInParticipationCard(
     buttonName:String = "",
     startDay:String = "",
     status:String = "",
+    buttonTextColor:Color = DefaultWhite,
+    buttonColor:Color = DefaultWhite
 ) {
 //    val achievementRate = (count.toDouble() / maxPeople.toDouble() * 100.0).roundToInt()
     var remainTime by remember { mutableStateOf(getRemainTime(startDay)) }
@@ -95,7 +97,7 @@ fun ChallengesInParticipationCard(
         remainTime = getRemainTime(startDay)
         isRemainTime = !remainTime.startsWith("-")
     }
-    var btnName = if (status == "register") remainTime.replace("-", "") + " 남음" else if(status == "finished") "챌린지가 완료되었습니다" else buttonName
+    var btnName = if (status == "register") remainTime.replace("-", "") + " 남음" else buttonName
 
     Card(
         modifier = modifier,
@@ -157,10 +159,11 @@ fun ChallengesInParticipationCard(
                     .fillMaxWidth()
                     .aspectRatio(6.5f),
                 text = btnName,
-                backgroundColor = Color(0xff005bad),
+                backgroundColor = buttonColor,
                 onClick = { onClick() },
                 isRemainTime = isRemainTime,
-                status = status
+                status = status,
+                textColor = buttonTextColor
             )
         }
     }

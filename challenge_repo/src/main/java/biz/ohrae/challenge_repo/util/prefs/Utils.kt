@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.os.Environment
 import android.text.format.DateUtils
 import androidx.compose.ui.graphics.Color
+import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import timber.log.Timber
 import java.io.File
@@ -674,37 +675,105 @@ object Utils {
     }
 
     fun getAuthButtonName(challengeData: ChallengeData, type: Boolean = false): String {
-        return if (challengeData.is_verification_photo == 1) {
-            if (challengeData.isAuthed()) {
-                "인증완료"
-            } else {
-                "인증하기"
-            }
-        } else if (challengeData.is_verification_time == 1) {
-            if (challengeData.isAuthed()) {
-                "인증완료"
-            } else {
-                if (type) {
-                    "자동 인증 중"
-                } else {
-                    "내일 새벽 1시에 자동 인증됩니다"
-                }
-            }
-        } else if (challengeData.is_verification_checkin == 1) {
-            if (challengeData.isAuthed()) {
-                "인증완료"
-            } else {
-                if (type) {
-                    "자동 인증 중"
-                } else {
-                    "오늘 첫 입실시 자동 인증됩니다"
-                }
-            }
+        return return if (challengeData.status == "finished") {
+            "챌린지가 완료되었습니다"
         } else {
-            if (challengeData.isAuthed()) {
-                "인증완료"
+            if (challengeData.is_verification_photo == 1) {
+                if (challengeData.isAuthed()) {
+                    "인증완료"
+                } else {
+                    "인증하기"
+                }
+            } else if (challengeData.is_verification_time == 1) {
+                if (challengeData.isAuthed()) {
+                    "인증완료"
+                } else {
+                    if (type) {
+                        "자동 인증 중"
+                    } else {
+                        "내일 새벽 1시에 자동 인증됩니다"
+                    }
+                }
+            } else if (challengeData.is_verification_checkin == 1) {
+                if (challengeData.isAuthed()) {
+                    "인증완료"
+                } else {
+                    if (type) {
+                        "자동 인증 중"
+                    } else {
+                        "오늘 첫 입실시 자동 인증됩니다"
+                    }
+                }
             } else {
-                "인증하기"
+                if (challengeData.isAuthed()) {
+                    "인증완료"
+                } else {
+                    "인증하기"
+                }
+            }
+        }
+    }
+
+    fun getAuthBtnTextColor(challengeData: ChallengeData): Color {
+        return if (challengeData.status == "finished") {
+            Color(0xff6c6c6c)
+        } else {
+            if (challengeData.is_verification_photo == 1) {
+                if (challengeData.isAuthed()) {
+                    DefaultWhite
+                } else {
+                    DefaultWhite
+                }
+            } else if (challengeData.is_verification_time == 1) {
+                if (challengeData.isAuthed()) {
+                    DefaultWhite
+                } else {
+                    Color(0xff4985f8)
+                }
+            } else if (challengeData.is_verification_checkin == 1) {
+                if (challengeData.isAuthed()) {
+                    DefaultWhite
+                } else {
+                    Color(0xff4985f8)
+                }
+            } else {
+                if (challengeData.isAuthed()) {
+                    DefaultWhite
+                } else {
+                    DefaultWhite
+                }
+            }
+        }
+    }
+
+    fun getAuthBtnColor(challengeData: ChallengeData): Color {
+        return if (challengeData.status == "finished") {
+            DefaultWhite
+        } else {
+            if (challengeData.is_verification_photo == 1) {
+                if (challengeData.isAuthed()) {
+                    Color(0xffc7c7c7)
+                } else {
+                    Color(0xff005bad)
+                }
+            } else if (challengeData.is_verification_time == 1) {
+                if (challengeData.isAuthed()) {
+                    Color(0xffc7c7c7)
+                } else {
+                    DefaultWhite
+                }
+            } else if (challengeData.is_verification_checkin == 1) {
+                if (challengeData.isAuthed()) {
+                    Color(0xffc7c7c7)
+                } else {
+                    DefaultWhite
+                }
+            } else {
+                if (challengeData.isAuthed()) {
+                    Color(0xffc7c7c7)
+                } else {
+                    Color(0xff005bad)
+                }
             }
         }
     }
