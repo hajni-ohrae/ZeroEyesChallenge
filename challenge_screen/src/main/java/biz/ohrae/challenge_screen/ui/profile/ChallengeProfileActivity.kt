@@ -33,6 +33,7 @@ import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge_repo.util.FileUtils
 import biz.ohrae.challenge_screen.ui.BaseActivity
+import biz.ohrae.challenge_screen.ui.niceid.NiceIdActivity
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import me.echodev.resizer.Resizer
@@ -166,6 +167,12 @@ class ChallengeProfileActivity : BaseActivity() {
                 } else {
                     callImageSelector()
                 }
+            }
+
+            override fun onClickIdentityVerification() {
+                val intent = Intent(this@ChallengeProfileActivity, NiceIdActivity::class.java)
+                intent.putExtra("userId", viewModel.user.value?.id)
+                startActivity(intent)
             }
         }
     }

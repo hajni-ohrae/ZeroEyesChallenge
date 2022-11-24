@@ -74,6 +74,9 @@ fun ChallengeProfileScreen(
             buttonName = "본인 인증",
             defaultButtonEnabled = true,
             canEdit = false,
+            onClickButton = {
+                clickListener?.onClickIdentityVerification()
+            }
         )
         SectionTitle(
             title = "생년월일"
@@ -166,6 +169,7 @@ private fun SectionContent(
     buttonName: String? = null,
     defaultButtonEnabled: Boolean = false,
     canEdit: Boolean = false,
+    onClickButton: () -> Unit = {},
     onDone: () -> Unit = {},
 ) {
     var enabled by remember { mutableStateOf(defaultButtonEnabled) }
@@ -262,6 +266,10 @@ private fun SectionContent(
                         } else {
                             onDone()
                             keyboardController?.hide()
+                        }
+                    } else {
+                        if (enabled) {
+                            onClickButton()
                         }
                     }
                 }
