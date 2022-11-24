@@ -46,7 +46,6 @@ class MyChallengeActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         challengeMainViewModel = ViewModelProvider(this)[ChallengeMainViewModel::class.java]
         myChallengeViewModel = ViewModelProvider(this)[MyChallengeViewModel::class.java]
-        init()
         initClickListeners()
         challengeMainViewModel.selectFilter("all")
 
@@ -79,6 +78,12 @@ class MyChallengeActivity : BaseActivity() {
                 Navigation()
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        init()
     }
 
     override fun onBack() {
