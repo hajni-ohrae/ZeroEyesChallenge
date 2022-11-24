@@ -35,6 +35,7 @@ data class User(
     val inChallenge: List<InChallenge>?,
     val main_color: String,
     val gender: Int,
+    val is_nickname_valid: Int?
 ) {
     companion object {
         fun mock() = User(
@@ -67,7 +68,8 @@ data class User(
             is_identified = 0,
             inChallenge = null,
             main_color = "",
-            gender = 0
+            gender = 0,
+            is_nickname_valid = 0
         )
     }
 
