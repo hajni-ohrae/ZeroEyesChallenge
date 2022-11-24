@@ -4,15 +4,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Text
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -60,9 +59,20 @@ private fun TextBoxGallery() {
             value = "",
             onValueChange = {}
         )
+        Spacer(modifier = Modifier.height(10.dp))
+        TextBoxWithButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(7.09f),
+            placeholder = "닉네임(10자리)",
+            maxLength = 10,
+            value = "",
+            onValueChange = {},
+            buttonName = "중복확인",
+            singleLine = true
+        )
     }
 }
-
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
@@ -157,6 +167,110 @@ fun TextBox(
                     color = Color(0xff828282),
                     fontSize = dpToSp(dp = 12.dp)
                 )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
+@Composable
+fun TextBoxWithButton(
+    modifier: Modifier = Modifier,
+    placeholder: String,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    maxLength: Int = Int.MAX_VALUE,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    singleLine: Boolean = false,
+    value: String,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    enabled: Boolean = true,
+    buttonName: String,
+    onValueChange: (String) -> Unit,
+) {
+    Column(modifier = modifier) {
+        val keyboardController = LocalSoftwareKeyboardController.current
+        val focusRequester = remember { FocusRequester() }
+
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
+            backgroundColor = Color(0xfff8f8f8),
+            elevation = 0.dp,
+            onClick = {
+                focusRequester.requestFocus()
+                keyboardController?.show()
+            },
+            shape = RoundedCornerShape(10.dp)
+        ) {
+            Row(modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp, 6.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                BasicTextField(
+                    modifier = Modifier
+                        .focusRequester(focusRequester)
+                        .weight(1f),
+                    value = value,
+                    onValueChange = {
+                        if (it.length <= maxLength) {
+                            onValueChange(it)
+                        }
+                    },
+                    singleLine = singleLine,
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            keyboardController?.hide()
+                        }
+                    ),
+                    keyboardOptions = keyboardOptions,
+                    decorationBox = @Composable { innerTextField ->
+                        TextFieldDefaults.TextFieldDecorationBox(
+                            innerTextField = innerTextField,
+                            placeholder = {
+                                Text(
+                                    text = placeholder,
+                                    color = Color(0xff6c6c6c),
+                                    style = myTypography.default,
+                                    fontSize = dpToSp(dp = 16.dp)
+                                )
+                            },
+                            colors = TextFieldDefaults.textFieldColors(
+                                backgroundColor = Color.Transparent,
+                                textColor = TextBlack,
+                                disabledIndicatorColor = Color.Transparent,
+                                errorIndicatorColor = Color.Transparent,
+                                focusedIndicatorColor = Color.Transparent,
+                                unfocusedIndicatorColor = Color.Transparent,
+                            ),
+                            enabled = enabled,
+                            singleLine = false,
+                            interactionSource = interactionSource,
+                            value = value,
+                            visualTransformation = visualTransformation,
+                            contentPadding = PaddingValues(0.dp, 7.dp),
+                        )
+                    },
+                    enabled = enabled
+                )
+                Button(
+                    modifier = Modifier.fillMaxHeight(),
+                    onClick = {},
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = Color(0xff005bad),
+                        contentColor = DefaultWhite
+                    ),
+                    contentPadding = PaddingValues(14.dp, 0.dp),
+                    elevation = ButtonDefaults.elevation(0.dp)
+                ) {
+                    Text(
+                        text = buttonName,
+                        fontSize = dpToSp(dp = 12.dp),
+                        style = myTypography.bold
+                    )
+                }
             }
         }
     }

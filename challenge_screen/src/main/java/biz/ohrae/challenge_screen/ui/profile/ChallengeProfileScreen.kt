@@ -20,7 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import biz.ohrae.challenge.ui.components.avatar.circularAvatar
+import biz.ohrae.challenge.ui.components.profile.UploadProfileImage
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.TextBlack
 import biz.ohrae.challenge.ui.theme.dpToSp
@@ -46,7 +46,9 @@ fun ChallengeProfileScreen(
     ) {
         UploadProfileImage(
             profileImageUri = profileImageUri,
-            clickListener = clickListener
+            onClickUpload = {
+                clickListener?.onClickProfileImage()
+            }
         )
         SectionTitle(
             title = "닉네임 (챌린지 참여 시 사용됩니다)",
@@ -102,38 +104,6 @@ fun ChallengeProfileScreen(
             defaultValue = "",
             placeholder = "등록된 계좌가 없습니다",
         )
-    }
-}
-
-@Composable
-private fun UploadProfileImage(
-    profileImageUri: Uri?,
-    clickListener: ChallengeProfileClickListener? = null,
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(177.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Spacer(modifier = Modifier.height(19.dp))
-        circularAvatar(
-            url = profileImageUri.toString(),
-            modifier = Modifier.size(90.dp)
-        )
-        TextButton(
-            contentPadding = PaddingValues(33.dp, 14.dp),
-            onClick = {
-                clickListener?.onClickProfileImage()
-            },
-        ) {
-            Text(
-                text = "사진업로드",
-                color = Color(0xff003865),
-                style = myTypography.bold,
-                fontSize = dpToSp(dp = 18.dp)
-            )
-        }
     }
 }
 
