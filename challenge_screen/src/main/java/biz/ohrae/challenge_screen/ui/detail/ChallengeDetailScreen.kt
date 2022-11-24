@@ -77,7 +77,7 @@ fun ChallengeDetailScreen(
         )
     }
     val checked = remember {
-        mutableStateOf(challengeData.inChallengeLike?.like == 1)
+        mutableStateOf(challengeData.is_like == 1)
     }
 
     Column(

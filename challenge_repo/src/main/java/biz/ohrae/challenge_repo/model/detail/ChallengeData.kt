@@ -45,6 +45,7 @@ data class ChallengeData(
     val is_valid: Int,
     val summary: Summary? = null,
     val inChallengeLike : InChallengeLike? = null,
+    val is_like: Int? = null,
 ) {
     companion object {
         fun mock(id: String = "2d4033ab-244b-47f3-84e9-6af72be39d9f") = ChallengeData(

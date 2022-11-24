@@ -53,7 +53,6 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.util.*
 
 @OptIn(ExperimentalPagerApi::class, ExperimentalFoundationApi::class)
 @Preview(
@@ -81,9 +80,9 @@ fun ChallengeJoinedDetailScreen(
         status = challengeDetailStatusMap[challengeData.status]
     }
     val listState = rememberLazyListState()
-    var like by remember { mutableStateOf(challengeData.inChallengeLike?.like) }
-    var checked by remember { mutableStateOf(false) }
-
+    val checked = remember {
+        mutableStateOf(challengeData.is_like == 1)
+    }
 
     Column(
         modifier = Modifier
@@ -213,9 +212,10 @@ fun ChallengeJoinedDetailScreen(
                     text = buttonName,
                     onClick = { clickListener?.onClickAuth() },
                     onClickBookMark = {
-                        checked.let { clickListener?.onClickBookMark(it) }
+                        checked.value = !checked.value
+                        clickListener?.onClickBookMark(checked.value)
                     },
-                    checked = checked
+                    checked = checked.value
                 )
             }
         }
