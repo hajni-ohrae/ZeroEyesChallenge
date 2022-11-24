@@ -55,7 +55,6 @@ fun ChallengersScreen(
                 RankItem(
                     userName = item.getUserName(),
                     rank = item.inChallenge?.get(0)?.ranking.toString(),
-
                     )
             }
         }
