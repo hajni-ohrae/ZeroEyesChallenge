@@ -45,7 +45,7 @@ import java.util.*
 class CalendarDialog : DialogFragment() {
     companion object {
         const val MIN_DAYS = 1
-        const val MAX_DAYS = 15
+        const val MAX_DAYS = 31
     }
 
     private lateinit var calendarDialogListener: CalendarDialogListener
