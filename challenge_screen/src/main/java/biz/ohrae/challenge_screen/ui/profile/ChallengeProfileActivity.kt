@@ -1,5 +1,6 @@
 package biz.ohrae.challenge_screen.ui.profile
 
+import ChallengeInitProfileScreen
 import ChallengeProfileScreen
 import android.Manifest
 import android.content.ContentValues
@@ -7,9 +8,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.ContactsContract.CommonDataKinds.Nickname
 import android.provider.MediaStore
+import android.view.WindowManager
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -22,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.window.Dialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
@@ -34,6 +38,7 @@ import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge_repo.util.FileUtils
 import biz.ohrae.challenge_screen.ui.BaseActivity
+import biz.ohrae.challenge_screen.ui.dialog.LoadingDialog
 import biz.ohrae.challenge_screen.ui.niceid.NiceIdActivity
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
@@ -53,18 +58,35 @@ class ChallengeProfileActivity : BaseActivity() {
     private var headerTitle: String = "프로필"
     private var cameraImageUri: Uri? = null
 
+    private var isInit: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this)[ChallengeProfileViewModel::class.java]
 
         setContent {
             ChallengeInTheme {
+                val isLoading by viewModel.isLoading.observeAsState(false)
+                if (isLoading) {
+                    Dialog(onDismissRequest = { /*TODO*/ }) {
+                        LoadingDialog()
+                    }
+                }
                 BuildContent()
+            }
+        }
+
+        isInit = intent.getBooleanExtra("isInit", false)
+        if (isInit) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            } else {
+                window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN or WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
             }
         }
 
         init()
         initClickListeners()
+        observeViewModels()
 
         albumLauncher = registerForActivityResult<Intent, ActivityResult>(
             ActivityResultContracts.StartActivityForResult()
@@ -123,9 +145,15 @@ class ChallengeProfileActivity : BaseActivity() {
 
     @Composable
     private fun Navigation() {
+        val startDestination = if (isInit) {
+            ChallengeProfileNavScreen.InitProfile.route
+        } else {
+            ChallengeProfileNavScreen.Profile.route
+        }
+
         NavHost(
             navController = navController,
-            startDestination = ChallengeProfileNavScreen.Profile.route
+            startDestination = startDestination
         ) {
             composable(ChallengeProfileNavScreen.Profile.route) {
                 val user by viewModel.user.observeAsState()
@@ -135,6 +163,20 @@ class ChallengeProfileActivity : BaseActivity() {
                     ChallengeProfileScreen(
                         user = user!!,
                         profileImageUri = profileImageUri,
+                        clickListener = clickListener
+                    )
+                }
+            }
+            composable(ChallengeProfileNavScreen.InitProfile.route) {
+                val user by viewModel.user.observeAsState()
+                val profileImageUri by viewModel.profileImageUri.observeAsState()
+                val nicknameState by viewModel.nicknameState.observeAsState()
+
+                if (user != null) {
+                    ChallengeInitProfileScreen(
+                        user = user!!,
+                        profileImageUri = profileImageUri,
+                        nicknameState = nicknameState,
                         clickListener = clickListener
                     )
                 }
@@ -178,6 +220,20 @@ class ChallengeProfileActivity : BaseActivity() {
 
             override fun onClickChangeNickname(nickname: String?) {
                 viewModel.updateUserProfile(nickname)
+            }
+
+            override fun onClickCheckNickname(nickname: String?) {
+                viewModel.checkNickName(nickname)
+            }
+        }
+    }
+
+    override fun observeViewModels() {
+        viewModel.finishedUpdate.observe(this) {
+            if (it) {
+                if (isInit) {
+                    finish()
+                }
             }
         }
     }
@@ -272,4 +328,5 @@ class ChallengeProfileActivity : BaseActivity() {
 
 sealed class ChallengeProfileNavScreen(val route: String) {
     object Profile : ChallengeProfileNavScreen("Profile")
+    object InitProfile : ChallengeProfileNavScreen("InitProfile")
 }

@@ -3,6 +3,7 @@ package biz.ohrae.challenge_screen.ui.profile
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import biz.ohrae.challenge_repo.model.profile.NicknameState
 import biz.ohrae.challenge_repo.model.register.ImageBucket
 import biz.ohrae.challenge_repo.model.user.User
 import biz.ohrae.challenge_repo.ui.main.ChallengeMainRepo
@@ -25,9 +26,13 @@ class ChallengeProfileViewModel @Inject constructor(
 ) : BaseViewModel(prefs) {
     private val _user = MutableLiveData<User>()
     private val _profileImageUri = MutableLiveData<Uri?>(null)
+    private val _nicknameState = MutableLiveData<NicknameState?>()
+    private val _finishedUpdate = MutableLiveData(false)
 
     val user get() = _user
     val profileImageUri get() = _profileImageUri
+    val nicknameState get() = _nicknameState
+    val finishedUpdate get() = _finishedUpdate
 
     fun getUserInfo() {
         viewModelScope.launch {
@@ -69,17 +74,33 @@ class ChallengeProfileViewModel @Inject constructor(
     }
 
     fun updateUserProfile(nickName: String? = null, imageId: Int? = null) {
+        isLoading(true)
         viewModelScope.launch {
             val response = userRepo.updateUserProfile(nickName, imageId)
             response.flowOn(Dispatchers.IO).collect { it ->
                 it.data?.let { data ->
                     val success = data as Boolean
-                    if (!success) {
+                    if (success) {
+                        if (nickName != null) {
+                            _finishedUpdate.value = true
+                        }
+                    } else {
                         setErrorData(it.errorCode, it.errorMessage)
                     }
                 } ?: run {
                     setErrorData(null, it.errorMessage)
                 }
+                isLoading(false)
+            }
+        }
+    }
+
+    fun checkNickName(nickName: String?) {
+        viewModelScope.launch {
+            if (nickName.isNullOrEmpty()) {
+                _nicknameState.value = NicknameState(false, "닉네임을 입력해주세요")
+            } else {
+                _nicknameState.value = NicknameState(true, "사용가능한 닉네임입니다")
             }
         }
     }

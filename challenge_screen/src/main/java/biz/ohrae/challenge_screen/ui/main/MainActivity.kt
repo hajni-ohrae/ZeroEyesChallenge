@@ -25,6 +25,7 @@ import biz.ohrae.challenge_screen.ui.mychallenge.MyChallengeActivity
 import biz.ohrae.challenge_screen.ui.mychallenge.MyChallengeViewModel
 import biz.ohrae.challenge_screen.ui.niceid.NiceIdActivity
 import biz.ohrae.challenge_screen.ui.policy.PolicyActivity
+import biz.ohrae.challenge_screen.ui.profile.ChallengeProfileActivity
 import biz.ohrae.challenge_screen.ui.register.RegisterActivity
 import biz.ohrae.challenge_screen.ui.welcome.WelcomeActivity
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData
@@ -76,6 +77,7 @@ class MainActivity : BaseActivity() {
 
         viewModel.userData()
         viewModel.tokenCheck()
+//        goProfileActivity()
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -337,6 +339,12 @@ class MainActivity : BaseActivity() {
                 }
                 .addOnFailureListener(this) { e -> Timber.w("getDynamicLink:onFailure", e) }
         }
+    }
+
+    private fun goProfileActivity() {
+        val intent = Intent(this, ChallengeProfileActivity::class.java)
+        intent.putExtra("isInit", true)
+        startActivity(intent)
     }
 }
 

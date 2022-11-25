@@ -187,6 +187,7 @@ fun TextBoxWithButton(
     enabled: Boolean = true,
     buttonName: String,
     onValueChange: (String) -> Unit,
+    onClickButton: () -> Unit = {},
 ) {
     Column(modifier = modifier) {
         val keyboardController = LocalSoftwareKeyboardController.current
@@ -257,7 +258,9 @@ fun TextBoxWithButton(
                 )
                 Button(
                     modifier = Modifier.fillMaxHeight(),
-                    onClick = {},
+                    onClick = {
+                        onClickButton()
+                    },
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = Color(0xff005bad),
                         contentColor = DefaultWhite

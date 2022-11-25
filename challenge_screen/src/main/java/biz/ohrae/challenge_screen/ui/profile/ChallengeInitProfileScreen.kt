@@ -5,6 +5,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -14,8 +16,11 @@ import biz.ohrae.challenge.ui.components.profile.UploadProfileImage
 import biz.ohrae.challenge.ui.theme.TextBlack
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
+import biz.ohrae.challenge_repo.model.profile.NicknameState
 import biz.ohrae.challenge_repo.model.user.User
 import biz.ohrae.challenge_screen.ui.profile.ChallengeProfileClickListener
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Preview(
     showBackground = true,
@@ -25,6 +30,7 @@ import biz.ohrae.challenge_screen.ui.profile.ChallengeProfileClickListener
 fun ChallengeInitProfileScreen(
     user: User = User.mock(),
     profileImageUri: Uri? = null,
+    nicknameState: NicknameState? = null,
     clickListener: ChallengeProfileClickListener? = null,
 ) {
     val scrollState = rememberScrollState()
@@ -41,9 +47,19 @@ fun ChallengeInitProfileScreen(
         )
         Spacer(modifier = Modifier.height(20.dp))
         Column(
-            modifier = Modifier.fillMaxWidth().weight(1f).padding(24.dp, 0.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .padding(24.dp, 0.dp)
         ) {
+            val scope = rememberCoroutineScope()
             var nickname by remember { mutableStateOf("") }
+            val focusRequester = remember { FocusRequester() }
+
+            scope.launch {
+                delay(100)
+                focusRequester.requestFocus()
+            }
 
             Text(
                 text = "닉네임*",
@@ -55,7 +71,8 @@ fun ChallengeInitProfileScreen(
             TextBoxWithButton(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(7.09f),
+                    .aspectRatio(7.09f)
+                    .focusRequester(focusRequester),
                 placeholder = "닉네임(10자리)",
                 maxLength = 10,
                 value = nickname,
@@ -63,7 +80,10 @@ fun ChallengeInitProfileScreen(
                     nickname = it
                 },
                 buttonName = "중복확인",
-                singleLine = true
+                singleLine = true,
+                onClickButton = {
+                    clickListener?.onClickCheckNickname(nickname)
+                }
             )
             Spacer(modifier = Modifier.height(10.dp))
             Text(
@@ -71,12 +91,14 @@ fun ChallengeInitProfileScreen(
                 fontSize = dpToSp(dp = 12.dp),
                 color = Color(0xff707070),
             )
-            Spacer(modifier = Modifier.height(10.dp))
-            Text(
-                text = "이미 사용중인 닉네임입니다",
-                fontSize = dpToSp(dp = 12.dp),
-                color = Color.Red,
-            )
+            if (nicknameState != null) {
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = nicknameState.message,
+                    fontSize = dpToSp(dp = 12.dp),
+                    color = if (nicknameState.success) Color(0xff36ad3b) else Color.Red,
+                )
+            }
             Spacer(modifier = Modifier.weight(1f))
             FlatButton(
                 modifier = Modifier
@@ -84,7 +106,10 @@ fun ChallengeInitProfileScreen(
                     .aspectRatio(6.5f),
                 text = "완료",
                 backgroundColor = Color(0xff003865),
-                enabled = false,
+                enabled = nicknameState?.success == true,
+                onClick = {
+                    clickListener?.onClickChangeNickname(nickname)
+                }
             )
             Spacer(modifier = Modifier.height(24.dp))
         }
