@@ -47,6 +47,12 @@ fun ParticipationFinishScreen(
                 .padding(24.dp, 0.dp)
         ) {
             Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = "챌린지 참여가 완료되었습니다",
+                style = myTypography.w500,
+                fontSize = dpToSp(dp = 20.dp)
+            )
+            Spacer(modifier = Modifier.height(24.dp))
             ParticipationDetailCard(challengeData = challengeData)
             Spacer(modifier = Modifier.height(24.dp))
             Text(text = "결제 내역", style = myTypography.bold, fontSize = dpToSp(dp = 16.dp))

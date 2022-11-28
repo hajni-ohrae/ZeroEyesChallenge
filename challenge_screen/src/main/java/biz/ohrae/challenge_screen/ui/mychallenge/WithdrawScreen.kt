@@ -39,6 +39,7 @@ fun WithdrawScreen(
         var amount by remember { mutableStateOf("") }
 
         Column(modifier = Modifier.padding(24.dp,0.dp)) {
+            Spacer(modifier = Modifier.height(16.dp))
             Text(text = "출금 신청", style = myTypography.w700, fontSize = dpToSp(dp = 20.dp))
             Spacer(modifier = Modifier.height(8.dp))
             Text(

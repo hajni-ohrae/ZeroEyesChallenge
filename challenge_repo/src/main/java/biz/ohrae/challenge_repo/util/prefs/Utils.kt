@@ -622,11 +622,11 @@ object Utils {
 
     fun getAuthType(challengeData: ChallengeData): String {
         return if (challengeData.is_verification_photo == 1) {
-            "사진인증"
+            "사진 인증"
         } else if (challengeData.is_verification_checkin == 1) {
-            "출석인증"
+            "출석 인증"
         } else if (challengeData.is_verification_time == 1) {
-            "시간인증"
+            "이용 시간 인증"
         } else {
             ""
         }

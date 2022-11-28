@@ -123,7 +123,7 @@ fun ItemHeader(
                     Text(
                         text = user?.phone_number.toString(),
                         style = myTypography.w700,
-                        fontSize = dpToSp(dp = 16.dp),
+                        fontSize = dpToSp(dp = 12.dp),
                         color = Color(0xff4f4f4f)
                     )
                 }
@@ -176,7 +176,6 @@ fun ItemHeader(
             fontSize = dpToSp(dp = 16.dp),
             color = DefaultBlack
         )
-        Spacer(modifier = Modifier.height(17.dp))
         UserFilterCard(clickListener = clickListener, filterState, filterState.selectUserChallengeType)
     }
 }
@@ -235,7 +234,12 @@ fun UserChallengeList(
                 )
             }
         }
+
+        item {
+            Spacer(modifier = Modifier.height(20.dp))
+        }
     }
+
     listState.OnBottomReached {
         Timber.e("bottom reached!!")
         onBottomReached()
