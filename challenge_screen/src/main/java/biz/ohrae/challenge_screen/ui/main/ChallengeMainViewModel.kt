@@ -45,6 +45,10 @@ class ChallengeMainViewModel @Inject constructor(
 
     val isRefreshing get() = _isRefreshing
 
+    private fun isFirstLaunch(): Boolean {
+        return prefs.getIsFirstLaunch()
+    }
+
     private fun login() {
         viewModelScope.launch {
             userRepo.login()
