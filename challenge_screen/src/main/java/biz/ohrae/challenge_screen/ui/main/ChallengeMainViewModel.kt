@@ -45,7 +45,7 @@ class ChallengeMainViewModel @Inject constructor(
 
     val isRefreshing get() = _isRefreshing
 
-    private fun isFirstLaunch(): Boolean {
+    fun isFirstLaunch(): Boolean {
         return prefs.getIsFirstLaunch()
     }
 
