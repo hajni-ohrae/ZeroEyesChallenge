@@ -77,7 +77,6 @@ class MainActivity : BaseActivity() {
 
         viewModel.userData()
         viewModel.tokenCheck()
-//        goProfileActivity()
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -260,6 +259,14 @@ class MainActivity : BaseActivity() {
         viewModel.errorData.observe(this) {
             if (it != null) {
                 showSnackBar(it.code, it.message)
+            }
+        }
+
+        myChallengeViewModel.isNicknameValid.observe(this) {
+            if (it != null && it != 1) {
+                if (!prefs.getIsFirstLaunch()) {
+                    goProfileActivity()
+                }
             }
         }
     }

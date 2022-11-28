@@ -29,7 +29,7 @@ class MyChallengeViewModel @Inject constructor(
     private val _userData = MutableLiveData<User>()
     private val _userRedCardListPage = MutableLiveData(1)
     private val _userPaymentHistoryListPage = MutableLiveData(1)
-
+    private val _isNicknameValid = MutableLiveData<Int?>()
 
     val redCardListState get() = _redCardListState
     val paymentHistoryState get() = _paymentHistoryState
@@ -37,6 +37,7 @@ class MyChallengeViewModel @Inject constructor(
     val rewardList get() = _rewardList
     val userRedCardListPage get() = _userRedCardListPage
     val userPaymentHistoryListPage get() = _userPaymentHistoryListPage
+    val isNicknameValid get() = _isNicknameValid
 
     fun getAllBlock() {
         viewModelScope.launch {
@@ -112,6 +113,7 @@ class MyChallengeViewModel @Inject constructor(
                     userData.access_token = tempUserData?.access_token.toString()
                     userData.refresh_token = tempUserData?.refresh_token.toString()
                     prefs.setUserData(userData)
+                    _isNicknameValid.value = userData.is_nickname_valid
                 }
             }
         }
@@ -128,5 +130,4 @@ class MyChallengeViewModel @Inject constructor(
             }
         }
     }
-
 }
