@@ -238,4 +238,10 @@ interface ApiService {
         @Header("x-access-token") accessToken: String,
         @Body body: JsonObject?,
     ): NetworkResponse<Result, Error>
+
+    @POST(Routes.CHECK_NICKNAME)
+    suspend fun checkNickname(
+        @Header("x-access-token") accessToken: String,
+        @Body body: JsonObject?,
+    ): NetworkResponse<Result2, Error>
 }

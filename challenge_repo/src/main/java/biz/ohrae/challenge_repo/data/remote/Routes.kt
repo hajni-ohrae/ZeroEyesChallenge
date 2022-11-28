@@ -75,4 +75,7 @@ object Routes {
 
     // 피드 좋아요
     const val FEED_LIKE = "${CHALLENGE}/api/verification/feed/like"
+
+    // 닉네임 중복체크
+    const val CHECK_NICKNAME = "${CHALLENGE}/api/user/check/nickname"
 }

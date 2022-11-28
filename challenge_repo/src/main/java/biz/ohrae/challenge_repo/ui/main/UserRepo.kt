@@ -3,6 +3,7 @@ package biz.ohrae.challenge_repo.ui.main
 import biz.ohrae.challenge_repo.data.remote.ApiService
 import biz.ohrae.challenge_repo.data.remote.NetworkResponse
 import biz.ohrae.challenge_repo.model.FlowResult
+import biz.ohrae.challenge_repo.model.profile.NicknameState
 import biz.ohrae.challenge_repo.model.register.ImageBucket
 import biz.ohrae.challenge_repo.model.user.PaymentHistoryState
 import biz.ohrae.challenge_repo.model.user.RedCardState
@@ -333,6 +334,34 @@ class UserRepo @Inject constructor(
                 val isSuccess = response.body.success
                 return flow {
                     emit(FlowResult(isSuccess, response.body.code, response.body.message))
+                }
+            }
+            else -> {
+                return flow {
+                    emit(FlowResult(null, "", ""))
+                }
+            }
+        }
+    }
+
+    suspend fun checkNickname(nickName: String?): Flow<FlowResult> {
+        val jsonObject = JsonObject()
+        jsonObject.addProperty("nickname", nickName)
+
+        val accessToken = prefs.getUserData()?.access_token.toString()
+
+        val response = apiService.checkNickname(accessToken, jsonObject)
+        when (response) {
+            is NetworkResponse.Success -> {
+                if (response.body.success && response.body.dataset != null) {
+                    val state = gson.fromJson(response.body.dataset, NicknameState::class.java)
+                    return flow {
+                        emit(FlowResult(state, response.body.code, response.body.message))
+                    }
+                } else {
+                    return flow {
+                        emit(FlowResult(null, response.body.code, response.body.message))
+                    }
                 }
             }
             else -> {

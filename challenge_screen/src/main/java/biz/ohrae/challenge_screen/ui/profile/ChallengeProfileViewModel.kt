@@ -97,10 +97,26 @@ class ChallengeProfileViewModel @Inject constructor(
 
     fun checkNickName(nickName: String?) {
         viewModelScope.launch {
-            if (nickName.isNullOrEmpty()) {
-                _nicknameState.value = NicknameState(false, "닉네임을 입력해주세요")
-            } else {
-                _nicknameState.value = NicknameState(true, "사용가능한 닉네임입니다")
+            val response = userRepo.checkNickname(nickName)
+            response.flowOn(Dispatchers.IO).collect { it ->
+                it.data?.let { data ->
+                    val state = data as NicknameState
+                    state.success = true
+                    state.message = "사용가능한 닉네임입니다"
+
+                    if (state.is_nickname_isolated != 1) {
+                        state.success = false
+                        state.message = "이미 사용중인 닉네임입니다."
+                    }
+                    if (state.is_nickname_valid != 1) {
+                        state.success = false
+                        state.message = "사용불가능한 닉네임입니다."
+                    }
+                    _nicknameState.value = state
+                } ?: run {
+                    setErrorData(null, it.errorMessage)
+                }
+                isLoading(false)
             }
         }
     }
