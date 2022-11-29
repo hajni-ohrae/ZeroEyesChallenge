@@ -95,8 +95,6 @@ class RegisterActivity : BaseActivity() {
         albumLauncher = registerForActivityResult<Intent, ActivityResult>(
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
-            Timber.e("data : ${Gson().toJson(result)}")
-
             if (result.resultCode == RESULT_OK) {
                 val data = result.data
 
