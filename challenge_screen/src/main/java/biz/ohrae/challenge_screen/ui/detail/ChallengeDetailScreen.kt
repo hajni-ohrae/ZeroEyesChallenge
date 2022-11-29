@@ -51,7 +51,8 @@ fun ChallengeDetailScreen(
     challengers: List<User>? = null,
     clickListener: ChallengeDetailClickListener? = null,
     isParticipant: Boolean = false,
-    viewModel: ChallengeDetailViewModel? = null
+    viewModel: ChallengeDetailViewModel? = null,
+    userData: User? = null,
 ) {
     if (challengeData == null) {
         return
@@ -145,6 +146,7 @@ fun ChallengeDetailScreen(
                 Spacer(modifier = Modifier.height(32.dp))
                 Challengers(
                     challengers = challengers,
+                    userData = userData,
                     clickListener = clickListener
                 )
                 Spacer(modifier = Modifier.height(32.dp))

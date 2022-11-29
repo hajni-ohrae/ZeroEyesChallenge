@@ -144,6 +144,7 @@ class ChallengeDetailActivity : BaseActivity() {
         val challengeVerificationState by viewModel.challengeVerificationState.observeAsState()
         val challengers by viewModel.challengers.observeAsState()
         val challengeVerifiedList by viewModel.challengeVerifiedList.observeAsState()
+        val userData by myChallengeViewModel.userData.observeAsState()
 
         if (isJoined == null || challengeData == null) {
             return
@@ -168,13 +169,13 @@ class ChallengeDetailActivity : BaseActivity() {
                 ChallengeDetailScreen(
                     challengeData = challengeData,
                     challengers = challengers,
+                    userData = userData,
                     clickListener = detailClickListener,
                     isParticipant = isParticipant,
                     viewModel = viewModel
                 )
             }
             composable(ChallengeDetailNavScreen.JoinedDetail.route) {
-                val userData by myChallengeViewModel.userData.observeAsState()
 
                 ChallengeJoinedDetailScreen(
                     challengeData = challengeData,
