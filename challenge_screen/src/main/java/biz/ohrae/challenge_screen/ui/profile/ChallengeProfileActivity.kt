@@ -10,7 +10,6 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.ContactsContract.CommonDataKinds.Nickname
 import android.provider.MediaStore
 import android.view.WindowManager
 import androidx.activity.compose.setContent
@@ -40,7 +39,6 @@ import biz.ohrae.challenge_repo.util.FileUtils
 import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.dialog.LoadingDialog
 import biz.ohrae.challenge_screen.ui.niceid.NiceIdActivity
-import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import me.echodev.resizer.Resizer
 import timber.log.Timber
@@ -91,7 +89,6 @@ class ChallengeProfileActivity : BaseActivity() {
         albumLauncher = registerForActivityResult<Intent, ActivityResult>(
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
-            Timber.e("data : ${Gson().toJson(result)}")
             if (result.resultCode == RESULT_OK) {
                 val data = result.data
 
