@@ -37,7 +37,7 @@ fun ChallengersScreen(
                 val timeDays = when (authType) {
                     "photo" -> "${item.inChallenge?.get(0)?.verification_cnt.toString()}회"
                     "checkin" -> "${item.inChallenge?.get(0)?.verification_cnt.toString()}일"
-                    else -> "${item.inChallenge?.get(0)?.verification_time.toString()}"
+                    else -> item.inChallenge?.get(0)?.verification_time.toString()
                 }
                 RankItem(
                     userName = item.getUserName(),
