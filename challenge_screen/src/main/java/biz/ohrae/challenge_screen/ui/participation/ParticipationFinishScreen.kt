@@ -55,46 +55,49 @@ fun ParticipationFinishScreen(
             Spacer(modifier = Modifier.height(24.dp))
             ParticipationDetailCard(challengeData = challengeData)
             Spacer(modifier = Modifier.height(24.dp))
-            Text(text = "결제 내역", style = myTypography.bold, fontSize = dpToSp(dp = 16.dp))
-            Spacer(modifier = Modifier.height(16.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = "결제 수단",
-                    style = myTypography.default,
-                    fontSize = dpToSp(dp = 16.dp),
-                    color = Color(0xff6c6c6c)
-                )
-                Text(
-                    text = "현대카드 (신용카드)",
-                    style = myTypography.default,
-                    fontSize = dpToSp(dp = 16.dp),
-                    color = TextBlack
-                )
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = "총 결제 금액",
-                    style = myTypography.default,
-                    fontSize = dpToSp(dp = 16.dp),
-                    color = Color(0xff6c6c6c)
-                )
-                Text(
-                    text = "${Utils.numberFormat(participationResult?.paid_amount)}원",
-                    style = myTypography.bold,
-                    fontSize = dpToSp(dp = 16.dp),
-                    color = Color(0xff4985f8)
-                )
+            if (challengeData.min_deposit_amount > 0) {
+                Text(text = "결제 내역", style = myTypography.bold, fontSize = dpToSp(dp = 16.dp))
+                Spacer(modifier = Modifier.height(16.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "결제 수단",
+                        style = myTypography.default,
+                        fontSize = dpToSp(dp = 16.dp),
+                        color = Color(0xff6c6c6c)
+                    )
+                    Text(
+                        text = "현대카드 (신용카드)",
+                        style = myTypography.default,
+                        fontSize = dpToSp(dp = 16.dp),
+                        color = TextBlack
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "총 결제 금액",
+                        style = myTypography.default,
+                        fontSize = dpToSp(dp = 16.dp),
+                        color = Color(0xff6c6c6c)
+                    )
+                    Text(
+                        text = "${Utils.numberFormat(participationResult?.paid_amount)}원",
+                        style = myTypography.bold,
+                        fontSize = dpToSp(dp = 16.dp),
+                        color = Color(0xff4985f8)
+                    )
+                }
             }
         }
+
         FlatDoubleButton(
             modifier = Modifier
                 .fillMaxWidth()

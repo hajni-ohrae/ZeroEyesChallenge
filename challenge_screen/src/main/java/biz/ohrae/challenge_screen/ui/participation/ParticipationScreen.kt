@@ -78,12 +78,7 @@ fun ParticipationScreen(
             ParticipationDetailCard(challengeData = challengeData)
             Spacer(modifier = Modifier.height(24.dp))
             if (isFree) {
-                Text(
-                    text = "무료 챌린지입니다.",
-                    style = myTypography.w500,
-                    fontSize = dpToSp(dp = 20.dp),
-                    color = Color(0xffff5800),
-                )
+                FreeChallengeText()
             } else {
                 InputParticipationAmount(
                     isFree = isFree,
@@ -440,7 +435,36 @@ fun ParticipationDetailCard(challengeData: ChallengeData) {
         }
     }
 }
+@Composable
+fun FreeChallengeText(){
+    Column() {
+        Text(
+            text = "무료 챌린지",
+            style = myTypography.w500,
+            fontSize = dpToSp(dp = 16.dp),
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            text = "· 참여금이 필요 없는 무료 챌린지입니다",
+            style = myTypography.w500,
+            fontSize = dpToSp(dp = 14.dp),
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = "· 개설자가 정한 보상기준으로 상금이 지급됩니다",
+            style = myTypography.w500,
+            fontSize = dpToSp(dp = 14.dp),
+        )
+        Spacer(modifier = Modifier.height(24.dp))
+        Divider(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp), color = GrayColor4
+        )
 
+    }
+
+}
 @Composable
 private fun DurationLabel(challengeData: ChallengeData) {
     val day by remember { mutableStateOf(Utils.getRemainTimeDays(challengeData.start_date.toString())) }

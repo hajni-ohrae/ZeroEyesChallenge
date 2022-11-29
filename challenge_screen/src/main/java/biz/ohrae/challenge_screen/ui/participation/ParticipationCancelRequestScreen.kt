@@ -54,33 +54,45 @@ fun ParticipationCancelRequestScreen(
                 fontSize = dpToSp(dp = 20.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = "챌린지 참여를 취소하면 참여금이 환불되고\n해당 챌린지에 참여할 수 없습니다",
-                style = myTypography.default,
-                color = Color(0xff6c6c6c),
-                fontSize = dpToSp(dp = 16.dp),
-                lineHeight = dpToSp(dp = 22.dp)
-            )
+            if (challengeData.min_deposit_amount == 0) {
+                Text(
+                    text = "챌린지 참여를 취소하면 해당 챌린지에 재참여할\n수 없습니다",
+                    style = myTypography.default,
+                    color = Color(0xff6c6c6c),
+                    fontSize = dpToSp(dp = 16.dp),
+                    lineHeight = dpToSp(dp = 22.dp)
+                )
+            } else {
+                Text(
+                    text = "챌린지 참여를 취소하면 참여금이 환불되고\n해당 챌린지에 참여할 수 없습니다",
+                    style = myTypography.default,
+                    color = Color(0xff6c6c6c),
+                    fontSize = dpToSp(dp = 16.dp),
+                    lineHeight = dpToSp(dp = 22.dp)
+                )
+            }
             Spacer(modifier = Modifier.height(24.dp))
             ParticipationDetailCardForCancel(challengeData = challengeData)
             Spacer(modifier = Modifier.height(32.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = "환불 예정 금액",
-                    style = myTypography.bold,
-                    fontSize = dpToSp(dp = 16.dp),
-                    color = TextBlack
-                )
-                Text(
-                    text = "${Utils.numberFormat(challengeData.inChallenge?.get(0)?.deposit_amount)}원",
-                    style = myTypography.bold,
-                    fontSize = dpToSp(dp = 16.dp),
-                    color = Color(0xff4985f8)
-                )
+            if (challengeData.min_deposit_amount > 0) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "환불 예정 금액",
+                        style = myTypography.bold,
+                        fontSize = dpToSp(dp = 16.dp),
+                        color = TextBlack
+                    )
+                    Text(
+                        text = "${Utils.numberFormat(challengeData.inChallenge?.get(0)?.deposit_amount)}원",
+                        style = myTypography.bold,
+                        fontSize = dpToSp(dp = 16.dp),
+                        color = Color(0xff4985f8)
+                    )
+                }
             }
         }
         FlatBottomButton(
