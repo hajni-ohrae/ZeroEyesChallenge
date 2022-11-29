@@ -18,6 +18,7 @@ import biz.ohrae.challenge.ui.components.card.ChallengeCardItem
 import biz.ohrae.challenge.ui.components.card.ChallengesInParticipationCard
 import biz.ohrae.challenge.ui.components.card.MainTopCard
 import biz.ohrae.challenge.ui.components.filter.PaidFilterCard
+import biz.ohrae.challenge.ui.components.indicator.DotIndicator
 import biz.ohrae.challenge.ui.theme.DefaultBlack
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.dpToSp
@@ -214,7 +215,6 @@ fun InChallenges(
             color = DefaultBlack
         )
         Spacer(modifier = Modifier.height(10.dp))
-        Timber.e("userChallengeList size :${userChallengeList.size}")
         HorizontalPager(
             count = userChallengeList.size,
             state = pagerState
@@ -239,6 +239,13 @@ fun InChallenges(
                 buttonColor = Utils.getAuthBtnColor(item)
             )
         }
+        Spacer(modifier = Modifier.height(10.dp))
+        DotIndicator(
+            modifier = Modifier.fillMaxWidth(),
+            size = userChallengeList.size,
+            currentIndex = pagerState.currentPage
+        )
+        Spacer(modifier = Modifier.height(24.dp))
     }
 }
 
