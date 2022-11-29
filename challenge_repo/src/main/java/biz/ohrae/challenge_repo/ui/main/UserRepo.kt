@@ -105,14 +105,14 @@ class UserRepo @Inject constructor(
     }
 
     suspend fun refreshToken(): Flow<FlowResult> {
-        val user = prefs.getUserData()
-        if (user == null) {
+        val userData = prefs.getUserData()
+        if (userData == null) {
             return flow {
                 emit(FlowResult(false, "", ""))
             }
         }
 
-        val response = apiService.authTokenRefresh(user.refresh_token)
+        val response = apiService.authTokenRefresh(userData.refresh_token)
         when (response) {
             is NetworkResponse.Success -> {
                 val isSuccess = response.body.success
