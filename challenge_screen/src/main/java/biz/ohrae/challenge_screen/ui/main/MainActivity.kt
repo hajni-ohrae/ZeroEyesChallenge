@@ -235,13 +235,17 @@ class MainActivity : BaseActivity() {
                 }
             }
 
-            override fun onClickChallengeAuthItem(id: String) {
-                goDetail(id)
+            override fun onClickChallengeAuthItem(id: String, type: Int) {
+                goDetail(id, isPhoto = type)
             }
 
             override fun onClickTopBanner() {
                 val intent = Intent(this@MainActivity, BannerDetailActivity::class.java)
                 startActivity(intent)
+            }
+
+            override fun onClickMyChallengeCard(id: String) {
+                goDetail(id)
             }
         }
     }
@@ -281,10 +285,11 @@ class MainActivity : BaseActivity() {
         )
     }
 
-    private fun goDetail(id: String, isParticipant: Boolean = false) {
+    private fun goDetail(id: String, isParticipant: Boolean = false, isPhoto: Int = 0) {
         val intent = Intent(this, ChallengeDetailActivity::class.java)
         intent.putExtra("challengeId", id)
         intent.putExtra("isParticipant", isParticipant)
+        intent.putExtra("isPhoto", isPhoto)
         startActivity(intent)
     }
 

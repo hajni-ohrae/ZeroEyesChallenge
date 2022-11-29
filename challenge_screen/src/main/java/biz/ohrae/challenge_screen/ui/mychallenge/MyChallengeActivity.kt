@@ -224,10 +224,12 @@ class MyChallengeActivity : BaseActivity() {
                 startActivity(intent)
             }
 
-            override fun onClickChallengeAuthItem(challengeId: String) {
-                val intent = Intent(this@MyChallengeActivity, ChallengeDetailActivity::class.java)
-                intent.putExtra("challengeId", challengeId)
-                startActivity(intent)
+            override fun onClickChallengeAuthItem(challengeId: String, type: Int) {
+                goDetail(challengeId, isPhoto = type)
+            }
+
+            override fun onClickMyChallengeCard(id: String) {
+                goDetail(id)
             }
 
             override fun onClickChallengeItem(id: String) {
@@ -252,6 +254,12 @@ class MyChallengeActivity : BaseActivity() {
         }
     }
 
+    private fun goDetail(id: String, isPhoto: Int = 0) {
+        val intent = Intent(this, ChallengeDetailActivity::class.java)
+        intent.putExtra("challengeId", id)
+        intent.putExtra("isPhoto", isPhoto)
+        startActivity(intent)
+    }
     private fun onBottomReached() {
         challengeMainViewModel.getUserChallengeList("", isInit = true)
     }

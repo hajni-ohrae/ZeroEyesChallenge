@@ -228,7 +228,10 @@ fun UserChallengeList(
                     startDay = item.start_date.toString(),
                     status = item.status.toString(),
                     buttonName = buttonName,
-                    onClick = { clickListener?.onClickChallengeAuthItem(item.id) },
+                    onClick = {
+                        clickListener?.onClickChallengeAuthItem(item.id,item.is_verification_photo)
+                    },
+                    onCardClick = { clickListener?.onClickMyChallengeCard(item.id) },
                     buttonTextColor = Utils.getAuthBtnTextColor(item),
                     buttonColor = Utils.getAuthBtnColor(item)
                 )

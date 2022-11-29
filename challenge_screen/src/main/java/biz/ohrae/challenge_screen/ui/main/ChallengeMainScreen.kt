@@ -133,7 +133,9 @@ private fun ChallengeList(
                 userChallengeListState = userChallengeListState
             )
         }
-        itemsIndexed(mainScreenState?.challengeList!!, key = { _, item -> item.id }) { index, item ->
+        itemsIndexed(
+            mainScreenState?.challengeList!!,
+            key = { _, item -> item.id }) { index, item ->
             val startDay = Utils.getRemainTimeDays(item.start_date.toString())
             val type = challengeVerificationPeriodMap[item.verification_period_type]
             val weekType = if (type.isNullOrEmpty()) "주${item.per_week}회 인증" else type
@@ -221,7 +223,7 @@ fun InChallenges(
         ) {
             val item = userChallengeList[currentPage]
             val inChallenge = item.inChallenge?.get(0)
-            val buttonName = Utils.getAuthButtonName(item,true)
+            val buttonName = Utils.getAuthButtonName(item, true)
             ChallengesInParticipationCard(
                 modifier = Modifier.fillMaxWidth(),
                 title = item.goal.toString(),
@@ -231,7 +233,10 @@ fun InChallenges(
                 achievementRate = inChallenge?.achievement_percent.toString(),
                 Utils.userChallengeBackground(item.status),
                 Utils.userChallengeTextColor(item.status),
-                onClick = { clickListener?.onClickChallengeAuthItem(item.id) },
+                onClick = {
+                    clickListener?.onClickChallengeAuthItem(item.id, item.is_verification_photo)
+                },
+                onCardClick = { clickListener?.onClickMyChallengeCard(item.id) },
                 buttonName = buttonName,
                 startDay = item.start_date.toString(),
                 status = item.status.toString(),

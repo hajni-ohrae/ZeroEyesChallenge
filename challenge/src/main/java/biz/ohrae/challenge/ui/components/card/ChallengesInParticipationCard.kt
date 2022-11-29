@@ -2,6 +2,7 @@ package biz.ohrae.challenge.ui.components.card
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -76,17 +77,18 @@ fun ChallengesInParticipationCard(
     modifier: Modifier,
     title: String,
     count: String,
-    total:String,
+    total: String,
     progressStatus: String,
-    achievementRate:String = "0.00",
+    achievementRate: String = "0.00",
     background: Color,
     textColor: Color,
     onClick: () -> Unit = {},
-    buttonName:String = "",
-    startDay:String = "",
-    status:String = "",
-    buttonTextColor:Color = DefaultWhite,
-    buttonColor:Color = DefaultWhite,
+    onCardClick: () -> Unit = {},
+    buttonName: String = "",
+    startDay: String = "",
+    status: String = "",
+    buttonTextColor: Color = DefaultWhite,
+    buttonColor: Color = DefaultWhite,
 ) {
 //    val achievementRate = (count.toDouble() / maxPeople.toDouble() * 100.0).roundToInt()
     var remainTime by remember { mutableStateOf(getRemainTime(startDay)) }
@@ -102,11 +104,11 @@ fun ChallengesInParticipationCard(
     var btnColor = if (status == "register") DefaultWhite else buttonColor
 
     Card(
-        modifier = modifier,
+        modifier = modifier.clickable { onCardClick() },
         shape = RoundedCornerShape(10.dp),
         elevation = 0.dp,
         backgroundColor = DefaultWhite,
-        border = BorderStroke(1.dp, Color(0xffebebeb))
+        border = BorderStroke(1.dp, Color(0xffebebeb)),
     ) {
         Column(
             modifier = Modifier

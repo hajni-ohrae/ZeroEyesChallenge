@@ -4,7 +4,8 @@ interface MainClickListener {
     fun onClickPurchaseTicket()
     fun onClickRegister()
     fun onClickChallengeItem(id: String)
-    fun onClickFilterType(filterType:String)
-    fun onClickChallengeAuthItem(id: String)
+    fun onClickFilterType(filterType: String)
+    fun onClickChallengeAuthItem(id: String, type: Int = 0)
+    fun onClickMyChallengeCard(id: String)
     fun onClickTopBanner()
 }
