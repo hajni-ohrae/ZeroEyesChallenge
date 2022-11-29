@@ -29,6 +29,7 @@ class ChallengersActivity: BaseActivity() {
     private var challengeId: String? = null
     private var type: String? = null
     private var authType: String? = null
+    private var userId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +37,7 @@ class ChallengersActivity: BaseActivity() {
         challengeId = intent.getStringExtra("challengeId")
         type = intent.getStringExtra("type")
         authType = intent.getStringExtra("authType")
+        userId = prefs.getUserData()?.id
 
         setContent {
             ChallengeInTheme {
@@ -93,6 +95,7 @@ class ChallengersActivity: BaseActivity() {
                 ChallengersScreen(
                     challengers = challengers,
                     challengeData = challengeData,
+                    userId = userId,
                     type = type,
                     authType = authType
                 )

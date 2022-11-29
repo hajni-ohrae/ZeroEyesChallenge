@@ -33,7 +33,7 @@ fun RankItemGallery() {
         modifier = Modifier.fillMaxSize(),
     ) {
         items(list) { rank ->
-            RankItem(rank.rank, rank.userName, rank.timeDays, rank.progress)
+            RankItem(rank.rank, rank.userName, rank.timeDays, rank.progress, isMe = true)
         }
     }
 }
@@ -49,8 +49,15 @@ fun RankItem(
     timeDays: String = "",
     progress: String = "",
     count: String = "",
+    isMe: Boolean = false,
     profileImage: String? = null,
 ) {
+    val name = if (isMe) {
+        "$userName(나)"
+    } else {
+        userName
+    }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -79,7 +86,7 @@ fun RankItem(
             )
             Spacer(modifier = Modifier.fillMaxWidth(0.051f))
             Text(
-                text = userName,
+                text = name,
                 style = myTypography.default,
                 fontSize = dpToSp(dp = 14.dp),
                 color = TextBlack

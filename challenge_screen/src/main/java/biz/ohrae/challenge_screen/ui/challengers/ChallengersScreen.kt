@@ -1,19 +1,14 @@
 package biz.ohrae.challenge_screen.ui.challengers
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.ui.components.list_item.RankItem
 import biz.ohrae.challenge.ui.theme.DefaultWhite
-import biz.ohrae.challenge.ui.theme.dpToSp
-import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.model.user.User
 
@@ -25,6 +20,7 @@ import biz.ohrae.challenge_repo.model.user.User
 fun ChallengersScreen(
     challengeData: ChallengeData? = null,
     challengers: List<User>? = null,
+    userId: String? = null,
     type: String? = "",
     authType: String? = ""
 ) {
@@ -48,7 +44,8 @@ fun ChallengersScreen(
                     rank = item.inChallenge?.get(0)?.ranking.toString(),
                     timeDays = timeDays,
                     progress = "${item.inChallenge?.get(0)?.achievement_percent.toString()}%",
-                    profileImage = item.imageFile?.path
+                    profileImage = item.imageFile?.path,
+                    isMe = userId == item.id
                 )
             }
         } else {
@@ -56,7 +53,8 @@ fun ChallengersScreen(
                 RankItem(
                     userName = item.getUserName(),
                     rank = item.inChallenge?.get(0)?.ranking.toString(),
-                    profileImage = item.imageFile?.path
+                    profileImage = item.imageFile?.path,
+                    isMe = userId == item.id
                 )
             }
         }

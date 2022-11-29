@@ -64,6 +64,7 @@ import timber.log.Timber
 fun ChallengeJoinedDetailScreen(
     challengeData: ChallengeData? = ChallengeData.mock(),
     challengers: List<User>? = null,
+    userData: User? = null,
     verificationState: VerificationState? = null,
     challengeVerifiedList: List<VerifyData>? = null,
     clickListener: ChallengeDetailClickListener? = null,
@@ -194,6 +195,7 @@ fun ChallengeJoinedDetailScreen(
                             ChallengeJoinedDetailPage(
                                 challengeData = challengeData,
                                 challengers = challengers,
+                                userData = userData,
                                 verificationState = verificationState,
                                 clickListener = clickListener
                             )
@@ -361,6 +363,7 @@ private fun ChallengeProgressDetail(
 private fun ChallengeJoinedDetailPage(
     challengeData: ChallengeData,
     challengers: List<User>?,
+    userData: User? = null,
     verificationState: VerificationState? = null,
     clickListener: ChallengeDetailClickListener? = null
 ) {
@@ -382,7 +385,11 @@ private fun ChallengeJoinedDetailPage(
         )
         Spacer(modifier = Modifier.height(24.dp))
         if (challengers != null) {
-            Challengers(challengers = challengers, clickListener = clickListener)
+            Challengers(
+                challengers = challengers,
+                userData = userData,
+                clickListener = clickListener
+            )
         }
     }
 }
@@ -568,6 +575,7 @@ fun ColumnForLazy(
 @Composable
 fun Challengers(
     challengers: List<User>,
+    userData: User? = null,
     clickListener: ChallengeDetailClickListener? = null
 ) {
     Column {
@@ -604,7 +612,8 @@ fun Challengers(
             if (index < 10) {
                 ChallengersItem(
                     userName = user.getUserName(),
-                    imagePath = user.imageFile?.path
+                    imagePath = user.imageFile?.path,
+                    isMe = userData?.id == user.id
                 )
                 Spacer(modifier = Modifier.height(16.dp))
             }

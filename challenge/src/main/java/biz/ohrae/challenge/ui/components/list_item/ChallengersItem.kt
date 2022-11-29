@@ -25,7 +25,8 @@ fun ChallengersItemGallery() {
     LazyColumn(modifier = Modifier.fillMaxWidth()) {
         items(challengers) { item ->
             ChallengersItem(
-                userName = item
+                userName = item,
+                isMe = true
             )
         }
     }
@@ -40,7 +41,14 @@ fun ChallengersItem(
     modifier: Modifier = Modifier,
     userName: String = "",
     imagePath: String? = null,
+    isMe: Boolean = false,
 ) {
+    val name = if (isMe) {
+        "$userName(나)"
+    } else {
+        userName
+    }
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -55,7 +63,7 @@ fun ChallengersItem(
         )
         Spacer(modifier = Modifier.fillMaxWidth(0.058f))
         Text(
-            text = userName,
+            text = name,
             style = myTypography.default,
             fontSize = dpToSp(dp = 14.dp),
             color = DefaultBlack
