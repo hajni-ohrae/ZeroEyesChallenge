@@ -80,9 +80,6 @@ fun ChallengeJoinedDetailScreen(
         status = challengeDetailStatusMap[challengeData.status]
     }
     val listState = rememberLazyListState()
-    val checked = remember {
-        mutableStateOf(challengeData.is_like == 1)
-    }
 
     Column(
         modifier = Modifier
@@ -91,7 +88,8 @@ fun ChallengeJoinedDetailScreen(
     ) {
         LazyColumn(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .weight(1f),
             state = listState
         ) {
             item {
@@ -109,7 +107,11 @@ fun ChallengeJoinedDetailScreen(
             }
             if (status != null) {
                 item {
-                    ColumnForLazy {
+                    ColumnForLazy(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(24.dp, 0.dp)
+                    ) {
                         val authMethod = Utils.getAuthMethodText(challengeData)
                         val ageType = Utils.getAgeType(challengeData.age_limit_type.toString())
 
@@ -180,7 +182,11 @@ fun ChallengeJoinedDetailScreen(
                 }
             }
             items(1) {
-                ColumnForLazy {
+                ColumnForLazy(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(24.dp, 0.dp)
+                ) {
                     HorizontalPager(
                         count = 2, state = pagerState
                     ) { page ->
@@ -200,25 +206,11 @@ fun ChallengeJoinedDetailScreen(
                     }
                 }
             }
-            item {
-                val buttonName = Utils.getAuthButtonName(challengeData)
-                val enabled = challengeData.is_verification_photo == 1 && !challengeData.isAuthed()
-
-                FlatBookMarkButton(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(6f),
-                    enabled = enabled,
-                    text = buttonName,
-                    onClick = { clickListener?.onClickAuth() },
-                    onClickBookMark = {
-                        checked.value = !checked.value
-                        clickListener?.onClickBookMark(checked.value)
-                    },
-                    checked = checked.value
-                )
-            }
         }
+        BookmarkButton(
+            challengeData = challengeData,
+            clickListener = clickListener
+        )
         listState.OnBottomReached {
             if (pagerState.currentPage == 1) {
                 Timber.e("bottom reached!!")
@@ -226,6 +218,32 @@ fun ChallengeJoinedDetailScreen(
             }
         }
     }
+}
+
+@Composable
+private fun BookmarkButton(
+    challengeData: ChallengeData,
+    clickListener: ChallengeDetailClickListener?,
+) {
+    val checked = remember {
+        mutableStateOf(challengeData.is_like == 1)
+    }
+    val buttonName = Utils.getAuthButtonName(challengeData)
+    val enabled = challengeData.is_verification_photo == 1 && !challengeData.isAuthed()
+
+    FlatBookMarkButton(
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(6f),
+        enabled = enabled,
+        text = buttonName,
+        onClick = { clickListener?.onClickAuth() },
+        onClickBookMark = {
+            checked.value = !checked.value
+            clickListener?.onClickBookMark(checked.value)
+        },
+        checked = checked.value
+    )
 }
 
 @Composable
@@ -258,7 +276,7 @@ private fun ChallengeProgressDetail(
                 text = "${verificationState.successCount}",
                 style = myTypography.bold,
                 fontSize = dpToSp(dp = 14.dp),
-                color = Color (0xff4985f8)
+                color = Color(0xff4985f8)
             )
             Text(
                 text = "개",
@@ -275,7 +293,7 @@ private fun ChallengeProgressDetail(
                 text = "${verificationState.remainCount}",
                 style = myTypography.bold,
                 fontSize = dpToSp(dp = 14.dp),
-                color = Color (0xff4985f8)
+                color = Color(0xff4985f8)
             )
             Text(
                 text = "개",
@@ -293,7 +311,7 @@ private fun ChallengeProgressDetail(
                 text = "${verificationState.failCount}",
                 style = myTypography.bold,
                 fontSize = dpToSp(dp = 14.dp),
-                color = Color (0xff4985f8)
+                color = Color(0xff4985f8)
             )
             Text(
                 text = "개",
@@ -537,12 +555,11 @@ private fun ChallengeJoinedDescription(
 
 @Composable
 fun ColumnForLazy(
-    content: @Composable ColumnScope.() -> Unit
+    modifier: Modifier = Modifier,
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(24.dp, 0.dp),
+        modifier = modifier
     ) {
         content()
     }
@@ -638,7 +655,11 @@ fun ChallengeAuthPage(
             ) {
                 repeat(challengeVerifiedList.size) { index ->
                     val item = challengeVerifiedList[index]
-                    val time = if (item.type == "time") Utils.convertDate(item.updated_date) else Utils.convertDate9(item.updated_date,true)
+                    val time =
+                        if (item.type == "time") Utils.convertDate(item.updated_date) else Utils.convertDate9(
+                            item.updated_date,
+                            true
+                        )
                     CertificationImageItem(
                         modifier = Modifier.fillMaxWidth(0.49f),
                         imageUrl = item.imageFile?.path.toString(),
