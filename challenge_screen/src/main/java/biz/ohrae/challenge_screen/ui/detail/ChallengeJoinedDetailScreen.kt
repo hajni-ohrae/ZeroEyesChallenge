@@ -377,12 +377,12 @@ private fun ChallengeJoinedDetailPage(
             challengeData = challengeData,
             clickListener = clickListener
         )
-        Divider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp)
-                .background(Color(0xffebebeb))
-        )
+//        Divider(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .height(1.dp)
+//                .background(Color(0xffebebeb))
+//        )
         Spacer(modifier = Modifier.height(24.dp))
         if (challengers != null) {
             Challengers(

@@ -67,6 +67,7 @@ class ChallengeDetailActivity : BaseActivity() {
     private var isParticipant: Boolean = false
     private var type: String? = null
     private var authType: String? = null
+    private var isPhoto: Int? = 0
 
     private lateinit var launcher: ActivityResultLauncher<Intent>
 
@@ -89,6 +90,7 @@ class ChallengeDetailActivity : BaseActivity() {
 
         challengeId = intent.getStringExtra("challengeId")
         isParticipant = intent.getBooleanExtra("isParticipant", false)
+        isPhoto = intent.getIntExtra("isPhoto",0)
 
         initClickListeners()
         observeViewModels()
@@ -150,7 +152,11 @@ class ChallengeDetailActivity : BaseActivity() {
             if (isFinished == true) {
                 ChallengeDetailNavScreen.Finished.route
             } else {
-                if (isJoined == true) ChallengeDetailNavScreen.JoinedDetail.route else ChallengeDetailNavScreen.Detail.route
+                if (isPhoto == 0) {
+                    if (isJoined == true) ChallengeDetailNavScreen.JoinedDetail.route else ChallengeDetailNavScreen.Detail.route
+                } else {
+                    ChallengeDetailNavScreen.AuthCameraPreview.route
+                }
             }
 
         NavHost(
@@ -280,7 +286,8 @@ class ChallengeDetailActivity : BaseActivity() {
                     val userData = prefs.getUserData()
                     userData?.let { user ->
                         if (user.is_identified <= 0) {
-                            val intent = Intent(this@ChallengeDetailActivity, NiceIdActivity::class.java)
+                            val intent =
+                                Intent(this@ChallengeDetailActivity, NiceIdActivity::class.java)
                             intent.putExtra("userId", user.id)
                             startActivity(intent)
                             return
@@ -476,7 +483,13 @@ class ChallengeDetailActivity : BaseActivity() {
             sb.append("60만 스카족 친구들과 함께하는 제로아이즈 챌린지에 참여해보세요!\n")
             sb.append("· 챌린지 : ${challengeData?.goal.toString()}\n")
             sb.append("· 시작일 : ${Utils.convertDate(challengeData?.start_date.toString())}\n")
-            sb.append("· 모집기간 : ${Utils.convertDate(challengeData?.apply_start_date.toString())} ~ ${Utils.convertDate(challengeData?.apply_end_date.toString())}\n")
+            sb.append(
+                "· 모집기간 : ${Utils.convertDate(challengeData?.apply_start_date.toString())} ~ ${
+                    Utils.convertDate(
+                        challengeData?.apply_end_date.toString()
+                    )
+                }\n"
+            )
             sb.append("· 참여제한\n    · $limitString\n")
             sb.append(shortLink.toString())
 
