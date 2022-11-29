@@ -374,7 +374,7 @@ fun ChallengeStatusButton(
     TextButton(
         modifier = modifier,
         colors = ButtonDefaults.textButtonColors(
-            backgroundColor = if (enabled) backgroundColor else GrayColor7,
+            backgroundColor = backgroundColor ,
             contentColor = textColor
         ),
         shape = RoundedCornerShape(10.dp),

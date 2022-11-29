@@ -234,14 +234,19 @@ fun InChallenges(
                 Utils.userChallengeBackground(item.status),
                 Utils.userChallengeTextColor(item.status),
                 onClick = {
-                    clickListener?.onClickChallengeAuthItem(item.id, item.is_verification_photo)
+                    clickListener?.onClickChallengeAuthItem(
+                        item.id,
+                        item.is_verification_photo,
+                    )
                 },
                 onCardClick = { clickListener?.onClickMyChallengeCard(item.id) },
                 buttonName = buttonName,
                 startDay = item.start_date.toString(),
                 status = item.status.toString(),
                 buttonTextColor = Utils.getAuthBtnTextColor(item),
-                buttonColor = Utils.getAuthBtnColor(item)
+                buttonColor = Utils.getAuthBtnColor(item),
+                todayAuth = inChallenge?.today_verification_cnt.toString(),
+                isPhoto = item.is_verification_photo
             )
         }
         Spacer(modifier = Modifier.height(10.dp))

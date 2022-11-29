@@ -89,6 +89,8 @@ fun ChallengesInParticipationCard(
     status: String = "",
     buttonTextColor: Color = DefaultWhite,
     buttonColor: Color = DefaultWhite,
+    todayAuth: String = "",
+    isPhoto:Int = 0
 ) {
 //    val achievementRate = (count.toDouble() / maxPeople.toDouble() * 100.0).roundToInt()
     var remainTime by remember { mutableStateOf(getRemainTime(startDay)) }
@@ -102,6 +104,7 @@ fun ChallengesInParticipationCard(
     var btnName = if (status == "register") remainTime.replace("-", "") + " 남음" else buttonName
     var btnTextColor = if (status == "register") Color(0xff4985f8) else buttonTextColor
     var btnColor = if (status == "register") DefaultWhite else buttonColor
+    var enabled = todayAuth == "0" && status == "opened" && isPhoto == 1
 
     Card(
         modifier = modifier.clickable { onCardClick() },
@@ -167,7 +170,8 @@ fun ChallengesInParticipationCard(
                 onClick = { onClick() },
                 isRemainTime = isRemainTime,
                 status = status,
-                textColor = btnTextColor
+                textColor = btnTextColor,
+                enabled = enabled
             )
         }
     }
