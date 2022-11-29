@@ -1,6 +1,8 @@
 package biz.ohrae.challenge_screen.ui.dialog
 
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,7 +26,10 @@ import androidx.window.layout.WindowMetricsCalculator
 import biz.ohrae.challenge.ui.components.button.FlatDoubleButton
 import biz.ohrae.challenge.ui.components.list_item.ChallengersItem
 import biz.ohrae.challenge.ui.components.selectable.LabeledCircleCheck
-import biz.ohrae.challenge.ui.theme.*
+import biz.ohrae.challenge.ui.theme.DefaultBlack
+import biz.ohrae.challenge.ui.theme.DefaultWhite
+import biz.ohrae.challenge.ui.theme.dpToSp
+import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge_repo.model.report.ReportListState
 import biz.ohrae.challenge_repo.model.user.User
 import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailViewModel
@@ -73,7 +78,7 @@ class ReportDialog(
         val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
         params?.width = (width * 0.95f).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
-//        dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.Transparent))
+        dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
 
