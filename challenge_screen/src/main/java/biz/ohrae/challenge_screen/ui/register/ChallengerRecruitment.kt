@@ -72,19 +72,23 @@ fun ChallengerRecruitment(
         )
         Spacer(modifier = Modifier.height(28.dp))
         ChallengeStartEndDateCard(
-            title = "챌린지 시작일",
-            day = Utils.convertDate7(challengeData?.start_date.toString())
-        )
-        Spacer(modifier = Modifier.height(12.dp))
-        ChallengeStartEndDateCard(
-            title = "챌린지 종료일",
-            day = Utils.convertDate7(challengeData?.end_date.toString())
+            title = "챌린지 시작",
+            day = Utils.convertDate10(challengeData?.start_date.toString()),
+            dayColor = Color(0xff121212)
         )
 //        Spacer(modifier = Modifier.height(12.dp))
 //        ChallengeStartEndDateCard(
-//            title = "모집 시작일",
-//            day = Utils.convertDate7(challengeData?.apply_start_date.toString())
+//            title = "챌린지 종료일",
+//            day = Utils.convertDate7(challengeData?.end_date.toString())
 //        )
+        Spacer(modifier = Modifier.height(12.dp))
+        ChallengeStartEndDateCard(
+            title = "모집 기간",
+            day = Utils.convertDate10(
+                challengeData?.apply_start_date.toString()) + " ~ " +
+                    Utils.convertDate10(challengeData?.apply_end_date.toString()),
+            dayColor = Color(0xff121212)
+            )
 //        Spacer(modifier = Modifier.height(12.dp))
 //        ChallengeStartEndDateCard(
 //            title = "모집 종료일",

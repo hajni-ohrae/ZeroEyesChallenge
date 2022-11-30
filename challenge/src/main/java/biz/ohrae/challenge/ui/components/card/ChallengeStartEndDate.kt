@@ -30,7 +30,8 @@ private fun ChallengeCardItemGallery() {
 @Composable
 fun ChallengeStartEndDateCard(
     title:String ="챌린지 종료일",
-    day : String =""
+    day : String ="",
+    dayColor:Color = Color(0xffff5800)
 ) {
     Card(
         modifier = Modifier
@@ -43,7 +44,7 @@ fun ChallengeStartEndDateCard(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically) {
             Text(text = title, style = myTypography.w700, fontSize = dpToSp(dp = 14.dp), color = Color(0xff6c6c6c))
-            Text(text = day, style = myTypography.w700, fontSize = dpToSp(dp = 14.dp), color = Color(0xffff5800))
+            Text(text = day, style = myTypography.w700, fontSize = dpToSp(dp = 14.dp), color = dayColor)
         }
 
     }

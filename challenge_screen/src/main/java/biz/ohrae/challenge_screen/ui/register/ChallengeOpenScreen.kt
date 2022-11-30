@@ -128,7 +128,7 @@ fun ChallengeOpenScreen(
             )
         }
         Spacer(modifier = Modifier.height(28.dp))
-        ChallengeStartEndDateCard("챌린지 종료일", Utils.convertDate7(challengeData?.end_date.toString()))
+        ChallengeStartEndDateCard("챌린지 종료일", Utils.convertDate7(challengeData?.end_date.toString()),Color(0xffff5800))
     }
     Column(modifier = Modifier.fillMaxHeight(), Arrangement.Bottom) {
         FlatBottomButton(

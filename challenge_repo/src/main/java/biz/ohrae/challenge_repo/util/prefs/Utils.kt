@@ -257,6 +257,18 @@ object Utils {
         }
     }
 
+    fun convertDate10(dateStr: String): String {
+        return try {
+            val dateString = dateStr.replace("T", " ").replace("Z", "")
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
+            val date = inputFormat.parse(dateString)
+            val outputFormat = SimpleDateFormat("yyyy.MM.dd E", Locale.KOREA)
+            outputFormat.timeZone = TimeZone.getTimeZone("Asia/Seoul")
+            outputFormat.format(date!!)
+        } catch (ignore: Exception) {
+            dateStr
+        }
+    }
     fun endDateCalculation(startDate: String, week: Int): String {
         return try {
             val cal = Calendar.getInstance()
