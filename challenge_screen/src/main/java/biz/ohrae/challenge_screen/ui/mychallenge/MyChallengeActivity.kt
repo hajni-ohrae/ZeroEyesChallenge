@@ -68,7 +68,7 @@ class MyChallengeActivity : BaseActivity() {
         myChallengeViewModel.getRedCardList(isInit = true)
         myChallengeViewModel.getPaymentHistory()
         myChallengeViewModel.getUserData()
-        myChallengeViewModel.getRewardHistory()
+        myChallengeViewModel.getRewardHistory("")
     }
 
     private fun initLauncher() {
@@ -97,6 +97,7 @@ class MyChallengeActivity : BaseActivity() {
                 Navigation()
             }
         }
+        myChallengeViewModel.selectRewardFilter("all")
     }
 
     override fun onResume() {
@@ -122,6 +123,7 @@ class MyChallengeActivity : BaseActivity() {
         val saveChallengeList by challengeMainViewModel.mainScreenState.observeAsState()
         val isRefreshing by challengeMainViewModel.isRefreshing.observeAsState(false)
         val filterState by challengeMainViewModel.filterState.observeAsState()
+        val rewardFilter by myChallengeViewModel.rewardFilter.observeAsState()
 
         NavHost(
             navController = navController,
@@ -147,7 +149,9 @@ class MyChallengeActivity : BaseActivity() {
                 MyRewardScreen(
                     user = userData,
                     clickListener = myChallengeClickListener,
-                    rewardList = rewardList
+                    rewardList = rewardList,
+                    rewardFilter = rewardFilter!!,
+                    onBottomReached = { myChallengeViewModel.getRewardHistory("", isInit = true) }
                 )
             }
             composable(MyChallengeNavScreen.Withdraw.route) {
@@ -277,6 +281,15 @@ class MyChallengeActivity : BaseActivity() {
                 }
             }
 
+            override fun onClickRewardFilterType(type: String) {
+                var filterType = type
+                if (!type.isNullOrEmpty()) {
+                    if (type == "all") filterType = ""
+                    myChallengeViewModel.selectRewardFilter(type)
+                    myChallengeViewModel.getRewardHistory(filterType)
+                }
+            }
+
             override fun onClickProfile() {
                 val intent = Intent(this@MyChallengeActivity, ChallengeProfileActivity::class.java)
                 startActivity(intent)
@@ -299,6 +312,7 @@ class MyChallengeActivity : BaseActivity() {
         intent.putExtra("isPhoto", isPhoto)
         startActivity(intent)
     }
+
     private fun onBottomReached() {
         challengeMainViewModel.getUserChallengeList("", isInit = true)
     }

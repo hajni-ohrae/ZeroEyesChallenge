@@ -26,7 +26,6 @@ private fun RewardHistoryItemGallery() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(24.dp, 0.dp)
     ) {
         RewardHistoryItem(
             modifier = Modifier
@@ -95,7 +94,7 @@ fun RewardHistoryItem(
     }
 
     Column(
-        modifier = modifier.padding(0.dp, 18.dp)
+        modifier = modifier.padding(24.dp, 18.dp)
     ) {
 
         ProgressLabel(
@@ -142,6 +141,11 @@ fun RewardHistoryItem(
                 fontSize = dpToSp(dp = 16.dp)
             )
         }
+        Spacer(modifier = Modifier.height(18.dp))
+        Divider(modifier = Modifier
+            .fillMaxWidth()
+            .height(1.dp)
+            .background(Color(0xfffafafa)))
 //        Spacer(modifier = Modifier.height(8.dp))
 //        if (state != null) {
 //            Text(

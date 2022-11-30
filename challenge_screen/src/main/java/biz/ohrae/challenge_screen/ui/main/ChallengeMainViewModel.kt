@@ -163,6 +163,7 @@ class ChallengeMainViewModel @Inject constructor(
             }
         }
     }
+
     fun selectFilter(filterNameEn: String) {
         viewModelScope.launch {
             val filterState = FilterState.mock().copy()

@@ -13,6 +13,7 @@ interface MyChallengeClickListener {
     fun onClickMyChallengeCard(id: String)
     fun onClickChallengeItem(id: String)
     fun onClickFilterType(type: String)
+    fun onClickRewardFilterType(type: String)
     fun onClickProfile()
     fun onClickAccountAuth(isDone: Boolean)
 }

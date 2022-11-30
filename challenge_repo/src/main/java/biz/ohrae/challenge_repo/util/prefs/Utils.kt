@@ -632,6 +632,48 @@ object Utils {
         }
     }
 
+    fun rewardBackground(type: String):Color {
+        return when (type) {
+            "earn" -> Color(0xfff3f8ff)
+            "use" -> Color(0xfffcf4ef)
+            "transfer" -> Color(0xffebfaf1)
+            "expire" -> Color(0xffdedede)
+            "refund" -> Color(0xfff3f8ff)
+            "cancel" -> Color(0xfffcf4ef)
+            else -> {
+                Color(0xff4985f8)
+            }
+        }
+    }
+
+    fun rewardTextColor(type: String):Color {
+        return when (type) {
+            "earn" -> Color(0xff4985f8)
+            "use" -> Color(0xffff5800)
+            "transfer" -> Color(0xff219653)
+            "expire" -> Color(0xff6c6c6c)
+            "refund" -> Color(0xff4985f8)
+            "cancel" -> Color(0xffff5800)
+            else -> {
+                Color(0xff4985f8)
+            }
+        }
+    }
+
+    fun reward(type: String):String {
+        return when (type) {
+            "earn" -> "적립"
+            "use" -> "사용"
+            "transfer" -> "출금"
+            "expire" -> "소멸"
+            "refund" -> "환급"
+            "cancel" -> "취소"
+            else -> {
+                ""
+            }
+        }
+    }
+
     fun getAuthType(challengeData: ChallengeData): String {
         return if (challengeData.is_verification_photo == 1) {
             "사진 인증"

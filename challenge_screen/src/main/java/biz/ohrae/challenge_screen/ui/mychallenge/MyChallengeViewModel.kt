@@ -7,6 +7,7 @@ import biz.ohrae.challenge_repo.model.user.*
 import biz.ohrae.challenge_repo.ui.main.ChallengeMainRepo
 import biz.ohrae.challenge_repo.ui.main.UserRepo
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
+import biz.ohrae.challenge_screen.model.main.FilterState
 import biz.ohrae.challenge_screen.model.user.RedCard
 import biz.ohrae.challenge_screen.model.user.RedCardListState
 import com.google.gson.Gson
@@ -26,8 +27,10 @@ class MyChallengeViewModel @Inject constructor(
     private val _redCardListState = MutableLiveData<RedCardListState>()
     private val _paymentHistoryState = MutableLiveData<PaymentHistoryState>()
     private val _rewardList = MutableLiveData<List<RewardData>>()
+    private val _rewardFilter = MutableLiveData<RewardFilter>()
     private val _userData = MutableLiveData<User>()
     private val _userRedCardListPage = MutableLiveData(1)
+    private val _rewardListPage = MutableLiveData(1)
     private val _userPaymentHistoryListPage = MutableLiveData(1)
     private val _isNicknameValid = MutableLiveData<Int?>()
     private val _accountScreenState = MutableLiveData<AccountAuthScreenState>()
@@ -36,7 +39,9 @@ class MyChallengeViewModel @Inject constructor(
     val paymentHistoryState get() = _paymentHistoryState
     val userData get() = _userData
     val rewardList get() = _rewardList
+    val rewardFilter get() = _rewardFilter
     val userRedCardListPage get() = _userRedCardListPage
+    val rewardListPage get() = _rewardListPage
     val userPaymentHistoryListPage get() = _userPaymentHistoryListPage
     val isNicknameValid get() = _isNicknameValid
     val accountScreenState get() = _accountScreenState
@@ -124,11 +129,19 @@ class MyChallengeViewModel @Inject constructor(
         }
     }
 
-    fun getRewardHistory() {
+    fun getRewardHistory(type:String, isInit: Boolean = false,) {
         viewModelScope.launch {
-            val response = userRepo.getRewardHistory()
+            if (isInit) {
+                _rewardListPage.value = 1
+            }
+            val page = _rewardListPage.value ?: 1
+            val response = userRepo.getRewardHistory(type)
             response.flowOn(Dispatchers.IO).collect() {
                 if (it.data != null) {
+                    val pager = it.pager
+                    if (it.pager?.page == page) {
+                        _rewardListPage.value = page + 1
+                    }
                     val rewardList = it.data as List<RewardData>
                     _rewardList.value = rewardList
                 }
@@ -151,6 +164,17 @@ class MyChallengeViewModel @Inject constructor(
     fun registerAccountNumber() {
         viewModelScope.launch {
 
+        }
+    }
+
+    fun selectRewardFilter(filterNameEn: String) {
+        viewModelScope.launch {
+            val rewardFilter = RewardFilter.mock().copy()
+
+            rewardFilter.let {
+                it.selectRewardFilter = filterNameEn
+                _rewardFilter.value = it
+            }
         }
     }
 }
