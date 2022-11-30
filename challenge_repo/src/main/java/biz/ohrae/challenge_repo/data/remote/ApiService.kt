@@ -96,6 +96,7 @@ interface ApiService {
 
     @GET(Routes.GET_REWARD_HISTORY)
     suspend fun getRewardHistory(
+        @Query("type") type: String,
         @Header("x-access-token") accessToken: String,
         @Query("page") page: Int,
         @Query("per_page") count: Int,

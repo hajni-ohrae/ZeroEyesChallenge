@@ -266,9 +266,9 @@ class UserRepo @Inject constructor(
         }
     }
 
-    suspend fun getRewardHistory():Flow<FlowResult>{
+    suspend fun getRewardHistory(type:String):Flow<FlowResult>{
         val accessToken = prefs.getUserData()?.access_token
-        val response = apiService.getRewardHistory(accessToken.toString(),1,10)
+        val response = apiService.getRewardHistory(type,accessToken.toString(),1,10)
         when (response) {
             is NetworkResponse.Success -> {
                 val dataSet = response.body.dataset?.asJsonObject
