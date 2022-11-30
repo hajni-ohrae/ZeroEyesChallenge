@@ -1,8 +1,11 @@
 package biz.ohrae.challenge_screen.ui.mychallenge
 
+import AccountAuthScreen
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,6 +28,7 @@ import biz.ohrae.challenge_screen.ui.niceid.NiceIdActivity
 import biz.ohrae.challenge_screen.ui.policy.PolicyActivity
 import biz.ohrae.challenge_screen.ui.profile.ChallengeProfileActivity
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MyChallengeActivity : BaseActivity() {
@@ -37,23 +41,25 @@ class MyChallengeActivity : BaseActivity() {
     private lateinit var myChallengeViewModel: MyChallengeViewModel
     private lateinit var navController: NavHostController
     private lateinit var myChallengeClickListener: MyChallengeClickListener
+    private lateinit var launcher: ActivityResultLauncher<Intent>
 
     private var policyScreenType: String = ""
     private var headerTitle: String = ""
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         challengeMainViewModel = ViewModelProvider(this)[ChallengeMainViewModel::class.java]
         myChallengeViewModel = ViewModelProvider(this)[MyChallengeViewModel::class.java]
-        initClickListeners()
-        challengeMainViewModel.selectFilter("all")
 
         setContent {
             ChallengeInTheme {
                 BuildContent()
             }
         }
+
+        challengeMainViewModel.selectFilter("all")
+        initClickListeners()
+        initLauncher()
     }
 
     private fun init() {
@@ -63,6 +69,19 @@ class MyChallengeActivity : BaseActivity() {
         myChallengeViewModel.getPaymentHistory()
         myChallengeViewModel.getUserData()
         myChallengeViewModel.getRewardHistory()
+    }
+
+    private fun initLauncher() {
+        launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                it.data?.let { intent ->
+                    val done = intent.getBooleanExtra("done", false)
+                    if (done) {
+                        navController.navigate(MyChallengeNavScreen.Withdraw.route)
+                    }
+                }
+            }
+        }
     }
 
     @Composable
@@ -142,6 +161,15 @@ class MyChallengeActivity : BaseActivity() {
                     userId = userData?.id.toString()
                 )
             }
+            composable(MyChallengeNavScreen.AccountAuth.route) {
+                val accountScreenState by myChallengeViewModel.accountScreenState.observeAsState()
+                if (accountScreenState != null) {
+                    AccountAuthScreen(
+                        accountScreenState = accountScreenState!!,
+                        clickListener = myChallengeClickListener
+                    )
+                }
+            }
             composable(MyChallengeNavScreen.MyPaymentDetail.route) {
                 PaymentDetailListScreen(
                     paymentHistoryState = paymentHistoryState,
@@ -202,15 +230,17 @@ class MyChallengeActivity : BaseActivity() {
             }
 
             override fun onClickApplyWithdraw() {
-//                showSnackBar("준비중입니다.")
-                navController.navigate(MyChallengeNavScreen.Withdraw.route)
+                if (myChallengeViewModel.userData.value?.is_identified == 1) {
+                    navController.navigate(MyChallengeNavScreen.Withdraw.route)
+                } else {
+                    val intent = Intent(this@MyChallengeActivity, NiceIdActivity::class.java)
+                    intent.putExtra("userId", myChallengeViewModel.userData.value?.id)
+                    launcher.launch(intent)
+                }
             }
 
             override fun onClickApplyWithdrawDetail() {
-//                navController.navigate(MyChallengeNavScreen.PhoneAuth.route)
-                val intent = Intent(this@MyChallengeActivity, NiceIdActivity::class.java)
-                intent.putExtra("userId", myChallengeViewModel.userData.value?.id)
-                startActivity(intent)
+                navController.navigate(MyChallengeNavScreen.AccountAuth.route)
             }
 
             override fun onClickPolicy(screen: String) {
@@ -251,6 +281,15 @@ class MyChallengeActivity : BaseActivity() {
                 val intent = Intent(this@MyChallengeActivity, ChallengeProfileActivity::class.java)
                 startActivity(intent)
             }
+
+            override fun onClickAccountAuth(isDone: Boolean) {
+                if (myChallengeViewModel.accountScreenState.value?.state == "auth") {
+                    myChallengeViewModel.authAccountNumber()
+                } else {
+                    Timber.e("call registerAccountNumber")
+                    myChallengeViewModel.registerAccountNumber()
+                }
+            }
         }
     }
 
@@ -275,4 +314,5 @@ sealed class MyChallengeNavScreen(val route: String) {
     object SavedChallenge : MyChallengeNavScreen("SavedChallenge")
     object PhoneAuth : MyChallengeNavScreen("PhoneAuth")
     object Policy : MyChallengeNavScreen("Policy")
+    object AccountAuth : MyChallengeNavScreen("AccountAuth")
 }

@@ -2,6 +2,7 @@
 
 package biz.ohrae.challenge_screen.ui.niceid
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.webkit.CookieManager
@@ -58,6 +59,9 @@ class NiceIdActivity : AppCompatActivity() {
     }
 
     fun close() {
+        val intent = Intent()
+        intent.putExtra("done", true)
+        setResult(RESULT_OK, intent)
         finish()
     }
 }

@@ -30,6 +30,7 @@ class MyChallengeViewModel @Inject constructor(
     private val _userRedCardListPage = MutableLiveData(1)
     private val _userPaymentHistoryListPage = MutableLiveData(1)
     private val _isNicknameValid = MutableLiveData<Int?>()
+    private val _accountScreenState = MutableLiveData<AccountAuthScreenState>()
 
     val redCardListState get() = _redCardListState
     val paymentHistoryState get() = _paymentHistoryState
@@ -38,6 +39,11 @@ class MyChallengeViewModel @Inject constructor(
     val userRedCardListPage get() = _userRedCardListPage
     val userPaymentHistoryListPage get() = _userPaymentHistoryListPage
     val isNicknameValid get() = _isNicknameValid
+    val accountScreenState get() = _accountScreenState
+
+    init {
+        _accountScreenState.value = AccountAuthScreenState("인증", "auth")
+    }
 
     fun getAllBlock() {
         viewModelScope.launch {
@@ -45,7 +51,6 @@ class MyChallengeViewModel @Inject constructor(
             response.flowOn(Dispatchers.IO).collect {
                 it.data?.let { data ->
                     val challengeList = data as List<RedCardState>
-
                 }
             }
         }
@@ -128,6 +133,24 @@ class MyChallengeViewModel @Inject constructor(
                     _rewardList.value = rewardList
                 }
             }
+        }
+    }
+
+    fun authAccountNumber() {
+        viewModelScope.launch {
+            val state = accountScreenState.value?.copy()
+            state?.let {
+                it.buttonName = "확인"
+                it.state = "register"
+                it.isAuthed = true
+                _accountScreenState.value = it
+            }
+        }
+    }
+
+    fun registerAccountNumber() {
+        viewModelScope.launch {
+
         }
     }
 }
