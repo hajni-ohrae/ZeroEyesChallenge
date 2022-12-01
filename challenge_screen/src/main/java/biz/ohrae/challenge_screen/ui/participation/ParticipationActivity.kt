@@ -23,9 +23,7 @@ import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge_screen.ui.BaseActivity
-import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailNavScreen
 import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailViewModel
-import biz.ohrae.challenge_screen.ui.dialog.ConfirmDialog
 import biz.ohrae.challenge_screen.ui.dialog.CustomDialog
 import biz.ohrae.challenge_screen.ui.dialog.CustomDialogListener
 import biz.ohrae.challenge_screen.ui.dialog.LoadingDialog
@@ -69,12 +67,18 @@ class ParticipationActivity : BaseActivity() {
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 if (it.resultCode == RESULT_OK) {
                     it.data?.let { intent ->
-                        val code = intent.getStringExtra("code")
-                        val message = intent.getStringExtra("message")
-                        showSnackBar(code, message)
-                    } ?: run {
-                        init()
-                        navController.navigate(ChallengeParticipationNavScreen.ParticipationFinish.route)
+                        val isSuccess = intent.getBooleanExtra("isSuccess", false)
+                        if (isSuccess) {
+                            val cardName = intent.getStringExtra("cardName")
+                            val amount = intent.getStringExtra("amount")
+                            init()
+                            viewModel.setPaymentInfo(cardName.toString(), amount.toString())
+                            navController.navigate(ChallengeParticipationNavScreen.ParticipationFinish.route)
+                        } else {
+                            val code = intent.getStringExtra("code")
+                            val message = intent.getStringExtra("message")
+                            showSnackBar(code, message)
+                        }
                     }
                 }
             }

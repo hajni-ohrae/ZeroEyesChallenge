@@ -347,6 +347,7 @@ class MyChallengeActivity : BaseActivity() {
                             inclusive = true
                         }
                     }
+                    init()
                     showSnackBar("출금신청이 완료되었습니다.")
                 }
             }

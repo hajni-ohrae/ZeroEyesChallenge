@@ -56,4 +56,15 @@ class ParticipationViewModel @Inject constructor(
             }
         }
     }
+
+    fun setPaymentInfo(cardName: String, amount: String) {
+        viewModelScope.launch {
+            val state = participationResult.value?.copy()
+            state?.let {
+                it.paid_amount = amount.toInt()
+                it.card_name = cardName
+                _participationResult.value = it
+            }
+        }
+    }
 }

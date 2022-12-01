@@ -63,6 +63,11 @@ fun ParticipationFinishScreen(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
+                    val cardName = if (participationResult?.card_name != null) {
+                        participationResult.card_name
+                    } else {
+                        "리워드"
+                    }
                     Text(
                         text = "결제 수단",
                         style = myTypography.default,
@@ -70,7 +75,7 @@ fun ParticipationFinishScreen(
                         color = Color(0xff6c6c6c)
                     )
                     Text(
-                        text = "현대카드 (신용카드)",
+                        text = cardName,
                         style = myTypography.default,
                         fontSize = dpToSp(dp = 16.dp),
                         color = TextBlack
