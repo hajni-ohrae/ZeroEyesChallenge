@@ -284,4 +284,10 @@ class ChallengeMainViewModel @Inject constructor(
             }
         }
     }
+
+    fun initErrorData() {
+        viewModelScope.launch {
+            removeErrorData()
+        }
+    }
 }

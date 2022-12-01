@@ -28,7 +28,7 @@ open class BaseViewModel @Inject constructor(private val prefs: SharedPreference
         _errorData.value = ErrorData(code, message)
     }
 
-    fun removeErrorData() {
+    protected fun removeErrorData() {
         _errorData.value = null
     }
 }
