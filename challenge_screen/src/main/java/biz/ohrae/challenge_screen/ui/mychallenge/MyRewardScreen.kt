@@ -179,6 +179,10 @@ fun RewardFilterCard(
                         select = item.name_en == selectFilter,
                         onClick = { clickListener?.onClickRewardFilterType(item.name_en) })
                 }
+
+                item {
+                    Spacer(modifier = Modifier.width(24.dp))
+                }
             }
         }
     }
@@ -194,13 +198,20 @@ fun Reward(
     rewardFilter: RewardFilter,
     onBottomReached: () -> Unit = {},
 ) {
+
+    val availableRewards by remember {
+        mutableStateOf(user?.rewards_amount ?: 0)
+    }
+    val enabled = availableRewards >= 5000
     val listState = rememberLazyListState()
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
         LazyColumn(
-            modifier = Modifier.fillMaxWidth().weight(1f),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             item {
@@ -230,12 +241,13 @@ fun Reward(
             } else {
                 items(rewardList) { item ->
                     val percent = item.inChallenge?.achievement_percent ?: ""
+                    val title = item.challenge?.goal ?: ""
                     RewardHistoryItem(
                         modifier = Modifier
                             .fillMaxWidth(),
                         date = Utils.convertDate8(item?.created_date.toString()),
                         progress = percent,
-                        title = item.challenge?.goal.toString(),
+                        title = title,
                         price = item.amount.toString(),
                         progressStatus = Utils.reward(item.type),
                         background = Utils.rewardBackground(item.type),
@@ -244,17 +256,22 @@ fun Reward(
                 }
             }
         }
+    }
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.BottomCenter
+    ) {
         FlatBottomButton(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(6f),
             text = "출금신청",
+            enabled = enabled,
             onClick = {
                 clickListener?.onClickApplyWithdraw()
             }
         )
     }
-
     listState.OnBottomReached {
         Timber.e("bottom reached!!")
         onBottomReached()

@@ -87,12 +87,12 @@ interface ApiService {
     @POST(Routes.REFUND_PAYMENT)
     suspend fun refundPayment(@Body body: JsonObject?): NetworkResponse<Result, Error>
 
-    @POST(Routes.GET_PAYMENT_HISTORY)
+    @GET(Routes.GET_PAYMENT_HISTORY)
     suspend fun getPaymentHistory(
         @Header("x-access-token") accessToken: String,
         @Query("page") page: Int,
-        @Query("per_page") count: Int,
-    ): NetworkResponse<Result, Error>
+        @Query("per_page") perPage: Int,
+    ): NetworkResponse<Result2, Error>
 
     @GET(Routes.GET_REWARD_HISTORY)
     suspend fun getRewardHistory(

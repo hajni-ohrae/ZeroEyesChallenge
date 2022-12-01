@@ -25,7 +25,7 @@ class MyChallengeViewModel @Inject constructor(
     private val gson: Gson
 ) : BaseViewModel(prefs) {
     private val _redCardListState = MutableLiveData<RedCardListState>()
-    private val _paymentHistoryState = MutableLiveData<PaymentHistoryState>()
+    private val _paymentHistoryState = MutableLiveData<List<PaymentHistoryData>>()
     private val _rewardList = MutableLiveData<List<RewardData>>()
     private val _rewardFilter = MutableLiveData<RewardFilter>()
     private val _userData = MutableLiveData<User>()
@@ -101,7 +101,7 @@ class MyChallengeViewModel @Inject constructor(
         val page = _userRedCardListPage.value ?: 1
 
         viewModelScope.launch {
-            val response = userRepo.getPaymentHistory()
+            val response = userRepo.getPaymentHistory(page = page)
             response.flowOn(Dispatchers.IO).collect {
                 it.data?.let { data ->
 
@@ -110,9 +110,8 @@ class MyChallengeViewModel @Inject constructor(
                     if (it.pager?.page == page) {
                         _userPaymentHistoryListPage.value = page + 1
                     }
-                    val paymentHistoryState = data as List<PaymentHistoryData>
-                    val state = PaymentHistoryState(paymentHistoryState)
-                    _paymentHistoryState.value = state
+                    val paymentHistoryState = it.data as List<PaymentHistoryData>
+                    _paymentHistoryState.value = paymentHistoryState
                 }
             }
         }
@@ -135,13 +134,13 @@ class MyChallengeViewModel @Inject constructor(
         }
     }
 
-    fun getRewardHistory(type:String, isInit: Boolean = false,) {
+    fun getRewardHistory(type: String, isInit: Boolean = false) {
         viewModelScope.launch {
             if (isInit) {
                 _rewardListPage.value = 1
             }
             val page = _rewardListPage.value ?: 1
-            val response = userRepo.getRewardHistory(type)
+            val response = userRepo.getRewardHistory(type, page = page)
             response.flowOn(Dispatchers.IO).collect() {
                 if (it.data != null) {
                     val pager = it.pager
