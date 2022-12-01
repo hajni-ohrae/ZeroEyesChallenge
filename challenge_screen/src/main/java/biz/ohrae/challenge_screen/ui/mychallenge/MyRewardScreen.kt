@@ -195,10 +195,10 @@ fun Reward(
     onBottomReached: () -> Unit = {},
 ) {
 
-    val expireRewards by remember {
-        mutableStateOf(user?.monthly_expire_rewards_amount ?: 0)
+    val availableRewards by remember {
+        mutableStateOf(user?.rewards_amount ?: 0)
     }
-    val enabled = expireRewards >= 5000
+    val enabled = availableRewards >= 5000
     val listState = rememberLazyListState()
     Column(
         modifier = Modifier
