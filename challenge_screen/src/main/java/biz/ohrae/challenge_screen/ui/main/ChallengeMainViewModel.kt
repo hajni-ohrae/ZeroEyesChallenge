@@ -262,4 +262,18 @@ class ChallengeMainViewModel @Inject constructor(
     fun isRefreshing(isRefreshing: Boolean) {
         _isRefreshing.value = isRefreshing
     }
+
+    fun logout() {
+        viewModelScope.launch {
+            val response = userRepo.logout()
+            response.flowOn(Dispatchers.IO).collect {
+                it.data?.let { data ->
+                    val isLogout = data as Boolean
+                    if (isLogout) {
+
+                    }
+                }
+            }
+        }
+    }
 }

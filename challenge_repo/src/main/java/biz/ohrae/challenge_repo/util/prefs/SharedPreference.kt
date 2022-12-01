@@ -74,6 +74,11 @@ class SharedPreference @Inject constructor(@ApplicationContext context: Context,
         }
     }
 
+    fun removeUserData() {
+        editor.remove("user")
+        editor.commit()
+    }
+
     fun getUid(): String {
         return getString("uid", "")
     }

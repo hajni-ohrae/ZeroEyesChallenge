@@ -371,4 +371,11 @@ class UserRepo @Inject constructor(
             }
         }
     }
+
+    suspend fun logout(): Flow<FlowResult> {
+        prefs.removeUserData()
+        return flow {
+            emit(FlowResult(true, null, null))
+        }
+    }
 }
