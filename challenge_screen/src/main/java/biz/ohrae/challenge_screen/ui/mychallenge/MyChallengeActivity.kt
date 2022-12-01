@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -21,14 +22,15 @@ import androidx.navigation.compose.rememberNavController
 import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge.ui.theme.DefaultWhite
+import biz.ohrae.challenge_repo.model.user.User
 import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailActivity
+import biz.ohrae.challenge_screen.ui.dialog.LoadingDialog
 import biz.ohrae.challenge_screen.ui.main.ChallengeMainViewModel
 import biz.ohrae.challenge_screen.ui.niceid.NiceIdActivity
 import biz.ohrae.challenge_screen.ui.policy.PolicyActivity
 import biz.ohrae.challenge_screen.ui.profile.ChallengeProfileActivity
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class MyChallengeActivity : BaseActivity() {
@@ -52,6 +54,12 @@ class MyChallengeActivity : BaseActivity() {
         myChallengeViewModel = ViewModelProvider(this)[MyChallengeViewModel::class.java]
 
         setContent {
+            val isLoading by myChallengeViewModel.isLoading.observeAsState(false)
+            if (isLoading) {
+                Dialog(onDismissRequest = { /*TODO*/ }) {
+                    LoadingDialog()
+                }
+            }
             ChallengeInTheme {
                 BuildContent()
             }
@@ -59,6 +67,7 @@ class MyChallengeActivity : BaseActivity() {
 
         challengeMainViewModel.selectFilter("all")
         initClickListeners()
+        observeViewModels()
         initLauncher()
     }
 
@@ -77,7 +86,9 @@ class MyChallengeActivity : BaseActivity() {
                 it.data?.let { intent ->
                     val done = intent.getBooleanExtra("done", false)
                     if (done) {
-                        navController.navigate(MyChallengeNavScreen.Withdraw.route)
+                        if (myChallengeViewModel.userData.value != null) {
+                            authOrWithdraw(myChallengeViewModel.userData.value!!)
+                        }
                     }
                 }
             }
@@ -167,9 +178,12 @@ class MyChallengeActivity : BaseActivity() {
             }
             composable(MyChallengeNavScreen.AccountAuth.route) {
                 val accountScreenState by myChallengeViewModel.accountScreenState.observeAsState()
-                if (accountScreenState != null) {
+                val bankList by myChallengeViewModel.bankList.observeAsState()
+
+                if (accountScreenState != null && bankList != null) {
                     AccountAuthScreen(
                         accountScreenState = accountScreenState!!,
+                        bankList = bankList!!,
                         clickListener = myChallengeClickListener
                     )
                 }
@@ -234,8 +248,9 @@ class MyChallengeActivity : BaseActivity() {
             }
 
             override fun onClickApplyWithdraw() {
-                if (myChallengeViewModel.userData.value?.is_identified == 1) {
-                    navController.navigate(MyChallengeNavScreen.Withdraw.route)
+                val userData = myChallengeViewModel.userData.value
+                if (userData?.is_identified == 1) {
+                    authOrWithdraw(userData)
                 } else {
                     val intent = Intent(this@MyChallengeActivity, NiceIdActivity::class.java)
                     intent.putExtra("userId", myChallengeViewModel.userData.value?.id)
@@ -243,8 +258,18 @@ class MyChallengeActivity : BaseActivity() {
                 }
             }
 
-            override fun onClickApplyWithdrawDetail() {
-                navController.navigate(MyChallengeNavScreen.AccountAuth.route)
+            override fun onClickApplyWithdrawDetail(amountText: String) {
+                if (!isClickable()) {
+                    return
+                }
+
+                val amount = amountText.replace(",", "").toInt()
+                if (amount >= 5000) {
+                    myChallengeViewModel.isLoading(true)
+                    myChallengeViewModel.transferRewards(amount)
+                } else {
+                    showSnackBar("5000원 이상 출금 가능합니다.")
+                }
             }
 
             override fun onClickPolicy(screen: String) {
@@ -296,12 +321,37 @@ class MyChallengeActivity : BaseActivity() {
             }
 
             override fun onClickAccountAuth(isDone: Boolean) {
-                if (myChallengeViewModel.accountScreenState.value?.state == "auth") {
-                    myChallengeViewModel.authAccountNumber()
-                } else {
-                    Timber.e("call registerAccountNumber")
-                    myChallengeViewModel.registerAccountNumber()
+                myChallengeViewModel.authAccountNumber()
+            }
+
+            override fun onClickRegisterAccountNumber(bankCode: String, accountNumber: String) {
+                myChallengeViewModel.registerAccountNumber(bankCode, accountNumber)
+            }
+        }
+    }
+
+    override fun observeViewModels() {
+        myChallengeViewModel.accountRegistered.observe(this) {
+            it?.let {
+                if (it) {
+                    navController.navigate(MyChallengeNavScreen.Withdraw.route)
                 }
+            }
+        }
+
+        myChallengeViewModel.transferRewards.observe(this) {
+            it?.let {
+                if (it) {
+                    navController.navigate(MyChallengeNavScreen.MyChallenge.route)
+                    showSnackBar("출금신청이 완료되었습니다.")
+                }
+            }
+            myChallengeViewModel.isLoading(false)
+        }
+
+        myChallengeViewModel.errorData.observe(this) {
+            it?.let {
+                showSnackBar(it.code, it.message)
             }
         }
     }
@@ -311,6 +361,15 @@ class MyChallengeActivity : BaseActivity() {
         intent.putExtra("challengeId", id)
         intent.putExtra("isPhoto", isPhoto)
         startActivity(intent)
+    }
+
+    private fun authOrWithdraw(userData: User) {
+        if (userData.has_bank_account == 1) {
+            navController.navigate(MyChallengeNavScreen.Withdraw.route)
+        } else {
+            myChallengeViewModel.retrieveBankCodes()
+            navController.navigate(MyChallengeNavScreen.AccountAuth.route)
+        }
     }
 
     private fun onBottomReached() {

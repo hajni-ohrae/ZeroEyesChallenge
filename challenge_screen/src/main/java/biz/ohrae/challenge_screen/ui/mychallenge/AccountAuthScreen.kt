@@ -31,23 +31,20 @@ import biz.ohrae.challenge_screen.ui.mychallenge.MyChallengeClickListener
 @Composable
 fun AccountAuthScreen(
     accountScreenState: AccountAuthScreenState = AccountAuthScreenState.mock(),
+    bankList: List<DropDownItem> = listOf(),
     clickListener: MyChallengeClickListener? = null
-){
-    val list = listOf(
-        DropDownItem(label = "우리은행", value = "우리은행"),
-        DropDownItem(label = "국민은행", value = "국민은행"),
-        DropDownItem(label = "농협", value = "농협"),
-        DropDownItem(label = "토스뱅크", value = "토스뱅크"),
-        DropDownItem(label = "카카오뱅크", value = "카카오뱅크"),
-    )
+) {
     var buttonEnabled by remember { mutableStateOf(false) }
+    var accountNumber by remember { mutableStateOf("") }
+    var selectedBank by remember { mutableStateOf<DropDownItem?>(bankList[0]) }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .weight(1f)
-            .padding(24.dp, 0.dp)) {
-            var accountNumber by remember { mutableStateOf("") }
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .padding(24.dp, 0.dp)
+        ) {
             var authNumber by remember { mutableStateOf("") }
             val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -59,7 +56,10 @@ fun AccountAuthScreen(
                     .fillMaxWidth()
                     .aspectRatio(7.1f),
                 label = "은행명",
-                list = list
+                list = bankList,
+                onSelectItem = {
+                    selectedBank = it
+                }
             )
             Spacer(modifier = Modifier.height(28.dp))
             LabeledTextField(
@@ -122,7 +122,14 @@ fun AccountAuthScreen(
             enabled = buttonEnabled,
             onClick = {
                 if (buttonEnabled) {
-                    clickListener?.onClickAccountAuth(false)
+                    if (accountScreenState.state == "auth") {
+                        clickListener?.onClickAccountAuth(false)
+                    } else {
+                        clickListener?.onClickRegisterAccountNumber(
+                            bankCode = selectedBank?.value.toString(),
+                            accountNumber = accountNumber
+                        )
+                    }
                     buttonEnabled = false
                 }
             }
@@ -141,7 +148,9 @@ private fun ExampleCard() {
         elevation = 0.dp
     ) {
         Column(
-            modifier = Modifier.fillMaxSize().padding(24.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(24.dp),
             verticalArrangement = Arrangement.SpaceBetween
         ) {
             Text(

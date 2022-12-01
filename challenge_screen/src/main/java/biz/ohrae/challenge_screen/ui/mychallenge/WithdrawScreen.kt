@@ -88,7 +88,9 @@ fun WithdrawScreen(
                 .aspectRatio(6f),
             text = "출금신청",
             onClick = {
-                clickListener?.onClickApplyWithdrawDetail()
+                if (amount.isNotEmpty()) {
+                    clickListener?.onClickApplyWithdrawDetail(amount)
+                }
             }
         )
     }

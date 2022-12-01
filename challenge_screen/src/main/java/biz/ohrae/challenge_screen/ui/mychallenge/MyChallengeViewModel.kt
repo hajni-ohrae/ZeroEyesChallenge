@@ -1,15 +1,15 @@
 package biz.ohrae.challenge_screen.ui.mychallenge
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import biz.ohrae.challenge.ui.components.dropdown.DropDownItem
 import biz.ohrae.challenge_repo.model.user.*
-import biz.ohrae.challenge_repo.ui.main.ChallengeMainRepo
 import biz.ohrae.challenge_repo.ui.main.UserRepo
+import biz.ohrae.challenge_repo.ui.mychallenge.MyChallengeRepo
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
-import biz.ohrae.challenge_screen.model.main.FilterState
 import biz.ohrae.challenge_screen.model.user.RedCard
 import biz.ohrae.challenge_screen.model.user.RedCardListState
+import biz.ohrae.challenge_screen.ui.BaseViewModel
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -19,11 +19,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyChallengeViewModel @Inject constructor(
-    private val registerRepo: ChallengeMainRepo,
+    private val myChallengeRepo: MyChallengeRepo,
     private val userRepo: UserRepo,
     private val prefs: SharedPreference,
     private val gson: Gson
-) : ViewModel() {
+) : BaseViewModel(prefs) {
     private val _redCardListState = MutableLiveData<RedCardListState>()
     private val _paymentHistoryState = MutableLiveData<PaymentHistoryState>()
     private val _rewardList = MutableLiveData<List<RewardData>>()
@@ -34,6 +34,9 @@ class MyChallengeViewModel @Inject constructor(
     private val _userPaymentHistoryListPage = MutableLiveData(1)
     private val _isNicknameValid = MutableLiveData<Int?>()
     private val _accountScreenState = MutableLiveData<AccountAuthScreenState>()
+    private val _bankList = MutableLiveData<List<DropDownItem>>()
+    private val _accountRegistered = MutableLiveData<Boolean?>(null)
+    private val _transferRewards = MutableLiveData<Boolean?>(null)
 
     val redCardListState get() = _redCardListState
     val paymentHistoryState get() = _paymentHistoryState
@@ -45,9 +48,12 @@ class MyChallengeViewModel @Inject constructor(
     val userPaymentHistoryListPage get() = _userPaymentHistoryListPage
     val isNicknameValid get() = _isNicknameValid
     val accountScreenState get() = _accountScreenState
+    val bankList get() = _bankList
+    val accountRegistered get() = _accountRegistered
+    val transferRewards get() = _transferRewards
 
     init {
-        _accountScreenState.value = AccountAuthScreenState("인증", "auth")
+        _accountScreenState.value = AccountAuthScreenState("확인", "register")
     }
 
     fun getAllBlock() {
@@ -161,9 +167,18 @@ class MyChallengeViewModel @Inject constructor(
         }
     }
 
-    fun registerAccountNumber() {
+    fun registerAccountNumber(bankCode: String, bankAccount: String) {
         viewModelScope.launch {
-
+            val response = myChallengeRepo.registerBankAccount(bankCode, bankAccount)
+            response.flowOn(Dispatchers.IO).collect { result ->
+                result.data?.let {
+                    val success = it as Boolean
+                    _accountRegistered.value = success
+                    if (!success) {
+                        setErrorData(result.errorCode, result.errorMessage)
+                    }
+                }
+            }
         }
     }
 
@@ -174,6 +189,33 @@ class MyChallengeViewModel @Inject constructor(
             rewardFilter.let {
                 it.selectRewardFilter = filterNameEn
                 _rewardFilter.value = it
+            }
+        }
+    }
+
+    fun retrieveBankCodes() {
+        viewModelScope.launch {
+            val response = myChallengeRepo.retrieveBankCodes()
+            response.flowOn(Dispatchers.IO).collect { result ->
+                result.data?.let { data ->
+                    val bankList = data as List<DropDownItem>
+                    _bankList.value = bankList
+                }
+            }
+        }
+    }
+
+    fun transferRewards(amount: Int) {
+        viewModelScope.launch {
+            val response = myChallengeRepo.transferRewards(amount)
+            response.flowOn(Dispatchers.IO).collect { result ->
+                result.data?.let {
+                    val success = it as Boolean
+                    _transferRewards.value = success
+                    if (!success) {
+                        setErrorData(result.errorCode, result.errorMessage)
+                    }
+                }
             }
         }
     }

@@ -250,10 +250,12 @@ class ParticipationActivity : BaseActivity() {
         }
 
         viewModel.errorData.observe(this) {
-            if (it.code == "4352" || it.code == "6102") {
-                showDialog(it.code.toString())
-            } else {
-                showSnackBar(it.code, it.message)
+            it?.let {
+                if (it.code == "4352" || it.code == "6102") {
+                    showDialog(it.code.toString())
+                } else {
+                    showSnackBar(it.code, it.message)
+                }
             }
         }
     }

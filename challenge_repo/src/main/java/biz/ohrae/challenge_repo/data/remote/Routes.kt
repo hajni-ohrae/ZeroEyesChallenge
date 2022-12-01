@@ -78,4 +78,13 @@ object Routes {
 
     // 닉네임 중복체크
     const val CHECK_NICKNAME = "${CHALLENGE}/api/user/check/nickname"
+
+    // 은행 코드 조회
+    const val RETRIEVE_BANK_CODES = "${CHALLENGE}/api/banking/code/get/all"
+
+    // 은행 계좌 등록
+    const val REGISTER_BANK_ACCOUNT = "${CHALLENGE}/api/banking/register"
+
+    // 출금 신청
+    const val TRANSFER_REWARDS = "${CHALLENGE}/api/banking/transfer"
 }

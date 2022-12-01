@@ -6,7 +6,7 @@ interface MyChallengeClickListener {
     fun onClickSavedChallenge()
     fun onClickRedCard()
     fun onClickApplyWithdraw()
-    fun onClickApplyWithdrawDetail()
+    fun onClickApplyWithdrawDetail(amountText: String)
     fun onClickPolicy(screen: String)
     fun onClickPolicyRefund()
     fun onClickChallengeAuthItem(id: String, type: Int = 0)
@@ -16,4 +16,5 @@ interface MyChallengeClickListener {
     fun onClickRewardFilterType(type: String)
     fun onClickProfile()
     fun onClickAccountAuth(isDone: Boolean)
+    fun onClickRegisterAccountNumber(bankCode: String, accountNumber: String)
 }

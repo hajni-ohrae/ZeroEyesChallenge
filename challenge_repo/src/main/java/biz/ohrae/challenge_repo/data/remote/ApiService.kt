@@ -245,4 +245,21 @@ interface ApiService {
         @Header("x-access-token") accessToken: String,
         @Body body: JsonObject?,
     ): NetworkResponse<Result2, Error>
+
+    @GET(Routes.RETRIEVE_BANK_CODES)
+    suspend fun retrieveBankCodes(
+        @Header("x-access-token") accessToken: String,
+    ): NetworkResponse<Result, Error>
+
+    @POST(Routes.REGISTER_BANK_ACCOUNT)
+    suspend fun registerBankAccount(
+        @Header("x-access-token") accessToken: String,
+        @Body body: JsonObject?,
+    ): NetworkResponse<Result, Error>
+
+    @POST(Routes.TRANSFER_REWARDS)
+    suspend fun transferRewards(
+        @Header("x-access-token") accessToken: String,
+        @Body body: JsonObject?,
+    ): NetworkResponse<Result, Error>
 }
