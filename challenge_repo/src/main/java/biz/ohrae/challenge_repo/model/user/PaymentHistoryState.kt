@@ -8,6 +8,7 @@ data class PaymentHistoryData(
     val amount: Int,
     val fee: Int,
     val paid_amount:Int,
+    val rewards_amount:Int,
     val created_date: String,
     val updated_date: String,
     val challenge: ChallengeData,

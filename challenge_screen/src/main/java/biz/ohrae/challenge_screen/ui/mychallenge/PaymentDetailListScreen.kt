@@ -19,6 +19,7 @@ import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge_repo.model.user.PaymentHistoryData
 import biz.ohrae.challenge_repo.model.user.RewardData
+import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.util.OnBottomReached
 import timber.log.Timber
 
@@ -57,11 +58,13 @@ fun PaymentDetailListScreen(
                     .height(1.dp)
                     .background(Color(0xfffafafa))
             )
-            PaymentDetailList(onBottomReached = onBottomReached, paymentHistoryList = paymentHistoryList)
+            PaymentDetailList(
+                onBottomReached = onBottomReached,
+                paymentHistoryList = paymentHistoryList
+            )
         }
     }
 }
-
 @Composable
 fun PaymentDetailList(
     onBottomReached: () -> Unit = {},
@@ -70,19 +73,22 @@ fun PaymentDetailList(
     val listState = rememberLazyListState()
 
     if (paymentHistoryList != null) {
+        Spacer(modifier = Modifier.height(20.dp))
         LazyColumn(
             modifier = Modifier.fillMaxWidth(),
         ) {
             items(paymentHistoryList) { item ->
+                val type = item.type == "deposit"
                 PaidHistoryItem(
                     modifier = Modifier
                         .fillMaxWidth()
                         .defaultMinSize(minHeight = 105.dp),
-                    date = "2022.04.25  09:33",
+                    date = Utils.convertDate8(item?.created_date.toString()),
                     title = item.challenge.goal.toString(),
-                    price = "${item.amount.toString()}원",
-                    state = "카드결제",
-                    cardInfo = "현대 1234"
+                    amount = Utils.numberToString(item.amount.toString()),
+                    reward = Utils.numberToString(item.rewards_amount.toString()),
+                    cardAmount = Utils.numberToString(item.paid_amount.toString()),
+                    isCanceled = type,
                 )
             }
         }

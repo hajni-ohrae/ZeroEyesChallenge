@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.ui.theme.TextBlack
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
+import com.bumptech.glide.util.Util
 
 @Preview(
     showBackground = true,
@@ -33,15 +34,7 @@ private fun PaidHistoryItemGallery() {
                 .defaultMinSize(minHeight = 105.dp),
             date = "2022.04.25  09:33",
             title = "책읽기 챌린지",
-            price = "10,000원",
-            state = "카드결제",
-            cardInfo = "현대 1234"
-        )
-        Divider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp)
-                .background(Color(0xfffafafa))
+            amount = "0",
         )
         PaidHistoryItem(
             modifier = Modifier
@@ -49,14 +42,7 @@ private fun PaidHistoryItemGallery() {
                 .defaultMinSize(minHeight = 105.dp),
             date = "2022.04.25  09:33",
             title = "달리기 챌린지",
-            price = "1,000원",
-            state = "상금결제",
-        )
-        Divider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp)
-                .background(Color(0xfffafafa))
+            amount = "0",
         )
         PaidHistoryItem(
             modifier = Modifier
@@ -64,10 +50,8 @@ private fun PaidHistoryItemGallery() {
                 .defaultMinSize(minHeight = 105.dp),
             date = "2022.04.25  09:33",
             title = "책읽기 챌린지",
-            price = "10,000원",
-            state = "카드결제 취소",
+            amount = "0",
             isCanceled = true,
-            cardInfo = "현대 1234"
         )
     }
 }
@@ -77,11 +61,10 @@ fun PaidHistoryItem(
     modifier: Modifier = Modifier,
     date: String,
     title: String,
-    price: String,
-    state: String,
-    reward: Int = 0,
+    amount: String,
+    reward: String = "",
+    cardAmount: String = "",
     isCanceled: Boolean = false,
-    cardInfo: String? = null,
 ) {
     val priceColor = if (isCanceled) {
         remember { mutableStateOf(Color(0xff6c6c6c)) }
@@ -90,12 +73,11 @@ fun PaidHistoryItem(
     }
 
     Column(
-        modifier = modifier.padding(0.dp, 18.dp)
+        modifier = modifier
     ) {
         Text(
             text = date,
             style = myTypography.default,
-            color = Color(0xff6c6c6c),
             fontSize = dpToSp(dp = 14.dp)
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -111,7 +93,7 @@ fun PaidHistoryItem(
             )
             Spacer(modifier = Modifier.weight(1f))
             Text(
-                text = price,
+                text = "${amount}원",
                 style = myTypography.bold,
                 color = priceColor.value,
                 fontSize = dpToSp(dp = 16.dp)
@@ -123,43 +105,46 @@ fun PaidHistoryItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = state,
+                text = if (isCanceled) "카드 결제 취소" else "카드 결제",
                 style = myTypography.default,
                 color = TextBlack,
                 fontSize = dpToSp(dp = 14.dp)
             )
             Spacer(modifier = Modifier.weight(1f))
-            if (!cardInfo.isNullOrEmpty()) {
-                Text(
-                    text = cardInfo,
-                    style = myTypography.default,
-                    color = TextBlack,
-                    fontSize = dpToSp(dp = 14.dp)
-                )
-            }
+            Text(
+                text = if (isCanceled) "-${cardAmount}원" else "${cardAmount}원",
+                style = myTypography.default,
+                color = TextBlack,
+                fontSize = dpToSp(dp = 14.dp)
+            )
         }
-        if (reward != 0) {
+        if (reward.isNullOrEmpty()) {
             Spacer(modifier = Modifier.height(8.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = state,
+                    text = if (isCanceled) "리워즈 결제 취소" else "리워즈 결제",
                     style = myTypography.default,
                     color = TextBlack,
                     fontSize = dpToSp(dp = 14.dp)
                 )
                 Spacer(modifier = Modifier.weight(1f))
-                if (!cardInfo.isNullOrEmpty()) {
-                    Text(
-                        text = cardInfo,
-                        style = myTypography.default,
-                        color = TextBlack,
-                        fontSize = dpToSp(dp = 14.dp)
-                    )
-                }
+                Text(
+                    text = if (isCanceled) "-${reward}원" else "${reward}원",
+                    style = myTypography.default,
+                    color = TextBlack,
+                    fontSize = dpToSp(dp = 14.dp)
+                )
             }
         }
+        Spacer(modifier = Modifier.height(19.dp))
+        Divider(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(Color(0xfffafafa))
+        )
     }
 }

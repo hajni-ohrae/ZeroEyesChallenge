@@ -191,8 +191,10 @@ class MyChallengeActivity : BaseActivity() {
             composable(MyChallengeNavScreen.MyPaymentDetail.route) {
                 PaymentDetailListScreen(
                     paymentHistoryList = paymentHistoryState,
-                    clickListener = myChallengeClickListener
-                )
+                    clickListener = myChallengeClickListener,
+                    onBottomReached = {
+                        myChallengeViewModel.getPaymentHistory(isInit = true)
+                    },)
             }
             composable(MyChallengeNavScreen.SavedChallenge.route) {
                 SavedChallengeScreen(
