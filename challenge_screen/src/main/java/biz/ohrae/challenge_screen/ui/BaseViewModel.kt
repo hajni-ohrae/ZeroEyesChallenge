@@ -11,7 +11,7 @@ import javax.inject.Inject
 @HiltViewModel
 open class BaseViewModel @Inject constructor(private val prefs: SharedPreference): ViewModel() {
     private val _isLoading = MutableLiveData(false)
-    private val _errorData = MutableLiveData<ErrorData>()
+    private val _errorData = MutableLiveData<ErrorData?>()
 
     val isLoading get() = _isLoading
     val errorData get() = _errorData
@@ -26,5 +26,9 @@ open class BaseViewModel @Inject constructor(private val prefs: SharedPreference
 
     protected fun setErrorData(code: String?, message: String?) {
         _errorData.value = ErrorData(code, message)
+    }
+
+    fun removeErrorData() {
+        _errorData.value = null
     }
 }

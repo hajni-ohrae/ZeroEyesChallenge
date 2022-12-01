@@ -263,6 +263,7 @@ class MainActivity : BaseActivity() {
         viewModel.errorData.observe(this) {
             if (it != null) {
                 showSnackBar(it.code, it.message)
+                viewModel.removeErrorData()
             }
         }
 
