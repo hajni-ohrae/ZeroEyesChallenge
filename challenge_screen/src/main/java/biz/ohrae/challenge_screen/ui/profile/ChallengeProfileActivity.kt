@@ -270,7 +270,8 @@ class ChallengeProfileActivity : BaseActivity() {
         Timber.e("image path : $imagePath")
         if (!imagePath.isNullOrEmpty()) {
             val originFile = File(imagePath)
-            val resizedImage = Resizer(this@ChallengeProfileActivity)
+            val outputPath = applicationContext.filesDir.absolutePath
+            val resizedImage = Resizer(outputPath)
                 .setTargetLength(1080)
                 .setQuality(80)
                 .setOutputFormat("JPEG")

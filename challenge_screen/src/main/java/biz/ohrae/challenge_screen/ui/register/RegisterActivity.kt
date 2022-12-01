@@ -1,7 +1,6 @@
 package biz.ohrae.challenge_screen.ui.register
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.content.ContentValues
 import android.content.Context
@@ -251,7 +250,8 @@ class RegisterActivity : BaseActivity() {
                     Timber.e("image path : $imagePath")
                     if (!imagePath.isNullOrEmpty()) {
                         val originFile = File(imagePath)
-                        val resizedImage = Resizer(this@RegisterActivity)
+                        val outputPath = applicationContext.filesDir.absolutePath
+                        val resizedImage = Resizer(outputPath)
                             .setTargetLength(1080)
                             .setQuality(80)
                             .setOutputFormat("JPEG")
@@ -427,7 +427,6 @@ class RegisterActivity : BaseActivity() {
         }
     }
 
-    @SuppressLint("Range")
     private fun uriToFilePath(contentUri: Uri): String {
         Timber.e("contentUri : $contentUri")
         val proj = arrayOf(MediaStore.Images.Media.DATA)

@@ -374,7 +374,8 @@ class ChallengeDetailActivity : BaseActivity() {
 
                     val imagePath = uriToFilePath(it)
                     val originFile = File(imagePath)
-                    val resizedImage = Resizer(this@ChallengeDetailActivity)
+                    val outputPath = applicationContext.filesDir.absolutePath
+                    val resizedImage = Resizer(outputPath)
                         .setTargetLength(1080)
                         .setQuality(80)
                         .setOutputFormat("JPEG")
