@@ -3,6 +3,7 @@ package biz.ohrae.challenge_screen.ui.participation
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
+import biz.ohrae.challenge_repo.model.participation.PaidInfo
 import biz.ohrae.challenge_repo.model.participation.ParticipationResult
 import biz.ohrae.challenge_repo.ui.main.UserRepo
 import biz.ohrae.challenge_repo.ui.participation.ParticipationRepo
@@ -24,9 +25,11 @@ class ParticipationViewModel @Inject constructor(
 ) : BaseViewModel(prefs) {
     private val _cancelResult = MutableLiveData<Boolean?>()
     private val _participationResult = MutableLiveData<ParticipationResult>()
+    private val _paidInfo = MutableLiveData<PaidInfo>()
 
     val cancelResult get() = _cancelResult
     val participationResult get() = _participationResult
+    val paidInfo get() = _paidInfo
 
     fun registerChallenge(challengeData: ChallengeData, paidAmount: Int, rewardsAmount: Int, depositAmount: Int) {
         viewModelScope.launch {
@@ -59,12 +62,7 @@ class ParticipationViewModel @Inject constructor(
 
     fun setPaymentInfo(cardName: String, amount: String) {
         viewModelScope.launch {
-            val state = participationResult.value?.copy()
-            state?.let {
-                it.paid_amount = amount.toInt()
-                it.card_name = cardName
-                _participationResult.value = it
-            }
+            _paidInfo.value = PaidInfo(cardName, amount.toInt())
         }
     }
 }

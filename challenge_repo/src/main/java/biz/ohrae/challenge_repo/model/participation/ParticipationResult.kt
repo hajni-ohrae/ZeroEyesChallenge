@@ -5,5 +5,4 @@ data class ParticipationResult(
     var paid_amount: Int,
     val rewards_amount: Int,
     val total_deposit_amount: Int,
-    var card_name: String?,
 )

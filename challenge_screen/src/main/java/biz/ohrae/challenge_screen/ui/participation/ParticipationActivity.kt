@@ -71,7 +71,6 @@ class ParticipationActivity : BaseActivity() {
                         if (isSuccess) {
                             val cardName = intent.getStringExtra("cardName")
                             val amount = intent.getStringExtra("amount")
-                            init()
                             viewModel.setPaymentInfo(cardName.toString(), amount.toString())
                             navController.navigate(ChallengeParticipationNavScreen.ParticipationFinish.route)
                         } else {
@@ -137,11 +136,13 @@ class ParticipationActivity : BaseActivity() {
                 }
                 val challengeData by detailViewModel.challengeData.observeAsState()
                 val participationResult by viewModel.participationResult.observeAsState()
+                val paidInfo by viewModel.paidInfo.observeAsState()
 
                 if (challengeData != null && participationResult != null) {
                     ParticipationFinishScreen(
                         challengeData = challengeData!!,
                         participationResult = participationResult,
+                        paidInfo = paidInfo,
                         clickListener = clickListener
                     )
                 }
@@ -224,6 +225,7 @@ class ParticipationActivity : BaseActivity() {
             result?.let {
                 val minDepositAmount = detailViewModel.challengeData.value?.min_deposit_amount ?: 0
                 val paidAmount = viewModel.participationResult.value?.paid_amount ?: 0
+
                 if (minDepositAmount > 0 && paidAmount > 0) {
                     val userId = prefs.getUserData()?.id
                     val intent =
@@ -237,6 +239,7 @@ class ParticipationActivity : BaseActivity() {
                     paymentLauncher.launch(intent)
                 } else {
                     init()
+                    viewModel.setPaymentInfo("리워즈", "0")
                     navController.navigate(ChallengeParticipationNavScreen.ParticipationFinish.route)
                 }
             } ?: run {

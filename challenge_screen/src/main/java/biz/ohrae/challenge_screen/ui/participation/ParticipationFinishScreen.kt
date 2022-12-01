@@ -20,6 +20,7 @@ import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge.util.challengeVerificationPeriodMap
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
+import biz.ohrae.challenge_repo.model.participation.PaidInfo
 import biz.ohrae.challenge_repo.model.participation.ParticipationResult
 import biz.ohrae.challenge_repo.util.prefs.Utils
 import java.text.NumberFormat
@@ -34,6 +35,7 @@ import java.util.*
 fun ParticipationFinishScreen(
     challengeData: ChallengeData = ChallengeData.mock(),
     participationResult: ParticipationResult? = null,
+    paidInfo: PaidInfo? = null,
     clickListener: ParticipationClickListener? = null,
 ) {
     Column(
@@ -63,8 +65,8 @@ fun ParticipationFinishScreen(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    val cardName = if (participationResult?.card_name != null) {
-                        participationResult.card_name
+                    val cardName = if (paidInfo?.cardName != null) {
+                        paidInfo.cardName
                     } else {
                         "리워드"
                     }
