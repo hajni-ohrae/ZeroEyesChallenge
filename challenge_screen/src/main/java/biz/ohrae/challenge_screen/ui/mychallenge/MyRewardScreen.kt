@@ -179,6 +179,10 @@ fun RewardFilterCard(
                         select = item.name_en == selectFilter,
                         onClick = { clickListener?.onClickRewardFilterType(item.name_en) })
                 }
+
+                item {
+                    Spacer(modifier = Modifier.width(24.dp))
+                }
             }
         }
     }
@@ -205,7 +209,9 @@ fun Reward(
             .fillMaxSize()
     ) {
         LazyColumn(
-            modifier = Modifier.fillMaxWidth().weight(1f),
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             item {
@@ -251,8 +257,10 @@ fun Reward(
             }
         }
     }
-    Box(modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.BottomCenter){
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.BottomCenter
+    ) {
         FlatBottomButton(
             modifier = Modifier
                 .fillMaxWidth()
