@@ -34,6 +34,7 @@ class ChallengeMainViewModel @Inject constructor(
     private val _challengeListPage = MutableLiveData(1)
     private val _userChallengeListPage = MutableLiveData(1)
     private val _isRefreshing = MutableLiveData(false)
+    private val _loginSuccess = MutableLiveData<Boolean>()
 
     val filterState get() = _filterState
     val mainScreenState get() = _mainScreenState
@@ -42,6 +43,7 @@ class ChallengeMainViewModel @Inject constructor(
     val userData get() = _userData
     val userChallengeListPage get() = _userChallengeListPage
     val challengeListPage get() = _challengeListPage
+    val loginSuccess get() = _loginSuccess
 
     val isRefreshing get() = _isRefreshing
 
@@ -51,7 +53,13 @@ class ChallengeMainViewModel @Inject constructor(
 
     private fun login() {
         viewModelScope.launch {
-            userRepo.login()
+            val response = userRepo.login()
+            response.flowOn(Dispatchers.IO).collect { result ->
+                result.data?.let {
+                    val success = it as Boolean
+                    _loginSuccess.value = success
+                }
+            }
         }
     }
 
