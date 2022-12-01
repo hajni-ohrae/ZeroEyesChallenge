@@ -194,6 +194,11 @@ fun Reward(
     rewardFilter: RewardFilter,
     onBottomReached: () -> Unit = {},
 ) {
+
+    val expireRewards by remember {
+        mutableStateOf(user?.monthly_expire_rewards_amount ?: 0)
+    }
+    val enabled = expireRewards >= 5000
     val listState = rememberLazyListState()
     Column(
         modifier = Modifier
@@ -244,17 +249,21 @@ fun Reward(
                 }
             }
         }
+        Spacer(modifier = Modifier.weight(1f))
+    }
+    Box(modifier = Modifier .fillMaxSize(),
+        contentAlignment = Alignment.BottomCenter){
         FlatBottomButton(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(6f),
             text = "출금신청",
+            enabled = enabled,
             onClick = {
                 clickListener?.onClickApplyWithdraw()
             }
         )
     }
-
     listState.OnBottomReached {
         Timber.e("bottom reached!!")
         onBottomReached()

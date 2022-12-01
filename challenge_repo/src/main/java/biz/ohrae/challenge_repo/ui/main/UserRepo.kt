@@ -5,10 +5,7 @@ import biz.ohrae.challenge_repo.data.remote.NetworkResponse
 import biz.ohrae.challenge_repo.model.FlowResult
 import biz.ohrae.challenge_repo.model.profile.NicknameState
 import biz.ohrae.challenge_repo.model.register.ImageBucket
-import biz.ohrae.challenge_repo.model.user.PaymentHistoryState
-import biz.ohrae.challenge_repo.model.user.RedCardState
-import biz.ohrae.challenge_repo.model.user.RewardData
-import biz.ohrae.challenge_repo.model.user.User
+import biz.ohrae.challenge_repo.model.user.*
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import com.google.gson.Gson
 import com.google.gson.JsonArray
@@ -207,9 +204,10 @@ class UserRepo @Inject constructor(
         }
 
     }
+
     suspend fun getRedCardList(): Flow<FlowResult> {
         val accessToken = prefs.getUserData()?.access_token
-        val response = apiService.getRedCardList(accessToken.toString(),1,10)
+        val response = apiService.getRedCardList(accessToken.toString(), 1, 10)
 
         when (response) {
             is NetworkResponse.Success -> {
@@ -228,7 +226,7 @@ class UserRepo @Inject constructor(
 
     }
 
-    suspend fun getUserData():Flow<FlowResult>{
+    suspend fun getUserData(): Flow<FlowResult> {
         val accessToken = prefs.getUserData()?.access_token
         val response = apiService.getUserData(accessToken.toString())
         when (response) {
@@ -247,13 +245,19 @@ class UserRepo @Inject constructor(
         }
     }
 
-    suspend fun getPaymentHistory():Flow<FlowResult>{
+    suspend fun getPaymentHistory(
+        page: Int = 1,
+        perPage: Int = 10,
+    ): Flow<FlowResult> {
         val accessToken = prefs.getUserData()?.access_token
-        val response = apiService.getPaymentHistory(accessToken.toString(),1,10)
+        val response = apiService.getPaymentHistory(accessToken.toString(), page, perPage)
         when (response) {
             is NetworkResponse.Success -> {
-                val paymentHistoryList =
-                    gson.fromJson(response.body.dataset, PaymentHistoryState::class.java)
+                val dataSet = response.body.dataset?.asJsonObject
+                val array = dataSet?.get("array")?.asJsonArray
+
+                val listType = object : TypeToken<List<PaymentHistoryData?>?>() {}.type
+                val paymentHistoryList = gson.fromJson<List<PaymentHistoryData>>(array, listType)
                 return flow {
                     emit(FlowResult(paymentHistoryList, "", ""))
                 }
@@ -266,9 +270,13 @@ class UserRepo @Inject constructor(
         }
     }
 
-    suspend fun getRewardHistory(type:String):Flow<FlowResult>{
+    suspend fun getRewardHistory(
+        type: String,
+        page: Int = 1,
+        perPage: Int = 10,
+    ): Flow<FlowResult> {
         val accessToken = prefs.getUserData()?.access_token
-        val response = apiService.getRewardHistory(type,accessToken.toString(),1,10)
+        val response = apiService.getRewardHistory(type, accessToken.toString(), page, perPage)
         when (response) {
             is NetworkResponse.Success -> {
                 val dataSet = response.body.dataset?.asJsonObject
@@ -300,12 +308,16 @@ class UserRepo @Inject constructor(
                 val isSuccess = response.body.success
                 return if (isSuccess) {
                     flow {
-                        val imageBucket = gson.fromJson(response.body.dataset, ImageBucket::class.java)
+                        val imageBucket =
+                            gson.fromJson(response.body.dataset, ImageBucket::class.java)
                         emit(FlowResult(imageBucket, "", ""))
                     }
                 } else {
                     flow {
-                        val imageBucket = ImageBucket(errorCode = response.body.code.toString(), errorMessage = response.body.message.toString())
+                        val imageBucket = ImageBucket(
+                            errorCode = response.body.code.toString(),
+                            errorMessage = response.body.message.toString()
+                        )
                         emit(FlowResult(imageBucket, response.body.code, response.body.message))
                     }
                 }
@@ -318,7 +330,10 @@ class UserRepo @Inject constructor(
         }
     }
 
-    suspend fun updateUserProfile(nickName: String? = null, imageId: Int? = null): Flow<FlowResult> {
+    suspend fun updateUserProfile(
+        nickName: String? = null,
+        imageId: Int? = null
+    ): Flow<FlowResult> {
         val jsonObject = JsonObject()
         if (nickName != null) {
             jsonObject.addProperty("nickname", nickName)

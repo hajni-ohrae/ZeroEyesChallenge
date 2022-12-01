@@ -75,9 +75,9 @@ class MyChallengeActivity : BaseActivity() {
         challengeMainViewModel.getUserChallengeList("", isInit = true)
         challengeMainViewModel.getChallengeList("", "", "", "", "1", "", isInit = true)
         myChallengeViewModel.getRedCardList(isInit = true)
-        myChallengeViewModel.getPaymentHistory()
+        myChallengeViewModel.getPaymentHistory(isInit = true)
         myChallengeViewModel.getUserData()
-        myChallengeViewModel.getRewardHistory("")
+        myChallengeViewModel.getRewardHistory("", isInit = true)
     }
 
     private fun initLauncher() {
@@ -190,7 +190,7 @@ class MyChallengeActivity : BaseActivity() {
             }
             composable(MyChallengeNavScreen.MyPaymentDetail.route) {
                 PaymentDetailListScreen(
-                    paymentHistoryState = paymentHistoryState,
+                    paymentHistoryList = paymentHistoryState,
                     clickListener = myChallengeClickListener
                 )
             }

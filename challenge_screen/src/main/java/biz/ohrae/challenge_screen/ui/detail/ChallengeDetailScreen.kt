@@ -3,6 +3,7 @@ package biz.ohrae.challenge_screen.ui.detail
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
@@ -67,18 +68,6 @@ fun ChallengeDetailScreen(
         if (isParticipant) {
             scrollState.scrollTo(scrollState.maxValue)
         }
-    }
-    val bottomBtnName by remember {
-        mutableStateOf(
-            if (challengeData.is_cancelable == 1 || !challengeData.inChallenge.isNullOrEmpty()) {
-                "참여 취소"
-            } else {
-                "참여 신청"
-            }
-        )
-    }
-    val checked = remember {
-        mutableStateOf(challengeData.is_like == 1)
     }
 
     Column(
@@ -169,19 +158,48 @@ fun ChallengeDetailScreen(
             )
             Spacer(modifier = Modifier.height(96.dp))
         }
-        FlatBookMarkButton(
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(6f),
-            text = bottomBtnName,
-            onClick = { clickListener?.onClickParticipation() },
-            onClickBookMark = {
-                checked.value = !checked.value
-                clickListener?.onClickBookMark(checked.value)
-            },
-            checked = checked.value
+    }
+
+    Box(modifier = Modifier .fillMaxSize(),
+        contentAlignment = Alignment.BottomCenter) {
+        BookmarkButton(
+            challengeData = challengeData,
+            clickListener = clickListener
         )
     }
+}
+
+@Composable
+private fun BookmarkButton(
+    challengeData: ChallengeData,
+    clickListener: ChallengeDetailClickListener?,
+) {
+    val checked = remember {
+        mutableStateOf(challengeData.is_like == 1)
+    }
+
+    val bottomBtnName by remember {
+        mutableStateOf(
+            if (challengeData.is_cancelable == 1 || !challengeData.inChallenge.isNullOrEmpty()) {
+                "참여 취소"
+            } else {
+                "참여 신청"
+            }
+        )
+    }
+
+    FlatBookMarkButton(
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(6f),
+        text = bottomBtnName,
+        onClick = { clickListener?.onClickParticipation() },
+        onClickBookMark = {
+            checked.value = !checked.value
+            clickListener?.onClickBookMark(checked.value)
+        },
+        checked = checked.value
+    )
 }
 
 @Composable

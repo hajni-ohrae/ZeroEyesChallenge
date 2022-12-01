@@ -17,8 +17,8 @@ import biz.ohrae.challenge.ui.components.list_item.PaidHistoryItem
 import biz.ohrae.challenge.ui.components.list_item.RedCardHistoryItem
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
-import biz.ohrae.challenge_repo.model.user.PaymentHistoryState
-import biz.ohrae.challenge_screen.model.user.RedCardListState
+import biz.ohrae.challenge_repo.model.user.PaymentHistoryData
+import biz.ohrae.challenge_repo.model.user.RewardData
 import biz.ohrae.challenge_screen.util.OnBottomReached
 import timber.log.Timber
 
@@ -29,7 +29,7 @@ import timber.log.Timber
 )
 @Composable
 fun PaymentDetailListScreen(
-    paymentHistoryState: PaymentHistoryState? = null,
+    paymentHistoryList: List<PaymentHistoryData>? = null,
     clickListener: MyChallengeClickListener? = null,
     onBottomReached: () -> Unit = {},
 ) {
@@ -57,7 +57,7 @@ fun PaymentDetailListScreen(
                     .height(1.dp)
                     .background(Color(0xfffafafa))
             )
-            PaymentDetailList(onBottomReached = onBottomReached, paymentHistoryState = paymentHistoryState)
+            PaymentDetailList(onBottomReached = onBottomReached, paymentHistoryList = paymentHistoryList)
         }
     }
 }
@@ -65,22 +65,22 @@ fun PaymentDetailListScreen(
 @Composable
 fun PaymentDetailList(
     onBottomReached: () -> Unit = {},
-    paymentHistoryState: PaymentHistoryState? = null,
+    paymentHistoryList: List<PaymentHistoryData>?
 ) {
     val listState = rememberLazyListState()
 
-    if (paymentHistoryState?.paymentHistoryListState != null) {
+    if (paymentHistoryList != null) {
         LazyColumn(
             modifier = Modifier.fillMaxWidth(),
         ) {
-            items(paymentHistoryState?.paymentHistoryListState!!) { item ->
+            items(paymentHistoryList) { item ->
                 PaidHistoryItem(
                     modifier = Modifier
                         .fillMaxWidth()
                         .defaultMinSize(minHeight = 105.dp),
                     date = "2022.04.25  09:33",
-                    title = item.challengeData.goal.toString(),
-                    price = "10,000원",
+                    title = item.challenge.goal.toString(),
+                    price = "${item.amount.toString()}원",
                     state = "카드결제",
                     cardInfo = "현대 1234"
                 )

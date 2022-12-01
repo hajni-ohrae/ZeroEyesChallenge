@@ -37,10 +37,12 @@ private fun PaidHistoryItemGallery() {
             state = "카드결제",
             cardInfo = "현대 1234"
         )
-        Divider(modifier = Modifier
-            .fillMaxWidth()
-            .height(1.dp)
-            .background(Color(0xfffafafa)))
+        Divider(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(Color(0xfffafafa))
+        )
         PaidHistoryItem(
             modifier = Modifier
                 .fillMaxWidth()
@@ -50,10 +52,12 @@ private fun PaidHistoryItemGallery() {
             price = "1,000원",
             state = "상금결제",
         )
-        Divider(modifier = Modifier
-            .fillMaxWidth()
-            .height(1.dp)
-            .background(Color(0xfffafafa)))
+        Divider(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(Color(0xfffafafa))
+        )
         PaidHistoryItem(
             modifier = Modifier
                 .fillMaxWidth()
@@ -75,6 +79,7 @@ fun PaidHistoryItem(
     title: String,
     price: String,
     state: String,
+    reward: Int = 0,
     isCanceled: Boolean = false,
     cardInfo: String? = null,
 ) {
@@ -131,6 +136,29 @@ fun PaidHistoryItem(
                     color = TextBlack,
                     fontSize = dpToSp(dp = 14.dp)
                 )
+            }
+        }
+        if (reward != 0) {
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = state,
+                    style = myTypography.default,
+                    color = TextBlack,
+                    fontSize = dpToSp(dp = 14.dp)
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                if (!cardInfo.isNullOrEmpty()) {
+                    Text(
+                        text = cardInfo,
+                        style = myTypography.default,
+                        color = TextBlack,
+                        fontSize = dpToSp(dp = 14.dp)
+                    )
+                }
             }
         }
     }
