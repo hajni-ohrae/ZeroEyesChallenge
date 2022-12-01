@@ -235,12 +235,13 @@ fun Reward(
             } else {
                 items(rewardList) { item ->
                     val percent = item.inChallenge?.achievement_percent ?: ""
+                    val title = item.challenge?.goal ?: ""
                     RewardHistoryItem(
                         modifier = Modifier
                             .fillMaxWidth(),
                         date = Utils.convertDate8(item?.created_date.toString()),
                         progress = percent,
-                        title = item.challenge?.goal.toString(),
+                        title = title,
                         price = item.amount.toString(),
                         progressStatus = Utils.reward(item.type),
                         background = Utils.rewardBackground(item.type),
@@ -249,9 +250,8 @@ fun Reward(
                 }
             }
         }
-        Spacer(modifier = Modifier.weight(1f))
     }
-    Box(modifier = Modifier .fillMaxSize(),
+    Box(modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.BottomCenter){
         FlatBottomButton(
             modifier = Modifier
