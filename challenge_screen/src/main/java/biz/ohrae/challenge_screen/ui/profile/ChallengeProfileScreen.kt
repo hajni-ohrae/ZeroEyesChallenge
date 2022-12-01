@@ -59,6 +59,7 @@ fun ChallengeProfileScreen(
             buttonName = "변경",
             defaultButtonEnabled = false,
             canEdit = true,
+            maxLength = 10,
             onClickButton = {
                 clickListener?.onClickChangeNickname(it)
             }
@@ -142,6 +143,7 @@ private fun SectionContent(
     buttonName: String? = null,
     defaultButtonEnabled: Boolean = false,
     canEdit: Boolean = false,
+    maxLength: Int = Int.MAX_VALUE,
     onClickButton: (value: String?) -> Unit = {},
     onDone: () -> Unit = {},
 ) {
@@ -201,7 +203,9 @@ private fun SectionContent(
                 }
             ),
             onValueChange = {
-                value = it
+                if (it.length <= maxLength) {
+                    value = it
+                }
             },
             singleLine = true,
             readOnly = readOnly

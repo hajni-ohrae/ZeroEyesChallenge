@@ -200,7 +200,7 @@ fun Reward(
             .fillMaxSize()
     ) {
         LazyColumn(
-            modifier = Modifier,
+            modifier = Modifier.fillMaxWidth().weight(1f),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             item {
@@ -244,7 +244,6 @@ fun Reward(
                 }
             }
         }
-        Spacer(modifier = Modifier.weight(1f))
         FlatBottomButton(
             modifier = Modifier
                 .fillMaxWidth()

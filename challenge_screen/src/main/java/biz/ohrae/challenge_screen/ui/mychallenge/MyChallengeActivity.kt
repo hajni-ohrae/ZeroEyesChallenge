@@ -342,7 +342,11 @@ class MyChallengeActivity : BaseActivity() {
         myChallengeViewModel.transferRewards.observe(this) {
             it?.let {
                 if (it) {
-                    navController.navigate(MyChallengeNavScreen.MyChallenge.route)
+                    navController.navigate(MyChallengeNavScreen.MyChallenge.route) {
+                        popUpTo(MyChallengeNavScreen.MyChallenge.route) {
+                            inclusive = true
+                        }
+                    }
                     showSnackBar("출금신청이 완료되었습니다.")
                 }
             }
