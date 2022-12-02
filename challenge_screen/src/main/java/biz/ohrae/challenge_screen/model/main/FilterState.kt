@@ -27,7 +27,7 @@ data class FilterState(
             ),
             userChallengeFilter = listOf(
                 FilterItem("전체", "all"),
-                FilterItem("모집중", "pending"),
+                FilterItem("모집중", "register"),
                 FilterItem("진행중", "opened"),
                 FilterItem("완료", "finished"),
             ),

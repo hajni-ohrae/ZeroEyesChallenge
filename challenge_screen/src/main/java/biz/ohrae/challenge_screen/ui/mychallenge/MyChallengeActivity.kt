@@ -47,7 +47,7 @@ class MyChallengeActivity : BaseActivity() {
 
     private var policyScreenType: String = ""
     private var headerTitle: String = ""
-
+    private var filterType: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         challengeMainViewModel = ViewModelProvider(this)[ChallengeMainViewModel::class.java]
@@ -300,7 +300,7 @@ class MyChallengeActivity : BaseActivity() {
             }
 
             override fun onClickFilterType(type: String) {
-                var filterType = type
+                filterType = type
                 if (!type.isNullOrEmpty()) {
                     if (type == "all") filterType = ""
                     challengeMainViewModel.selectUserFilter(type)
@@ -380,7 +380,7 @@ class MyChallengeActivity : BaseActivity() {
     }
 
     private fun onBottomReached() {
-        challengeMainViewModel.getUserChallengeList("", isInit = true)
+        challengeMainViewModel.getUserChallengeList(filterType, isInit = true)
     }
 }
 
