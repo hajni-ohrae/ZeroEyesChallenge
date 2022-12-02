@@ -103,6 +103,7 @@ class ChallengeProfileViewModel @Inject constructor(
                     val state = data as NicknameState
                     state.success = true
                     state.message = "사용가능한 닉네임입니다"
+                    state.nickname = nickName
 
                     if (state.is_nickname_isolated != 1) {
                         state.success = false

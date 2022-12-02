@@ -232,6 +232,18 @@ class ChallengeProfileActivity : BaseActivity() {
                 }
             }
         }
+
+        viewModel.nicknameState.observe(this) {
+            if ((navController.currentBackStackEntry?.destination?.route == ChallengeProfileNavScreen.Profile.route)) {
+                it?.let { state ->
+                    if (state.success) {
+                        viewModel.updateUserProfile(state.nickname)
+                    } else {
+                        showSnackBar(state.message)
+                    }
+                }
+            }
+        }
     }
 
     private fun callImageSelector() {

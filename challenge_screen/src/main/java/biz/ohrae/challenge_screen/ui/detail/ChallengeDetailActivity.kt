@@ -43,8 +43,8 @@ import biz.ohrae.challenge_screen.ui.mychallenge.MyChallengeViewModel
 import biz.ohrae.challenge_screen.ui.mychallenge.PolicyScreen
 import biz.ohrae.challenge_screen.ui.niceid.NiceIdActivity
 import biz.ohrae.challenge_screen.ui.participation.ParticipationActivity
-import biz.ohrae.challenge_screen.ui.policy.PolicyActivity
 import biz.ohrae.challenge_screen.ui.register.ChallengeCameraScreen
+import biz.ohrae.challenge_screen.ui.terms.TermsWebViewActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.dynamiclinks.ktx.*
 import com.google.firebase.ktx.Firebase
@@ -351,7 +351,9 @@ class ChallengeDetailActivity : BaseActivity() {
             }
 
             override fun onClickRedCardInfo() {
-                navController.navigate(ChallengeDetailNavScreen.RedCardInfo.route)
+                val intent = Intent(this@ChallengeDetailActivity, TermsWebViewActivity::class.java)
+                intent.putExtra("type", "redCard")
+                startActivity(intent)
             }
 
             override fun onClickShowAllChallengers(authType: String) {
@@ -387,8 +389,8 @@ class ChallengeDetailActivity : BaseActivity() {
             }
 
             override fun onClickCaution() {
-                val intent = Intent(this@ChallengeDetailActivity, PolicyActivity::class.java)
-                intent.putExtra("policyType", "Caution")
+                val intent = Intent(this@ChallengeDetailActivity, TermsWebViewActivity::class.java)
+                intent.putExtra("type", "caution")
                 startActivity(intent)
             }
 

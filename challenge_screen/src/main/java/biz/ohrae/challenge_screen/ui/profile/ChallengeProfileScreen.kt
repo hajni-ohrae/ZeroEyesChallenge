@@ -61,7 +61,7 @@ fun ChallengeProfileScreen(
             canEdit = true,
             maxLength = 10,
             onClickButton = {
-                clickListener?.onClickChangeNickname(it)
+                clickListener?.onClickCheckNickname(it)
             }
         )
         SectionTitle(

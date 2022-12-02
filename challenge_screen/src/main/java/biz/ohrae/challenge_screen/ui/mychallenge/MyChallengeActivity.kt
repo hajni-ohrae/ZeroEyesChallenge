@@ -28,8 +28,8 @@ import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailActivity
 import biz.ohrae.challenge_screen.ui.dialog.LoadingDialog
 import biz.ohrae.challenge_screen.ui.main.ChallengeMainViewModel
 import biz.ohrae.challenge_screen.ui.niceid.NiceIdActivity
-import biz.ohrae.challenge_screen.ui.policy.PolicyActivity
 import biz.ohrae.challenge_screen.ui.profile.ChallengeProfileActivity
+import biz.ohrae.challenge_screen.ui.terms.TermsWebViewActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -276,12 +276,15 @@ class MyChallengeActivity : BaseActivity() {
 
             override fun onClickPolicy(screen: String) {
                 policyScreenType = screen
-                navController.navigate(MyChallengeNavScreen.Policy.route)
+//                navController.navigate(MyChallengeNavScreen.Policy.route)
+                val intent = Intent(this@MyChallengeActivity, TermsWebViewActivity::class.java)
+                intent.putExtra("type", screen)
+                startActivity(intent)
             }
 
             override fun onClickPolicyRefund() {
-                val intent = Intent(this@MyChallengeActivity, PolicyActivity::class.java)
-                intent.putExtra("policyType", "Refund")
+                val intent = Intent(this@MyChallengeActivity, TermsWebViewActivity::class.java)
+                intent.putExtra("type", "reward")
                 startActivity(intent)
             }
 

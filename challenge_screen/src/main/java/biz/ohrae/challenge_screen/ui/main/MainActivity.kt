@@ -26,9 +26,9 @@ import biz.ohrae.challenge_screen.ui.login.LoginActivity
 import biz.ohrae.challenge_screen.ui.mychallenge.MyChallengeActivity
 import biz.ohrae.challenge_screen.ui.mychallenge.MyChallengeViewModel
 import biz.ohrae.challenge_screen.ui.niceid.NiceIdActivity
-import biz.ohrae.challenge_screen.ui.policy.PolicyActivity
 import biz.ohrae.challenge_screen.ui.profile.ChallengeProfileActivity
 import biz.ohrae.challenge_screen.ui.register.RegisterActivity
+import biz.ohrae.challenge_screen.ui.terms.TermsWebViewActivity
 import biz.ohrae.challenge_screen.ui.welcome.WelcomeActivity
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
@@ -330,8 +330,8 @@ class MainActivity : BaseActivity() {
 
             override fun clickNegative() {
                 dialog.dismiss()
-                val intent = Intent(this@MainActivity, PolicyActivity::class.java)
-                intent.putExtra("policyType", "Caution")
+                val intent = Intent(this@MainActivity, TermsWebViewActivity::class.java)
+                intent.putExtra("type", "caution")
                 startActivity(intent)
             }
         })
