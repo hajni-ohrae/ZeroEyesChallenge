@@ -4,6 +4,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -38,6 +40,7 @@ import timber.log.Timber
 class MainActivity : BaseActivity() {
     private lateinit var viewModel: ChallengeMainViewModel
     private lateinit var myChallengeViewModel: MyChallengeViewModel
+    private lateinit var launcher: ActivityResultLauncher<Intent>
 
     private lateinit var mainClickListener: MainClickListener
     private var periodTypeValue: String = ""
@@ -65,6 +68,7 @@ class MainActivity : BaseActivity() {
 
         initClickListeners()
         observeViewModels()
+        initLauncher()
         if (intent != null && intent.data != null) {
             handleDeepLink(intent.data)
         }
@@ -162,7 +166,7 @@ class MainActivity : BaseActivity() {
 
                 if (BuildConfig.DEBUG) {
                     val intent = Intent(this@MainActivity, RegisterActivity::class.java)
-                    startActivity(intent)
+                    launcher.launch(intent)
                 } else {
                     showCreateDialog()
                 }
@@ -276,6 +280,17 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    private fun initLauncher() {
+        launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                val challengeId = it?.data?.getStringExtra("challengeId")
+                if (challengeId != null) {
+                    goDetail(challengeId, true)
+                }
+            }
+        }
+    }
+
     private fun onBottomReached() {
         viewModel.getChallengeList(
             paymentType,
@@ -310,7 +325,7 @@ class MainActivity : BaseActivity() {
             override fun clickPositive() {
                 dialog.dismiss()
                 val intent = Intent(this@MainActivity, RegisterActivity::class.java)
-                startActivity(intent)
+                launcher.launch(intent)
             }
 
             override fun clickNegative() {

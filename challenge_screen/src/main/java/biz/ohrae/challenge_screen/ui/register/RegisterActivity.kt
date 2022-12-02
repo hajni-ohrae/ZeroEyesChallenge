@@ -491,12 +491,12 @@ class RegisterActivity : BaseActivity() {
         dialog.setListener(object : CustomDialogListener {
             override fun clickPositive() {
                 dialog.dismiss()
-                goMain(true, challengeId)
+                finish(isParticipant = true, challengeId = challengeId)
             }
 
             override fun clickNegative() {
                 dialog.dismiss()
-                goMain()
+                finish(isParticipant = false, challengeId = null)
             }
         })
 
@@ -511,6 +511,15 @@ class RegisterActivity : BaseActivity() {
             intent.putExtra("challengeId", challengeId)
         }
         startActivity(intent)
+        finish()
+    }
+
+    private fun finish(isParticipant: Boolean = false, challengeId: String? = null) {
+        val intent = Intent()
+        if (isParticipant) {
+            intent.putExtra("challengeId", challengeId)
+        }
+        setResult(RESULT_OK, intent)
         finish()
     }
 
