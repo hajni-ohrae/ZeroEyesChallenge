@@ -99,6 +99,7 @@ data class Summary(
     val average_verification_time:String,
     val total_verification_time:String,
     val time_user_cnt:Int,
+    val total_achievement_percent:String
 )
 
 data class InChallenge(

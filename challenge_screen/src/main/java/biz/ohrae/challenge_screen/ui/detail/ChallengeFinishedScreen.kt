@@ -50,7 +50,11 @@ fun ChallengeFinishedScreen(
     clickListener: ChallengeDetailClickListener? = null
 ) {
     val scrollState = rememberScrollState()
-//    val reward = if(challengeData.)
+    val inChallenge = challengeData?.inChallenge?.get(0)
+    val refund = (inChallenge?.refund_amount?.toDouble()!! / inChallenge?.deposit_amount?.toDouble()!!) * 100
+    val refundRate =
+        if (inChallenge?.is_refunded == 1) "${refund.toInt()}% 환급" else ""
+    val reward = if (inChallenge?.is_rewards_provided == 1) "리워즈 지급 예정" else if(inChallenge?.is_refunded == 1) "+리워즈" else ""
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -95,12 +99,14 @@ fun ChallengeFinishedScreen(
                 style = myTypography.extraBold,
             )
             Spacer(modifier = Modifier.height(16.dp))
-            ProgressLabel(
-                modifier = Modifier.align(CenterHorizontally),
-                text = "100% 환급 + 리워즈",
-                backgroundColor = Color(0xfff3f8ff),
-                textColor = Color(0xff4985f8)
-            )
+            if (!refundRate.isNullOrEmpty() && !reward.isNullOrEmpty()) {
+                ProgressLabel(
+                    modifier = Modifier.align(CenterHorizontally),
+                    text = refundRate + reward,
+                    backgroundColor = Color(0xfff3f8ff),
+                    textColor = Color(0xff4985f8)
+                )
+            }
             Spacer(modifier = Modifier.height(40.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -113,7 +119,7 @@ fun ChallengeFinishedScreen(
                 )
                 Row() {
                     Text(
-                        text = "${challengeData?.inChallenge?.get(0)?.ranking} 위 ",
+                        text = "${challengeData?.inChallenge?.get(0)?.ranking?: ""} 위 ",
                         fontSize = dpToSp(dp = 16.dp),
                         style = myTypography.bold,
                     )
@@ -137,7 +143,7 @@ fun ChallengeFinishedScreen(
                         style = myTypography.w500,
                     )
                     Text(
-                        text = "${challengeData?.inChallenge?.get(0)?.verification_time} 위 ",
+                        text = "${challengeData?.inChallenge?.get(0)?.verification_time} ",
                         fontSize = dpToSp(dp = 16.dp),
                         style = myTypography.bold,
                     )
@@ -224,7 +230,8 @@ private fun MyRewardsAndResults(
                 style = myTypography.w500,
             )
             Text(
-                text = "${challengeData?.summary?.total_amount}명", fontSize = dpToSp(dp = 14.dp),
+                text = "${challengeData?.summary?.total_achievement_percent?: "0.00"}%",
+                fontSize = dpToSp(dp = 14.dp),
                 style = myTypography.w500,
             )
         }
@@ -251,7 +258,7 @@ private fun MyRewardsAndResults(
         }
 
     }
-    if (!challengeData?.free_rewards.isNullOrEmpty()){
+    if (!challengeData?.free_rewards.isNullOrEmpty()) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -356,7 +363,7 @@ private fun ChallengeProgressFinishDetail(
 fun MyReWardInfo(
     challengeData: ChallengeData? = null
 ) {
-    if (challengeData?.free_rewards.isNullOrEmpty()) {
+    if (!challengeData?.free_rewards.isNullOrEmpty()) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -469,7 +476,8 @@ fun MyReWardInfo(
         }
     }
 }
+
 @Composable
-fun MyOverallResults(){
+fun MyOverallResults() {
 
 }

@@ -65,7 +65,7 @@ class MyChallengeActivity : BaseActivity() {
             }
         }
 
-        challengeMainViewModel.selectFilter("all")
+        challengeMainViewModel.selectFilter(filterType)
         initClickListeners()
         observeViewModels()
         initLauncher()
@@ -108,7 +108,7 @@ class MyChallengeActivity : BaseActivity() {
                 Navigation()
             }
         }
-        myChallengeViewModel.selectRewardFilter("all")
+        myChallengeViewModel.selectRewardFilter(filterType)
     }
 
     override fun onResume() {
