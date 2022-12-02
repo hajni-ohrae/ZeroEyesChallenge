@@ -77,7 +77,12 @@ fun VerifiedList(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             items(challengeVerifiedList) { item ->
-                val time = if (item.type == "time") Utils.convertDate(item.updated_date) else Utils.convertDate9(item.updated_date)
+                val time =
+                    when (item.type) {
+                        "time" -> Utils.convertDate(item.updated_date)
+                        "checkin" -> Utils.convertDate(item.checkin_date)
+                        else -> Utils.convertDate9(item.updated_date)
+                    }
 
                 FeedItem(
                     imageUrl = item.imageFile?.path.toString(),

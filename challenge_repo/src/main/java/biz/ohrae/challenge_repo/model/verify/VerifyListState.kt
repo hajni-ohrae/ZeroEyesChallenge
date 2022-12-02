@@ -36,6 +36,7 @@ data class VerifyData(
     val comment: String,
     val created_date: String,
     val updated_date: String,
+    val checkin_date: String="",
     val user: User? = null,
     val imageFile: ImageFile? = null,
     val is_like:Int,
