@@ -70,8 +70,7 @@ fun ChallengersResultsScreen(
                     TabRow(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .aspectRatio(6.42f)
-                            ,
+                            .aspectRatio(6.42f),
                         selectedTabIndex = pagerState.currentPage,
                         backgroundColor = DefaultWhite,
                         indicator = {
