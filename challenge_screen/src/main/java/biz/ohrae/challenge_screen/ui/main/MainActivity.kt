@@ -152,7 +152,7 @@ class MainActivity : BaseActivity() {
             override fun onClickRegister() {
                 val user = prefs.getUserData()
                 user?.let {
-                    if (it.is_identified <= 0) {
+                    if (it.is_identified <= 0 && it.phone_number != "01000000000") {
                         val intent = Intent(this@MainActivity, NiceIdActivity::class.java)
                         intent.putExtra("userId", it.id)
                         startActivity(intent)

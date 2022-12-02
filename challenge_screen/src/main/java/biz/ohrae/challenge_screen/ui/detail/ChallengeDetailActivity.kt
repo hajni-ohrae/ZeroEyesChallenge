@@ -32,6 +32,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
+import biz.ohrae.challenge_repo.util.FileUtils
 import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.challengers.ChallengersActivity
@@ -48,9 +49,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.dynamiclinks.ktx.*
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
-import me.echodev.resizer.Resizer
 import timber.log.Timber
-import java.io.File
 import java.net.URLEncoder
 
 
@@ -373,17 +372,9 @@ class ChallengeDetailActivity : BaseActivity() {
                     viewModel.isLoading(true)
 
                     val imagePath = uriToFilePath(it)
-                    val originFile = File(imagePath)
-                    val outputPath = applicationContext.filesDir.absolutePath
-                    val resizedImage = Resizer(outputPath)
-                        .setTargetLength(1080)
-                        .setQuality(80)
-                        .setOutputFormat("JPEG")
-                        .setOutputFilename("resized_image")
-                        .setOutputDirPath(originFile.parent)
-                        .setSourceImage(originFile)
-                        .resizedFile
+                    val resizedImage = FileUtils.resizeFile(applicationContext, imagePath)
 
+                    Timber.e("resizedImage : ${resizedImage.absolutePath}")
                     viewModel.verifyChallenge(content, resizedImage.path)
                 }
             }

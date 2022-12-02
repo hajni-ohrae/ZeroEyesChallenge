@@ -40,7 +40,6 @@ import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.dialog.LoadingDialog
 import biz.ohrae.challenge_screen.ui.niceid.NiceIdActivity
 import dagger.hilt.android.AndroidEntryPoint
-import me.echodev.resizer.Resizer
 import timber.log.Timber
 import java.io.File
 import java.io.FileNotFoundException
@@ -269,16 +268,7 @@ class ChallengeProfileActivity : BaseActivity() {
 
         Timber.e("image path : $imagePath")
         if (!imagePath.isNullOrEmpty()) {
-            val originFile = File(imagePath)
-            val outputPath = applicationContext.filesDir.absolutePath
-            val resizedImage = Resizer(outputPath)
-                .setTargetLength(1080)
-                .setQuality(80)
-                .setOutputFormat("JPEG")
-                .setOutputFilename("resized_image")
-                .setOutputDirPath(originFile.parent)
-                .setSourceImage(originFile)
-                .resizedFile
+            val resizedImage = FileUtils.resizeFile(applicationContext, imagePath)
 
             viewModel.isLoading(true)
             viewModel.uploadUserImage(resizedImage.path)
