@@ -665,10 +665,11 @@ fun ChallengeAuthPage(
                 repeat(challengeVerifiedList.size) { index ->
                     val item = challengeVerifiedList[index]
                     val time =
-                        if (item.type == "time") Utils.convertDate(item.updated_date) else Utils.convertDate9(
-                            item.updated_date,
-                            true
-                        )
+                        when (item.type) {
+                            "time" -> Utils.convertDate(item.updated_date)
+                            "checkin" -> Utils.convertDate(item.checkin_date)
+                            else -> Utils.convertDate9(item.updated_date, true)
+                        }
                     CertificationImageItem(
                         modifier = Modifier.fillMaxWidth(0.49f),
                         imageUrl = item.imageFile?.path.toString(),
