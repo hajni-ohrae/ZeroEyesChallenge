@@ -40,8 +40,7 @@ fun RedCardScreen(
             Text(text = "레드카드", style = myTypography.w700, fontSize = dpToSp(dp = 20.dp))
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "레드카드 3회부터는 서비스 이용이 영구제한 됩니다\n" +
-                        "하단의 레드카드 정책을 확인 해주세요",
+                text = "레드카드 3회 이상 발급 시 서비스 이용이 영구 제한될 수 있습니다\n하단의 레드카드 정책을 확인 해주세요",
                 style = myTypography.w500,
                 fontSize = dpToSp(dp = 12.dp),
                 color = Color(0xff828282),
@@ -62,7 +61,7 @@ fun RedCardScreen(
                 backgroundColor = Color(0xfffbefef),
                 title = "레드카드",
                 titleColor = Color(0xff6c6c6c),
-                content = if(redCardListState?.redCardList == null) "0" else "${redCardListState.redCardList.size.toString()}",
+                content = if (redCardListState?.redCardList == null) "0" else "${redCardListState.redCardList.size.toString()}",
                 contentColor = Color(0xffff0000)
             )
             Spacer(modifier = Modifier.height(21.dp))
@@ -73,7 +72,7 @@ fun RedCardScreen(
                 .fillMaxHeight()
                 .background(Color(0xfffafafa))
         ) {
-            RedCardList(onBottomReached = onBottomReached,redCardListState)
+            RedCardList(onBottomReached = onBottomReached, redCardListState)
         }
     }
 }
@@ -81,7 +80,8 @@ fun RedCardScreen(
 @Composable
 fun RedCardList(
     onBottomReached: () -> Unit = {},
-    redCardListState: RedCardListState? = null){
+    redCardListState: RedCardListState? = null
+) {
     val listState = rememberLazyListState()
 
     if (redCardListState?.redCardList != null) {

@@ -246,7 +246,7 @@ fun Reward(
                         modifier = Modifier
                             .fillMaxWidth(),
                         date = Utils.convertDate8(item?.created_date.toString()),
-                        progress = if (item.type == "earn" || item.type == "refund") percent else "",
+                        progress = if (item.type == "earn" || item.type == "refund") "$percent%" else "",
                         title = title,
                         price = item.amount.toString(),
                         progressStatus = Utils.reward(item.type),

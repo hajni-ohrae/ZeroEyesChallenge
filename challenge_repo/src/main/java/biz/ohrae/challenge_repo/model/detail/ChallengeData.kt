@@ -97,6 +97,7 @@ data class Summary(
     val total_rewards_amount: Int? = 0,
     val per_rewards_amount:Int? = 0,
     val average_verification_time:String,
+    val average_verification_cnt:String,
     val total_verification_time:String,
     val time_user_cnt:Int,
     val total_achievement_percent:String

@@ -94,7 +94,7 @@ fun ChallengeFinishedScreen(
                 if (challengeData?.free_rewards.isNullOrEmpty())
                     "${challengeData?.inChallenge?.get(0)?.refund_amount}원 환급되었어요!"
                 else
-                    "${challengeData?.inChallenge?.get(0)?.achievement_percent}를 달성하였어요!",
+                    "${challengeData?.inChallenge?.get(0)?.achievement_percent}%를 달성하였어요!",
                 fontSize = dpToSp(dp = 20.dp),
                 style = myTypography.extraBold,
             )
@@ -239,7 +239,7 @@ private fun MyRewardsAndResults(
         if (challengeData?.is_verification_photo == 0) {
             val title = if (challengeData?.is_verification_checkin == 1) "평균 출석일" else "평균 이용시간"
             val content =
-                if (challengeData?.is_verification_checkin == 1) "평균 출석일" else challengeData?.summary?.average_verification_time
+                if (challengeData?.is_verification_checkin == 1) "${challengeData?.summary?.average_verification_cnt}일" else challengeData?.summary?.average_verification_time
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -258,7 +258,7 @@ private fun MyRewardsAndResults(
         }
 
     }
-    if (!challengeData?.free_rewards.isNullOrEmpty()) {
+    if (challengeData?.free_rewards.isNullOrEmpty()) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -395,7 +395,6 @@ fun MyReWardInfo(
                 text = "${challengeData?.free_rewards_offer_way ?: ""}",
                 fontSize = dpToSp(dp = 14.dp),
                 style = myTypography.w500,
-                color = Color(0xff4985f8)
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
