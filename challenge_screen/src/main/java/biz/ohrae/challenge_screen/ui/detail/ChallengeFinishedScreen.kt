@@ -50,7 +50,7 @@ fun ChallengeFinishedScreen(
     clickListener: ChallengeDetailClickListener? = null
 ) {
     val scrollState = rememberScrollState()
-
+//    val reward = if(challengeData.)
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -86,7 +86,11 @@ fun ChallengeFinishedScreen(
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
-                text = "${challengeData?.inChallenge?.get(0)?.refund_amount}원 환급되었어요!",
+                text =
+                if (challengeData?.free_rewards.isNullOrEmpty())
+                    "${challengeData?.inChallenge?.get(0)?.refund_amount}원 환급되었어요!"
+                else
+                    "${challengeData?.inChallenge?.get(0)?.achievement_percent}를 달성하였어요!",
                 fontSize = dpToSp(dp = 20.dp),
                 style = myTypography.extraBold,
             )
@@ -179,6 +183,216 @@ private fun MyRewardsAndResults(
             style = myTypography.bold,
         )
         Spacer(modifier = Modifier.height(16.dp))
+        MyReWardInfo(challengeData = challengeData)
+
+        Spacer(modifier = Modifier.height(24.dp))
+        Divider(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(Color(0xffebebeb))
+        )
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Text(
+            text = "전체 결과", fontSize = dpToSp(dp = 16.dp),
+            style = myTypography.bold,
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = "참여인원", fontSize = dpToSp(dp = 14.dp),
+                style = myTypography.w500,
+            )
+            Text(
+                text = "${challengeData?.summary?.total_user_cnt}명", fontSize = dpToSp(dp = 14.dp),
+                style = myTypography.w500,
+            )
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = "평균 달성률", fontSize = dpToSp(dp = 14.dp),
+                style = myTypography.w500,
+            )
+            Text(
+                text = "${challengeData?.summary?.total_amount}명", fontSize = dpToSp(dp = 14.dp),
+                style = myTypography.w500,
+            )
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        if (challengeData?.is_verification_photo == 0) {
+            val title = if (challengeData?.is_verification_checkin == 1) "평균 출석일" else "평균 이용시간"
+            val content =
+                if (challengeData?.is_verification_checkin == 1) "평균 출석일" else challengeData?.summary?.average_verification_time
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = title, fontSize = dpToSp(dp = 14.dp),
+                    style = myTypography.w500,
+                )
+                Text(
+                    text = content.toString(), fontSize = dpToSp(dp = 14.dp),
+                    style = myTypography.w500,
+                )
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
+    }
+    if (!challengeData?.free_rewards.isNullOrEmpty()){
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = "전체 참여금", fontSize = dpToSp(dp = 14.dp),
+                style = myTypography.w500,
+            )
+            Text(
+                text = "${challengeData?.summary?.total_amount}원", fontSize = dpToSp(dp = 14.dp),
+                style = myTypography.w500,
+            )
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = "전체 리워즈", fontSize = dpToSp(dp = 14.dp),
+                style = myTypography.w500,
+            )
+            Text(
+                text = "${challengeData?.summary?.total_rewards_amount}원",
+                fontSize = dpToSp(dp = 14.dp),
+                style = myTypography.w500,
+            )
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = "1인당 리워즈", fontSize = dpToSp(dp = 14.dp),
+                style = myTypography.w500,
+            )
+            Text(
+                text = "(1만원 기준) ${challengeData?.summary?.per_rewards_amount}원",
+                fontSize = dpToSp(dp = 14.dp),
+                style = myTypography.w500,
+            )
+        }
+    }
+}
+
+
+@Composable
+private fun ChallengeProgressFinishDetail(
+    verificationState: VerificationState
+) {
+    Column {
+        Row {
+            Text(
+                text = "인증성공 ${verificationState.successCount}개",
+                style = myTypography.bold,
+                fontSize = dpToSp(dp = 14.dp)
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            Text(
+                text = "인증실패 ${verificationState.failCount}개",
+                style = myTypography.bold,
+                fontSize = dpToSp(dp = 14.dp)
+            )
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+
+        val spacing by remember { mutableStateOf(3.5.dp) }
+        val itemSize = (LocalConfiguration.current.screenWidthDp.dp - 48.dp - (spacing * 9)) / 10
+
+        FlowRow(
+            mainAxisSize = SizeMode.Expand,
+            crossAxisAlignment = FlowCrossAxisAlignment.Start,
+            mainAxisSpacing = 3.5.dp,
+            crossAxisSpacing = 3.5.dp
+        ) {
+            verificationState.verifications?.forEach { item ->
+                when (item.status) {
+                    Verification.REMAINING, Verification.SUCCESS -> {
+                        ProgressRatioItem(
+                            modifier = Modifier.size(itemSize),
+                            isSuccess = item.status == Verification.SUCCESS,
+                            number = item.day.toString()
+                        )
+                    }
+                    Verification.FAILURE -> {
+                        ProgressRatioFailItem(
+                            modifier = Modifier.size(itemSize),
+                        )
+                    }
+                }
+            }
+        }
+        Spacer(modifier = Modifier.height(24.dp))
+    }
+}
+
+@Composable
+fun MyReWardInfo(
+    challengeData: ChallengeData? = null
+) {
+    if (challengeData?.free_rewards.isNullOrEmpty()) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = "상품", fontSize = dpToSp(dp = 14.dp),
+                style = myTypography.w500,
+                color = Color(0xff4985f8)
+            )
+            Text(
+                text = "${challengeData?.free_rewards ?: ""}",
+                fontSize = dpToSp(dp = 14.dp),
+                style = myTypography.w500,
+                color = Color(0xff4985f8)
+            )
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = "지급 방법", fontSize = dpToSp(dp = 14.dp),
+                style = myTypography.w500,
+            )
+            Text(
+                text = "${challengeData?.free_rewards_offer_way ?: ""}",
+                fontSize = dpToSp(dp = 14.dp),
+                style = myTypography.w500,
+                color = Color(0xff4985f8)
+            )
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+    } else {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -253,167 +467,9 @@ private fun MyRewardsAndResults(
                 color = Color(0xff4985f8)
             )
         }
-        Spacer(modifier = Modifier.height(24.dp))
-        Divider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp)
-                .background(Color(0xffebebeb))
-        )
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Text(
-            text = "전체 결과", fontSize = dpToSp(dp = 16.dp),
-            style = myTypography.bold,
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                text = "참여인원", fontSize = dpToSp(dp = 14.dp),
-                style = myTypography.w500,
-            )
-            Text(
-                text = "${challengeData?.summary?.total_user_cnt}명", fontSize = dpToSp(dp = 14.dp),
-                style = myTypography.w500,
-            )
-        }
-        Spacer(modifier = Modifier.height(16.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                text = "평균 달성률", fontSize = dpToSp(dp = 14.dp),
-                style = myTypography.w500,
-            )
-            Text(
-                text = "${challengeData?.summary?.total_amount}명", fontSize = dpToSp(dp = 14.dp),
-                style = myTypography.w500,
-            )
-        }
-        Spacer(modifier = Modifier.height(16.dp))
-        if (challengeData?.is_verification_photo == 0) {
-            val title = if (challengeData?.is_verification_checkin == 1) "평균 출석일" else "평균 이용시간"
-            val content =
-                if (challengeData?.is_verification_checkin == 1) "평균 출석일" else challengeData?.summary?.average_verification_time
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = title, fontSize = dpToSp(dp = 14.dp),
-                    style = myTypography.w500,
-                )
-                Text(
-                    text = content.toString(), fontSize = dpToSp(dp = 14.dp),
-                    style = myTypography.w500,
-                )
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-
-    }
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(
-            text = "전체 참여금", fontSize = dpToSp(dp = 14.dp),
-            style = myTypography.w500,
-        )
-        Text(
-            text = "${challengeData?.summary?.total_amount}원", fontSize = dpToSp(dp = 14.dp),
-            style = myTypography.w500,
-        )
-    }
-    Spacer(modifier = Modifier.height(16.dp))
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(
-            text = "전체 리워즈", fontSize = dpToSp(dp = 14.dp),
-            style = myTypography.w500,
-        )
-        Text(
-            text = "${challengeData?.summary?.total_rewards_amount}원",
-            fontSize = dpToSp(dp = 14.dp),
-            style = myTypography.w500,
-        )
-    }
-    Spacer(modifier = Modifier.height(16.dp))
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(
-            text = "1인당 리워즈", fontSize = dpToSp(dp = 14.dp),
-            style = myTypography.w500,
-        )
-        Text(
-            text = "(1만원 기준) ${challengeData?.summary?.per_rewards_amount}원",
-            fontSize = dpToSp(dp = 14.dp),
-            style = myTypography.w500,
-        )
     }
 }
-
-
 @Composable
-private fun ChallengeProgressFinishDetail(
-    verificationState: VerificationState
-) {
-    Column {
-        Row {
-            Text(
-                text = "인증성공 ${verificationState.successCount}개",
-                style = myTypography.bold,
-                fontSize = dpToSp(dp = 14.dp)
-            )
-            Spacer(modifier = Modifier.width(16.dp))
-            Text(
-                text = "인증실패 ${verificationState.failCount}개",
-                style = myTypography.bold,
-                fontSize = dpToSp(dp = 14.dp)
-            )
-        }
-        Spacer(modifier = Modifier.height(8.dp))
+fun MyOverallResults(){
 
-        val spacing by remember { mutableStateOf(3.5.dp) }
-        val itemSize = (LocalConfiguration.current.screenWidthDp.dp - 48.dp - (spacing * 9)) / 10
-
-        FlowRow(
-            mainAxisSize = SizeMode.Expand,
-            crossAxisAlignment = FlowCrossAxisAlignment.Start,
-            mainAxisSpacing = 3.5.dp,
-            crossAxisSpacing = 3.5.dp
-        ) {
-            verificationState.verifications?.forEach { item ->
-                when (item.status) {
-                    Verification.REMAINING, Verification.SUCCESS -> {
-                        ProgressRatioItem(
-                            modifier = Modifier.size(itemSize),
-                            isSuccess = item.status == Verification.SUCCESS,
-                            number = item.day.toString()
-                        )
-                    }
-                    Verification.FAILURE -> {
-                        ProgressRatioFailItem(
-                            modifier = Modifier.size(itemSize),
-                        )
-                    }
-                }
-            }
-        }
-        Spacer(modifier = Modifier.height(24.dp))
-    }
 }

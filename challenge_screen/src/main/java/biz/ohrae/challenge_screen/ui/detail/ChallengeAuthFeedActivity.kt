@@ -159,6 +159,7 @@ class ChallengeAuthFeedActivity : BaseActivity() {
             override fun onClickLike(verificationId: String, like: Boolean) {
                 val isLike = if (like) 1 else 0
                 viewModel.feedLike(verificationId = verificationId, like = isLike)
+                viewModel.getVerifyList(challengeId.toString(), true, order, mine)
             }
 
         }
