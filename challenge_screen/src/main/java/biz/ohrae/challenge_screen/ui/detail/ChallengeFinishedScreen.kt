@@ -50,7 +50,7 @@ fun ChallengeFinishedScreen(
     clickListener: ChallengeDetailClickListener? = null
 ) {
     val scrollState = rememberScrollState()
-    val reward = if(challengeData.)
+//    val reward = if(challengeData.)
     Column(
         modifier = Modifier
             .fillMaxSize()
