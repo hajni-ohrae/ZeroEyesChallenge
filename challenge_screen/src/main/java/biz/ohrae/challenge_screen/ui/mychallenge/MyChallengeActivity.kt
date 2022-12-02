@@ -47,7 +47,7 @@ class MyChallengeActivity : BaseActivity() {
 
     private var policyScreenType: String = ""
     private var headerTitle: String = ""
-    private var filterType: String = ""
+//    private var filterType: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         challengeMainViewModel = ViewModelProvider(this)[ChallengeMainViewModel::class.java]
@@ -65,7 +65,7 @@ class MyChallengeActivity : BaseActivity() {
             }
         }
 
-        challengeMainViewModel.selectFilter(filterType)
+        challengeMainViewModel.selectFilter("all")
         initClickListeners()
         observeViewModels()
         initLauncher()
@@ -108,7 +108,7 @@ class MyChallengeActivity : BaseActivity() {
                 Navigation()
             }
         }
-        myChallengeViewModel.selectRewardFilter(filterType)
+        myChallengeViewModel.selectRewardFilter("all")
     }
 
     override fun onResume() {
@@ -300,7 +300,7 @@ class MyChallengeActivity : BaseActivity() {
             }
 
             override fun onClickFilterType(type: String) {
-                filterType = type
+                var filterType = type
                 if (!type.isNullOrEmpty()) {
                     if (type == "all") filterType = ""
                     challengeMainViewModel.selectUserFilter(type)
@@ -368,6 +368,8 @@ class MyChallengeActivity : BaseActivity() {
         intent.putExtra("challengeId", id)
         intent.putExtra("isPhoto", isPhoto)
         startActivity(intent)
+       challengeMainViewModel.selectFilter("all")
+
     }
 
     private fun authOrWithdraw(userData: User) {
@@ -380,7 +382,7 @@ class MyChallengeActivity : BaseActivity() {
     }
 
     private fun onBottomReached() {
-        challengeMainViewModel.getUserChallengeList(filterType, isInit = true)
+        challengeMainViewModel.getUserChallengeList("all", isInit = true)
     }
 }
 
