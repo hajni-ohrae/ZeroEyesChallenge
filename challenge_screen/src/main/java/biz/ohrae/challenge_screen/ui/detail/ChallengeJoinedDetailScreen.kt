@@ -666,7 +666,7 @@ fun ChallengeAuthPage(
                     val item = challengeVerifiedList[index]
                     val time =
                         when (item.type) {
-                            "time" -> Utils.convertDate(item.updated_date)
+                            "time" -> Utils.convertDate(item.verified_date)
                             "checkin" -> Utils.convertDate(item.checkin_date)
                             else -> Utils.convertDate9(item.updated_date, true)
                         }
