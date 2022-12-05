@@ -77,9 +77,10 @@ fun VerifiedList(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             items(challengeVerifiedList) { item ->
+                val cnt = if (item.type == "staying_time") item.staying_time_cnt else item.cnt
                 val time =
                     when (item.type) {
-                        "time" -> Utils.convertDate(item.verified_date)
+                        "staying_time" -> Utils.convertDate(item.verified_date)
                         "checkin" -> Utils.convertDate(item.checkin_date)
                         else -> Utils.convertDate9(item.updated_date)
                     }
@@ -88,7 +89,7 @@ fun VerifiedList(
                     imageUrl = item.imageFile?.path.toString(),
                     username = item.user?.getUserName().toString(),
                     date = time,
-                    count = item.cnt,
+                    count = cnt,
                     comment = item.comment,
                     type = item.type,
                     onReport = {

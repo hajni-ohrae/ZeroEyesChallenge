@@ -179,7 +179,6 @@ fun RewardFilterCard(
                         select = item.name_en == selectFilter,
                         onClick = { clickListener?.onClickRewardFilterType(item.name_en) })
                 }
-
                 item {
                     Spacer(modifier = Modifier.width(24.dp))
                 }
@@ -212,7 +211,6 @@ fun Reward(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             item {
                 RewardsHeader(
@@ -240,13 +238,13 @@ fun Reward(
                 }
             } else {
                 items(rewardList) { item ->
-                    val percent = item.inChallenge?.achievement_percent ?: ""
+                    val percent = if (item.inChallenge?.achievement_percent.isNullOrEmpty()) "" else "${item.inChallenge?.achievement_percent}%"
                     val title = item.challenge?.goal ?: ""
                     RewardHistoryItem(
                         modifier = Modifier
                             .fillMaxWidth(),
                         date = Utils.convertDate8(item?.created_date.toString()),
-                        progress = if (item.type == "earn" || item.type == "refund") "$percent%" else "",
+                        progress = if (item.type == "earn" || item.type == "refund") "$percent" else "",
                         title = title,
                         price = item.amount.toString(),
                         progressStatus = Utils.reward(item.type),
@@ -254,6 +252,9 @@ fun Reward(
                         textColor = Utils.rewardTextColor(item.type),
                     )
                 }
+            }
+            item {
+                Spacer(modifier = Modifier.height(50.dp))
             }
         }
     }

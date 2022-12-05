@@ -1,6 +1,7 @@
 package biz.ohrae.challenge.ui.components.list_item
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
@@ -26,7 +27,6 @@ private fun PaidHistoryItemGallery() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(24.dp, 0.dp)
     ) {
         PaidHistoryItem(
             modifier = Modifier
@@ -65,16 +65,17 @@ fun PaidHistoryItem(
     reward: String = "",
     cardAmount: String = "",
     isCanceled: Boolean = false,
+    onClick: () -> Unit = {}
 ) {
     val priceColor = if (isCanceled) {
-        remember { mutableStateOf(Color(0xff6c6c6c)) }
-    } else {
         remember { mutableStateOf(Color(0xff4985f8)) }
+    } else {
+        remember { mutableStateOf(Color(0xff6c6c6c)) }
     }
-
     Column(
-        modifier = modifier
+        modifier = modifier.clickable { onClick() }
     ) {
+        Spacer(modifier = Modifier.height(19.dp))
         Text(
             text = date,
             style = myTypography.default,
@@ -105,34 +106,34 @@ fun PaidHistoryItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = if (isCanceled) "카드 결제 취소" else "카드 결제",
+                text = if (isCanceled) "카드 결제" else "카드 결제 취소",
                 style = myTypography.default,
                 color = TextBlack,
                 fontSize = dpToSp(dp = 14.dp)
             )
             Spacer(modifier = Modifier.weight(1f))
             Text(
-                text = if (isCanceled) "-${cardAmount}원" else "${cardAmount}원",
+                text = if (isCanceled) "${cardAmount}원" else "-${cardAmount}원",
                 style = myTypography.default,
                 color = TextBlack,
                 fontSize = dpToSp(dp = 14.dp)
             )
         }
-        if (reward.isNullOrEmpty()) {
+        if (!reward.isNullOrEmpty() && reward != "0") {
             Spacer(modifier = Modifier.height(8.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = if (isCanceled) "리워즈 결제 취소" else "리워즈 결제",
+                    text = if (isCanceled) "리워즈 결제" else "리워즈 결제 취소",
                     style = myTypography.default,
                     color = TextBlack,
                     fontSize = dpToSp(dp = 14.dp)
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    text = if (isCanceled) "-${reward}원" else "${reward}원",
+                    text = if (isCanceled) "${reward}원" else "-${reward}원",
                     style = myTypography.default,
                     color = TextBlack,
                     fontSize = dpToSp(dp = 14.dp)
@@ -140,11 +141,11 @@ fun PaidHistoryItem(
             }
         }
         Spacer(modifier = Modifier.height(19.dp))
-        Divider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp)
-                .background(Color(0xfffafafa))
-        )
     }
+    Divider(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(1.dp)
+            .background(Color(0xfffafafa))
+    )
 }

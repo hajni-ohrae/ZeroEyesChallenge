@@ -60,20 +60,22 @@ fun PaymentDetailListScreen(
             )
             PaymentDetailList(
                 onBottomReached = onBottomReached,
-                paymentHistoryList = paymentHistoryList
+                paymentHistoryList = paymentHistoryList,
+                clickListener = clickListener
             )
         }
     }
 }
+
 @Composable
 fun PaymentDetailList(
     onBottomReached: () -> Unit = {},
-    paymentHistoryList: List<PaymentHistoryData>?
+    paymentHistoryList: List<PaymentHistoryData>?,
+    clickListener: MyChallengeClickListener?
 ) {
     val listState = rememberLazyListState()
 
     if (paymentHistoryList != null) {
-        Spacer(modifier = Modifier.height(20.dp))
         LazyColumn(
             modifier = Modifier.fillMaxWidth(),
         ) {
@@ -81,20 +83,19 @@ fun PaymentDetailList(
                 val type = item.type == "deposit"
                 PaidHistoryItem(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .defaultMinSize(minHeight = 105.dp),
+                        .fillMaxWidth(),
                     date = Utils.convertDate8(item?.created_date.toString()),
                     title = item.challenge.goal.toString(),
                     amount = Utils.numberToString(item.amount.toString()),
                     reward = Utils.numberToString(item.rewards_amount.toString()),
                     cardAmount = Utils.numberToString(item.paid_amount.toString()),
                     isCanceled = type,
+                    onClick = { clickListener?.onClickPaymentItem(item) }
                 )
             }
         }
     } else {
         Spacer(modifier = Modifier.height(20.dp))
-
         Text(
             text = "결제내역이 없습니다.",
             style = myTypography.w500,

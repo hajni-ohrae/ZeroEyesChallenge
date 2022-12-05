@@ -41,6 +41,7 @@ data class VerifyData(
     val user: User? = null,
     val imageFile: ImageFile? = null,
     val is_like:Int,
+    val staying_time_cnt:Int=0
 ) {
     companion object {
         fun mock() = VerifyData(

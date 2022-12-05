@@ -26,6 +26,8 @@ import androidx.navigation.compose.rememberNavController
 import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge.ui.theme.DefaultWhite
+import biz.ohrae.challenge_repo.model.user.PaymentData
+import biz.ohrae.challenge_repo.model.user.PaymentHistoryData
 import biz.ohrae.challenge_repo.model.user.User
 import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailActivity
@@ -48,6 +50,8 @@ class MyChallengeActivity : BaseActivity() {
     private lateinit var navController: NavHostController
     private lateinit var myChallengeClickListener: MyChallengeClickListener
     private lateinit var launcher: ActivityResultLauncher<Intent>
+    private lateinit var payment:PaymentHistoryData
+
 
     private var policyScreenType: String = ""
     private var headerTitle: String = ""
@@ -192,7 +196,7 @@ class MyChallengeActivity : BaseActivity() {
                     )
                 }
             }
-            composable(MyChallengeNavScreen.MyPaymentDetail.route) {
+            composable(MyChallengeNavScreen.MyPaymentDetailList.route) {
                 PaymentDetailListScreen(
                     paymentHistoryList = paymentHistoryState,
                     clickListener = myChallengeClickListener,
@@ -232,6 +236,9 @@ class MyChallengeActivity : BaseActivity() {
             composable(MyChallengeNavScreen.Policy.route) {
                 PolicyScreen(policyScreenType)
             }
+            composable(MyChallengeNavScreen.PaymentDetailHistory.route){
+                PaymentDetailScreen(payment)
+            }
         }
     }
 
@@ -242,7 +249,7 @@ class MyChallengeActivity : BaseActivity() {
             }
 
             override fun onClickPaymentDetail() {
-                navController.navigate(MyChallengeNavScreen.MyPaymentDetail.route)
+                navController.navigate(MyChallengeNavScreen.MyPaymentDetailList.route)
             }
 
             override fun onClickSavedChallenge() {
@@ -358,6 +365,11 @@ class MyChallengeActivity : BaseActivity() {
             override fun onClickRegisterAccountNumber(bankCode: String, accountNumber: String) {
                 myChallengeViewModel.registerAccountNumber(bankCode, accountNumber)
             }
+
+            override fun onClickPaymentItem(paymentHistoryData: PaymentHistoryData) {
+                payment = paymentHistoryData
+                navController.navigate(MyChallengeNavScreen.PaymentDetailHistory.route)
+            }
         }
     }
 
@@ -420,10 +432,11 @@ sealed class MyChallengeNavScreen(val route: String) {
     object MyChallenge : MyChallengeNavScreen("MyChallenge")
     object MyReward : MyChallengeNavScreen("MyReward")
     object Withdraw : MyChallengeNavScreen("Withdraw")
-    object MyPaymentDetail : MyChallengeNavScreen("MyPaymentDetail")
+    object MyPaymentDetailList : MyChallengeNavScreen("MyPaymentDetailList")
     object RedCard : MyChallengeNavScreen("RedCard")
     object SavedChallenge : MyChallengeNavScreen("SavedChallenge")
     object PhoneAuth : MyChallengeNavScreen("PhoneAuth")
     object Policy : MyChallengeNavScreen("Policy")
     object AccountAuth : MyChallengeNavScreen("AccountAuth")
+    object PaymentDetailHistory : MyChallengeNavScreen("PaymentDetailHistory")
 }

@@ -158,6 +158,7 @@ class ChallengeDetailViewModel @Inject constructor(
                     }
 
                     val challengeVerifiedList = it.data as MutableList<VerifyData>
+
                     if (isInit) {
                         _challengeVerifiedList.value = challengeVerifiedList
                     } else {

@@ -664,9 +664,10 @@ fun ChallengeAuthPage(
             ) {
                 repeat(challengeVerifiedList.size) { index ->
                     val item = challengeVerifiedList[index]
+                    val cnt = if (item.type == "staying_time") item.staying_time_cnt else item.cnt
                     val time =
                         when (item.type) {
-                            "time" -> Utils.convertDate(item.verified_date)
+                            "staying_time" -> Utils.convertDate(item.verified_date)
                             "checkin" -> Utils.convertDate(item.checkin_date)
                             else -> Utils.convertDate9(item.updated_date, true)
                         }
@@ -675,7 +676,7 @@ fun ChallengeAuthPage(
                         imageUrl = item.imageFile?.path.toString(),
                         username = item.user?.getUserName().toString(),
                         date = time,
-                        count = item.cnt,
+                        count = cnt,
                         onClick = { clickListener?.onClickAuthItemCard() }
                     )
                 }

@@ -14,6 +14,8 @@ import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
+import biz.ohrae.challenge_repo.model.user.PaymentHistoryData
+import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.ui.participation.ParticipationScreen
 
 
@@ -24,15 +26,15 @@ import biz.ohrae.challenge_screen.ui.participation.ParticipationScreen
 )
 @Composable
 fun PaymentDetailScreen(
+    paymentHistoryData: PaymentHistoryData? = null
 ) {
+    val type = paymentHistoryData?.type == "deposit"
+
     BackButton(onBack = { }, "결제 상세")
-    Column(modifier = Modifier) {
-        ParticipationScreen()
-    }
-    Column(modifier = Modifier.background(DefaultWhite)) {
-        Column(modifier = Modifier.background(Color(0xfff8f8f8))) {
+    Column(modifier = Modifier.fillMaxWidth().background(DefaultWhite)) {
+        Column(modifier = Modifier.fillMaxWidth().background(Color(0xfff8f8f8))) {
             Text(
-                modifier = Modifier.padding(18.dp, 0.dp),
+                modifier = Modifier.fillMaxWidth().padding(24.dp, 18.dp),
                 text = "이용내역",
                 style = myTypography.bold,
                 fontSize = dpToSp(dp = 14.dp),
@@ -53,7 +55,7 @@ fun PaymentDetailScreen(
                     color = Color(0xff707070)
                 )
                 Text(
-                    text = "미라클 모닝, 일찍 일어나기",
+                    text = paymentHistoryData?.challenge?.goal ?: "",
                     style = myTypography.bold,
                     fontSize = dpToSp(dp = 14.dp),
                 )
@@ -72,15 +74,17 @@ fun PaymentDetailScreen(
                     color = Color(0xff707070)
                 )
                 Text(
-                    text = "",
+                    text = "${Utils.convertDate6(paymentHistoryData?.challenge?.start_date.toString())}" +
+                            " ~ " +
+                            "${Utils.convertDate6(paymentHistoryData?.challenge?.end_date.toString())}",
                     style = myTypography.bold,
                     fontSize = dpToSp(dp = 14.dp),
                 )
             }
         }
-        Column(modifier = Modifier.background(Color(0xfff8f8f8))) {
+        Column(modifier = Modifier.fillMaxWidth().background(Color(0xfff8f8f8))) {
             Text(
-                modifier = Modifier.padding(18.dp, 0.dp),
+                modifier = Modifier.fillMaxWidth().padding(24.dp, 18.dp),
                 text = "결제내역",
                 style = myTypography.bold,
                 fontSize = dpToSp(dp = 14.dp),
@@ -101,7 +105,7 @@ fun PaymentDetailScreen(
                     color = Color(0xff707070)
                 )
                 Text(
-                    text = "원",
+                    text = if (type) "${paymentHistoryData?.paid_amount.toString()}원" else "-${paymentHistoryData?.paid_amount.toString()}원",
                     style = myTypography.extraBold,
                     fontSize = dpToSp(dp = 14.dp),
                 )
@@ -120,7 +124,7 @@ fun PaymentDetailScreen(
                     color = Color(0xff707070)
                 )
                 Text(
-                    text = "원",
+                    text = if (type) "${paymentHistoryData?.rewards_amount.toString()}원" else "-${paymentHistoryData?.rewards_amount.toString()}원",
                     style = myTypography.extraBold,
                     fontSize = dpToSp(dp = 14.dp),
                 )
@@ -141,15 +145,16 @@ fun PaymentDetailScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "총 결제금액",
+                    text = if (type) "총 결제금액" else "총 환불금액",
                     style = myTypography.w700,
                     fontSize = dpToSp(dp = 14.dp),
                     color = Color(0xff707070)
                 )
                 Text(
-                    text = "원",
+                    text = if (type) "${paymentHistoryData?.amount.toString()}원" else "-${paymentHistoryData?.amount.toString()}원",
                     style = myTypography.extraBold,
                     fontSize = dpToSp(dp = 14.dp),
+                    color = Color(0xffff0000)
                 )
             }
             Spacer(modifier = Modifier.height(10.dp))
@@ -166,7 +171,7 @@ fun PaymentDetailScreen(
                     color = Color(0xff707070)
                 )
                 Text(
-                    text = "카드",
+                    text = paymentHistoryData?.payment?.card_name?: "",
                     style = myTypography.bold,
                     fontSize = dpToSp(dp = 14.dp),
                 )
@@ -185,7 +190,7 @@ fun PaymentDetailScreen(
                     color = Color(0xff707070)
                 )
                 Text(
-                    text = "",
+                    text = Utils.convertDate8(paymentHistoryData?.created_date.toString()),
                     style = myTypography.bold,
                     fontSize = dpToSp(dp = 14.dp),
                 )

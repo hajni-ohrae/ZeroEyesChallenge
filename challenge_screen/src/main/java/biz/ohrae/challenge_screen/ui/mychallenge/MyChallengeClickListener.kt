@@ -1,5 +1,7 @@
 package biz.ohrae.challenge_screen.ui.mychallenge
 
+import biz.ohrae.challenge_repo.model.user.PaymentHistoryData
+
 interface MyChallengeClickListener {
     fun onClickReward()
     fun onClickPaymentDetail()
@@ -17,4 +19,5 @@ interface MyChallengeClickListener {
     fun onClickProfile()
     fun onClickAccountAuth(isDone: Boolean)
     fun onClickRegisterAccountNumber(bankCode: String, accountNumber: String)
+    fun onClickPaymentItem(paymentHistoryData: PaymentHistoryData)
 }
