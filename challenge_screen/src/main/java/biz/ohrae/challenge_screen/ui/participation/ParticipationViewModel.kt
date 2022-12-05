@@ -60,9 +60,9 @@ class ParticipationViewModel @Inject constructor(
         }
     }
 
-    fun setPaymentInfo(cardName: String, amount: String) {
+    fun setPaymentInfo(cardName: String, amount: String, rewardsAmount: String) {
         viewModelScope.launch {
-            _paidInfo.value = PaidInfo(cardName, amount.toInt())
+            _paidInfo.value = PaidInfo(cardName, amount.toInt(), rewardsAmount.toInt())
         }
     }
 }

@@ -71,7 +71,9 @@ class ParticipationActivity : BaseActivity() {
                         if (isSuccess) {
                             val cardName = intent.getStringExtra("cardName")
                             val amount = intent.getStringExtra("amount")
-                            viewModel.setPaymentInfo(cardName.toString(), amount.toString())
+                            val rewardsAmount = intent.getStringExtra("rewardsAmount")
+
+                            viewModel.setPaymentInfo(cardName.toString(), amount.toString(), rewardsAmount.toString())
                             navController.navigate(ChallengeParticipationNavScreen.ParticipationFinish.route)
                         } else {
                             val code = intent.getStringExtra("code")
@@ -239,7 +241,7 @@ class ParticipationActivity : BaseActivity() {
                     paymentLauncher.launch(intent)
                 } else {
                     init()
-                    viewModel.setPaymentInfo("리워즈", "0")
+                    viewModel.setPaymentInfo("리워즈", "0", "0")
                     navController.navigate(ChallengeParticipationNavScreen.ParticipationFinish.route)
                 }
             } ?: run {

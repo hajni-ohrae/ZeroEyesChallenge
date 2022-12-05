@@ -119,12 +119,15 @@ class ChallengePaymentActivity : AppCompatActivity() {
         binding.webView.postUrl(url, postData.toByteArray())
     }
 
-    fun paymentResult(isSuccess: Boolean, code: String?, message: String?, amount: String?, cardName : String?) {
-        Timber.e("isSuccess : $isSuccess, code : $code, message : $message, cardName : $cardName, amount : $amount")
+    fun paymentResult(isSuccess: Boolean, code: String?, message: String?, amount: String?, cardName : String?, rewardsAmount: String?) {
+        Timber.e("isSuccess : $isSuccess, code : $code, message : $message, cardName : $cardName, amount : $amount, rewardsAmount : $rewardsAmount")
         if (isSuccess) {
             val intent = Intent()
             intent.putExtra("cardName", cardName)
             intent.putExtra("amount", amount)
+            intent.putExtra("amount", amount)
+            intent.putExtra("rewardsAmount", rewardsAmount)
+
             intent.putExtra("isSuccess", true)
 
             setResult(RESULT_OK, intent)

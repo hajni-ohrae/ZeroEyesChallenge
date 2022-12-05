@@ -292,6 +292,8 @@ class MainActivity : BaseActivity() {
                 } else {
                     if (viewModel.challengeListPage.value == 1) {
                         init()
+                    } else {
+                        viewModel.getUserChallengeList("", isInit = true)
                     }
                 }
             }

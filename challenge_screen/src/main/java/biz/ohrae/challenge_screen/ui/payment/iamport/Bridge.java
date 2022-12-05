@@ -17,8 +17,8 @@ public class Bridge {
     }
 
     @JavascriptInterface
-    public void paymentResult(boolean isSuccess, String code, String message, String amount, String cardName) {
-        ((ChallengePaymentActivity) context).paymentResult(isSuccess, code, message, amount, cardName);
+    public void paymentResult(boolean isSuccess, String code, String message, String amount, String cardName, String rewardsAmount) {
+        ((ChallengePaymentActivity) context).paymentResult(isSuccess, code, message, amount, cardName, rewardsAmount);
     }
 
     @JavascriptInterface
