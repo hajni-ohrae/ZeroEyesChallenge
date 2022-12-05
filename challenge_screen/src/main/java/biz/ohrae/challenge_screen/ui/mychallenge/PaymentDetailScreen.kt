@@ -31,10 +31,16 @@ fun PaymentDetailScreen(
     val type = paymentHistoryData?.type == "deposit"
 
     BackButton(onBack = { }, "결제 상세")
-    Column(modifier = Modifier.fillMaxWidth().background(DefaultWhite)) {
-        Column(modifier = Modifier.fillMaxWidth().background(Color(0xfff8f8f8))) {
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .background(DefaultWhite)) {
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .background(Color(0xfff8f8f8))) {
             Text(
-                modifier = Modifier.fillMaxWidth().padding(24.dp, 18.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(24.dp, 18.dp),
                 text = "이용내역",
                 style = myTypography.bold,
                 fontSize = dpToSp(dp = 14.dp),
@@ -82,9 +88,13 @@ fun PaymentDetailScreen(
                 )
             }
         }
-        Column(modifier = Modifier.fillMaxWidth().background(Color(0xfff8f8f8))) {
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .background(Color(0xfff8f8f8))) {
             Text(
-                modifier = Modifier.fillMaxWidth().padding(24.dp, 18.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(24.dp, 18.dp),
                 text = "결제내역",
                 style = myTypography.bold,
                 fontSize = dpToSp(dp = 14.dp),
@@ -105,7 +115,15 @@ fun PaymentDetailScreen(
                     color = Color(0xff707070)
                 )
                 Text(
-                    text = if (type) "${paymentHistoryData?.paid_amount.toString()}원" else "-${paymentHistoryData?.paid_amount.toString()}원",
+                    text =
+                    if (type) {
+                        "${paymentHistoryData?.paid_amount.toString()}원"
+                    } else {
+                        if (paymentHistoryData?.paid_amount.toString() == "0")
+                            "${paymentHistoryData?.paid_amount.toString()}원"
+                        else
+                            "-${paymentHistoryData?.paid_amount.toString()}원"
+                    },
                     style = myTypography.extraBold,
                     fontSize = dpToSp(dp = 14.dp),
                 )
@@ -124,7 +142,15 @@ fun PaymentDetailScreen(
                     color = Color(0xff707070)
                 )
                 Text(
-                    text = if (type) "${paymentHistoryData?.rewards_amount.toString()}원" else "-${paymentHistoryData?.rewards_amount.toString()}원",
+                    text =
+                    if (type) {
+                        "${paymentHistoryData?.rewards_amount.toString()}원"
+                    } else {
+                        if (paymentHistoryData?.rewards_amount.toString() == "0")
+                            "${paymentHistoryData?.rewards_amount.toString()}원"
+                        else
+                            "-${paymentHistoryData?.rewards_amount.toString()}원"
+                    },
                     style = myTypography.extraBold,
                     fontSize = dpToSp(dp = 14.dp),
                 )
@@ -151,7 +177,14 @@ fun PaymentDetailScreen(
                     color = Color(0xff707070)
                 )
                 Text(
-                    text = if (type) "${paymentHistoryData?.amount.toString()}원" else "-${paymentHistoryData?.amount.toString()}원",
+                    text = if (type) {
+                        "${paymentHistoryData?.amount.toString()}원"
+                    } else {
+                        if (paymentHistoryData?.amount.toString() == "0")
+                            "${paymentHistoryData?.amount.toString()}원"
+                        else
+                            "-${paymentHistoryData?.amount.toString()}원"
+                    },
                     style = myTypography.extraBold,
                     fontSize = dpToSp(dp = 14.dp),
                     color = Color(0xffff0000)
@@ -171,7 +204,7 @@ fun PaymentDetailScreen(
                     color = Color(0xff707070)
                 )
                 Text(
-                    text = paymentHistoryData?.payment?.card_name?: "",
+                    text = paymentHistoryData?.payment?.card_name ?: "",
                     style = myTypography.bold,
                     fontSize = dpToSp(dp = 14.dp),
                 )

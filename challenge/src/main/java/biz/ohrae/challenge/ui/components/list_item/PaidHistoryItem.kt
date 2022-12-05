@@ -113,7 +113,14 @@ fun PaidHistoryItem(
             )
             Spacer(modifier = Modifier.weight(1f))
             Text(
-                text = if (isCanceled) "${cardAmount}원" else "-${cardAmount}원",
+                text = if (isCanceled) {
+                    "${cardAmount}원"
+                } else {
+                    if (cardAmount == "0")
+                        "${cardAmount}원"
+                    else
+                        "-${cardAmount}원"
+                },
                 style = myTypography.default,
                 color = TextBlack,
                 fontSize = dpToSp(dp = 14.dp)
@@ -133,7 +140,14 @@ fun PaidHistoryItem(
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    text = if (isCanceled) "${reward}원" else "-${reward}원",
+                    text = if (isCanceled) {
+                        "${reward}원"
+                    } else {
+                        if (reward == "0")
+                            "${reward}원"
+                        else
+                            "-${reward}원"
+                    },
                     style = myTypography.default,
                     color = TextBlack,
                     fontSize = dpToSp(dp = 14.dp)
