@@ -45,7 +45,7 @@ sealed class NetworkResponse<out T : Any, out U : Any> {
     data class NetworkError(val request: Request?, val error: IOException) : NetworkResponse<Nothing, Nothing>() {
         init {
             errorMessage = error.message.toString()
-            Timber.e( "NetworkError : ${error.message}")
+            Timber.e( "NetworkError : ${error.message}, ${request?.url}")
 //            reportNetworkError(request!!, error)
         }
     }

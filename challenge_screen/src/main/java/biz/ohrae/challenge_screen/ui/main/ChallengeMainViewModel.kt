@@ -84,6 +84,8 @@ class ChallengeMainViewModel @Inject constructor(
                             _tokenValid.value = false
                         }
                     }
+                } ?: run {
+                    setErrorData(null, result.errorMessage)
                 }
             }
         }
