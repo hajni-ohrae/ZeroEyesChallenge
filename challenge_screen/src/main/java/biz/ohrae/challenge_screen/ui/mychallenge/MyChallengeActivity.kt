@@ -1,7 +1,9 @@
 package biz.ohrae.challenge_screen.ui.mychallenge
 
 import AccountAuthScreen
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
@@ -14,6 +16,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.Dialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -289,7 +293,29 @@ class MyChallengeActivity : BaseActivity() {
             }
 
             override fun onClickChallengeAuthItem(challengeId: String, type: Int) {
-                goDetail(challengeId, isPhoto = type)
+                val permissions = arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.CAMERA
+                )
+
+                val permissionResults = mutableListOf<String>()
+                permissions.forEach {
+                    val result = ContextCompat.checkSelfPermission(this@MyChallengeActivity, it)
+                    if (result != PackageManager.PERMISSION_GRANTED) {
+                        permissionResults.add(it)
+                    }
+                }
+
+                if (permissionResults.isNotEmpty()) {
+                    ActivityCompat.requestPermissions(
+                        this@MyChallengeActivity,
+                        permissionResults.toTypedArray(),
+                        100
+                    )
+                } else {
+                    goDetail(challengeId, isPhoto = type)
+                }
             }
 
             override fun onClickMyChallengeCard(id: String) {
