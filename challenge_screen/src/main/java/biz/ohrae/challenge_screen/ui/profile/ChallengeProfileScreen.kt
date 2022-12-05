@@ -44,6 +44,18 @@ fun ChallengeProfileScreen(
     Column(
          modifier = Modifier.fillMaxSize().verticalScroll(scrollState)
     ) {
+        val gender = when(user.gender) {
+            0 -> "여성"
+            1 -> "남성"
+            else -> ""
+        }
+
+        val bankAccount = if (user.bank_account != null) {
+            "${user.bank_account?.bank?.name} ${user.bank_account?.account_number}"
+        } else {
+            ""
+        }
+
         UploadProfileImage(
             profileImageUri = profileImageUri,
             onClickUpload = {
@@ -95,14 +107,14 @@ fun ChallengeProfileScreen(
             title = "성별"
         )
         SectionContent(
-            defaultValue = "",
+            defaultValue = gender,
             placeholder = "성별을 설정해주세요.",
         )
         SectionTitle(
             title = "인증 계좌"
         )
         SectionContent(
-            defaultValue = "",
+            defaultValue = bankAccount,
             placeholder = "등록된 계좌가 없습니다",
         )
     }
