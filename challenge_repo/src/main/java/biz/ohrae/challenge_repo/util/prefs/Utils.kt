@@ -635,11 +635,11 @@ object Utils {
     fun rewardBackground(type: String):Color {
         return when (type) {
             "earn" -> Color(0xfff3f8ff)
-            "use" -> Color(0xfffcf4ef)
+            "use" -> Color(0xfffafafa)
             "transfer" -> Color(0xffebfaf1)
             "expire" -> Color(0xffdedede)
             "refund" -> Color(0xfff3f8ff)
-            "cancel" -> Color(0xfffcf4ef)
+            "cancel" -> Color(0xfff3f8ff)
             else -> {
                 Color(0xff4985f8)
             }
@@ -653,7 +653,7 @@ object Utils {
             "transfer" -> Color(0xff219653)
             "expire" -> Color(0xff6c6c6c)
             "refund" -> Color(0xff4985f8)
-            "cancel" -> Color(0xffff5800)
+            "cancel" -> Color(0xff4985f8)
             else -> {
                 Color(0xff4985f8)
             }

@@ -19,6 +19,7 @@ import biz.ohrae.challenge_screen.ui.BaseViewModel
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -115,6 +116,7 @@ class ChallengeDetailViewModel @Inject constructor(
             repo.getChallengeResult(id).flowOn(Dispatchers.IO).collect { it ->
                 Timber.e("getResult : ${gson.toJson(it.data)}")
                 if (it.data != null) {
+                    delay(100)
                     val challengeData = it.data as ChallengeData
                     _challengeData.value = challengeData
                 } else {

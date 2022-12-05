@@ -8,10 +8,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
@@ -51,10 +48,12 @@ fun ChallengeFinishedScreen(
 ) {
     val scrollState = rememberScrollState()
     val inChallenge = challengeData?.inChallenge?.get(0)
+
     val refund = (inChallenge?.refund_amount?.toDouble()!! / inChallenge?.deposit_amount?.toDouble()!!) * 100
     val refundRate =
         if (inChallenge?.is_refunded == 1) "${refund.toInt()}% 환급" else ""
     val reward = if (inChallenge?.is_rewards_provided == 1) "리워즈 지급 예정" else if(inChallenge?.is_refunded == 1) "+리워즈" else ""
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -176,6 +175,7 @@ fun ChallengeFinishedScreen(
 private fun MyRewardsAndResults(
     challengeData: ChallengeData? = null,
 ) {
+
     Column() {
         Divider(
             modifier = Modifier
@@ -239,7 +239,10 @@ private fun MyRewardsAndResults(
         if (challengeData?.is_verification_photo == 0) {
             val title = if (challengeData?.is_verification_checkin == 1) "평균 출석일" else "평균 이용시간"
             val content =
-                if (challengeData?.is_verification_checkin == 1) "${challengeData?.summary?.average_verification_cnt}일" else challengeData?.summary?.average_verification_time
+                if (challengeData?.is_verification_checkin == 1)
+                    "${challengeData?.summary?.average_verification_cnt?: 0}일"
+                else
+                    challengeData?.summary?.average_verification_time?:""
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
