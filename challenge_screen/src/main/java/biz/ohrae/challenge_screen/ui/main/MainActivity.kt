@@ -140,6 +140,7 @@ class MainActivity : BaseActivity() {
         viewModel.selectPeriodType("")
         viewModel.selectPeriod("")
         viewModel.selectIsAdultOnly("")
+        viewModel.initTokenValid()
 
         if (prefs.getIsFirstLaunch()) {
             val intent = Intent(this, WelcomeActivity::class.java)
@@ -256,11 +257,16 @@ class MainActivity : BaseActivity() {
 
     override fun observeViewModels() {
         viewModel.tokenValid.observe(this) {
-            if (!it) {
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-            } else {
-                init()
+            it?.let {
+                Timber.e("check tokenValid")
+                if (!it) {
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+                } else {
+                    if (viewModel.challengeListPage.value == 1) {
+                        init()
+                    }
+                }
             }
         }
 

@@ -29,7 +29,7 @@ class ChallengeMainViewModel @Inject constructor(
     private val _mainScreenState = MutableLiveData<MainScreenState>()
     private val _userChallengeListState = MutableLiveData<UserChallengeListState>()
     private val _filterState = MutableLiveData<FilterState>()
-    private val _tokenValid = MutableLiveData<Boolean>()
+    private val _tokenValid = MutableLiveData<Boolean?>()
     private val _userData = MutableLiveData<User>()
     private val _challengeListPage = MutableLiveData(1)
     private val _userChallengeListPage = MutableLiveData(1)
@@ -289,5 +289,9 @@ class ChallengeMainViewModel @Inject constructor(
         viewModelScope.launch {
             removeErrorData()
         }
+    }
+
+    fun initTokenValid() {
+        _tokenValid.value = null
     }
 }
