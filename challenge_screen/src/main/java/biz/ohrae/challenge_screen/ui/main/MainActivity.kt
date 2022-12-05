@@ -1,6 +1,8 @@
 package biz.ohrae.challenge_screen.ui.main
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -14,6 +16,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.Dialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import biz.ohrae.challenge.ui.components.header.Header
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
@@ -21,6 +25,7 @@ import biz.ohrae.challenge.ui.theme.DefaultBackground
 import biz.ohrae.challenge_screen.BuildConfig
 import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailActivity
+import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailNavScreen
 import biz.ohrae.challenge_screen.ui.dialog.*
 import biz.ohrae.challenge_screen.ui.login.LoginActivity
 import biz.ohrae.challenge_screen.ui.mychallenge.MyChallengeActivity
@@ -241,7 +246,29 @@ class MainActivity : BaseActivity() {
             }
 
             override fun onClickChallengeAuthItem(id: String, type: Int) {
-                goDetail(id, isPhoto = type)
+                val permissions = arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.CAMERA
+                )
+
+                val permissionResults = mutableListOf<String>()
+                permissions.forEach {
+                    val result = ContextCompat.checkSelfPermission(this@MainActivity, it)
+                    if (result != PackageManager.PERMISSION_GRANTED) {
+                        permissionResults.add(it)
+                    }
+                }
+
+                if (permissionResults.isNotEmpty()) {
+                    ActivityCompat.requestPermissions(
+                        this@MainActivity,
+                        permissionResults.toTypedArray(),
+                        100
+                    )
+                } else {
+                    goDetail(id, isPhoto = type)
+                }
             }
 
             override fun onClickTopBanner() {

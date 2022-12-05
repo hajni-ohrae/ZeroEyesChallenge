@@ -233,7 +233,9 @@ fun UserChallengeList(
                     },
                     onCardClick = { clickListener?.onClickMyChallengeCard(item.id) },
                     buttonTextColor = Utils.getAuthBtnTextColor(item),
-                    buttonColor = Utils.getAuthBtnColor(item)
+                    buttonColor = Utils.getAuthBtnColor(item),
+                    todayAuth = inChallenge?.today_verification_cnt.toString(),
+                    isPhoto = item.is_verification_photo
                 )
             }
         }
