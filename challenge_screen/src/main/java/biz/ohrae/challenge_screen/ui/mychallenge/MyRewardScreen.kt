@@ -237,6 +237,9 @@ fun Reward(
                     }
                 }
             } else {
+                item {
+                    Spacer(modifier = Modifier.height(18.dp))
+                }
                 items(rewardList) { item ->
                     val percent = if (item.inChallenge?.achievement_percent.isNullOrEmpty()) "" else "${item.inChallenge?.achievement_percent}%"
                     val title = item.challenge?.goal ?: ""

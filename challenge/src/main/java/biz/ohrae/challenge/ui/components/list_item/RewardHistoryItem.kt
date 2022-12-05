@@ -94,7 +94,7 @@ fun RewardHistoryItem(
     }
 
     Column(
-        modifier = modifier.padding(24.dp, 18.dp)
+        modifier = modifier.padding(24.dp, 0.dp,24.dp,18.dp)
     ) {
 
         ProgressLabel(
