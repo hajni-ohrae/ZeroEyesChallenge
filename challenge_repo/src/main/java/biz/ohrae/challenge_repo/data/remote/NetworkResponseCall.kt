@@ -44,8 +44,9 @@ internal class NetworkResponseCall<S : Any, E : Any>(
                         callback.onResponse(this@NetworkResponseCall, Response.success(
                             NetworkResponse.ApiError(errorBody, code)))
                     } else {
+                        val errorMessage = "$code - ${response.message()}"
                         callback.onResponse(this@NetworkResponseCall, Response.success(
-                            NetworkResponse.UnknownError(call.request(), null)))
+                            NetworkResponse.UnknownError(call.request(), Error(errorMessage))))
                     }
                 }
             }
