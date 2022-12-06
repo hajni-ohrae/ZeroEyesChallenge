@@ -117,12 +117,12 @@ fun PaymentDetailScreen(
                 Text(
                     text =
                     if (type) {
-                        "${paymentHistoryData?.paid_amount.toString()}원"
+                        "${Utils.numberToString(paymentHistoryData?.paid_amount.toString())}원"
                     } else {
                         if (paymentHistoryData?.paid_amount.toString() == "0")
-                            "${paymentHistoryData?.paid_amount.toString()}원"
+                            "${Utils.numberToString(paymentHistoryData?.paid_amount.toString())}원"
                         else
-                            "-${paymentHistoryData?.paid_amount.toString()}원"
+                            "-${Utils.numberToString(paymentHistoryData?.paid_amount.toString())}원"
                     },
                     style = myTypography.extraBold,
                     fontSize = dpToSp(dp = 14.dp),
@@ -144,12 +144,12 @@ fun PaymentDetailScreen(
                 Text(
                     text =
                     if (type) {
-                        "${paymentHistoryData?.rewards_amount.toString()}원"
+                        "${Utils.numberToString(paymentHistoryData?.rewards_amount.toString())}원"
                     } else {
                         if (paymentHistoryData?.rewards_amount.toString() == "0")
-                            "${paymentHistoryData?.rewards_amount.toString()}원"
+                            "${Utils.numberToString(paymentHistoryData?.rewards_amount.toString())}원"
                         else
-                            "-${paymentHistoryData?.rewards_amount.toString()}원"
+                            "-${Utils.numberToString(paymentHistoryData?.rewards_amount.toString())}원"
                     },
                     style = myTypography.extraBold,
                     fontSize = dpToSp(dp = 14.dp),
@@ -178,12 +178,12 @@ fun PaymentDetailScreen(
                 )
                 Text(
                     text = if (type) {
-                        "${paymentHistoryData?.amount.toString()}원"
+                        "${Utils.numberToString(paymentHistoryData?.amount.toString())}원"
                     } else {
                         if (paymentHistoryData?.amount.toString() == "0")
-                            "${paymentHistoryData?.amount.toString()}원"
+                            "${Utils.numberToString(paymentHistoryData?.amount.toString())}원"
                         else
-                            "-${paymentHistoryData?.amount.toString()}원"
+                            "-${Utils.numberToString(paymentHistoryData?.amount.toString())}원"
                     },
                     style = myTypography.extraBold,
                     fontSize = dpToSp(dp = 14.dp),
@@ -204,7 +204,11 @@ fun PaymentDetailScreen(
                     color = Color(0xff707070)
                 )
                 Text(
-                    text = paymentHistoryData?.payment?.card_name ?: "",
+                    text =
+                    if (paymentHistoryData?.rewards_amount == paymentHistoryData?.amount)
+                        "리워즈 결제"
+                    else
+                        paymentHistoryData?.payment?.card_name ?: "",
                     style = myTypography.bold,
                     fontSize = dpToSp(dp = 14.dp),
                 )
