@@ -22,12 +22,15 @@ import androidx.navigation.compose.rememberNavController
 import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge.ui.theme.DefaultWhite
+import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailViewModel
 import biz.ohrae.challenge_screen.ui.dialog.CustomDialog
 import biz.ohrae.challenge_screen.ui.dialog.CustomDialogListener
 import biz.ohrae.challenge_screen.ui.dialog.LoadingDialog
+import biz.ohrae.challenge_screen.ui.mychallenge.MyChallengeActivity
+import biz.ohrae.challenge_screen.ui.mychallenge.MyChallengeNavScreen
 import biz.ohrae.challenge_screen.ui.payment.ChallengePaymentActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -116,6 +119,8 @@ class ParticipationActivity : BaseActivity() {
         } else {
             ChallengeParticipationNavScreen.Participation.route
         }
+
+
 
         NavHost(
             navController = navController,
@@ -213,6 +218,10 @@ class ParticipationActivity : BaseActivity() {
             // 챌린지 취소 후 결제상세 보기
             override fun onClickPaymentDetail() {
                 setResult(RESULT_OK)
+                val intent =
+                    Intent(this@ParticipationActivity, MyChallengeActivity::class.java)
+                intent.putExtra("challengeId", challengeId)
+                startActivity(intent)
                 finish()
             }
 

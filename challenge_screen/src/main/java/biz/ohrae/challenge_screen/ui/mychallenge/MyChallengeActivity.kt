@@ -50,12 +50,13 @@ class MyChallengeActivity : BaseActivity() {
     private lateinit var navController: NavHostController
     private lateinit var myChallengeClickListener: MyChallengeClickListener
     private lateinit var launcher: ActivityResultLauncher<Intent>
-    private lateinit var payment:PaymentHistoryData
+    private lateinit var payment: PaymentHistoryData
 
 
     private var policyScreenType: String = ""
     private var headerTitle: String = ""
-//    private var filterType: String = ""
+    private var challengeId: String? = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         challengeMainViewModel = ViewModelProvider(this)[ChallengeMainViewModel::class.java]
@@ -73,6 +74,7 @@ class MyChallengeActivity : BaseActivity() {
             }
         }
 
+        challengeId = intent.getStringExtra("challengeId")
         challengeMainViewModel.selectFilter("all")
         initClickListeners()
         observeViewModels()
@@ -144,9 +146,14 @@ class MyChallengeActivity : BaseActivity() {
         val filterState by challengeMainViewModel.filterState.observeAsState()
         val rewardFilter by myChallengeViewModel.rewardFilter.observeAsState()
 
+        val startPage =
+            if (challengeId != null)
+                MyChallengeNavScreen.PaymentDetailHistory.route
+            else
+                MyChallengeNavScreen.MyChallenge.route
         NavHost(
             navController = navController,
-            startDestination = MyChallengeNavScreen.MyChallenge.route
+            startDestination = startPage
         ) {
             composable(MyChallengeNavScreen.MyChallenge.route) {
                 MyChallengeScreen(
@@ -202,7 +209,8 @@ class MyChallengeActivity : BaseActivity() {
                     clickListener = myChallengeClickListener,
                     onBottomReached = {
                         myChallengeViewModel.getPaymentHistory(isInit = true)
-                    },)
+                    },
+                )
             }
             composable(MyChallengeNavScreen.SavedChallenge.route) {
                 SavedChallengeScreen(
@@ -236,7 +244,13 @@ class MyChallengeActivity : BaseActivity() {
             composable(MyChallengeNavScreen.Policy.route) {
                 PolicyScreen(policyScreenType)
             }
-            composable(MyChallengeNavScreen.PaymentDetailHistory.route){
+            composable(MyChallengeNavScreen.PaymentDetailHistory.route) {
+                var test:List<PaymentHistoryData>? = null
+                if (challengeId != null) {
+                    test = paymentHistoryState?.filter { it.challenge.id == challengeId }
+                    PaymentDetailScreen(test?.first())
+                    return@composable
+                }
                 PaymentDetailScreen(payment)
             }
         }
@@ -409,7 +423,7 @@ class MyChallengeActivity : BaseActivity() {
         intent.putExtra("challengeId", id)
         intent.putExtra("isPhoto", isPhoto)
         startActivity(intent)
-       challengeMainViewModel.selectFilter("all")
+        challengeMainViewModel.selectFilter("all")
 
     }
 
