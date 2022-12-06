@@ -251,6 +251,7 @@ class ChallengeDetailActivity : BaseActivity() {
     override fun onBack() {
         when (navController.currentBackStackEntry?.destination?.route) {
             ChallengeDetailNavScreen.Detail.route,
+            ChallengeDetailNavScreen.Finished.route,
             ChallengeDetailNavScreen.JoinedDetail.route -> {
                 finish()
             }
