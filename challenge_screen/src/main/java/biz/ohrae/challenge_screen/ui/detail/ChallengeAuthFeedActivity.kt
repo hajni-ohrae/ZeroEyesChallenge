@@ -171,9 +171,26 @@ class ChallengeAuthFeedActivity : BaseActivity() {
         }
         viewModel.report.observe(this) {
             if (it == true) {
-                showSnackBar("신고가 완료되었습니다.")
+                showDialog()
             }
         }
+    }
+    private fun showDialog() {
+        val content = "신고해주셔서 감사합니다"
+
+        val dialog =
+            CustomDialog(positiveBtnName = "확인", content = content)
+        dialog.isCancelable = false
+        dialog.setListener(object : CustomDialogListener {
+            override fun clickPositive() {
+                dialog.dismiss()
+            }
+
+            override fun clickNegative() {
+                dialog.dismiss()
+            }
+        })
+        dialog.show(supportFragmentManager, "showDialog")
     }
 }
 

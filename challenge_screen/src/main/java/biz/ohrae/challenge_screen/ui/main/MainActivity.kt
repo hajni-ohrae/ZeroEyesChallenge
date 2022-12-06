@@ -242,6 +242,7 @@ class MainActivity : BaseActivity() {
                     viewModel.isLoading(true)
                     viewModel.selectFilter(filterType)
                     viewModel.getChallengeList(paymentType = filterType, isInit = true)
+
                 }
             }
 
