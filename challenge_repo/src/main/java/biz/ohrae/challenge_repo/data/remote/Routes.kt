@@ -1,8 +1,8 @@
 package biz.ohrae.challenge_repo.data.remote
 
 object Routes {
-    const val HOST_NAME = "https://challenge.mooin.kr/"
-    const val PAYMENT_HOST_NAME = "https://challenge.mooin.kr/"
+    const val HOST_NAME = "https://challenge-dev.mooin.kr/"
+    const val PAYMENT_HOST_NAME = "https://challenge-dev.mooin.kr/"
 
     private const val CHALLENGE = ""
 
