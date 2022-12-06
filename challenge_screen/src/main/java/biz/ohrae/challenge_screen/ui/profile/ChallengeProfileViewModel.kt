@@ -24,7 +24,7 @@ class ChallengeProfileViewModel @Inject constructor(
     private val prefs: SharedPreference,
     private val gson: Gson
 ) : BaseViewModel(prefs) {
-    private val _user = MutableLiveData<User>()
+    private val _user = MutableLiveData<User?>()
     private val _profileImageUri = MutableLiveData<Uri?>(null)
     private val _nicknameState = MutableLiveData<NicknameState?>()
     private val _finishedUpdate = MutableLiveData(false)
@@ -48,6 +48,12 @@ class ChallengeProfileViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    fun setUserInfo(user: User?) {
+        viewModelScope.launch {
+            _user.value = user
         }
     }
 

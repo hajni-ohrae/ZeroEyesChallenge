@@ -50,6 +50,7 @@ class ChallengeProfileActivity : BaseActivity() {
     private lateinit var viewModel: ChallengeProfileViewModel
     private lateinit var navController: NavHostController
     private lateinit var albumLauncher: ActivityResultLauncher<Intent>
+    private lateinit var launcher: ActivityResultLauncher<Intent>
 
     private var clickListener: ChallengeProfileClickListener? = null
     private var headerTitle: String = "프로필"
@@ -84,7 +85,10 @@ class ChallengeProfileActivity : BaseActivity() {
         init()
         initClickListeners()
         observeViewModels()
+        initLauncher()
+    }
 
+    private fun initLauncher() {
         albumLauncher = registerForActivityResult<Intent, ActivityResult>(
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
@@ -106,6 +110,21 @@ class ChallengeProfileActivity : BaseActivity() {
                     if (cameraImageUri != null) {
                         viewModel.setProfileImage(cameraImageUri!!)
                         uploadImage(cameraImageUri!!)
+                    }
+                }
+            }
+        }
+
+        launcher = registerForActivityResult<Intent, ActivityResult>(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val data = result.data
+                data?.let {
+                    val isDone = it.getBooleanExtra("done", false)
+                    if (isDone) {
+                        viewModel.setUserInfo(null)
+                        init()
                     }
                 }
             }
@@ -211,7 +230,7 @@ class ChallengeProfileActivity : BaseActivity() {
             override fun onClickIdentityVerification() {
                 val intent = Intent(this@ChallengeProfileActivity, NiceIdActivity::class.java)
                 intent.putExtra("userId", viewModel.user.value?.id)
-                startActivity(intent)
+                launcher.launch(intent)
             }
 
             override fun onClickChangeNickname(nickname: String?) {
