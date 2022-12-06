@@ -17,8 +17,10 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.ui.components.button.FlatBottomButton
@@ -26,6 +28,7 @@ import biz.ohrae.challenge.ui.components.checkBox.MyCheckBox
 import biz.ohrae.challenge.ui.components.dropdown.DropDownItem
 import biz.ohrae.challenge.ui.components.dropdown.MyDropDown
 import biz.ohrae.challenge.ui.components.input.TextBox
+import biz.ohrae.challenge.ui.components.input.TextBox2
 import biz.ohrae.challenge.ui.components.label.ChallengeDurationLabel2
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.GrayColor4
@@ -54,8 +57,8 @@ fun ParticipationScreen(
     val list = listOf(
         DropDownItem(label = "신용카드", value = "card"),
     )
-    var participationAmount by remember { mutableStateOf("") }
-    var rewards by remember { mutableStateOf("") }
+    var participationAmount by remember { mutableStateOf(TextFieldValue("")) }
+    var rewards by remember { mutableStateOf(TextFieldValue("")) }
     val availableRewards by remember {
         mutableStateOf(challengeData.user?.rewards_amount ?: 0)
     }
@@ -80,42 +83,62 @@ fun ParticipationScreen(
             if (isFree) {
                 FreeChallengeText()
             } else {
-                InputParticipationAmount(
+                InputParticipationAmount2(
                     isFree = isFree,
                     availableRewards = availableRewards,
                     participationAmount = participationAmount,
                     onParticipationAmountChange = { text, checked ->
-                        val price = numberToString(text)
-                        participationAmount = price
+                        val price = numberToString(text.text)
+                        participationAmount = TextFieldValue(
+                            text = price,
+                            selection = TextRange(price.length, price.length)
+                        )
                         if (checked) {
                             val amount = try {
-                                participationAmount.replace(",", "").toInt()
+                                participationAmount.text.replace(",", "").toInt()
                             } catch (e: Exception) {
                                 0
                             }
                             val ownRewards = challengeData.user?.rewards_amount ?: 0
                             val min = min(amount, ownRewards)
-                            rewards = numberToString(text, min)
-                            paidAmount = calculatePaidAmount(participationAmount, rewards)
+                            rewards = TextFieldValue(numberToString(text.text, min))
+                            paidAmount = calculatePaidAmount(participationAmount.text, rewards.text)
                         } else {
-                            paidAmount = calculatePaidAmount(participationAmount, rewards)
+                            val amount = try {
+                                participationAmount.text.replace(",", "").toInt()
+                            } catch (e: Exception) {
+                                0
+                            }
+                            val rewardsAmount = try {
+                                rewards.text.replace(",", "").toInt()
+                            } catch (e: Exception) {
+                                0
+                            }
+                            val min = min(amount, rewardsAmount)
+                            rewards = TextFieldValue(numberToString(text.text, min))
+                            paidAmount = calculatePaidAmount(participationAmount.text, rewards.text)
+
                         }
                     },
                     rewards = rewards,
                     onParticipationRewardChange = {
                         val amount = try {
-                            participationAmount.replace(",", "").toInt()
+                            participationAmount.text.replace(",", "").toInt()
                         } catch (e: Exception) {
                             0
                         }
                         val ownRewards = challengeData.user?.rewards_amount ?: 0
                         val min = min(amount, ownRewards)
-                        rewards = numberToString(it, min)
-                        paidAmount = calculatePaidAmount(participationAmount, rewards)
+                        val price = numberToString(it.text)
+                        rewards = TextFieldValue(
+                            text = numberToString(price, min),
+                            selection = TextRange(price.length, price.length)
+                        )
+                        paidAmount = calculatePaidAmount(participationAmount.text, rewards.text)
                     },
                     onCheckUseAllRewards = {
                         val amount = try {
-                            participationAmount.replace(",", "").toInt()
+                            participationAmount.text.replace(",", "").toInt()
                         } catch (e: Exception) {
                             0
                         }
@@ -128,8 +151,12 @@ fun ParticipationScreen(
                             ownRewards = 0
                         }
 
-                        rewards = Utils.numberFormat(ownRewards)
-                        paidAmount = calculatePaidAmount(participationAmount, rewards)
+                        val rewardsValue = Utils.numberFormat(ownRewards)
+                        rewards = TextFieldValue(
+                            text = rewardsValue,
+                            selection = TextRange(rewardsValue.length, rewardsValue.length)
+                        )
+                        paidAmount = calculatePaidAmount(participationAmount.text, rewards.text)
                     }
                 )
             }
@@ -166,15 +193,15 @@ fun ParticipationScreen(
                 .aspectRatio(6f),
             text = if (isFree) "참여하기" else "결제하기",
             onClick = {
-                val depositAmount = if (participationAmount.isEmpty()) {
+                val depositAmount = if (participationAmount.text.isEmpty()) {
                     0
                 } else {
-                    participationAmount.replace(",", "").toInt()
+                    participationAmount.text.replace(",", "").toInt()
                 }
-                val rewardAmount = if (rewards.isEmpty()) {
+                val rewardAmount = if (rewards.text.isEmpty()) {
                     0
                 } else {
-                    rewards.replace(",", "").toInt()
+                    rewards.text.replace(",", "").toInt()
                 }
 
                 clickListener?.onClickPayment(
@@ -271,6 +298,135 @@ private fun InputParticipationAmount(
     }
     Spacer(modifier = Modifier.height(12.dp))
     TextBox(
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(7.1f),
+        placeholder = if (availableRewards > 0) "숫자만 입력" else "사용가능한 리워즈가 없습니다.",
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Number,
+            imeAction = ImeAction.Done
+        ),
+        keyboardActions = KeyboardActions(
+            onDone = {
+                keyboardController?.hide()
+            }
+        ),
+        singleLine = true,
+        enabled = availableRewards > 0 && !checked,
+        value = rewards,
+        onValueChange = {
+            onParticipationRewardChange(it)
+        }
+    )
+    Spacer(modifier = Modifier.height(12.dp))
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = "사용 가능한 리워즈",
+            style = myTypography.w500,
+            fontSize = dpToSp(dp = 14.dp),
+            color = Color(0xff6c6c6c)
+        )
+        Text(
+            text = "${numberToString(availableRewards.toString())}원",
+            style = myTypography.bold,
+            fontSize = dpToSp(dp = 14.dp)
+        )
+    }
+    Spacer(modifier = Modifier.height(24.dp))
+    Divider(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(1.dp), color = GrayColor4
+    )
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+private fun InputParticipationAmount2(
+    isFree: Boolean,
+    availableRewards: Int,
+    participationAmount: TextFieldValue,
+    onParticipationAmountChange: (text: TextFieldValue, checked: Boolean) -> Unit,
+    rewards: TextFieldValue,
+    onParticipationRewardChange: (text: TextFieldValue) -> Unit,
+    onCheckUseAllRewards: (checked: Boolean) -> Unit,
+) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+    var checked by remember { mutableStateOf(false) }
+
+    Text(
+        text = "습관에 돈을 걸고 의지를 유지하세요",
+        style = myTypography.w500,
+        fontSize = dpToSp(dp = 20.dp),
+        color = Color(0xffff5800),
+    )
+    Spacer(modifier = Modifier.height(24.dp))
+    Text(text = "참여금", style = myTypography.bold, fontSize = dpToSp(dp = 16.dp))
+    Spacer(modifier = Modifier.height(8.dp))
+    TextBox2(
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(7.1f),
+        placeholder = if (isFree) "무료챌린지 입니다." else "숫자만 입력",
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Number,
+            imeAction = ImeAction.Done
+        ),
+        keyboardActions = KeyboardActions(
+            onDone = {
+                keyboardController?.hide()
+            }
+        ),
+        singleLine = true,
+        enabled = !isFree,
+        value = participationAmount,
+        onValueChange = {
+            onParticipationAmountChange(it, checked)
+        },
+    )
+    Spacer(modifier = Modifier.height(12.dp))
+
+    Text(
+        text = "· 참여금이 높을수록 받는 리워즈도 많아져요\n· 최소 1천원 ~ 최대 50만원 까지 설정 가능해요",
+        style = myTypography.w500,
+        lineHeight = dpToSp(dp = 19.6.dp),
+        fontSize = dpToSp(dp = 14.dp),
+    )
+    Spacer(modifier = Modifier.height(14.dp))
+
+    Text(text = "결제 금액", style = myTypography.bold, fontSize = dpToSp(dp = 16.dp))
+    Spacer(modifier = Modifier.height(16.dp))
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = CenterVertically
+    ) {
+        Text(
+            text = "리워즈 사용",
+            style = myTypography.bold,
+            fontSize = dpToSp(dp = 14.dp)
+        )
+        MyCheckBox(
+            checkBoxSize = 20.dp,
+            label = "리워즈 전액 사용",
+            labelStyle = myTypography.w700,
+            onClick = {
+                checked = !checked
+                onCheckUseAllRewards(checked)
+            },
+            onChecked = {
+                checked = !checked
+                onCheckUseAllRewards(checked)
+            },
+            checked = checked,
+        )
+    }
+    Spacer(modifier = Modifier.height(12.dp))
+    TextBox2(
         modifier = Modifier
             .fillMaxWidth()
             .aspectRatio(7.1f),

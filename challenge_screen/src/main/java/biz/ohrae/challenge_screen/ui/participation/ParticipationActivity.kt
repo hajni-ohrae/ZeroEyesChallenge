@@ -22,6 +22,7 @@ import androidx.navigation.compose.rememberNavController
 import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge.ui.theme.DefaultWhite
+import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailViewModel
 import biz.ohrae.challenge_screen.ui.dialog.CustomDialog
@@ -180,6 +181,11 @@ class ParticipationActivity : BaseActivity() {
     override fun initClickListeners() {
         clickListener = object : ParticipationClickListener {
             override fun onClickPayment(paidAmount: Int, rewardAmount: Int, depositAmount: Int) {
+                val minDeposit = detailViewModel.challengeData.value?.min_deposit_amount ?: 1000
+                if (depositAmount < minDeposit) {
+                    showSnackBar("참여금은 ${Utils.numberToString(minDeposit.toString())}원 이상이어야 합니다.")
+                    return
+                }
                 detailViewModel.challengeData.value?.let {
                     viewModel.isLoading(true)
                     viewModel.registerChallenge(
