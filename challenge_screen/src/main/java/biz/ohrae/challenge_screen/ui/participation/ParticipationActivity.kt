@@ -22,7 +22,6 @@ import androidx.navigation.compose.rememberNavController
 import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge.ui.theme.DefaultWhite
-import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailViewModel
@@ -30,7 +29,6 @@ import biz.ohrae.challenge_screen.ui.dialog.CustomDialog
 import biz.ohrae.challenge_screen.ui.dialog.CustomDialogListener
 import biz.ohrae.challenge_screen.ui.dialog.LoadingDialog
 import biz.ohrae.challenge_screen.ui.mychallenge.MyChallengeActivity
-import biz.ohrae.challenge_screen.ui.mychallenge.MyChallengeNavScreen
 import biz.ohrae.challenge_screen.ui.payment.ChallengePaymentActivity
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -203,6 +201,10 @@ class ParticipationActivity : BaseActivity() {
 
             // 챌린지 참여 취소
             override fun onClickCancelParticipation() {
+                if (!isClickable()) {
+                    return
+                }
+
                 detailViewModel.challengeData.value?.let {
                     viewModel.cancelChallenge(it)
                 }
@@ -230,7 +232,10 @@ class ParticipationActivity : BaseActivity() {
             }
 
             override fun onClickSetAlarm() {
-                showSnackBar("준비중입니다.")
+                val intent = Intent()
+                intent.putExtra("challengeAlarm", true)
+                setResult(RESULT_OK, intent)
+                finish()
             }
         }
     }

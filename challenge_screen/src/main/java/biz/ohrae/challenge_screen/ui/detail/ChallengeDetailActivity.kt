@@ -97,6 +97,9 @@ class ChallengeDetailActivity : BaseActivity() {
 
         launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == RESULT_OK) {
+                if (it.data != null) {
+                    setResult(RESULT_OK, it.data)
+                }
                 finish()
             }
         }
