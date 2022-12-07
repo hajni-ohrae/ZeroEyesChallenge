@@ -15,8 +15,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.ui.components.banner.FlatBanner
 import biz.ohrae.challenge.ui.components.button.FlatBottomButton
-import biz.ohrae.challenge.ui.components.dropdown.DropDownItem
-import biz.ohrae.challenge.ui.components.dropdown.MyDropDown
 import biz.ohrae.challenge.ui.components.input.LabeledTextField
 import biz.ohrae.challenge.ui.theme.TextBlack
 import biz.ohrae.challenge.ui.theme.dpToSp
@@ -52,7 +50,7 @@ fun WithdrawScreen(
             FlatBanner(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(6.37f),
+                    .height(49.dp),
                 backgroundColor = Color(0xfff3f8ff),
                 title = "이체 가능한 리워즈",
                 titleColor = TextBlack,
@@ -85,7 +83,7 @@ fun WithdrawScreen(
         FlatBottomButton(
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(6f),
+                .height(60.dp),
             text = "출금신청",
             onClick = {
                 if (amount.isNotEmpty()) {

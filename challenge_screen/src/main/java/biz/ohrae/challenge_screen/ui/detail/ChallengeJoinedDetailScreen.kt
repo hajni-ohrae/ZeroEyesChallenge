@@ -98,7 +98,7 @@ fun ChallengeJoinedDetailScreen(
                     ImageBox(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .aspectRatio(1.51f)
+                            .height(238.dp)
                             .background(TextBlack),
                         imagePath = challengeData.imageFile?.path.toString(),
                         contentScale = ContentScale.Crop
@@ -236,7 +236,7 @@ private fun BookmarkButton(
     FlatBookMarkButton(
         modifier = Modifier
             .fillMaxWidth()
-            .aspectRatio(6f),
+            .height(60.dp),
         enabled = enabled,
         text = buttonName,
         onClick = { clickListener?.onClickAuth() },
@@ -530,7 +530,7 @@ private fun ChallengeJoinedDescription(
             ChallengeDetailRefundDescription(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(1.88f)
+                    .height(164.dp),
             )
         } else {
             Text(
@@ -551,7 +551,7 @@ private fun ChallengeJoinedDescription(
             ChallengeDetailFreeDescription(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(1.90f),
+                    .height(164.dp),
                 challengeData.achievement_percent.toInt(),
                 challengeData.free_rewards,
                 challengeData.free_rewards_winners,

@@ -66,7 +66,7 @@ fun ChallengeDetailAuthCameraResultScreen(
         FlatDoubleButton(
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(6f),
+                .height(60.dp),
             leftText = "재촬영",
             rightText = "인증샷 사용",
             onClickLeft = {

@@ -109,7 +109,7 @@ fun ParticipationCancelResultScreen(
         FlatDoubleButton(
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(6f),
+                .height(60.dp),
             leftText = "결제상세 보기",
             rightText = "확인",
             onClickLeft = {

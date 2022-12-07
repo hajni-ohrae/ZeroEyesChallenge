@@ -134,7 +134,7 @@ fun ChallengeOpenScreen(
         FlatBottomButton(
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(6f),
+                .height(60.dp),
             text = "다음(${OPEN}/4)",
             onClick = { clickListener?.onClickOpenNext(weeks = selectedPeriod) }
         )

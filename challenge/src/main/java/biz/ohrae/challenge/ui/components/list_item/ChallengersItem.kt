@@ -52,7 +52,7 @@ fun ChallengersItem(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .aspectRatio(8.66f),
+            .height(36.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         circularAvatar(

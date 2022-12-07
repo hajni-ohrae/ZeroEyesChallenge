@@ -57,7 +57,7 @@ fun RedCardScreen(
             FlatBanner(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(6.37f),
+                    .height(49.dp),
                 backgroundColor = Color(0xfffbefef),
                 title = "레드카드",
                 titleColor = Color(0xff6c6c6c),

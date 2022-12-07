@@ -131,7 +131,7 @@ private fun Custom(
                 FlatBottomButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .aspectRatio(6f),
+                        .height(60.dp),
                     text = positiveBtnName,
                     onClick = {
                         listener?.clickPositive()
@@ -141,7 +141,7 @@ private fun Custom(
                 FlatDoubleButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .aspectRatio(6f),
+                        .height(60.dp),
                     leftText = negativeBtnName,
                     rightText = positiveBtnName,
                     onClickRight = {

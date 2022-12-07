@@ -78,7 +78,7 @@ fun ChallengeDetailScreen(
         ImageBox(
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(1.51f)
+                .height(238.dp)
                 .background(TextBlack),
             imagePath = challengeData.imageFile?.path.toString(),
             contentScale = ContentScale.Crop
@@ -197,7 +197,7 @@ private fun BookmarkButton(
     FlatBookMarkButton(
         modifier = Modifier
             .fillMaxWidth()
-            .aspectRatio(6f),
+            .height(60.dp),
         text = bottomBtnName,
         onClick = { clickListener?.onClickParticipation() },
         onClickBookMark = {
@@ -244,7 +244,7 @@ fun ChallengeDescription(
             ChallengeDetailRefundDescription(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(1.88f)
+                    .height(164.dp)
             )
         } else {
             Text(
@@ -264,7 +264,7 @@ fun ChallengeDescription(
             ChallengeDetailFreeDescription(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(1.90f),
+                    .height(164.dp),
                 challengeData.achievement_percent.toInt(),
                 challengeData.free_rewards,
                 challengeData.free_rewards_winners,
@@ -357,7 +357,7 @@ fun ChallengeDescription(
         RedCardInfo(
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(13f),
+                .height(33.dp),
             onClick = {
                 clickListener?.onClickRedCardInfo()
             }
@@ -403,14 +403,14 @@ fun ChallengePhotoAuthentication() {
         ) {
             item {
                 ImageBoxWithExampleTitle(
-                    modifier = Modifier.size(itemHeight.dp),
+                    modifier = Modifier.size(240.dp),
                     resourceId = biz.ohrae.challenge_component.R.drawable.img_good_example,
                     isGood = true
                 )
             }
             item {
                 ImageBoxWithExampleTitle(
-                    modifier = Modifier.size(itemHeight.dp),
+                    modifier = Modifier.size(240.dp),
                     resourceId = biz.ohrae.challenge_component.R.drawable.img_bad_example,
                     isGood = false
                 )

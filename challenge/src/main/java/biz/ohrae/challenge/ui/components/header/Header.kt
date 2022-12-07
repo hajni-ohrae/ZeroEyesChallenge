@@ -49,7 +49,7 @@ fun Header(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .aspectRatio(6.43f)
+            .height(56.dp)
             .background(DefaultWhite)
             .padding(24.dp, 0.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -98,8 +98,7 @@ fun BackButton(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .aspectRatio(6.43f)
-//            .padding(16.dp, 13.dp)
+            .height(56.dp)
             .background(backgroundColor),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween

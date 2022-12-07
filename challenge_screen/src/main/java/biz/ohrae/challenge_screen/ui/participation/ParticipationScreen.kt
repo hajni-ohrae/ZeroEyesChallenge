@@ -190,7 +190,7 @@ fun ParticipationScreen(
         FlatBottomButton(
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(6f),
+                .height(60.dp),
             text = if (isFree) "참여하기" else "결제하기",
             onClick = {
                 val depositAmount = if (participationAmount.text.isEmpty()) {

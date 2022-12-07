@@ -169,7 +169,7 @@ fun Report(
             FlatDoubleButton(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(6f),
+                    .height(60.dp),
                 "신고하기",
                 "취소",
                 onClickRight = {

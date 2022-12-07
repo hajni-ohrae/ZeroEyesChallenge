@@ -134,7 +134,7 @@ fun ChallengeGoals(
             FlatBottomButton(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(6f),
+                    .height(60.dp),
                 text = "개설완료",
                 onClick = { clickListener?.onClickChallengeCreate(authTitle, precautions, challengeImageUri) }
             )

@@ -135,7 +135,7 @@ fun ParticipationFinishScreen(
         FlatDoubleButton(
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(6f),
+                .height(60.dp),
             rightText = "홈으로",
             leftText = "챌린지 알람 설정",
             onClickRight = {

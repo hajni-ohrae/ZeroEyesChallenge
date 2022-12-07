@@ -135,7 +135,7 @@ private fun ChallengeCreateDialog(
             FlatBottomButton(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(6f),
+                    .height(60.dp),
                 text = "동의하고 개설",
                 onClick = {
                     listener?.clickPositive()

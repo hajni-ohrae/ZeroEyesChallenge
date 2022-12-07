@@ -112,7 +112,7 @@ private fun RewardsHeader(
             FlatBanner(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(6.37f),
+                    .height(49.dp),
                 backgroundColor = Color(0xfff3f8ff),
                 title = "보유 리워즈",
                 titleColor = TextBlack,
@@ -268,7 +268,7 @@ fun Reward(
         FlatBottomButton(
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(6f),
+                .height(60.dp),
             text = "출금신청",
             enabled = enabled,
             onClick = {

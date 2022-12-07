@@ -117,7 +117,7 @@ fun AccountAuthScreen(
         FlatBottomButton(
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(6f),
+                .height(60.dp),
             text = accountScreenState.buttonName,
             enabled = buttonEnabled,
             onClick = {

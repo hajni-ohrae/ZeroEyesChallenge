@@ -129,7 +129,7 @@ private fun Confirm(
             FlatDoubleButton(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(6f),
+                    .height(60.dp),
                 leftText = negativeBtnName,
                 rightText = positiveBtnName,
                 onClickRight = {

@@ -169,7 +169,7 @@ fun ChallengerRecruitment(
         FlatBottomButton(
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(6f),
+                .height(60.dp),
             text = "다음(${RegisterActivity.CHALLENGER}/4)",
             onClick = { clickListener?.onClickRecruitmentNext() }
         )

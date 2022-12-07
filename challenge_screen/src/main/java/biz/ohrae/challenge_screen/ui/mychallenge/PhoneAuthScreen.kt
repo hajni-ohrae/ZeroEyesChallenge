@@ -95,7 +95,7 @@ fun PhoneAuthScreen() {
         FlatBottomButton(
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(6f),
+                .height(60.dp),
             text = "확인",
             onClick = { },
         )

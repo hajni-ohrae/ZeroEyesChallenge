@@ -6,6 +6,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.ui.components.button.FlatDoubleButton
 import biz.ohrae.challenge.ui.components.input.TextBox
 import biz.ohrae.challenge.ui.theme.DefaultWhite
@@ -45,7 +46,7 @@ fun ChallengeDetailAuthWriteScreen(
         FlatDoubleButton(
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(6f),
+                .height(60.dp),
             leftText = "재촬영",
             rightText = "완료",
             onClickLeft = {

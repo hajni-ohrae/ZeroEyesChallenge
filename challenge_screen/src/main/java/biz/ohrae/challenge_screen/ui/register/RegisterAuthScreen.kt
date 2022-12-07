@@ -100,7 +100,7 @@ fun RegisterAuthScreen(
         FlatBottomButton(
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(6f),
+                .height(60.dp),
             text = "다음(${AUTH}/4)",
             onClick = { clickListener?.onClickAuthNext(selectedOption) }
         )

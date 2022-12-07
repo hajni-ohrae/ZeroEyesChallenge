@@ -10,8 +10,6 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.Center
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -91,13 +89,15 @@ fun ChallengeMainScreen(
                     .padding(16.dp),
                 onClick = { clickListener?.onClickRegister() }) {
                 Surface(
-                    modifier = Modifier.size(60.dp), color = Color(0xff005bad),
-                    shape = RoundedCornerShape(40.dp)
+                    modifier = Modifier.size(60.dp),
+                    color = Color(0xff005bad),
+                    shape = RoundedCornerShape(30.dp),
+                    elevation = 10.dp
                 ) {
                     Icon(
                         modifier = Modifier.padding(14.dp),
                         painter = painterResource(id = R.drawable.icon_write),
-                        contentDescription = "icon",
+                        contentDescription = "icon_write",
                         tint = DefaultWhite,
                     )
                 }
@@ -325,7 +325,8 @@ fun FilterCard(
                 }
             }
         }
-        PaidFilterCard(modifier = Modifier, icon = R.drawable.icon_candle_2,
+        PaidFilterCard(
+            modifier = Modifier, icon = R.drawable.icon_candle_2,
             onClick = { clickListener?.onClickFilterType("filter") }, isBadge = isBadge
         )
     }

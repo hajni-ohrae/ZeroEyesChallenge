@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.ui.components.button.FlatDoubleButton
 import biz.ohrae.challenge.ui.theme.TextBlack
 import biz.ohrae.challenge_component.R
@@ -43,7 +44,7 @@ fun ChallengerCameraResultScreen(
         FlatDoubleButton(
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(6f),
+                .height(60.dp),
             leftText = "재촬영",
             rightText = "인증샷 사용",
             onClickLeft = {
