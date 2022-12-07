@@ -176,7 +176,7 @@ private fun SectionContent(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         BasicTextField(
-            modifier = Modifier.focusRequester(focusRequester),
+            modifier = Modifier.weight(1f).focusRequester(focusRequester),
             value = value,
             textStyle = TextStyle(
                 fontSize = dpToSp(dp = 16.dp),
