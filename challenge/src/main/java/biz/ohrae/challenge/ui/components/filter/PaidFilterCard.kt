@@ -2,16 +2,12 @@ package biz.ohrae.challenge.ui.components.filter
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -36,6 +32,7 @@ private fun CategorySurFaceGallery() {
         PaidFilterCard(modifier = Modifier, text = "유료")
         Spacer(modifier = Modifier.width(20.dp))
         PaidFilterCard(modifier = Modifier, text = "무료")
+        PaidFilterCard(modifier = Modifier, text = "", isBadge = true)
     }
 }
 
@@ -48,6 +45,7 @@ fun PaidFilterCard(
     select: Boolean = false,
     icon: Int = R.drawable.icon_candle_2,
     onClick: () -> Unit = {},
+    isBadge: Boolean = false
 ) {
     Card(
         modifier = modifier,
@@ -60,21 +58,37 @@ fun PaidFilterCard(
 
         onClick = { onClick() }
     ) {
-        if (text?.isNotEmpty() == true) {
-            Text(
-                modifier = Modifier.padding(20.dp, 12.dp),
-                text = text,
-                style = textStyle,
-                fontSize = dpToSp(dp = 14.dp),
-                color = if (select) DefaultWhite else TextBlack
-            )
-        } else {
-            Icon(
-                modifier = Modifier.padding(16.dp, 7.dp),
-                painter = painterResource(id = icon),
-                contentDescription = "icon"
-            )
+        Column() {
+            if (text?.isNotEmpty() == true) {
+                Text(
+                    modifier = Modifier.padding(20.dp, 12.dp),
+                    text = text,
+                    style = textStyle,
+                    fontSize = dpToSp(dp = 14.dp),
+                    color = if (select) DefaultWhite else TextBlack
+                )
+            } else {
+                Column(modifier = Modifier.padding(12.dp, 8.dp)) {
+                    Box(
+                        modifier = modifier
+                    ) {
+                        Icon(
+                            modifier = Modifier.padding(4.dp, 0.dp),
+                            painter = painterResource(id = icon),
+                            contentDescription = "icon"
+                        )
+                        if (isBadge) {
+                            Surface(
+                                modifier = Modifier
+                                    .size(6.dp)
+                                    .align(Alignment.TopEnd),
+                                shape = CircleShape,
+                                color = Color(0xff4985f8)
+                            ) {}
+                        }
+                    }
+                }
+            }
         }
-
     }
 }

@@ -176,7 +176,9 @@ fun ChallengeCardItem(
                 }
             }
             Text(
-                modifier = Modifier.padding(0.dp, 12.dp), text = title,
+                modifier = Modifier.padding(0.dp, 12.dp),
+                style = myTypography.default,
+                text = title,
                 fontSize = dpToSp(dp = 16.dp), color = DefaultBlack,
             )
             ChallengeDurationLabel(

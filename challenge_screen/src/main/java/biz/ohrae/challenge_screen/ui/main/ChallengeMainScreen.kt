@@ -2,12 +2,13 @@ package biz.ohrae.challenge_screen.ui.main
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -302,6 +303,8 @@ fun FilterCard(
     selectFilter: String,
     listSize: Int? = 0
 ) {
+    var isBadge =
+        !filterState.selectPeriod.isNullOrEmpty() || !filterState.selectIsAdultOnly.isNullOrEmpty() || !filterState.selectVerificationPeriodType.isNullOrEmpty()
     Row(
         modifier = Modifier
             .padding(0.dp, 16.dp)
@@ -323,7 +326,8 @@ fun FilterCard(
             }
         }
         PaidFilterCard(modifier = Modifier, icon = R.drawable.icon_candle_2,
-            onClick = { clickListener?.onClickFilterType("filter") })
+            onClick = { clickListener?.onClickFilterType("filter") }, isBadge = isBadge
+        )
     }
     Row(
         modifier = Modifier
@@ -353,7 +357,7 @@ fun FilterCard(
                 if (!filterState.selectPeriod.isNullOrEmpty()) {
                     Surface(
                         modifier = Modifier.size(2.dp),
-                        shape = RoundedCornerShape(6.dp),
+                        shape = CircleShape,
                         color = Color(0xffc7c7c7)
                     ) {}
                     Spacer(modifier = Modifier.width(4.dp))
@@ -372,7 +376,7 @@ fun FilterCard(
                 if (!filterState.selectIsAdultOnly.isNullOrEmpty()) {
                     Surface(
                         modifier = Modifier.size(2.dp),
-                        shape = RoundedCornerShape(6.dp),
+                        shape = CircleShape,
                         color = Color(0xffc7c7c7)
                     ) {}
                     Spacer(modifier = Modifier.width(4.dp))
