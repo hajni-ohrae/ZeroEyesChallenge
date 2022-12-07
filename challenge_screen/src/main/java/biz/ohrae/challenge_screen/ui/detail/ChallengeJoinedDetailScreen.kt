@@ -118,7 +118,7 @@ fun ChallengeJoinedDetailScreen(
 
                         ChallengeJoinedDetailsTitle(
                             status = status!!,
-                            personnel = 0,
+                            personnel = challengeData.summary?.total_user_cnt ?: 0,
                             detailTitle = challengeData.goal.toString(),
                             isFree = challengeData.min_deposit_amount == 0,
                             ageType = ageType,
@@ -387,6 +387,7 @@ private fun ChallengeJoinedDetailPage(
         if (challengers != null) {
             Challengers(
                 challengers = challengers,
+                totalUserCount = challengeData.summary?.total_user_cnt ?: 0,
                 userData = userData,
                 clickListener = clickListener
             )
@@ -575,6 +576,7 @@ fun ColumnForLazy(
 @Composable
 fun Challengers(
     challengers: List<User>,
+    totalUserCount: Int,
     userData: User? = null,
     clickListener: ChallengeDetailClickListener? = null
 ) {
@@ -591,7 +593,7 @@ fun Challengers(
                         color = Color(0xff4985f8)
                     )
                 ) {
-                    append("${challengers.size}명 ")
+                    append("${totalUserCount}명 ")
                 }
                 append("참여")
             }
@@ -618,7 +620,7 @@ fun Challengers(
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
-        if (challengers.isNotEmpty()) {
+        if (totalUserCount > 10) {
             Spacer(modifier = Modifier.height(17.dp))
             FlatBorderButton(
                 modifier = Modifier
@@ -630,7 +632,7 @@ fun Challengers(
                 }
             )
         }
-        Spacer(modifier = Modifier.height(100.dp))
+        Spacer(modifier = Modifier.height(32.dp))
     }
 }
 

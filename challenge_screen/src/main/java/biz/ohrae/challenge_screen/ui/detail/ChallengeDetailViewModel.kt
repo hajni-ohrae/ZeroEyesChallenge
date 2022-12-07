@@ -47,7 +47,6 @@ class ChallengeDetailViewModel @Inject constructor(
     private val _reportState = MutableLiveData<ReportListState>()
     private val _report = MutableLiveData<Boolean?>(false)
 
-
     val challengeData get() = _challengeData
     val verifyListState get() = _verifyListState
     val challengers get() = _challengers

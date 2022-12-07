@@ -45,7 +45,6 @@ class ParticipationActivity : BaseActivity() {
 
     private var isCancelChallenge = false
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

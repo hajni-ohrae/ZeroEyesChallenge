@@ -3,7 +3,6 @@ package biz.ohrae.challenge_screen.ui.detail
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
@@ -135,15 +134,22 @@ fun ChallengeDetailScreen(
                 Spacer(modifier = Modifier.height(32.dp))
                 Challengers(
                     challengers = challengers,
+                    totalUserCount = challengeData.summary?.total_user_cnt ?: 0,
                     userData = userData,
                     clickListener = clickListener
                 )
                 Spacer(modifier = Modifier.height(32.dp))
+                Divider(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(1.dp)
+                        .background(Color(0xffebebeb))
+                )
             }
             ArrowTextButton2(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(3.71f),
+                    .height(84.dp),
                 text = "챌린지 이용 주의사항",
                 textColor = TextBlack,
                 onClick = {
