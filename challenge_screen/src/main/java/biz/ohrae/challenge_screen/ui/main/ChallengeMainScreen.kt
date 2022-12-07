@@ -9,20 +9,21 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Center
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import biz.ohrae.challenge.model.filter.FilterItem
 import biz.ohrae.challenge.ui.components.card.ChallengeCardItem
 import biz.ohrae.challenge.ui.components.card.ChallengesInParticipationCard
 import biz.ohrae.challenge.ui.components.card.MainTopCard
 import biz.ohrae.challenge.ui.components.filter.PaidFilterCard
 import biz.ohrae.challenge.ui.components.indicator.DotIndicator
-import biz.ohrae.challenge.ui.theme.DefaultBlack
-import biz.ohrae.challenge.ui.theme.DefaultWhite
-import biz.ohrae.challenge.ui.theme.dpToSp
-import biz.ohrae.challenge.ui.theme.myTypography
+import biz.ohrae.challenge.ui.theme.*
 import biz.ohrae.challenge.util.challengeDetailStatusMap
 import biz.ohrae.challenge.util.challengeVerificationPeriodMap
 import biz.ohrae.challenge_component.R
@@ -34,7 +35,6 @@ import biz.ohrae.challenge_screen.model.main.FilterState
 import biz.ohrae.challenge_screen.model.main.MainScreenState
 import biz.ohrae.challenge_screen.model.user.UserChallengeListState
 import biz.ohrae.challenge_screen.util.OnBottomReached
-import com.bumptech.glide.util.Util
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -133,33 +133,63 @@ private fun ChallengeList(
                 userChallengeListState = userChallengeListState
             )
         }
-        itemsIndexed(
-            mainScreenState?.challengeList!!,
-            key = { _, item -> item.id }) { index, item ->
-            val startDay = Utils.getRemainTimeDays(item.start_date.toString())
-            val type = challengeVerificationPeriodMap[item.verification_period_type]
-            val weekType = if (type.isNullOrEmpty()) "주${item.per_week}회 인증" else type
-            val ageType = Utils.getAgeType(item.age_limit_type.toString())
-            val name = if(item.owner?.nickname.isNullOrEmpty()) item.owner?.name.toString() else item.owner?.nickname.toString()
+        if (mainScreenState?.challengeList?.size == 0 || mainScreenState?.challengeList.isNullOrEmpty()) {
+            item {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(200.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
 
-            ChallengeCardItem(
-                index,
-                item.id,
-                item.goal.toString(),
-                name,
-                startDay.toString(),
-                item.period.toString(),
-                weekType.toString(),
-                item.summary?.total_user_cnt,
-                getAuthType(item),
-                getOpenType(item),
-                ageType.toString(),
-                onClick = {
-                    Timber.e("chall id : ${item.id}")
-                    clickListener?.onClickChallengeItem(it)
-                },
-                item.owner?.main_color
-            )
+                    Icon(
+                        modifier = Modifier,
+                        painter = painterResource(id = R.drawable.no_challenge),
+                        contentDescription = "no_challenge",
+                        tint = Color.Unspecified
+                    )
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Text(
+                        text = "모집중인 챌린지가\n" +
+                                "없습니다",
+                        color = Color(0xff7b7b7b),
+                        fontSize = dpToSp(dp = 16.dp),
+                        style = myTypography.w500,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+        } else {
+            itemsIndexed(
+                mainScreenState?.challengeList!!,
+                key = { _, item -> item.id }) { index, item ->
+                val startDay = Utils.getRemainTimeDays(item.start_date.toString())
+                val type = challengeVerificationPeriodMap[item.verification_period_type]
+                val weekType = if (type.isNullOrEmpty()) "주${item.per_week}회 인증" else type
+                val ageType = Utils.getAgeType(item.age_limit_type.toString())
+                val name =
+                    if (item.owner?.nickname.isNullOrEmpty()) item.owner?.name.toString() else item.owner?.nickname.toString()
+
+                ChallengeCardItem(
+                    index,
+                    item.id,
+                    item.goal.toString(),
+                    name,
+                    startDay.toString(),
+                    item.period.toString(),
+                    weekType.toString(),
+                    item.summary?.total_user_cnt,
+                    getAuthType(item),
+                    getOpenType(item),
+                    ageType.toString(),
+                    onClick = {
+                        Timber.e("chall id : ${item.id}")
+                        clickListener?.onClickChallengeItem(it)
+                    },
+                    item.owner?.main_color
+                )
+            }
         }
         item {
             Spacer(modifier = Modifier.height(100.dp))
@@ -197,7 +227,12 @@ fun ItemHeader(
                 userChallengeList = userChallengeListState.userChallengeList!!
             )
         }
-        FilterCard(clickListener = clickListener, filterState, filterState.selectFilterType)
+        FilterCard(
+            clickListener = clickListener,
+            filterState,
+            filterState.selectFilterType,
+            mainScreenState?.challengeList?.size
+        )
     }
 }
 
@@ -264,11 +299,12 @@ fun InChallenges(
 fun FilterCard(
     clickListener: MainClickListener?,
     filterState: FilterState = FilterState.mock(),
-    selectFilter: String
+    selectFilter: String,
+    listSize: Int? = 0
 ) {
     Row(
         modifier = Modifier
-            .padding(0.dp, 22.dp)
+            .padding(0.dp, 16.dp)
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
@@ -288,5 +324,70 @@ fun FilterCard(
         }
         PaidFilterCard(modifier = Modifier, icon = R.drawable.icon_candle_2,
             onClick = { clickListener?.onClickFilterType("filter") })
+    }
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = "총 $listSize 건",
+            color = Color(0xff6c6c6c),
+            fontSize = dpToSp(dp = 13.dp),
+            style = myTypography.w500,
+        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            if (!filterState.selectVerificationPeriodType.isNullOrEmpty()) {
+                var verificationPeriodType: FilterItem =
+                    filterState.certifiedList.filter { it.name_en == filterState.selectVerificationPeriodType }[0]
+                Text(
+                    text = verificationPeriodType.name,
+                    color = Color(0xff6c6c6c),
+                    fontSize = dpToSp(dp = 13.dp),
+                    style = myTypography.w500,
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                if (!filterState.selectPeriod.isNullOrEmpty()) {
+                    Surface(
+                        modifier = Modifier.size(2.dp),
+                        shape = RoundedCornerShape(6.dp),
+                        color = Color(0xffc7c7c7)
+                    ) {}
+                    Spacer(modifier = Modifier.width(4.dp))
+                }
+            }
+            if (!filterState.selectPeriod.isNullOrEmpty()) {
+                var period: FilterItem =
+                    filterState.periodList.filter { it.name_en == filterState.selectPeriod }[0]
+                Text(
+                    text = period.name,
+                    color = Color(0xff6c6c6c),
+                    fontSize = dpToSp(dp = 13.dp),
+                    style = myTypography.w500,
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                if (!filterState.selectIsAdultOnly.isNullOrEmpty()) {
+                    Surface(
+                        modifier = Modifier.size(2.dp),
+                        shape = RoundedCornerShape(6.dp),
+                        color = Color(0xffc7c7c7)
+                    ) {}
+                    Spacer(modifier = Modifier.width(4.dp))
+                }
+            }
+            if (!filterState.selectIsAdultOnly.isNullOrEmpty()) {
+                var ageLimitType: FilterItem =
+                    filterState.etcList.filter { it.name_en == filterState.selectIsAdultOnly }[0]
+                Text(
+                    text = ageLimitType.name,
+                    color = Color(0xff6c6c6c),
+                    fontSize = dpToSp(dp = 13.dp),
+                    style = myTypography.w500,
+                )
+            }
+        }
     }
 }
