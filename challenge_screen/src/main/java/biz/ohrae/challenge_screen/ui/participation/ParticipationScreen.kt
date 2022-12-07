@@ -70,12 +70,13 @@ fun ParticipationScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(scrollState)
             .background(DefaultWhite)
     ) {
         Column(
             modifier = Modifier
+                .weight(1f)
                 .padding(24.dp, 0.dp)
+                .verticalScroll(scrollState)
         ) {
             Spacer(modifier = Modifier.height(16.dp))
             ParticipationDetailCard(challengeData = challengeData)
@@ -186,7 +187,6 @@ fun ParticipationScreen(
                 Spacer(modifier = Modifier.height(141.dp))
             }
         }
-        Spacer(modifier = Modifier.weight(1f))
         FlatBottomButton(
             modifier = Modifier
                 .fillMaxWidth()
