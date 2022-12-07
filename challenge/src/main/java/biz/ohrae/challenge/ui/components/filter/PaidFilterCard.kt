@@ -47,7 +47,7 @@ fun PaidFilterCard(
     textStyle: TextStyle = myTypography.w700,
     select: Boolean = false,
     icon: Int = R.drawable.icon_candle_2,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
 ) {
     Card(
         modifier = modifier,
