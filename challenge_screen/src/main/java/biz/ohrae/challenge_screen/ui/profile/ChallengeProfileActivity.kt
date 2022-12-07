@@ -39,6 +39,7 @@ import biz.ohrae.challenge_repo.util.FileUtils
 import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.dialog.LoadingDialog
 import biz.ohrae.challenge_screen.ui.niceid.NiceIdActivity
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import java.io.File
@@ -261,6 +262,23 @@ class ChallengeProfileActivity : BaseActivity() {
                         showSnackBar(state.message)
                     }
                 }
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 100) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                callImageSelector()
+            } else {
+                Timber.e("permissions : ${Gson().toJson(permissions)}")
+                Timber.e("grantResults : ${Gson().toJson(grantResults)}")
+                showSnackBar("앱 설정에서 권한을 확인해주세요.")
             }
         }
     }
