@@ -138,8 +138,7 @@ fun ItemHeader(
         Spacer(modifier = Modifier.height(8.dp))
         MenuItem(
             modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(4.46f),
+                .fillMaxWidth(),
             resId = R.drawable.icon_coin,
             title = "보유 리워즈",
             description = "${Utils.numberToString(availableRewards.toString())}원",
@@ -147,24 +146,21 @@ fun ItemHeader(
         )
         MenuItem(
             modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(4.46f),
+                .fillMaxWidth(),
             resId = R.drawable.icon_card,
             title = "결제내역",
             onClick = { clickListener?.onClickPaymentDetail() }
         )
         MenuItem(
             modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(4.46f),
+                .fillMaxWidth(),
             resId = R.drawable.icon_like,
             title = "저장한 챌린지",
             onClick = { clickListener?.onClickSavedChallenge() }
         )
         MenuItem(
             modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(4.46f),
+                .fillMaxWidth(),
             resId = R.drawable.icon_note,
             title = "레드카드",
             onClick = { clickListener?.onClickRedCard() }

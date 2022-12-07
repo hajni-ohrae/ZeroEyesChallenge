@@ -7,7 +7,7 @@ data class MainScreenState(
     val topBannerList: List<TopBannerData>? = null,
     val authCycleList: List<AuthCycle>? = null,
     val userChallengeList: List<ChallengeData>? = null,
-    var challengePage: Int? = null
+    var challengePage: Int? = null,
 ) {
     companion object {
         fun mock() = MainScreenState(
