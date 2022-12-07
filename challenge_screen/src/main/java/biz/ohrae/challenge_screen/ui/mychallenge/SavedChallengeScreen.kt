@@ -104,7 +104,7 @@ fun SavedChallengeList(
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(24.dp, 0.dp),
+                .padding(24.dp),
             text = "저장한 챌린지가 없습니다.",
             style = myTypography.w500,
             fontSize = dpToSp(dp = 20.dp),

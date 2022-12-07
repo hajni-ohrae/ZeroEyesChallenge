@@ -29,8 +29,7 @@ private fun MenuItemGallery() {
         .padding(24.5.dp, 0.dp)) {
         MenuItem(
             modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(4.46f),
+                .fillMaxWidth(),
             resId = R.drawable.icon_coin,
             title = "보유 리워즈",
             description = "125,000원",
@@ -38,24 +37,21 @@ private fun MenuItemGallery() {
         )
         MenuItem(
             modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(4.46f),
+                .fillMaxWidth(),
             resId = R.drawable.icon_card,
             title = "결제내역",
             onClick = {}
         )
         MenuItem(
             modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(4.46f),
+                .fillMaxWidth(),
             resId = R.drawable.icon_like,
             title = "저장한 챌린지",
             onClick = {}
         )
         MenuItem(
             modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(4.46f),
+                .fillMaxWidth(),
             resId = R.drawable.icon_note,
             title = "레드카드",
             onClick = {}
@@ -75,13 +71,12 @@ fun MenuItem(
         onClick()
     }) {
         Row(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.padding(0.dp,20.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 modifier = Modifier
-                    .fillMaxWidth(0.077f)
-                    .aspectRatio(0.94f),
+                    .fillMaxWidth(0.077f).height(25.5.dp),
                 painter = painterResource(id = resId),
                 contentDescription = resId.toString(),
                 tint = Color.Unspecified
