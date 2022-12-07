@@ -27,7 +27,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.window.layout.WindowMetricsCalculator
 import biz.ohrae.challenge.ui.components.button.FlatDoubleButton
 import biz.ohrae.challenge.ui.components.checkBox.MyCheckBox
-import biz.ohrae.challenge.ui.components.filter.ChallengeFilterItemList
 import biz.ohrae.challenge.ui.theme.DefaultBlack
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.dpToSp
@@ -154,7 +153,9 @@ fun Filter(
                 ) {
                     Text(
                         modifier = Modifier
-                            .padding(0.dp, 19.dp), text = "인증빈도"
+                            .padding(0.dp, 19.dp),
+                        text = "인증빈도",
+                        fontSize = dpToSp(dp = 15.dp)
                     )
                     LazyVerticalGrid(
                         userScrollEnabled = false,
@@ -186,7 +187,9 @@ fun Filter(
                 ) {
                     Text(
                         modifier = Modifier
-                            .padding(0.dp, 19.dp), text = "챌린지 기간"
+                            .padding(0.dp, 19.dp),
+                        text = "챌린지 기간",
+                        fontSize = dpToSp(dp = 15.dp)
                     )
                     LazyVerticalGrid(
                         userScrollEnabled = false,
@@ -219,7 +222,9 @@ fun Filter(
                 ) {
                     Text(
                         modifier = Modifier
-                            .padding(0.dp, 19.dp), text = "기타"
+                            .padding(0.dp, 19.dp),
+                        text = "기타",
+                        fontSize = dpToSp(dp = 15.dp)
                     )
                     LazyVerticalGrid(
                         userScrollEnabled = false,
@@ -258,7 +263,7 @@ fun Filter(
             FlatDoubleButton(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(6f),
+                    .height(50.dp),
                 "챌린지 보기",
                 "초기화",
                 onClickRight = {

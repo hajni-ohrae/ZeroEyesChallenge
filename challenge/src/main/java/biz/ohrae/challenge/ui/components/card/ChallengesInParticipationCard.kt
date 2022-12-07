@@ -101,10 +101,10 @@ fun ChallengesInParticipationCard(
         remainTime = getRemainTime(startDay)
         isRemainTime = !remainTime.startsWith("-")
     }
-    var btnName = if (status == "register") remainTime.replace("-", "") + " 남음" else buttonName
-    var btnTextColor = if (status == "register") Color(0xff4985f8) else buttonTextColor
-    var btnColor = if (status == "register") DefaultWhite else buttonColor
-    var enabled = todayAuth == "0" && status == "opened" && isPhoto == 1
+    val btnName = if (status == "register") remainTime.replace("-", "") + " 남음" else buttonName
+    val btnTextColor = if (status == "register") Color(0xff4985f8) else buttonTextColor
+    val btnColor = if (status == "register") DefaultWhite else buttonColor
+    val enabled = todayAuth == "0" && status == "opened" && isPhoto == 1
 
     Card(
         modifier = modifier.clickable { onCardClick() },

@@ -198,7 +198,8 @@ private fun SectionContent(
                         Text(
                             text = placeholder,
                             color = Color(0xff6c6c6c),
-                            style = myTypography.default
+                            style = myTypography.default,
+                            fontSize = dpToSp(dp = 16.dp),
                         )
                     },
                     enabled = true,

@@ -1,8 +1,6 @@
 package biz.ohrae.challenge.ui.components.label
 
-import android.content.IntentSender
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.TextBlack
+import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 
 @Preview(
@@ -76,7 +75,8 @@ fun ChallengeProgressStatus(
             textAlign = TextAlign.Center,
             style = myTypography.extraBold,
             text = annotatedString,
-            color = textColor
+            color = textColor,
+            fontSize = dpToSp(dp = 16.dp)
         )
     }
 }

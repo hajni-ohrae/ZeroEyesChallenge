@@ -1,7 +1,9 @@
 package biz.ohrae.challenge.ui.components.filter
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -14,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.model.filter.FilterItem
 import biz.ohrae.challenge.ui.components.checkBox.MyCheckBox
 import biz.ohrae.challenge.ui.theme.DefaultWhite
+import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 
 @Preview(
@@ -51,7 +54,10 @@ fun ChallengeFilterItemList(
     ) {
         Text(
             modifier = Modifier
-                .padding(0.dp, 19.dp), text = title, style = textStyle
+                .padding(0.dp, 19.dp),
+            text = title,
+            style = textStyle,
+            fontSize = dpToSp(dp = 15.dp)
         )
         LazyVerticalGrid(
             userScrollEnabled = false,
