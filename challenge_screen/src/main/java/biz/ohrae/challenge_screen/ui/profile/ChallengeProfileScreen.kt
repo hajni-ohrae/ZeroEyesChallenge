@@ -217,7 +217,7 @@ private fun SectionContent(
             ),
             onValueChange = {
                 if (it.length <= maxLength) {
-                    value = it
+                    value = it.replace(" ", "")
                 }
             },
             singleLine = true,

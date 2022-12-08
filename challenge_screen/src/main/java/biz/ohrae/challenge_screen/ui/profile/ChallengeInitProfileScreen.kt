@@ -49,7 +49,7 @@ fun ChallengeInitProfileScreen(
             nicknameState = nicknameState,
             clickListener = clickListener,
             onValueChange = {
-                nickname = it
+                nickname = it.replace(" ", "")
             },
             nickname = nickname
         )
