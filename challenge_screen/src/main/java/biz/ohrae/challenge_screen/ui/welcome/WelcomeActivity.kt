@@ -2,6 +2,7 @@ package biz.ohrae.challenge_screen.ui.welcome
 
 import WelcomeScreen
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -48,7 +49,6 @@ class WelcomeActivity : BaseActivity() {
         }
 
         initClickListeners()
-        prefs.setIsFirstLaunch(false)
     }
 
     @SuppressLint("CoroutineCreationDuringComposition")
@@ -155,6 +155,10 @@ class WelcomeActivity : BaseActivity() {
         welcomeScreenClickListener = object : WelcomeScreenClickListener {
             override fun onClickButton(isDone: Boolean) {
                 if (isDone) {
+                    prefs.setIsFirstLaunch(false)
+                    val intent = Intent()
+                    intent.putExtra("welcomeDone", true)
+                    setResult(RESULT_OK, intent)
                     finish()
                 } else {
                     viewModel.nextPage()
