@@ -12,19 +12,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.ui.components.button.ChallengeStatusButton
-import biz.ohrae.challenge.ui.components.button.FlatButton
 import biz.ohrae.challenge.ui.components.detail.getRemainTime
 import biz.ohrae.challenge.ui.components.label.ProgressLabel
 import biz.ohrae.challenge.ui.theme.DefaultWhite
-import biz.ohrae.challenge.ui.theme.appColor
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 import kotlinx.coroutines.delay
-import kotlin.math.roundToInt
 
 @Preview(
     showBackground = true,

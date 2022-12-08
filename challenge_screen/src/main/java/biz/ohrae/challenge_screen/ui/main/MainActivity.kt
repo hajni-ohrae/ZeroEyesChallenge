@@ -25,7 +25,6 @@ import biz.ohrae.challenge.ui.theme.DefaultBackground
 import biz.ohrae.challenge_screen.BuildConfig
 import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailActivity
-import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailNavScreen
 import biz.ohrae.challenge_screen.ui.dialog.*
 import biz.ohrae.challenge_screen.ui.login.LoginActivity
 import biz.ohrae.challenge_screen.ui.mychallenge.MyChallengeActivity
