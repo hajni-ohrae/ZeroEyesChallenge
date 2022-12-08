@@ -314,6 +314,8 @@ class RegisterActivity : BaseActivity() {
                 dialog.setListener(object : CalendarDialogListener {
                     override fun clickPositive() {
                         viewModel.setStartDay(viewModel.selectDay.value.toString())
+                        val period = viewModel.challengeData.value?.period ?: 1
+                        viewModel.selectPeriod(period)
                         dialog.dismiss()
                     }
 
@@ -326,12 +328,12 @@ class RegisterActivity : BaseActivity() {
                     }
                 })
 
-                val calendarDay = viewModel.selectDay.value ?: viewModel.challengeData.value?.start_date
+                val calendarDay = viewModel.challengeData.value?.start_date
                 if (calendarDay != null) {
                     dialog.setCalendarDay(calendarDay)
                 }
                 dialog.isCancelable = false
-                dialog.show(supportFragmentManager, "FilterDialog")
+                dialog.show(supportFragmentManager, "calendarDialog")
             }
 
             override fun onClickRecruitDays(item: DropDownItem) {
