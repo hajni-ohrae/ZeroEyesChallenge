@@ -51,7 +51,6 @@ fun PaymentDetailScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
@@ -60,6 +59,7 @@ fun PaymentDetailScreen(
                     fontSize = dpToSp(dp = 14.dp),
                     color = Color(0xff707070)
                 )
+                Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = paymentHistoryData?.challenge?.goal ?: "",
                     style = myTypography.bold,
