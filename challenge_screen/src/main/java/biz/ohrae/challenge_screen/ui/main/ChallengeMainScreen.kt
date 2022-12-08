@@ -258,7 +258,11 @@ fun InChallenges(
             count = userChallengeList.size,
             state = pagerState
         ) {
-            val item = userChallengeList[currentPage]
+            val item = try {
+                userChallengeList[currentPage]
+            } catch(e: Exception) {
+                userChallengeList[0]
+            }
             val inChallenge = item.inChallenge?.get(0)
             val buttonName = Utils.getAuthButtonName(item, true)
             ChallengesInParticipationCard(
