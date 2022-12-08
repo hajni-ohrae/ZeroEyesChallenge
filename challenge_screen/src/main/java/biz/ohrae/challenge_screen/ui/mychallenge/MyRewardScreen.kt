@@ -99,7 +99,7 @@ private fun RewardsHeader(
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "5,000원 이상부터 출금 가능합니다\n" +
-                        "오전10시 ~ 오후 3시 사이 출금 신청 가능합니다",
+                        "은행 시스템 점검시간에는 출금이 불가능할수 있습니다.",
                 style = myTypography.w700,
                 fontSize = dpToSp(dp = 12.dp),
                 color = Color(0xff828282),

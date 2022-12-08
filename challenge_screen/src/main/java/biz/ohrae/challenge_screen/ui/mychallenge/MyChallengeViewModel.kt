@@ -199,6 +199,9 @@ class MyChallengeViewModel @Inject constructor(
                 result.data?.let { data ->
                     val bankList = data as List<DropDownItem>
                     _bankList.value = bankList
+                    if (bankList.isEmpty()) {
+                        setErrorData("", "은행 정보 조회 실패")
+                    }
                 }
             }
         }

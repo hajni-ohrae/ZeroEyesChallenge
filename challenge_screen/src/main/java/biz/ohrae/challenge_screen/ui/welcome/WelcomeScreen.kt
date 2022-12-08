@@ -8,6 +8,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -61,9 +62,9 @@ fun WelcomeScreen(
 @Composable
 private fun WelcomeContent( currentPage: Int, resId: Int) {
     val backgroundColor = when (currentPage) {
-        0 -> appColor.PointColor
-        1 -> appColor.PointSubColor
-        2 -> appColor.AlertWarningSubColor
+        0 -> Color(0xff4985f8)
+        1 -> Color(0xfff2994a)
+        2 -> Color(0xff6fcf97)
         else -> DefaultBlack
     }
     Column(
@@ -75,7 +76,7 @@ private fun WelcomeContent( currentPage: Int, resId: Int) {
             modifier = Modifier.fillMaxSize(),
             painter = painterResource(id = resId),
             contentDescription = resId.toString(),
-            contentScale = ContentScale.FillWidth
+            contentScale = ContentScale.FillHeight
         )
     }
 }

@@ -138,7 +138,7 @@ class WelcomeActivity : BaseActivity() {
                     )
                     Spacer(modifier = Modifier.height(60.dp))
                     FlatButton(
-                        modifier = Modifier.fillMaxWidth().aspectRatio(6.5f),
+                        modifier = Modifier.fillMaxWidth().height(48.dp),
                         text = state.list[state.currentPage].buttonName,
                         backgroundColor = Color(0xff4985F8),
                         onClick = {

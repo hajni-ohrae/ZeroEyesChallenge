@@ -36,7 +36,7 @@ fun AccountAuthScreen(
 ) {
     var buttonEnabled by remember { mutableStateOf(false) }
     var accountNumber by remember { mutableStateOf("") }
-    var selectedBank by remember { mutableStateOf<DropDownItem?>(bankList[0]) }
+    var selectedBank by remember { mutableStateOf<DropDownItem?>(null) }
 
     Column(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -51,40 +51,42 @@ fun AccountAuthScreen(
             Spacer(modifier = Modifier.height(16.dp))
             Text(text = "출금 계좌 인증", style = myTypography.w700, fontSize = dpToSp(dp = 20.dp))
             Spacer(modifier = Modifier.height(28.dp))
-            MyDropDown(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(7.1f),
-                label = "은행명",
-                list = bankList,
-                onSelectItem = {
-                    selectedBank = it
-                }
-            )
-            Spacer(modifier = Modifier.height(28.dp))
-            LabeledTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(9f),
-                label = "계좌번호",
-                placeholder = "계좌번호 입력",
-                maxLength = 30,
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Number
-                ),
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        keyboardController?.hide()
+            if(bankList.isNotEmpty()) {
+                MyDropDown(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(7.1f),
+                    label = "은행명",
+                    list = bankList,
+                    onSelectItem = {
+                        selectedBank = it
                     }
-                ),
-                value = accountNumber,
-                onValueChange = {
-                    accountNumber = it
-                    if (it.isNotEmpty()) {
-                        buttonEnabled = true
+                )
+                Spacer(modifier = Modifier.height(28.dp))
+                LabeledTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(9f),
+                    label = "계좌번호",
+                    placeholder = "계좌번호 입력",
+                    maxLength = 30,
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            keyboardController?.hide()
+                        }
+                    ),
+                    value = accountNumber,
+                    onValueChange = {
+                        accountNumber = it
+                        if (it.isNotEmpty()) {
+                            buttonEnabled = true
+                        }
                     }
-                }
-            )
+                )
+            }
             Spacer(modifier = Modifier.height(28.dp))
             if (accountScreenState.isAuthed) {
                 ExampleCard()
