@@ -42,6 +42,7 @@ class ParticipationActivity : BaseActivity() {
     private lateinit var paymentLauncher: ActivityResultLauncher<Intent>
 
     private var isCancelChallenge = false
+    private var isFreeChallenge = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,7 +75,11 @@ class ParticipationActivity : BaseActivity() {
                             val amount = intent.getStringExtra("amount")
                             val rewardsAmount = intent.getStringExtra("rewardsAmount")
 
-                            viewModel.setPaymentInfo(cardName.toString(), amount.toString(), rewardsAmount.toString())
+                            viewModel.setPaymentInfo(
+                                cardName.toString(),
+                                amount.toString(),
+                                rewardsAmount.toString()
+                            )
                             navController.navigate(ChallengeParticipationNavScreen.ParticipationFinish.route)
                         } else {
                             val code = intent.getStringExtra("code")
@@ -200,13 +205,16 @@ class ParticipationActivity : BaseActivity() {
             }
 
             // 챌린지 참여 취소
-            override fun onClickCancelParticipation() {
+            override fun onClickCancelParticipation(isFree: Boolean) {
+                isFreeChallenge = isFree
                 if (!isClickable()) {
                     return
                 }
-
                 detailViewModel.challengeData.value?.let {
                     viewModel.cancelChallenge(it)
+                }
+                if (isFree) {
+                    showCancelDialog()
                 }
             }
 
@@ -272,7 +280,7 @@ class ParticipationActivity : BaseActivity() {
 
         viewModel.cancelResult.observe(this) { result ->
             viewModel.isLoading(false)
-            if (result == true) {
+            if (result == true && !isFreeChallenge) {
                 navController.navigate(ChallengeParticipationNavScreen.ParticipationCancelResult.route)
             }
         }
@@ -313,6 +321,26 @@ class ParticipationActivity : BaseActivity() {
         dialog.isCancelable = false
         dialog.setListener(object : CustomDialogListener {
             override fun clickPositive() {
+                dialog.dismiss()
+            }
+
+            override fun clickNegative() {
+                dialog.dismiss()
+            }
+        })
+        dialog.show(supportFragmentManager, "showDialog")
+    }
+
+    private fun showCancelDialog() {
+        val content = "참여 취소가 완료되었습니다."
+
+        val dialog =
+            CustomDialog(positiveBtnName = "홈으로", content = content)
+        dialog.isCancelable = false
+        dialog.setListener(object : CustomDialogListener {
+            override fun clickPositive() {
+                setResult(RESULT_OK)
+                finish()
                 dialog.dismiss()
             }
 

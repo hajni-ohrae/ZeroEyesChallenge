@@ -69,8 +69,7 @@ fun ChallengersResultsScreen(
                 ColumnForLazy {
                     TabRow(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .aspectRatio(6.42f),
+                            .fillMaxWidth().height(56.dp),
                         selectedTabIndex = pagerState.currentPage,
                         backgroundColor = DefaultWhite,
                         indicator = {
@@ -174,9 +173,8 @@ fun ResultChallengers(
         if (challengers.isNotEmpty()) {
             Spacer(modifier = Modifier.height(17.dp))
             FlatGrayButton(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(7.1f),
+                modifier = Modifier.padding(24.dp,0.dp)
+                    .fillMaxWidth().height(44.dp),
                 text = "+더보기",
                 onClick = {
                     clickListener?.onClickShowAllChallengers(authType)

@@ -37,6 +37,10 @@ fun ParticipationCancelRequestScreen(
     challengeData: ChallengeData = ChallengeData.mock(),
     clickListener: ParticipationClickListener? = null,
 ) {
+
+    val isFree by remember {
+        mutableStateOf(challengeData.min_deposit_amount <= 0)
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -54,7 +58,7 @@ fun ParticipationCancelRequestScreen(
                 fontSize = dpToSp(dp = 20.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
-            if (challengeData.min_deposit_amount == 0) {
+            if (isFree) {
                 Text(
                     text = "챌린지 참여를 취소하면 해당 챌린지에 재참여할\n수 없습니다",
                     style = myTypography.default,
@@ -101,7 +105,7 @@ fun ParticipationCancelRequestScreen(
                 .height(60.dp),
             text = "참여취소",
             onClick = {
-                clickListener?.onClickCancelParticipation()
+                clickListener?.onClickCancelParticipation(isFree)
             }
         )
     }

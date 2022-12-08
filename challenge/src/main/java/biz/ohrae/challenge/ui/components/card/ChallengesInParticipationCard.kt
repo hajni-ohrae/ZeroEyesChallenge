@@ -159,8 +159,7 @@ fun ChallengesInParticipationCard(
             }
             ChallengeStatusButton(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(6.5f),
+                    .fillMaxWidth().height(40.dp),
                 text = btnName,
                 backgroundColor = btnColor,
                 onClick = { onClick() },

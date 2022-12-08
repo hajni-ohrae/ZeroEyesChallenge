@@ -82,7 +82,7 @@ fun VerifiedList(
                     when (item.type) {
                         "staying_time" -> Utils.convertDate(item.verified_date)
                         "checkin" -> Utils.convertDate(item.checkin_date)
-                        else -> Utils.convertDate9(item.updated_date)
+                        else -> Utils.convertDate9(item.updated_date,true)
                     }
 
                 FeedItem(

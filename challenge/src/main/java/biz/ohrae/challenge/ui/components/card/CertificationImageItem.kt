@@ -143,7 +143,7 @@ fun CertificationImageItem(
                     text = date,
                     color = if (type == "photo")DefaultWhite else Color(0xff4a4a4a),
                     style = myTypography.extraBold,
-                    fontSize = dpToSp(dp = 16.dp),
+                    fontSize = if (type == "photo") dpToSp(dp = 12.dp) else dpToSp(dp = 16.dp),
                     textAlign = TextAlign.Center
                 )
                 Spacer(modifier = Modifier.fillMaxHeight(0.068f))

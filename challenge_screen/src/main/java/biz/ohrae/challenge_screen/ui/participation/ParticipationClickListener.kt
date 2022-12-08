@@ -4,7 +4,7 @@ import biz.ohrae.challenge_repo.model.detail.ChallengeData
 
 interface ParticipationClickListener {
     fun onClickPayment(paidAmount: Int, rewardAmount: Int, depositAmount: Int)
-    fun onClickCancelParticipation()
+    fun onClickCancelParticipation(isFree:Boolean)
     fun onClickCancelResult()
     fun onClickPaymentDetail()
     fun onClickHome()

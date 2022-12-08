@@ -157,8 +157,7 @@ fun ChallengeFinishedScreen(
             Spacer(modifier = Modifier.height(22.dp))
             FlatBorderButton(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(7.1f),
+                    .fillMaxWidth().height(44.dp),
                 text = "챌린저스 결과 보기",
                 onClick = {
                     clickListener?.onClickChallengersResults()

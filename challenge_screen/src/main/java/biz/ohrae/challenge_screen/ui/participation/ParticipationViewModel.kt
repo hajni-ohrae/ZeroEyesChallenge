@@ -49,7 +49,6 @@ class ParticipationViewModel @Inject constructor(
     fun cancelChallenge(challengeData: ChallengeData) {
         viewModelScope.launch {
             val response = participationRepo.cancelChallenge(challengeData)
-
             response.flowOn(Dispatchers.IO).collect {
                 val result = it.data as Boolean?
                 _cancelResult.value = result

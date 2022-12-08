@@ -135,8 +135,7 @@ fun ChallengeJoinedDetailScreen(
                 ColumnForLazy {
                     TabRow(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .aspectRatio(6.42f),
+                            .fillMaxWidth().height(56.dp),
                         selectedTabIndex = pagerState.currentPage,
                         backgroundColor = DefaultWhite,
                         indicator = {
@@ -679,6 +678,7 @@ fun ChallengeAuthPage(
                         username = item.user?.getUserName().toString(),
                         date = time,
                         count = cnt,
+                        type = item.type,
                         onClick = { clickListener?.onClickAuthItemCard() }
                     )
                 }
