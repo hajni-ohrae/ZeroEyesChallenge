@@ -280,6 +280,7 @@ fun ChallengeDescription(
         Spacer(modifier = Modifier.height(16.dp))
 
         val week by remember { mutableStateOf(challengeData.period) }
+        val time by remember { mutableStateOf(challengeData.verification_daily_staying_time) }
         val periodType by remember { mutableStateOf(challengeVerificationPeriodMap[challengeData.verification_period_type]) }
         val weekType = if (periodType.isNullOrEmpty()) "${challengeData.per_week}회" else periodType
 
@@ -292,7 +293,7 @@ fun ChallengeDescription(
 
             "${week}주 동안 $weekType, $subText"
         } else if (challengeData.is_verification_time == 1) {
-            "${week}주 동안 $weekType, 이용권 사용 내역이 이용시간으로 자동 인증됩니다."
+            "${week}주 동안 $weekType, 1일 누적 ${time}시간이상 이용권 사용 내역이 이용시간으로 자동 인증됩니다."
         } else if (challengeData.is_verification_checkin == 1) {
             "${week}주 동안 $weekType, 출입한 내역이 출석으로  자동 인증됩니다"
         } else {
