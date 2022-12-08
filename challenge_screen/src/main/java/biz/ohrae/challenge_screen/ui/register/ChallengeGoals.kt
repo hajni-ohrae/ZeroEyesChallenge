@@ -75,7 +75,7 @@ fun ChallengeGoals(
                     .fillMaxWidth()
                     .aspectRatio(5f),
                 placeholder = "예) 주 2회 자전거 타고 인증하기",
-                maxLength = 60,
+                maxLength = 50,
                 singleLine = true,
                 value = authTitle,
                 onValueChange = {
