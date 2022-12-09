@@ -94,6 +94,7 @@ class ChallengeRegisterViewModel @Inject constructor(
                     }
                     "time" -> {
                         it.is_verification_time = 1
+                        it.verification_daily_staying_time = 1
                     }
                 }
                 val list = mutableListOf<DropDownItem>()
