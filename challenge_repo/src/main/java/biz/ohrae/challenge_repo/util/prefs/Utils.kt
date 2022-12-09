@@ -730,7 +730,7 @@ object Utils {
     }
 
     fun getAuthButtonName(challengeData: ChallengeData, type: Boolean = false): String {
-        return return if (challengeData.status == "finished") {
+        return if (challengeData.status == "finished") {
             "챌린지가 완료되었습니다"
         } else {
             if (challengeData.is_verification_photo == 1) {
@@ -740,14 +740,10 @@ object Utils {
                     "인증하기"
                 }
             } else if (challengeData.is_verification_time == 1) {
-                if (challengeData.isAuthed()) {
-                    "인증완료"
+                if (type) {
+                    "자동 인증 중"
                 } else {
-                    if (type) {
-                        "자동 인증 중"
-                    } else {
-                        "내일 새벽 1시에 자동 인증됩니다"
-                    }
+                    "내일 새벽 1시에 자동 인증됩니다"
                 }
             } else if (challengeData.is_verification_checkin == 1) {
                 if (challengeData.isAuthed()) {
