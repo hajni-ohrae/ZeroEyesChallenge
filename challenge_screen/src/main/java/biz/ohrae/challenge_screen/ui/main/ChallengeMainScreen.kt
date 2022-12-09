@@ -164,7 +164,7 @@ private fun ChallengeList(
         } else {
             itemsIndexed(
                 mainScreenState?.challengeList!!,
-                key = { _, item -> item.id }) { index, item ->
+                key = { index, _ -> "key-$index" }) { index, item ->
                 val startDay = Utils.getRemainTimeDays(item.start_date.toString())
                 val type = challengeVerificationPeriodMap[item.verification_period_type]
                 val weekType = if (type.isNullOrEmpty()) "주${item.per_week}회 인증" else type

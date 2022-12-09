@@ -263,7 +263,7 @@ fun Filter(
             FlatDoubleButton(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(50.dp),
+                    .height(60.dp),
                 "챌린지 보기",
                 "초기화",
                 onClickRight = {
