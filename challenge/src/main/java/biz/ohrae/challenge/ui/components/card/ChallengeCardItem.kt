@@ -18,6 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.model.list_item.ChallengeItemData
@@ -180,6 +181,8 @@ fun ChallengeCardItem(
                 style = myTypography.default,
                 text = title,
                 fontSize = dpToSp(dp = 16.dp), color = DefaultBlack,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
             ChallengeDurationLabel(
                 modifier = Modifier.fillMaxWidth(),
