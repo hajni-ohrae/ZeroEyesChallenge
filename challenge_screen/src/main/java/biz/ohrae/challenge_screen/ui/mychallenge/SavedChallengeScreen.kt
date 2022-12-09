@@ -3,7 +3,6 @@ package biz.ohrae.challenge_screen.ui.mychallenge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Text
@@ -20,11 +19,10 @@ import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_repo.util.prefs.Utils.getAuthType
 import biz.ohrae.challenge_repo.util.prefs.Utils.getOpenType
 import biz.ohrae.challenge_screen.model.main.MainScreenState
-import biz.ohrae.challenge_screen.ui.main.MainClickListener
 import biz.ohrae.challenge_screen.util.OnBottomReached
-import timber.log.Timber
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import timber.log.Timber
 
 
 @Preview(
@@ -74,7 +72,7 @@ fun SavedChallengeList(
         ) {
             itemsIndexed(
                 mainScreenState?.challengeList!!,
-                key = { _, item -> item.id }) { index, item ->
+                key = { index, _ -> "key-$index" }) { index, item ->
                 val startDay = Utils.getRemainTimeDays(item.start_date.toString())
                 val type = challengeVerificationPeriodMap[item.verification_period_type]
                 val weekType = if (type.isNullOrEmpty()) "주${item.per_week}회 인증" else type
