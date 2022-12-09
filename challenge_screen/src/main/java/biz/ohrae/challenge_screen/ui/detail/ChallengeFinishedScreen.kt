@@ -55,7 +55,7 @@ fun ChallengeFinishedScreen(
     val refundRate =
         if (inChallenge?.is_refunded == 1) "${refund.toInt()}% 환급" else ""
     val reward =
-        if (inChallenge?.is_rewards_provided == 1) "리워즈 지급 예정" else if (inChallenge?.is_refunded == 1) "+리워즈" else ""
+        if (inChallenge?.is_rewards == 1) "리워즈 지급 예정" else if (inChallenge?.is_refunded == 1) "+리워즈" else ""
 
     Column(
         modifier = Modifier
@@ -363,7 +363,7 @@ fun MyReWardInfo(
     val inChallenge = challengeData?.inChallenge?.get(0)
     Spacer(modifier = Modifier.height(16.dp))
     if (!challengeData?.free_rewards.isNullOrEmpty()) {
-        if (challengeData?.inChallenge?.get(0)?.is_rewards_provided == 1) {
+        if (challengeData?.inChallenge?.get(0)?.is_rewards == 1) {
             Divider(
                 modifier = Modifier
                     .fillMaxWidth()
