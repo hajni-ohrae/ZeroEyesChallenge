@@ -10,6 +10,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.ui.components.label.ProgressLabel
@@ -128,13 +130,17 @@ fun RewardHistoryItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
+                modifier = Modifier.weight(2f),
                 text = title,
                 style = myTypography.bold,
                 color = TextBlack,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
                 fontSize = dpToSp(dp = 16.dp)
             )
-            Spacer(modifier = Modifier.weight(1f))
             Text(
+                modifier = Modifier.weight(1f),
+                textAlign = TextAlign.Right,
                 text = "$price 원",
                 style = myTypography.bold,
                 color = priceColor.value,
