@@ -33,6 +33,7 @@ import androidx.navigation.compose.rememberNavController
 import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge_repo.util.FileUtils
+import biz.ohrae.challenge_repo.util.PermissionUtils
 import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.challengers.ChallengersActivity
@@ -312,11 +313,7 @@ class ChallengeDetailActivity : BaseActivity() {
             }
 
             override fun onClickAuth() {
-                val permissions = arrayOf(
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.CAMERA
-                )
+                val permissions = PermissionUtils.getPermissions()
 
                 val permissionResults = mutableListOf<String>()
                 permissions.forEach {

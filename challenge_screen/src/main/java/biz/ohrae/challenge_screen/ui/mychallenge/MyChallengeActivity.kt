@@ -29,6 +29,7 @@ import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge_repo.model.user.PaymentData
 import biz.ohrae.challenge_repo.model.user.PaymentHistoryData
 import biz.ohrae.challenge_repo.model.user.User
+import biz.ohrae.challenge_repo.util.PermissionUtils
 import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailActivity
 import biz.ohrae.challenge_screen.ui.dialog.LoadingDialog
@@ -314,11 +315,7 @@ class MyChallengeActivity : BaseActivity() {
             }
 
             override fun onClickChallengeAuthItem(challengeId: String, type: Int) {
-                val permissions = arrayOf(
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.CAMERA
-                )
+                val permissions = PermissionUtils.getPermissions()
 
                 val permissionResults = mutableListOf<String>()
                 permissions.forEach {

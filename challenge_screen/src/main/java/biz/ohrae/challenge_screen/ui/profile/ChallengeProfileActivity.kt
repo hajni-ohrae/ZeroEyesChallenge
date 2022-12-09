@@ -36,6 +36,7 @@ import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge_repo.util.FileUtils
+import biz.ohrae.challenge_repo.util.PermissionUtils
 import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.dialog.LoadingDialog
 import biz.ohrae.challenge_screen.ui.niceid.NiceIdActivity
@@ -203,11 +204,7 @@ class ChallengeProfileActivity : BaseActivity() {
     override fun initClickListeners() {
         clickListener = object : ChallengeProfileClickListener {
             override fun onClickProfileImage() {
-                val permissions = arrayOf(
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.CAMERA
-                )
+                val permissions = PermissionUtils.getPermissions()
 
                 val permissionResults = mutableListOf<String>()
                 permissions.forEach {

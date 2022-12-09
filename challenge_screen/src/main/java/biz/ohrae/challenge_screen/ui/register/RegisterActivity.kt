@@ -37,6 +37,7 @@ import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.util.FileUtils
+import biz.ohrae.challenge_repo.util.PermissionUtils
 import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.dialog.*
@@ -272,11 +273,7 @@ class RegisterActivity : BaseActivity() {
             }
 
             override fun onClickPhotoBox() {
-                val permissions = arrayOf(
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.CAMERA
-                )
+                val permissions = PermissionUtils.getPermissions()
 
                 val permissionResults = mutableListOf<String>()
                 permissions.forEach {
