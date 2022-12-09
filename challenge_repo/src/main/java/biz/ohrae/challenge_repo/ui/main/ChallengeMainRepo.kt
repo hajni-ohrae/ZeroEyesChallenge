@@ -1,5 +1,6 @@
 package biz.ohrae.challenge_repo.ui.main
 
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import biz.ohrae.challenge_repo.data.remote.ApiService
 import biz.ohrae.challenge_repo.data.remote.NetworkResponse
 import biz.ohrae.challenge_repo.model.FlowResult
@@ -46,7 +47,6 @@ class ChallengeMainRepo @Inject constructor(
                 ageLimitType = age_limit_type
             )
 
-
         when (response) {
             is NetworkResponse.Success -> {
                 val gson = Gson()
@@ -59,8 +59,8 @@ class ChallengeMainRepo @Inject constructor(
                         val pager =
                             gson.fromJson(dataset.get("meta").toString(), PagerMeta::class.java)
 
-                        val listType = object : TypeToken<List<ChallengeData?>?>() {}.type
-                        val challengeList = gson.fromJson<List<ChallengeData>>(dataSet, listType)
+                        val listType = object : TypeToken<SnapshotStateList<ChallengeData?>?>() {}.type
+                        val challengeList = gson.fromJson<SnapshotStateList<ChallengeData>>(dataSet, listType)
 
                         return flow {
                             emit(FlowResult(challengeList, "", "", pager))

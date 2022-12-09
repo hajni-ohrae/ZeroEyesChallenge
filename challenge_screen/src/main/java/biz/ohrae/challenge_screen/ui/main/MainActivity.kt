@@ -130,7 +130,7 @@ class MainActivity : BaseActivity() {
                     },
                     onRefresh = {
                         viewModel.isRefreshing(true)
-                        init()
+                        refresh()
                     }
                 )
             }
@@ -150,6 +150,12 @@ class MainActivity : BaseActivity() {
             val intent = Intent(this, WelcomeActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun refresh() {
+        myChallengeViewModel.getUserData()
+        viewModel.getChallengeList(paymentType, periodTypeValue, perWeekValue, periodValue, "", adultOnlyValue, isInit = true)
+        viewModel.getUserChallengeList("", isInit = true)
     }
 
     override fun initClickListeners() {
@@ -182,6 +188,8 @@ class MainActivity : BaseActivity() {
             }
 
             override fun onClickFilterType(filterType: String) {
+                Timber.e("filterType : $filterType")
+
                 if (!isClickable()) {
                     return
                 }
@@ -190,21 +198,21 @@ class MainActivity : BaseActivity() {
                     val dialog = FilterDialog(viewModel)
                     dialog.setListener(object : FilterDialogListener {
                         override fun clickPositive(
-                            verificationPeriodType: String,
+                            periodType: String,
                             perWeek: String,
                             period: String,
                             isAdultOnly: String
                         ) {
                             val selectedFilterType = viewModel.filterState.value?.selectFilterType
                             paymentType = selectedFilterType.toString()
-                            periodTypeValue = verificationPeriodType
+                            periodTypeValue = periodType
                             perWeekValue = perWeek
                             periodValue = period
                             adultOnlyValue = isAdultOnly
                             viewModel.isLoading(true)
                             viewModel.getChallengeList(
                                 selectedFilterType.toString(),
-                                verificationPeriodType,
+                                periodType,
                                 perWeek,
                                 period,
                                 "",
@@ -236,12 +244,16 @@ class MainActivity : BaseActivity() {
                     })
                     dialog.isCancelable = false
                     dialog.show(supportFragmentManager, "FilterDialog")
-
                 } else {
+                    paymentType = filterType
+                    periodTypeValue = ""
+                    perWeekValue = ""
+                    periodValue = ""
+                    adultOnlyValue = ""
+
                     viewModel.isLoading(true)
                     viewModel.selectFilter(filterType)
-                    viewModel.getChallengeList(paymentType = filterType, isInit = true)
-
+                    viewModel.getChallengeList(paymentType = filterType, "", "", "", "", "", isInit = true)
                 }
             }
 
@@ -327,13 +339,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun onBottomReached() {
-        viewModel.getChallengeList(
-            paymentType,
-            periodTypeValue,
-            perWeekValue,
-            periodValue,
-            age_limit_type = adultOnlyValue
-        )
+        viewModel.getChallengeList(paymentType, periodTypeValue, perWeekValue, periodValue, "", adultOnlyValue, isInit = false)
     }
 
     private fun goDetail(id: String, isParticipant: Boolean = false, isPhoto: Int = 0) {

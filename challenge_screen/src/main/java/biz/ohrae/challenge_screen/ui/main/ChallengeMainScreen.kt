@@ -232,7 +232,7 @@ fun ItemHeader(
             clickListener = clickListener,
             filterState,
             filterState.selectFilterType,
-            mainScreenState?.challengeList?.size
+            mainScreenState?.totalChallengeCount
         )
     }
 }

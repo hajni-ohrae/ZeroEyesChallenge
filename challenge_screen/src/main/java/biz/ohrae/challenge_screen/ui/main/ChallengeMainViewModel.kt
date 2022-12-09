@@ -1,5 +1,7 @@
 package biz.ohrae.challenge_screen.ui.main
 
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
@@ -143,19 +145,22 @@ class ChallengeMainViewModel @Inject constructor(
 
                     Timber.d("pager : ${gson.toJson(pager)}")
                     val topBannerList = MainScreenState.mock().topBannerList
-                    val challengeList = data as MutableList<ChallengeData>
+                    val challengeList = data as SnapshotStateList<ChallengeData>
                     val state = mainScreenState.value?.copy()
+                    val totalCount = pager?.total ?: 0
                     state?.let { screenState ->
                         if (isInit) {
                             screenState.challengeList = challengeList
+                            screenState.totalChallengeCount = totalCount
                         } else {
-                            val list = mutableListOf<ChallengeData>()
+                            val list = mutableStateListOf<ChallengeData>()
                             screenState.challengeList?.addAll(challengeList)
                             screenState.challengePage = pager?.page
+                            Timber.e("list size : ${screenState.challengeList?.size}")
                         }
                         _mainScreenState.value = screenState
                     } ?: run {
-                        _mainScreenState.value = MainScreenState(challengeList, topBannerList, challengePage = 1)
+                        _mainScreenState.value = MainScreenState(challengeList, topBannerList, challengePage = 1, totalChallengeCount = totalCount)
                     }
                 } ?: run {
                     setErrorData(it.errorCode, it.errorMessage)
