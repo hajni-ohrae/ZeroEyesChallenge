@@ -29,6 +29,7 @@ import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.model.detail.Verification
+import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.model.detail.VerificationState
 import com.google.accompanist.flowlayout.FlowCrossAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
@@ -91,7 +92,8 @@ fun ChallengeFinishedScreen(
                 textAlign = TextAlign.Center,
                 text =
                 if (challengeData?.free_rewards.isNullOrEmpty())
-                    "${challengeData?.inChallenge?.get(0)?.refund_amount}원 환급되었어요!"
+                    "${
+                        Utils.numberToString(inChallenge?.refund_amount.toString())}원 환급되었어요!"
                 else
                     "${challengeData?.inChallenge?.get(0)?.achievement_percent}%를 달성하였어요!",
                 fontSize = dpToSp(dp = 20.dp),
@@ -271,7 +273,7 @@ private fun MyRewardsAndResults(
                 style = myTypography.w500,
             )
             Text(
-                text = "${challengeData?.summary?.total_amount}원", fontSize = dpToSp(dp = 14.dp),
+                text = "${Utils.numberToString(challengeData?.summary?.total_amount.toString())}원", fontSize = dpToSp(dp = 14.dp),
                 style = myTypography.w500,
             )
         }
@@ -286,7 +288,7 @@ private fun MyRewardsAndResults(
                 style = myTypography.w500,
             )
             Text(
-                text = "${challengeData?.summary?.total_rewards_amount}원",
+                text = "${Utils.numberToString(challengeData?.summary?.total_rewards_amount.toString())}원",
                 fontSize = dpToSp(dp = 14.dp),
                 style = myTypography.w500,
             )
@@ -302,7 +304,7 @@ private fun MyRewardsAndResults(
                 style = myTypography.w500,
             )
             Text(
-                text = "(1만원 기준) ${challengeData?.summary?.per_rewards_amount}원",
+                text = "(1만원 기준) ${Utils.numberToString(challengeData?.summary?.per_rewards_amount.toString())}원",
                 fontSize = dpToSp(dp = 14.dp),
                 style = myTypography.w500,
             )
@@ -365,6 +367,7 @@ private fun ChallengeProgressFinishDetail(
 fun MyReWardInfo(
     challengeData: ChallengeData? = null
 ) {
+    val inChallenge = challengeData?.inChallenge?.get(0)
     if (!challengeData?.free_rewards.isNullOrEmpty()) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -411,7 +414,7 @@ fun MyReWardInfo(
                 style = myTypography.w500,
             )
             Text(
-                text = "${challengeData?.inChallenge?.get(0)?.deposit_amount} 원",
+                text = "${Utils.numberToString(inChallenge?.deposit_amount.toString())} 원",
                 fontSize = dpToSp(dp = 14.dp),
                 style = myTypography.w500,
             )
@@ -427,7 +430,7 @@ fun MyReWardInfo(
                 style = myTypography.w500,
             )
             Text(
-                text = "${challengeData?.inChallenge?.get(0)?.refund_amount} 원",
+                text = "${Utils.numberToString(inChallenge?.refund_amount.toString())} 원",
                 fontSize = dpToSp(dp = 14.dp),
                 style = myTypography.w500,
             )
@@ -444,7 +447,7 @@ fun MyReWardInfo(
                 color = Color(0xffff5800)
             )
             Text(
-                text = "${challengeData?.inChallenge?.get(0)?.refund_amount} 원",
+                text = "${Utils.numberToString(inChallenge?.refund_amount.toString())} 원",
                 fontSize = dpToSp(dp = 14.dp),
                 style = myTypography.w500,
                 color = Color(0xffff5800)
@@ -469,7 +472,7 @@ fun MyReWardInfo(
                 color = Color(0xff4985f8)
             )
             Text(
-                text = "${challengeData?.inChallenge?.get(0)?.rewards_amount} 원",
+                text = "${Utils.numberToString(inChallenge?.rewards_amount.toString())} 원",
                 fontSize = dpToSp(dp = 14.dp),
                 style = myTypography.bold,
                 color = Color(0xff4985f8)
