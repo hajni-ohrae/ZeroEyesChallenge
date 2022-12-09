@@ -50,10 +50,12 @@ fun ChallengeFinishedScreen(
     val scrollState = rememberScrollState()
     val inChallenge = challengeData?.inChallenge?.get(0)
 
-    val refund = (inChallenge?.refund_amount?.toDouble()!! / inChallenge?.deposit_amount?.toDouble()!!) * 100
+    val refund =
+        (inChallenge?.refund_amount?.toDouble()!! / inChallenge?.deposit_amount?.toDouble()!!) * 100
     val refundRate =
         if (inChallenge?.is_refunded == 1) "${refund.toInt()}% 환급" else ""
-    val reward = if (inChallenge?.is_rewards_provided == 1) "리워즈 지급 예정" else if(inChallenge?.is_refunded == 1) "+리워즈" else ""
+    val reward =
+        if (inChallenge?.is_rewards == 1) "리워즈 지급 예정" else if (inChallenge?.is_refunded == 1) "+리워즈" else ""
 
     Column(
         modifier = Modifier
@@ -93,14 +95,15 @@ fun ChallengeFinishedScreen(
                 text =
                 if (challengeData?.free_rewards.isNullOrEmpty())
                     "${
-                        Utils.numberToString(inChallenge?.refund_amount.toString())}원 환급되었어요!"
+                        Utils.numberToString(inChallenge?.refund_amount.toString())
+                    }원 환급되었어요!"
                 else
                     "${challengeData?.inChallenge?.get(0)?.achievement_percent}%를 달성하였어요!",
                 fontSize = dpToSp(dp = 20.dp),
                 style = myTypography.extraBold,
             )
             Spacer(modifier = Modifier.height(16.dp))
-            if (!refundRate.isNullOrEmpty() && !reward.isNullOrEmpty()) {
+            if (!refundRate.isNullOrEmpty() || !reward.isNullOrEmpty()) {
                 ProgressLabel(
                     modifier = Modifier.align(CenterHorizontally),
                     text = refundRate + reward,
@@ -120,7 +123,7 @@ fun ChallengeFinishedScreen(
                 )
                 Row() {
                     Text(
-                        text = "${challengeData?.inChallenge?.get(0)?.ranking?: ""} 위 ",
+                        text = "${challengeData?.inChallenge?.get(0)?.ranking ?: ""} 위 ",
                         fontSize = dpToSp(dp = 16.dp),
                         style = myTypography.bold,
                     )
@@ -149,8 +152,8 @@ fun ChallengeFinishedScreen(
                         style = myTypography.bold,
                     )
                 }
+                Spacer(modifier = Modifier.height(18.dp))
             }
-            Spacer(modifier = Modifier.height(18.dp))
             if (verificationState != null) {
                 ChallengeProgressFinishDetail(verificationState)
             }
@@ -159,7 +162,8 @@ fun ChallengeFinishedScreen(
             Spacer(modifier = Modifier.height(22.dp))
             FlatBorderButton(
                 modifier = Modifier
-                    .fillMaxWidth().height(44.dp),
+                    .fillMaxWidth()
+                    .height(44.dp),
                 text = "챌린저스 결과 보기",
                 onClick = {
                     clickListener?.onClickChallengersResults()
@@ -178,18 +182,6 @@ private fun MyRewardsAndResults(
 ) {
 
     Column() {
-        Divider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp)
-                .background(Color(0xffebebeb))
-        )
-        Spacer(modifier = Modifier.height(24.dp))
-        Text(
-            text = "나의 리워즈", fontSize = dpToSp(dp = 16.dp),
-            style = myTypography.bold,
-        )
-        Spacer(modifier = Modifier.height(16.dp))
         MyReWardInfo(challengeData = challengeData)
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -231,7 +223,7 @@ private fun MyRewardsAndResults(
                 style = myTypography.w500,
             )
             Text(
-                text = "${challengeData?.summary?.total_achievement_percent?: "0.00"}%",
+                text = "${challengeData?.summary?.total_achievement_percent ?: "0.00"}%",
                 fontSize = dpToSp(dp = 14.dp),
                 style = myTypography.w500,
             )
@@ -241,9 +233,9 @@ private fun MyRewardsAndResults(
             val title = if (challengeData?.is_verification_checkin == 1) "평균 출석일" else "평균 이용시간"
             val content =
                 if (challengeData?.is_verification_checkin == 1)
-                    "${challengeData?.summary?.average_verification_cnt?: 0}일"
+                    "${challengeData?.summary?.average_verification_cnt ?: 0}일"
                 else
-                    challengeData?.summary?.average_verification_time?:""
+                    challengeData?.summary?.average_verification_time ?: ""
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -273,7 +265,8 @@ private fun MyRewardsAndResults(
                 style = myTypography.w500,
             )
             Text(
-                text = "${Utils.numberToString(challengeData?.summary?.total_amount.toString())}원", fontSize = dpToSp(dp = 14.dp),
+                text = "${Utils.numberToString(challengeData?.summary?.total_amount.toString())}원",
+                fontSize = dpToSp(dp = 14.dp),
                 style = myTypography.w500,
             )
         }
@@ -368,42 +361,70 @@ fun MyReWardInfo(
     challengeData: ChallengeData? = null
 ) {
     val inChallenge = challengeData?.inChallenge?.get(0)
+    Spacer(modifier = Modifier.height(16.dp))
     if (!challengeData?.free_rewards.isNullOrEmpty()) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                text = "상품", fontSize = dpToSp(dp = 14.dp),
-                style = myTypography.w500,
-                color = Color(0xff4985f8)
+        if (challengeData?.inChallenge?.get(0)?.is_rewards == 1) {
+            Divider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(Color(0xffebebeb))
             )
+            Spacer(modifier = Modifier.height(24.dp))
             Text(
-                text = "${challengeData?.free_rewards ?: ""}",
-                fontSize = dpToSp(dp = 14.dp),
-                style = myTypography.w500,
-                color = Color(0xff4985f8)
+                text = "나의 리워즈", fontSize = dpToSp(dp = 16.dp),
+                style = myTypography.bold,
             )
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "상품", fontSize = dpToSp(dp = 14.dp),
+                    style = myTypography.w500,
+                    color = Color(0xff4985f8)
+                )
+                Text(
+                    text = "${challengeData?.free_rewards ?: ""}",
+                    fontSize = dpToSp(dp = 14.dp),
+                    style = myTypography.w500,
+                    color = Color(0xff4985f8)
+                )
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "지급 방법", fontSize = dpToSp(dp = 14.dp),
+                    style = myTypography.w500,
+                )
+                Text(
+                    text = "${challengeData?.free_rewards_offer_way ?: ""}",
+                    fontSize = dpToSp(dp = 14.dp),
+                    style = myTypography.w500,
+                )
+            }
         }
-        Spacer(modifier = Modifier.height(16.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                text = "지급 방법", fontSize = dpToSp(dp = 14.dp),
-                style = myTypography.w500,
-            )
-            Text(
-                text = "${challengeData?.free_rewards_offer_way ?: ""}",
-                fontSize = dpToSp(dp = 14.dp),
-                style = myTypography.w500,
-            )
-        }
-        Spacer(modifier = Modifier.height(16.dp))
+//        Spacer(modifier = Modifier.height(16.dp))
     } else {
+
+        Divider(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(Color(0xffebebeb))
+        )
+        Spacer(modifier = Modifier.height(24.dp))
+        Text(
+            text = "나의 리워즈", fontSize = dpToSp(dp = 16.dp),
+            style = myTypography.bold,
+        )
+        Spacer(modifier = Modifier.height(16.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
