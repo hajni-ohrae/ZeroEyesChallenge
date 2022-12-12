@@ -730,12 +730,14 @@ object Utils {
     }
 
     fun getAuthButtonName(challengeData: ChallengeData, type: Boolean = false): String {
-        return if (challengeData.status == "finished") {
+        return if(challengeData.inChallenge?.get(0)?.achievement_percent?.toDouble()!! >= 100.0f){
+            "챌린지 달성 완료"
+        } else if (challengeData.status == "finished") {
             "챌린지가 완료되었습니다"
         } else {
             if (challengeData.is_verification_photo == 1) {
                 if (challengeData.isAuthed()) {
-                    "인증완료"
+                    "오늘 인증완료"
                 } else {
                     "인증하기"
                 }
@@ -747,7 +749,7 @@ object Utils {
                 }
             } else if (challengeData.is_verification_checkin == 1) {
                 if (challengeData.isAuthed()) {
-                    "인증완료"
+                    "오늘 인증완료"
                 } else {
                     if (type) {
                         "자동 인증 중"
@@ -757,7 +759,7 @@ object Utils {
                 }
             } else {
                 if (challengeData.isAuthed()) {
-                    "인증완료"
+                    "오늘 인증완료"
                 } else {
                     "인증하기"
                 }

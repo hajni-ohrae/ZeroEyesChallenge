@@ -102,7 +102,7 @@ fun ChallengesInParticipationCard(
     val btnName = if (status == "register") remainTime.replace("-", "") + " 남음" else buttonName
     val btnTextColor = if (status == "register") Color(0xff4985f8) else buttonTextColor
     val btnColor = if (status == "register") DefaultWhite else buttonColor
-    val enabled = todayAuth == "0" && status == "opened" && isPhoto == 1
+    val enabled = todayAuth == "0" && status == "opened" && isPhoto == 1 && achievementRate.toDouble() < 100f
 
     Card(
         modifier = modifier.clickable { onCardClick() },
