@@ -57,6 +57,9 @@ class MyChallengeActivity : BaseActivity() {
     private var policyScreenType: String = ""
     private var headerTitle: String = ""
     private var challengeId: String? = ""
+    private var filterType:String = ""
+    private var rewardFilterType:String = ""
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -347,20 +350,20 @@ class MyChallengeActivity : BaseActivity() {
             }
 
             override fun onClickFilterType(type: String) {
-                var filterType = type
+                filterType = type
                 if (!type.isNullOrEmpty()) {
                     if (type == "all") filterType = ""
                     challengeMainViewModel.selectUserFilter(type)
-                    challengeMainViewModel.getUserChallengeList(filterType)
+                    challengeMainViewModel.getUserChallengeList(filterType,true)
                 }
             }
 
             override fun onClickRewardFilterType(type: String) {
-                var filterType = type
+                rewardFilterType = type
                 if (!type.isNullOrEmpty()) {
                     if (type == "all") filterType = ""
                     myChallengeViewModel.selectRewardFilter(type)
-                    myChallengeViewModel.getRewardHistory(filterType,false)
+                    myChallengeViewModel.getRewardHistory(rewardFilterType,true)
                 }
             }
 
@@ -434,7 +437,7 @@ class MyChallengeActivity : BaseActivity() {
     }
 
     private fun onBottomReached() {
-        challengeMainViewModel.getUserChallengeList("",false)
+        challengeMainViewModel.getUserChallengeList(filterType,false)
     }
 }
 
