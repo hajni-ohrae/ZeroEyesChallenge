@@ -1,11 +1,13 @@
 package biz.ohrae.challenge_repo.ui.main
 
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import biz.ohrae.challenge_repo.data.remote.ApiService
 import biz.ohrae.challenge_repo.data.remote.NetworkResponse
 import biz.ohrae.challenge_repo.model.FlowResult
 import biz.ohrae.challenge_repo.model.profile.NicknameState
 import biz.ohrae.challenge_repo.model.register.ImageBucket
 import biz.ohrae.challenge_repo.model.user.*
+import biz.ohrae.challenge_repo.util.PagerMeta
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
 import com.google.gson.Gson
 import com.google.gson.JsonArray
@@ -246,20 +248,21 @@ class UserRepo @Inject constructor(
     }
 
     suspend fun getPaymentHistory(
-        page: Int = 1,
-        perPage: Int = 10,
+        page: Int,
     ): Flow<FlowResult> {
         val accessToken = prefs.getUserData()?.access_token
-        val response = apiService.getPaymentHistory(accessToken.toString(), page, perPage)
+        val response = apiService.getPaymentHistory(accessToken.toString(), page, 10)
         when (response) {
             is NetworkResponse.Success -> {
                 val dataSet = response.body.dataset?.asJsonObject
                 val array = dataSet?.get("array")?.asJsonArray
+                val pager =
+                    gson.fromJson(dataSet?.get("meta").toString(), PagerMeta::class.java)
 
-                val listType = object : TypeToken<List<PaymentHistoryData?>?>() {}.type
-                val paymentHistoryList = gson.fromJson<List<PaymentHistoryData>>(array, listType)
+                val listType = object : TypeToken<SnapshotStateList<PaymentHistoryData?>?>() {}.type
+                val paymentHistoryList = gson.fromJson<SnapshotStateList<PaymentHistoryData>>(array, listType)
                 return flow {
-                    emit(FlowResult(paymentHistoryList, "", ""))
+                    emit(FlowResult(paymentHistoryList, "", "",pager))
                 }
             }
             else -> {
@@ -272,25 +275,26 @@ class UserRepo @Inject constructor(
 
     suspend fun getRewardHistory(
         type: String,
-        page: Int = 1,
-        perPage: Int = 10,
+        page: Int,
     ): Flow<FlowResult> {
         val accessToken = prefs.getUserData()?.access_token
-        val response = apiService.getRewardHistory(type, accessToken.toString(), page, perPage)
+        val response = apiService.getRewardHistory(type, accessToken.toString(), page, 10)
         when (response) {
             is NetworkResponse.Success -> {
                 val dataSet = response.body.dataset?.asJsonObject
                 val array = dataSet?.get("array")?.asJsonArray
+                val pager =
+                    gson.fromJson(dataSet?.get("meta").toString(), PagerMeta::class.java)
 
-                val listType = object : TypeToken<List<RewardData?>?>() {}.type
-                val rewardList = gson.fromJson<List<RewardData>>(array, listType)
+                val listType = object : TypeToken<SnapshotStateList<RewardData?>?>() {}.type
+                val rewardList = gson.fromJson<SnapshotStateList<RewardData>>(array, listType)
                 return flow {
-                    emit(FlowResult(rewardList, "", ""))
+                    emit(FlowResult(rewardList, "", "", pager))
                 }
             }
             else -> {
                 return flow {
-                    emit(FlowResult(null, "", ""))
+                    emit(FlowResult(null, "", response.errorMessage))
                 }
             }
         }

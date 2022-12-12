@@ -1,5 +1,6 @@
 package biz.ohrae.challenge_screen.ui.mychallenge
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -34,6 +35,8 @@ import biz.ohrae.challenge_screen.model.main.FilterState
 import biz.ohrae.challenge_screen.model.user.UserChallengeListState
 import biz.ohrae.challenge_screen.ui.mychallenge.MyChallengeActivity.Companion.REWARD
 import biz.ohrae.challenge_screen.util.OnBottomReached
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.rememberPagerState
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import timber.log.Timber
@@ -54,6 +57,11 @@ fun MyRewardScreen(
     isRefreshing: Boolean = false,
     onRefresh: () -> Unit = {}
 ) {
+
+    val availableRewards by remember {
+        mutableStateOf(user?.rewards_amount ?: 0)
+    }
+    val enabled = availableRewards >= 5000
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -70,8 +78,20 @@ fun MyRewardScreen(
                     onRefresh()
                 }
             ) {
-                Reward(user, select, clickListener, rewardList, rewardFilter, onBottomReached)
+                Reward(user, clickListener, rewardList, rewardFilter, onBottomReached)
             }
+            FlatBottomButton(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
+                    .height(60.dp),
+                text = "출금신청",
+                enabled = enabled,
+                onClick = {
+                    clickListener?.onClickApplyWithdraw()
+                }
+            )
+
         }
     }
 }
@@ -191,18 +211,13 @@ fun RewardFilterCard(
 @Composable
 fun Reward(
     user: User? = null,
-    select: Boolean = true,
     clickListener: MyChallengeClickListener? = null,
     rewardList: List<RewardData>? = null,
     rewardFilter: RewardFilter,
     onBottomReached: () -> Unit = {},
 ) {
-
-    val availableRewards by remember {
-        mutableStateOf(user?.rewards_amount ?: 0)
-    }
-    val enabled = availableRewards >= 5000
     val listState = rememberLazyListState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -241,7 +256,8 @@ fun Reward(
                     Spacer(modifier = Modifier.height(18.dp))
                 }
                 items(rewardList) { item ->
-                    val percent = if (item.inChallenge?.achievement_percent.isNullOrEmpty()) "" else "${item.inChallenge?.achievement_percent}%"
+                    val percent =
+                        if (item.inChallenge?.achievement_percent.isNullOrEmpty()) "" else "${item.inChallenge?.achievement_percent}%"
                     val title = item.challenge?.goal ?: ""
                     RewardHistoryItem(
                         modifier = Modifier
@@ -255,29 +271,16 @@ fun Reward(
                         textColor = Utils.rewardTextColor(item.type),
                     )
                 }
+                item {
+                    listState.OnBottomReached {
+                        Timber.e("bottom reached!!")
+                        onBottomReached()
+                    }
+                }
             }
             item {
                 Spacer(modifier = Modifier.height(50.dp))
             }
         }
-    }
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.BottomCenter
-    ) {
-        FlatBottomButton(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(60.dp),
-            text = "출금신청",
-            enabled = enabled,
-            onClick = {
-                clickListener?.onClickApplyWithdraw()
-            }
-        )
-    }
-    listState.OnBottomReached {
-        Timber.e("bottom reached!!")
-        onBottomReached()
     }
 }

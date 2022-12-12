@@ -1,8 +1,11 @@
 package biz.ohrae.challenge_screen.ui.mychallenge
 
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import biz.ohrae.challenge.ui.components.dropdown.DropDownItem
+import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.model.user.*
 import biz.ohrae.challenge_repo.ui.main.UserRepo
 import biz.ohrae.challenge_repo.ui.mychallenge.MyChallengeRepo
@@ -15,6 +18,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,8 +29,8 @@ class MyChallengeViewModel @Inject constructor(
     private val gson: Gson
 ) : BaseViewModel(prefs) {
     private val _redCardListState = MutableLiveData<RedCardListState>()
-    private val _paymentHistoryState = MutableLiveData<List<PaymentHistoryData>>()
-    private val _rewardList = MutableLiveData<List<RewardData>>()
+    private val _paymentHistoryState = MutableLiveData<SnapshotStateList<PaymentHistoryData>>()
+    private val _rewardListState = MutableLiveData<SnapshotStateList<RewardData>>()
     private val _rewardFilter = MutableLiveData<RewardFilter>()
     private val _userData = MutableLiveData<User>()
     private val _userRedCardListPage = MutableLiveData(1)
@@ -41,7 +45,7 @@ class MyChallengeViewModel @Inject constructor(
     val redCardListState get() = _redCardListState
     val paymentHistoryState get() = _paymentHistoryState
     val userData get() = _userData
-    val rewardList get() = _rewardList
+    val rewardListState get() = _rewardListState
     val rewardFilter get() = _rewardFilter
     val userRedCardListPage get() = _userRedCardListPage
     val rewardListPage get() = _rewardListPage
@@ -101,17 +105,21 @@ class MyChallengeViewModel @Inject constructor(
         val page = _userRedCardListPage.value ?: 1
 
         viewModelScope.launch {
-            val response = userRepo.getPaymentHistory(page = page)
+            val response = userRepo.getPaymentHistory(page)
             response.flowOn(Dispatchers.IO).collect {
                 it.data?.let { data ->
 
                     val pager = it.pager
-
                     if (it.pager?.page == page) {
                         _userPaymentHistoryListPage.value = page + 1
                     }
-                    val paymentHistoryState = it.data as List<PaymentHistoryData>
-                    _paymentHistoryState.value = paymentHistoryState
+                    val paymentHistoryState = it.data as SnapshotStateList<PaymentHistoryData>
+
+                    if(isInit) {
+                        _paymentHistoryState.value = paymentHistoryState
+                    } else{
+                        _paymentHistoryState.value?.addAll(paymentHistoryState)
+                    }
                 }
             }
         }
@@ -134,21 +142,31 @@ class MyChallengeViewModel @Inject constructor(
         }
     }
 
-    fun getRewardHistory(type: String, isInit: Boolean = false) {
+    fun getRewardHistory(type: String,
+                         isInit: Boolean = false,) {
         viewModelScope.launch {
             if (isInit) {
                 _rewardListPage.value = 1
             }
             val page = _rewardListPage.value ?: 1
-            val response = userRepo.getRewardHistory(type, page = page)
+
+            val response = userRepo.getRewardHistory(type, page)
             response.flowOn(Dispatchers.IO).collect() {
                 if (it.data != null) {
+
                     val pager = it.pager
+
                     if (it.pager?.page == page) {
                         _rewardListPage.value = page + 1
                     }
-                    val rewardList = it.data as List<RewardData>
-                    _rewardList.value = rewardList
+
+                    val rewardList = it.data as SnapshotStateList<RewardData>
+
+                    if (isInit) {
+                        _rewardListState.value = rewardList
+                    } else {
+                        _rewardListState.value?.addAll(rewardList)
+                    }
                 }
             }
         }

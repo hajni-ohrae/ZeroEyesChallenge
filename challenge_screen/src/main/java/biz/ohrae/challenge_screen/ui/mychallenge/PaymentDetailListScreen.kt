@@ -93,6 +93,12 @@ fun PaymentDetailList(
                     onClick = { clickListener?.onClickPaymentItem(item) }
                 )
             }
+            item {
+                listState.OnBottomReached {
+                    Timber.e("bottom reached!!")
+                    onBottomReached()
+                }
+            }
         }
     } else {
         Spacer(modifier = Modifier.height(20.dp))
@@ -103,10 +109,4 @@ fun PaymentDetailList(
             color = Color(0xff828282)
         )
     }
-
-    listState.OnBottomReached {
-        Timber.e("bottom reached!!")
-        onBottomReached()
-    }
-
 }
