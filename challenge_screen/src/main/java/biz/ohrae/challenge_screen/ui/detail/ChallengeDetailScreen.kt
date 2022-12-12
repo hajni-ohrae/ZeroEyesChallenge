@@ -219,19 +219,19 @@ fun ChallengeDescription(
     ) {
         if (challengeData.min_deposit_amount > 0) {
             Text(
-                text = "왜 돈을 걸어야 하나요?",
+                text = "왜 참여금을 걸어야 하나요?",
                 style = myTypography.bold,
                 fontSize = dpToSp(dp = 18.dp)
             )
             Spacer(modifier = Modifier.height(16.dp))
             val annotatedString = buildAnnotatedString {
                 append(
-                    "확실한 동기부여를 위해서 돈을 걸어요\n" +
-                            "챌린지를 시작하기 전에 돈을 걸고 \n" +
+                    "확실한 동기부여를 위해서 참여금을 걸어요\n" +
+                            "챌린지를 시작하기 전에 참여금을 걸고 \n" +
                             "내가 실천한 만큼 돌려받으면 끝까지 포기할 수가 없죠\n"
                 )
                 withStyle(style = SpanStyle(fontWeight = FontWeight.ExtraBold)) {
-                    append("돈을 걸기 전과 후 달라진 나의 변화를 경험")
+                    append("참여금을 걸기 전과 후 달라진 나의 변화를 경험")
                 }
                 append("해보세요")
             }
