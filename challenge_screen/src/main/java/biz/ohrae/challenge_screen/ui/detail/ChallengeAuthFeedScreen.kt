@@ -80,9 +80,9 @@ fun VerifiedList(
                 val cnt = if (item.type == "staying_time") item.staying_time_cnt else item.cnt
                 val time =
                     when (item.type) {
-                        "staying_time" -> Utils.convertDate(item.verified_date)
+                        "staying_time" -> Utils.convertDate2(item.verified_date)
                         "checkin" -> Utils.convertDate(item.checkin_date)
-                        else -> Utils.convertDate9(item.updated_date,true)
+                        else -> Utils.convertDate9(item.created_date,true)
                     }
 
                 FeedItem(

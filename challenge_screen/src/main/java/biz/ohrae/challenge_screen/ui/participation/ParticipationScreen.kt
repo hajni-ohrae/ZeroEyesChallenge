@@ -229,7 +229,7 @@ private fun InputParticipationAmount(
     var checked by remember { mutableStateOf(false) }
 
     Text(
-        text = "습관에 돈을 걸고 의지를 유지하세요",
+        text = "습관에 참여금을 걸고 의지를 유지하세요",
         style = myTypography.w500,
         fontSize = dpToSp(dp = 20.dp),
         color = Color(0xffff5800),
@@ -358,7 +358,7 @@ private fun InputParticipationAmount2(
     var checked by remember { mutableStateOf(false) }
 
     Text(
-        text = "습관에 돈을 걸고 의지를 유지하세요",
+        text = "습관에 참여금을 걸고 의지를 유지하세요",
         style = myTypography.w500,
         fontSize = dpToSp(dp = 20.dp),
         color = Color(0xffff5800),

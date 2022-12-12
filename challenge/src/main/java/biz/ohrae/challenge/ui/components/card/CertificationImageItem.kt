@@ -74,7 +74,9 @@ fun CertificationImageItem(
     username: String = "",
     count: Int = 0,
     date: String = "",
-    type:String ="",
+    type:String = "",
+    userImageUrl: String = "",
+    stayingTime: String = "",
     onClick: () -> Unit = {}
 ) {
     Card(
@@ -111,7 +113,8 @@ fun CertificationImageItem(
                     circularAvatar(
                         modifier = Modifier
                             .fillMaxHeight()
-                            .aspectRatio(1f)
+                            .aspectRatio(1f),
+                        url = userImageUrl
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
@@ -141,11 +144,22 @@ fun CertificationImageItem(
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = date,
-                    color = if (type == "photo")DefaultWhite else Color(0xff4a4a4a),
+                    color = if (type == "photo") DefaultWhite else Color(0xff4a4a4a),
                     style = myTypography.extraBold,
                     fontSize = if (type == "photo") dpToSp(dp = 12.dp) else dpToSp(dp = 16.dp),
                     textAlign = TextAlign.Center
                 )
+                if (type == "staying_time" && stayingTime.isNotEmpty()) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = "누적 $stayingTime",
+                        color = Color(0xff4a4a4a),
+                        style = myTypography.extraBold,
+                        fontSize = dpToSp(dp = 16.dp),
+                        textAlign = TextAlign.Center
+                    )
+                }
                 Spacer(modifier = Modifier.fillMaxHeight(0.068f))
             }
         }

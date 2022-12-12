@@ -116,11 +116,13 @@ class ChallengeDetailActivity : BaseActivity() {
 
     @Composable
     private fun BuildContent() {
+        val isJoined by viewModel.isJoined.observeAsState()
+
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
             BackButton(
-                title = "",
+                title = if (isJoined == true) "참여한 챌린지" else "",
                 isShare = true,
                 onBack = { onBack() },
                 onShare = {
@@ -132,15 +134,14 @@ class ChallengeDetailActivity : BaseActivity() {
                     .fillMaxWidth()
                     .weight(1f)
             ) {
-                Navigation()
+                Navigation(isJoined = isJoined)
             }
         }
     }
 
     @Composable
-    private fun Navigation() {
+    private fun Navigation(isJoined: Boolean?) {
         navController = rememberNavController()
-        val isJoined by viewModel.isJoined.observeAsState()
         val isFinished by viewModel.isFinished.observeAsState()
         val challengeData by viewModel.challengeData.observeAsState()
         val challengeVerificationState by viewModel.challengeVerificationState.observeAsState()

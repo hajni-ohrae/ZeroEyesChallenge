@@ -118,12 +118,6 @@ fun ChallengeDetailScreen(
             if (challengeData.is_verification_photo == 1) {
                 ChallengePhotoAuthentication()
             }
-//            Divider(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .height(1.dp)
-//                    .background(Color(0xffebebeb))
-//            )
             ChallengeHost(challengeData = challengeData)
             Divider(
                 modifier = Modifier

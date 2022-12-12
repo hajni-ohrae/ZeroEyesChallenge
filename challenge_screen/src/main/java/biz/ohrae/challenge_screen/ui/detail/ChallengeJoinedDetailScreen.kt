@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.ui.components.button.FlatBookMarkButton
 import biz.ohrae.challenge.ui.components.button.FlatBorderButton
 import biz.ohrae.challenge.ui.components.card.CertificationImageItem
+import biz.ohrae.challenge.ui.components.card.RedCardInfo
 import biz.ohrae.challenge.ui.components.detail.ChallengeDetailFreeDescription
 import biz.ohrae.challenge.ui.components.detail.ChallengeDetailRefundDescription
 import biz.ohrae.challenge.ui.components.detail.ChallengeJoinedDetailsTitle
@@ -125,6 +126,8 @@ fun ChallengeJoinedDetailScreen(
                             isFree = challengeData.min_deposit_amount == 0,
                             ageType = ageType,
                             isPhoto = challengeData.is_verification_photo == 1,
+                            isTime = challengeData.is_verification_time == 1,
+                            isCheckIn = challengeData.is_verification_checkin == 1,
                             startDay = challengeData.start_date.toString(),
                             endDay = challengeData.end_date.toString(),
                             authMethod = authMethod
@@ -196,7 +199,9 @@ fun ChallengeJoinedDetailScreen(
                     LaunchedEffect(pagerState.currentPage) {
                         pagerModifier = if (pagerState.currentPage == 0) {
                             if (pagerHeight > 0.dp) {
-                                Modifier.fillMaxWidth().height(pagerHeight)
+                                Modifier
+                                    .fillMaxWidth()
+                                    .height(pagerHeight)
                             } else {
                                 Modifier.fillMaxWidth()
                             }
@@ -213,10 +218,14 @@ fun ChallengeJoinedDetailScreen(
                         if (page == 0) {
                             val localDensity = LocalDensity.current
                             ChallengeJoinedDetailPage(
-                                modifier = Modifier.fillMaxWidth().wrapContentHeight().onGloballyPositioned { coordinates ->
-                                    pagerHeight = with(localDensity) { coordinates.size.height.toDp() }
-                                    Timber.e("pagerHeight : $pagerHeight")
-                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .wrapContentHeight()
+                                    .onGloballyPositioned { coordinates ->
+                                        pagerHeight =
+                                            with(localDensity) { coordinates.size.height.toDp() }
+                                        Timber.e("pagerHeight : $pagerHeight")
+                                    },
                                 challengeData = challengeData,
                                 challengers = challengers,
                                 userData = userData,
@@ -404,12 +413,6 @@ private fun ChallengeJoinedDetailPage(
             challengeData = challengeData,
             clickListener = clickListener
         )
-//        Divider(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(1.dp)
-//                .background(Color(0xffebebeb))
-//        )
         Spacer(modifier = Modifier.height(24.dp))
         if (challengers != null) {
             Challengers(
@@ -511,8 +514,23 @@ private fun ChallengeJoinedDescription(
                 lineHeight = dpToSp(dp = 19.6.dp)
             )
         }
-
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(16.dp))
+        RedCardInfo(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(33.dp),
+            onClick = {
+                clickListener?.onClickRedCardInfo()
+            }
+        )
+        Spacer(modifier = Modifier.height(24.dp))
+        Divider(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(Color(0xffebebeb))
+        )
+        Spacer(modifier = Modifier.height(24.dp))
         if (!challengeData.caution.isNullOrEmpty()) {
             Text(
                 text = "인증 방법 및 주의사항",
@@ -529,6 +547,13 @@ private fun ChallengeJoinedDescription(
         }
         if (challengeData.is_verification_photo == 1) {
             ChallengePhotoAuthentication()
+            Divider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(Color(0xffebebeb))
+            )
+            Spacer(modifier = Modifier.height(24.dp))
         }
         if (challengeData.min_deposit_amount > 0) {
             Text(
@@ -562,7 +587,7 @@ private fun ChallengeJoinedDescription(
             )
         } else {
             Text(
-                text = "목표 달성률 및 상금",
+                text = "목표 달성률 및 리워즈",
                 style = myTypography.bold,
                 fontSize = dpToSp(dp = 18.dp)
             )
@@ -648,7 +673,7 @@ fun Challengers(
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
-        if (totalUserCount > 10) {
+//        if (totalUserCount > 10) {
             Spacer(modifier = Modifier.height(17.dp))
             FlatBorderButton(
                 modifier = Modifier
@@ -659,7 +684,7 @@ fun Challengers(
                     clickListener?.onClickShowAllChallengers("")
                 }
             )
-        }
+//        }
         Spacer(modifier = Modifier.height(32.dp))
     }
 }
@@ -687,31 +712,6 @@ fun ChallengeAuthPage(
     } else {
         Column(modifier = Modifier.fillMaxWidth()) {
             Spacer(modifier = Modifier.height(33.dp))
-//            FlowRow(
-//                modifier = Modifier.fillMaxWidth(),
-//                crossAxisSpacing = 8.dp,
-//                mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween
-//            ) {
-//                repeat(challengeVerifiedList.size) { index ->
-//                    val item = challengeVerifiedList[index]
-//                    val cnt = if (item.type == "staying_time") item.staying_time_cnt else item.cnt
-//                    val time =
-//                        when (item.type) {
-//                            "staying_time" -> Utils.convertDate(item.verified_date)
-//                            "checkin" -> Utils.convertDate(item.checkin_date)
-//                            else -> Utils.convertDate9(item.updated_date, true)
-//                        }
-//                    CertificationImageItem(
-//                        modifier = Modifier.fillMaxWidth(0.49f),
-//                        imageUrl = item.imageFile?.path.toString(),
-//                        username = item.user?.getUserName().toString(),
-//                        date = time,
-//                        count = cnt,
-//                        type = item.type,
-//                        onClick = { clickListener?.onClickAuthItemCard() }
-//                    )
-//                }
-//            }
             val column = 2
             val rows = if (challengeVerifiedList.isEmpty()) 0 else 1 + (challengeVerifiedList.count() - 1) / column
             for (i in 0 until rows) {
@@ -725,19 +725,22 @@ fun ChallengeAuthPage(
                             val cnt = if (item.type == "staying_time") item.staying_time_cnt else item.cnt
                             val time =
                                 when (item.type) {
-                                    "staying_time" -> Utils.convertDate(item.verified_date)
+                                    "staying_time" -> Utils.convertDate2(item.verified_date)
                                     "checkin" -> Utils.convertDate(item.checkin_date)
-                                    else -> Utils.convertDate9(item.updated_date, true)
+                                    else -> Utils.convertDate9(item.created_date, true)
                                 }
+
                             CertificationImageItem(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .weight(1f),
                                 imageUrl = item.imageFile?.path.toString(),
                                 username = item.user?.getUserName().toString(),
+                                userImageUrl = item.user?.imageFile?.thumbnail_path.toString(),
                                 date = time,
                                 count = cnt,
                                 type = item.type,
+                                stayingTime = item.staying_time,
                                 onClick = { clickListener?.onClickAuthItemCard() }
                             )
                             if (columnIndex == 0) {
