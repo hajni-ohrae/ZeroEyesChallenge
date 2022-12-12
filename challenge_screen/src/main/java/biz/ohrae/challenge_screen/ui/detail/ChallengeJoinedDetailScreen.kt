@@ -230,7 +230,7 @@ private fun BookmarkButton(
         mutableStateOf(challengeData.is_like == 1)
     }
     val buttonName = Utils.getAuthButtonName(challengeData)
-    val enabled = challengeData.is_verification_photo == 1 && !challengeData.isAuthed()
+    val enabled = challengeData.is_verification_photo == 1 && !challengeData.isAuthed() && challengeData.achievement_percent.toDouble() < 100.0f
 
     FlatBookMarkButton(
         modifier = Modifier

@@ -1,6 +1,5 @@
 package biz.ohrae.challenge_screen.ui.detail
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -50,7 +49,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.dynamiclinks.ktx.*
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 import timber.log.Timber
 import java.net.URLEncoder
 
@@ -169,7 +167,6 @@ class ChallengeDetailActivity : BaseActivity() {
             startDestination = startPage
         ) {
             composable(ChallengeDetailNavScreen.Detail.route) {
-
                 ChallengeDetailScreen(
                     challengeData = challengeData,
                     challengers = challengers,
@@ -180,7 +177,6 @@ class ChallengeDetailActivity : BaseActivity() {
                 )
             }
             composable(ChallengeDetailNavScreen.JoinedDetail.route) {
-
                 ChallengeJoinedDetailScreen(
                     challengeData = challengeData,
                     challengers = challengers,
@@ -247,9 +243,11 @@ class ChallengeDetailActivity : BaseActivity() {
         myChallengeViewModel.getUserData()
         viewModel.isLoading(true)
         viewModel.getChallenge(challengeId.toString())
-        viewModel.getChallengeResult(challengeId.toString())
         viewModel.getUserByChallenge(challengeId.toString(), 1, 11)
         viewModel.getVerifyList(challengeId.toString(), isInit = true, "desc", 0)
+        if (viewModel.isFinished.value == true) {
+            viewModel.getChallengeResult(challengeId.toString())
+        }
     }
 
     override fun onBack() {

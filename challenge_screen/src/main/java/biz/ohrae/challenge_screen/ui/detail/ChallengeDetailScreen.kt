@@ -19,7 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import biz.ohrae.challenge.ui.components.avatar.Avatar
+import biz.ohrae.challenge.ui.components.avatar.circularAvatar
 import biz.ohrae.challenge.ui.components.button.ArrowTextButton2
 import biz.ohrae.challenge.ui.components.button.FlatBookMarkButton
 import biz.ohrae.challenge.ui.components.card.RedCardInfo
@@ -39,6 +39,7 @@ import biz.ohrae.challenge.util.challengeVerificationPeriodMap
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.model.user.User
 import biz.ohrae.challenge_repo.util.prefs.Utils
+import timber.log.Timber
 
 @Preview(
     showBackground = true,
@@ -435,7 +436,9 @@ fun ChallengeHost(challengeData: ChallengeData) {
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Avatar(
+            Timber.e("challengeData.owner?.imageFile?.path : ${challengeData.owner?.imageFile?.path}")
+            circularAvatar(
+                url = challengeData.owner?.imageFile?.path ?: "",
                 modifier = Modifier.size(48.dp)
             )
             Spacer(modifier = Modifier.width(16.dp))
