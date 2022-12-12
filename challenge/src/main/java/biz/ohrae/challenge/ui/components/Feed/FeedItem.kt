@@ -49,6 +49,7 @@ private fun FeedItemGallery() {
 @Composable
 fun FeedItem(
     imageUrl: String = "",
+    avatarUrl:String ="",
     username: String = "아이오",
     count: Int = 1,
     date: String = "",
@@ -75,7 +76,8 @@ fun FeedItem(
             ) {
                 circularAvatar(
                     modifier = Modifier
-                        .size(40.dp)
+                        .size(40.dp),
+                    url = avatarUrl
                 )
                 Spacer(modifier = Modifier.width(7.dp))
                 Column() {
