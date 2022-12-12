@@ -49,7 +49,7 @@ private fun CategorySurFaceGallery() {
 fun CategorySurFace(
     modifier: Modifier = Modifier,
     text: String = "무료",
-    textStyle: TextStyle = myTypography.bold,
+    textStyle: TextStyle = myTypography.extraBold,
     backgroundColor: Color,
     textColor: Color,
 ) {

@@ -181,15 +181,17 @@ private fun ChallengeList(
                     item.period.toString(),
                     weekType.toString(),
                     item.summary?.total_user_cnt,
-                    getAuthType(item),
-                    getOpenType(item),
-                    ageType.toString(),
                     onClick = {
                         Timber.e("chall id : ${item.id}")
                         clickListener?.onClickChallengeItem(it)
                     },
                     imagePath = item.owner?.imageFile?.thumbnail_path ?: "",
-                    item.owner?.main_color
+                    item.owner?.main_color,
+                    isFree = item.min_deposit_amount == 0,
+                    ageType = ageType,
+                    isPhoto = item.is_verification_photo == 1,
+                    isTime = item.is_verification_time == 1,
+                    isCheckIn = item.is_verification_checkin == 1,
                 )
             }
         }
