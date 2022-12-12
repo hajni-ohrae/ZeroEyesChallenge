@@ -351,7 +351,7 @@ class MyChallengeActivity : BaseActivity() {
                 if (!type.isNullOrEmpty()) {
                     if (type == "all") filterType = ""
                     challengeMainViewModel.selectUserFilter(type)
-                    challengeMainViewModel.getUserChallengeList(filterType, isInit = true)
+                    challengeMainViewModel.getUserChallengeList(filterType)
                 }
             }
 
@@ -360,7 +360,7 @@ class MyChallengeActivity : BaseActivity() {
                 if (!type.isNullOrEmpty()) {
                     if (type == "all") filterType = ""
                     myChallengeViewModel.selectRewardFilter(type)
-                    myChallengeViewModel.getRewardHistory(filterType)
+                    myChallengeViewModel.getRewardHistory(filterType,false)
                 }
             }
 
@@ -434,7 +434,7 @@ class MyChallengeActivity : BaseActivity() {
     }
 
     private fun onBottomReached() {
-        challengeMainViewModel.getUserChallengeList("all", isInit = true)
+        challengeMainViewModel.getUserChallengeList("",false)
     }
 }
 
