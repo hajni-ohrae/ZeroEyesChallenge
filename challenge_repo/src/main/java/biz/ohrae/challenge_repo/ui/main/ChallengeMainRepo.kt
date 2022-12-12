@@ -87,7 +87,7 @@ class ChallengeMainRepo @Inject constructor(
 
     suspend fun getUserChallengeList(
         type: String="",
-        page: Int,
+        page: Int = 1,
     ): Flow<FlowResult> {
         val accessToken = prefs.getUserData()?.access_token
         val response =
