@@ -362,8 +362,11 @@ class ChallengeDetailActivity : BaseActivity() {
                 } else {
                     if (viewModel.isJoined.value == true) "join" else ""
                 }
+                val isRanked = (viewModel.challengeData.value?.all_user_verification_cnt ?: 0) > 0
                 intent.putExtra("type", type)
                 intent.putExtra("authType", authType)
+                intent.putExtra("isRanked", isRanked)
+
                 startActivity(intent)
             }
 

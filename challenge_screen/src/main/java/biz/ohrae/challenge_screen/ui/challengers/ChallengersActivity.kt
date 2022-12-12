@@ -29,6 +29,7 @@ class ChallengersActivity: BaseActivity() {
     private var type: String? = null
     private var authType: String? = null
     private var userId: String? = null
+    private var isRanked: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +37,8 @@ class ChallengersActivity: BaseActivity() {
         challengeId = intent.getStringExtra("challengeId")
         type = intent.getStringExtra("type")
         authType = intent.getStringExtra("authType")
+        isRanked = intent.getBooleanExtra("isRanked", false)
+
         userId = prefs.getUserData()?.id
 
         setContent {
@@ -65,7 +68,7 @@ class ChallengersActivity: BaseActivity() {
             modifier = Modifier.fillMaxSize()
         ) {
             BackButton(
-                title = "랭킹",
+                title = if (isRanked) "랭킹" else "챌린저스",
                 isShare = false,
                 onBack = { onBack() },
                 onShare = {}
@@ -97,6 +100,7 @@ class ChallengersActivity: BaseActivity() {
                     userId = userId,
                     type = type,
                     authType = authType,
+                    isRanked = isRanked,
                     onBottomReached = {
                         onBottomReached()
                     }

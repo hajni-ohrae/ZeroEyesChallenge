@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import biz.ohrae.challenge.ui.components.list_item.ChallengersItem
 import biz.ohrae.challenge.ui.components.list_item.RankItem
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
@@ -30,6 +31,7 @@ fun ChallengersScreen(
     userId: String? = null,
     type: String? = "",
     authType: String? = "",
+    isRanked: Boolean = false,
     onBottomReached: () -> Unit = {},
 ) {
     if (challengers == null) {
@@ -63,30 +65,41 @@ fun ChallengersScreen(
                 )
             }
         } else {
-            items(challengers) { item ->
-                val count = if (authType == "photo") {
-                    "${item.inChallenge?.get(0)?.verification_cnt.toString()}회"
-                } else if (authType == "checkin") {
-                    "${item.inChallenge?.get(0)?.verification_cnt.toString()}일"
-                } else {
-                    ""
-                }
+            if (isRanked) {
+                items(challengers) { item ->
+                    val count = if (authType == "photo") {
+                        "${item.inChallenge?.get(0)?.verification_cnt.toString()}회"
+                    } else if (authType == "checkin") {
+                        "${item.inChallenge?.get(0)?.verification_cnt.toString()}일"
+                    } else {
+                        ""
+                    }
 
-                val timeDays = if (authType == "staying_time") {
-                    "${item.inChallenge?.get(0)?.verification_time.toString()}회"
-                } else {
-                    ""
-                }
+                    val timeDays = if (authType == "staying_time") {
+                        item.inChallenge?.get(0)?.verification_time.toString()
+                    } else {
+                        ""
+                    }
 
-                RankItem(
-                    userName = item.getUserName(),
-                    rank = item.inChallenge?.get(0)?.ranking.toString(),
-                    profileImage = item.imageFile?.path,
-                    isMe = userId == item.id,
-                    count = count,
-                    timeDays = timeDays
-                )
-                Spacer(modifier = Modifier.height(16.dp))
+                    RankItem(
+                        userName = item.getUserName(),
+                        rank = item.inChallenge?.get(0)?.ranking.toString(),
+                        profileImage = item.imageFile?.path,
+                        isMe = userId == item.id,
+                        count = count,
+                        timeDays = timeDays
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+            } else {
+                items(challengers) { item ->
+                    ChallengersItem(
+                        userName = item.getUserName(),
+                        imagePath = item.imageFile?.path,
+                        isMe = userId == item.id
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
             }
         }
     }
