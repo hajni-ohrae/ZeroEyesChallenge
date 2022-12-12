@@ -1,6 +1,7 @@
 package biz.ohrae.challenge_screen.ui.detail
 
 import android.net.Uri
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
@@ -33,7 +34,7 @@ class ChallengeDetailViewModel @Inject constructor(
     private val gson: Gson
 ) : BaseViewModel(prefs) {
     private val _challengeData = MutableLiveData<ChallengeData>()
-    private val _challengeVerifiedList = MutableLiveData<MutableList<VerifyData>>()
+    private val _challengeVerifiedList = MutableLiveData<SnapshotStateList<VerifyData>>()
     private val _verifyListState = MutableLiveData<VerifyListState>()
     private val _challengeVerificationState = MutableLiveData<VerificationState>()
     private val _challengers = MutableLiveData<List<User>>()
@@ -150,7 +151,6 @@ class ChallengeDetailViewModel @Inject constructor(
             val page = _verifiedListPage.value ?: 1
 
             repo.getVerifyList(id, isOrder, isMine, page).flowOn(Dispatchers.IO).collect {
-                Timber.e("getVerifyList result : ${gson.toJson(it.data)}")
                 if (it.data != null) {
                     val pager = it.pager
 
@@ -158,7 +158,7 @@ class ChallengeDetailViewModel @Inject constructor(
                         _verifiedListPage.value = page + 1
                     }
 
-                    val challengeVerifiedList = it.data as MutableList<VerifyData>
+                    val challengeVerifiedList = it.data as SnapshotStateList<VerifyData>
 
                     if (isInit) {
                         _challengeVerifiedList.value = challengeVerifiedList

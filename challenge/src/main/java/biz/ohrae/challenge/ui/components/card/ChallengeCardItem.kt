@@ -126,6 +126,7 @@ fun ChallengeCardItem(
     openType: String = "",
     ageType: String = "",
     onClick: (id: String) -> Unit,
+    imagePath: String = "",
     nicknameColor: String? = null
 ) {
     val nameColor = nicknameColor ?: DefaultBlack
@@ -199,7 +200,8 @@ fun ChallengeCardItem(
             ) {
                 Row() {
                     circularAvatar(
-                        Modifier.size(20.dp)
+                        modifier = Modifier.size(20.dp),
+                        url = imagePath,
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(

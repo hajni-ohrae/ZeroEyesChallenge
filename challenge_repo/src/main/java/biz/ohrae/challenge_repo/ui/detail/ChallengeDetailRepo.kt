@@ -1,5 +1,6 @@
 package biz.ohrae.challenge_repo.ui.detail
 
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import biz.ohrae.challenge_repo.data.remote.ApiService
 import biz.ohrae.challenge_repo.data.remote.NetworkResponse
 import biz.ohrae.challenge_repo.model.FlowResult
@@ -160,8 +161,8 @@ class ChallengeDetailRepo @Inject constructor(
                     val pager =
                         gson.fromJson(dataSet?.get("meta").toString(), PagerMeta::class.java)
 
-                    val listType = object : TypeToken<List<VerifyData?>?>() {}.type
-                    val verifyList = gson.fromJson<List<VerifyData>>(array, listType)
+                    val listType = object : TypeToken<SnapshotStateList<VerifyData?>?>() {}.type
+                    val verifyList = gson.fromJson<SnapshotStateList<VerifyData>>(array, listType)
 
                     flow {
                         emit(FlowResult(verifyList, "", "", pager))

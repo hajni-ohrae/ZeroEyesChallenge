@@ -188,6 +188,7 @@ private fun ChallengeList(
                         Timber.e("chall id : ${item.id}")
                         clickListener?.onClickChallengeItem(it)
                     },
+                    imagePath = item.owner?.imageFile?.thumbnail_path ?: "",
                     item.owner?.main_color
                 )
             }

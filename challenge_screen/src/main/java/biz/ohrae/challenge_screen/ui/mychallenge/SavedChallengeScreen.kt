@@ -90,6 +90,7 @@ fun SavedChallengeList(
                     getAuthType(item),
                     getOpenType(item),
                     ageType,
+                    imagePath = item.owner?.imageFile?.thumbnail_path ?: "",
                     onClick = {
                         Timber.e("chall id : ${item.id}")
                         clickListener?.onClickChallengeItem(it)

@@ -207,17 +207,19 @@ fun ChallengeJoinedDetailScreen(
                     }
                 }
             }
+            item {
+                listState.OnBottomReached {
+                    if (pagerState.currentPage == 1) {
+                        Timber.e("ChallengeJoinedDetailScreen bottom reached!!")
+                        onBottomReached()
+                    }
+                }
+            }
         }
         BookmarkButton(
             challengeData = challengeData,
             clickListener = clickListener
         )
-        listState.OnBottomReached {
-            if (pagerState.currentPage == 1) {
-                Timber.e("bottom reached!!")
-                onBottomReached()
-            }
-        }
     }
 }
 
