@@ -824,8 +824,8 @@ fun ChallengeAuthPage(
                             val time =
                                 when (item.type) {
                                     "staying_time" -> Utils.convertDate2(item.verified_date)
-                                    "checkin" -> Utils.convertDate3(item.checkin_date)
-                                    else -> Utils.convertDate9(item.created_date, true)
+                                    "checkin" -> Utils.convertDate9(item.checkin_date)
+                                    else -> Utils.convertDate9(item.created_date)
                                 }
 
                             CertificationImageItem(
