@@ -46,6 +46,7 @@ data class ChallengeData(
     val summary: Summary? = null,
     val inChallengeLike : InChallengeLike? = null,
     val is_like: Int? = null,
+    val all_user_verification_cnt: Int = 0
 ) {
     companion object {
         fun mock(id: String = "2d4033ab-244b-47f3-84e9-6af72be39d9f") = ChallengeData(
@@ -78,7 +79,8 @@ data class ChallengeData(
             verification_daily_staying_time = 1,
             is_cancelable = 1,
             is_canceled = 0,
-            is_valid = 0
+            is_valid = 0,
+            all_user_verification_cnt = 0
         )
     }
 
@@ -110,7 +112,7 @@ data class InChallenge(
     val today_verification_cnt: Int,
     val total_verification_count: Int,
     val total_verification_cnt: Int,
-    val ranking: Int?,
+    val ranking: String?,
     val is_achieved:Int,
     val is_refunded:Int,
     val is_rewards:Int,

@@ -37,7 +37,7 @@ class ChallengeDetailViewModel @Inject constructor(
     private val _challengeVerifiedList = MutableLiveData<SnapshotStateList<VerifyData>>()
     private val _verifyListState = MutableLiveData<VerifyListState>()
     private val _challengeVerificationState = MutableLiveData<VerificationState>()
-    private val _challengers = MutableLiveData<List<User>>()
+    private val _challengers = MutableLiveData<SnapshotStateList<User>>()
     private val _isJoined = MutableLiveData<Boolean>()
     private val _isFinished = MutableLiveData<Boolean>()
     private val _challengeAuthImageUri = MutableLiveData<Uri?>(null)
@@ -47,6 +47,7 @@ class ChallengeDetailViewModel @Inject constructor(
     private val _reportList = MutableLiveData<List<ReportDetail>>()
     private val _reportState = MutableLiveData<ReportListState>()
     private val _report = MutableLiveData<Boolean?>(false)
+    private val _userChallengeListPage = MutableLiveData(1)
 
     val challengeData get() = _challengeData
     val verifyListState get() = _verifyListState
@@ -62,6 +63,7 @@ class ChallengeDetailViewModel @Inject constructor(
     val reportList get() = _reportList
     val reportState get() = _reportState
     val report get() = _report
+    val userChallengeListPage get() = _userChallengeListPage
 
     fun getChallenge(id: String) {
         viewModelScope.launch {
@@ -77,7 +79,6 @@ class ChallengeDetailViewModel @Inject constructor(
                     _isFinished.value = isFinished
                     if (isJoined) {
                         val verifications = challengeData.inChallenge?.get(0)?.verificationsListed
-                        Timber.e("verifications : ${gson.toJson(verifications)}")
 
                         var successCount = 0
                         var failCount = 0
@@ -126,13 +127,26 @@ class ChallengeDetailViewModel @Inject constructor(
         }
     }
 
-    fun getUserByChallenge(id: String, page: Int = 1, count: Int = 10) {
+    fun getUserByChallenge(id: String, count: Int = 10, isInit: Boolean = false) {
         viewModelScope.launch {
+            if (isInit) {
+                _userChallengeListPage.value = 1
+            }
+            val page = _userChallengeListPage.value ?: 1
+
             repo.getUserByChallenge(id, page, count).flowOn(Dispatchers.IO).collect {
-                Timber.e("getUserByChallenge result : ${gson.toJson(it.data)}")
-                if (it.data != null) {
-                    val challengers = it.data as List<User>
-                    _challengers.value = challengers
+                it.data?.let { data ->
+                    if (it.pager?.page == page) {
+                        _userChallengeListPage.value = page + 1
+                        Timber.d("current page : ${_userChallengeListPage.value}")
+                    }
+
+                    val challengers = it.data as SnapshotStateList<User>
+                    if (isInit) {
+                        _challengers.value = challengers
+                    } else {
+                        _challengers.value?.addAll(challengers)
+                    }
                 }
             }
         }

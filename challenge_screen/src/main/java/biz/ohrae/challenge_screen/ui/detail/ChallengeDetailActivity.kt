@@ -244,7 +244,7 @@ class ChallengeDetailActivity : BaseActivity() {
         myChallengeViewModel.getUserData()
         viewModel.isLoading(true)
         viewModel.getChallenge(challengeId.toString())
-        viewModel.getUserByChallenge(challengeId.toString(), 1, 11)
+        viewModel.getUserByChallenge(challengeId.toString(), 10, true)
         viewModel.getVerifyList(challengeId.toString(), isInit = true, "desc", 0)
     }
 

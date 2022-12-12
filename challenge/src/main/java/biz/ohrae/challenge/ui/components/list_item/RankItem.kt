@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.model.list_item.RankItemData
+import biz.ohrae.challenge.ui.components.avatar.AvatarWithNumber
 import biz.ohrae.challenge.ui.components.avatar.circularAvatar
 import biz.ohrae.challenge.ui.theme.TextBlack
 import biz.ohrae.challenge.ui.theme.dpToSp
@@ -33,7 +34,7 @@ fun RankItemGallery() {
         modifier = Modifier.fillMaxSize(),
     ) {
         items(list) { rank ->
-            RankItem(rank.rank, rank.userName, rank.timeDays, rank.progress, isMe = true)
+            RankItem(rank.rank, rank.userName, rank.timeDays, rank.progress, "10회", isMe = true)
         }
     }
 }
@@ -61,22 +62,54 @@ fun RankItem(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .aspectRatio(7.2f),
+            .height(36.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth(0.866f)
-                .fillMaxHeight(0.72f),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            circularAvatar(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .aspectRatio(1f),
-                url = profileImage.toString()
-            )
+            when (rank) {
+                "1" -> {
+                    AvatarWithNumber(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .aspectRatio(1f),
+                        number = rank,
+                        url = profileImage.toString(),
+                    )
+                }
+                "2" -> {
+                    AvatarWithNumber(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .aspectRatio(1f),
+                        number = rank,
+                        url = profileImage.toString(),
+                        borderColor = Color(0xff6fcf97),
+                        numberBackgroundColor = Color(0xff1aaf5a)
+                    )
+                }
+                "3" -> {
+                    AvatarWithNumber(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .aspectRatio(1f),
+                        number = rank,
+                        url = profileImage.toString(),
+                        borderColor = Color(0xfff2994a),
+                        numberBackgroundColor = Color(0xffeb5757)
+                    )
+                }
+                else -> {
+                    circularAvatar(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .aspectRatio(1f),
+                        url = profileImage.toString()
+                    )
+                }
+            }
             Spacer(modifier = Modifier.fillMaxWidth(0.051f))
             Text(
                 text = rank,

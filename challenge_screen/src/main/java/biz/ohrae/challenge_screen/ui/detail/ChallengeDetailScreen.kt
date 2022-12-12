@@ -131,6 +131,7 @@ fun ChallengeDetailScreen(
                     challengers = challengers,
                     totalUserCount = challengeData.summary?.total_user_cnt ?: 0,
                     userData = userData,
+                    authType = Utils.getAuthTypeEnglish(challengeData),
                     clickListener = clickListener
                 )
                 Spacer(modifier = Modifier.height(32.dp))

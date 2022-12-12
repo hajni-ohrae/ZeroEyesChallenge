@@ -17,7 +17,6 @@ import androidx.navigation.compose.rememberNavController
 import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge_screen.ui.BaseActivity
-import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailNavScreen
 import biz.ohrae.challenge_screen.ui.detail.ChallengeDetailViewModel
 import biz.ohrae.challenge_screen.ui.dialog.LoadingDialog
 import dagger.hilt.android.AndroidEntryPoint
@@ -97,15 +96,21 @@ class ChallengersActivity: BaseActivity() {
                     challengeData = challengeData,
                     userId = userId,
                     type = type,
-                    authType = authType
+                    authType = authType,
+                    onBottomReached = {
+                        onBottomReached()
+                    }
                 )
             }
         }
     }
 
-
     private fun init() {
-        viewModel.getUserByChallenge(challengeId.toString())
+        viewModel.getUserByChallenge(challengeId.toString(), isInit = true)
+    }
+
+    private fun onBottomReached() {
+        viewModel.getUserByChallenge(challengeId.toString(), isInit = false)
     }
 
     override fun onBack() {

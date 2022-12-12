@@ -68,12 +68,13 @@ class ChallengeDetailRepo @Inject constructor(
                 return if (response.body.success) {
                     val dataSet = response.body.dataset?.asJsonObject
                     val array = dataSet?.get("array")?.asJsonArray
+                    val pager = gson.fromJson(dataSet?.get("meta").toString(), PagerMeta::class.java)
 
-                    val listType = object : TypeToken<List<User?>?>() {}.type
-                    val challengerList = gson.fromJson<List<User>>(array, listType)
+                    val listType = object : TypeToken<SnapshotStateList<User?>?>() {}.type
+                    val challengerList = gson.fromJson<SnapshotStateList<User>>(array, listType)
 
                     flow {
-                        emit(FlowResult(challengerList, "", ""))
+                        emit(FlowResult(challengerList, "", "", pager))
                     }
                 } else {
                     flow {

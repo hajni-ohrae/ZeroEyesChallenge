@@ -95,7 +95,7 @@ fun circularAvatar(
 @Composable
 fun AvatarWithNumber(
     modifier: Modifier = Modifier,
-    url: String = "https://avatars.githubusercontent.com/u/27887884?v=4",
+    url: String = "",
     number: String,
     backgroundColor: Color? = GrayColor7,
     borderColor: Color? = Color(0xfff2c94c),

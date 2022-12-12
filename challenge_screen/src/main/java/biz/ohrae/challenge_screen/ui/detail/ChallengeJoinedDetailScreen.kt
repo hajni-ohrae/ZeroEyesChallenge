@@ -4,7 +4,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
@@ -33,6 +32,7 @@ import biz.ohrae.challenge.ui.components.image.ImageBox
 import biz.ohrae.challenge.ui.components.list_item.ChallengersItem
 import biz.ohrae.challenge.ui.components.list_item.ProgressRatioFailItem
 import biz.ohrae.challenge.ui.components.list_item.ProgressRatioItem
+import biz.ohrae.challenge.ui.components.list_item.RankItem
 import biz.ohrae.challenge.ui.components.text.MiddleDotText
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.TextBlack
@@ -54,6 +54,7 @@ import com.google.accompanist.flowlayout.SizeMode
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -224,7 +225,6 @@ fun ChallengeJoinedDetailScreen(
                                     .onGloballyPositioned { coordinates ->
                                         pagerHeight =
                                             with(localDensity) { coordinates.size.height.toDp() }
-                                        Timber.e("pagerHeight : $pagerHeight")
                                     },
                                 challengeData = challengeData,
                                 challengers = challengers,
@@ -266,7 +266,8 @@ private fun BookmarkButton(
         mutableStateOf(challengeData.is_like == 1)
     }
     val buttonName = Utils.getAuthButtonName(challengeData)
-    val enabled = challengeData.is_verification_photo == 1 && !challengeData.isAuthed() && challengeData.achievement_percent.toDouble() < 100.0f
+    val percent = challengeData.inChallenge?.get(0)?.achievement_percent?.toDouble() ?: 0f
+    val enabled = challengeData.is_verification_photo == 1 && !challengeData.isAuthed() && percent.toDouble() < 100.0f
 
     FlatBookMarkButton(
         modifier = Modifier
@@ -415,12 +416,24 @@ private fun ChallengeJoinedDetailPage(
         )
         Spacer(modifier = Modifier.height(24.dp))
         if (challengers != null) {
-            Challengers(
-                challengers = challengers,
-                totalUserCount = challengeData.summary?.total_user_cnt ?: 0,
-                userData = userData,
-                clickListener = clickListener
-            )
+            if (challengeData.all_user_verification_cnt <= 0) {
+                Challengers(
+                    challengers = challengers,
+                    totalUserCount = challengeData.summary?.total_user_cnt ?: 0,
+                    userData = userData,
+                    authType = Utils.getAuthTypeEnglish(challengeData),
+                    clickListener = clickListener
+                )
+            } else {
+                RankedChallengers(
+                    challengers = challengers,
+                    totalUserCount = challengeData.summary?.total_user_cnt ?: 0,
+                    authType = Utils.getAuthTypeEnglish(challengeData),
+                    myRanking = challengeData.inChallenge?.get(0)?.ranking.toString(),
+                    userData = userData,
+                    clickListener = clickListener
+                )
+            }
         }
     }
 }
@@ -631,6 +644,7 @@ fun Challengers(
     challengers: List<User>,
     totalUserCount: Int,
     userData: User? = null,
+    authType: String,
     clickListener: ChallengeDetailClickListener? = null
 ) {
     Column {
@@ -681,9 +695,93 @@ fun Challengers(
                     .aspectRatio(7.1f),
                 text = "전체보기",
                 onClick = {
-                    clickListener?.onClickShowAllChallengers("")
+                    clickListener?.onClickShowAllChallengers(authType)
                 }
             )
+//        }
+        Spacer(modifier = Modifier.height(32.dp))
+    }
+}
+
+@Composable
+fun RankedChallengers(
+    challengers: List<User>,
+    totalUserCount: Int,
+    userData: User? = null,
+    authType: String,
+    myRanking: String,
+    clickListener: ChallengeDetailClickListener? = null
+) {
+    Column {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            val annotatedString = buildAnnotatedString {
+                append("현재 ")
+                withStyle(
+                    style = SpanStyle(
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xff4985f8)
+                    )
+                ) {
+                    append("${myRanking}위 ")
+                    append("${totalUserCount}명 ")
+                }
+                append("참여")
+            }
+            Text(
+                text = "랭킹",
+                color = TextBlack,
+                fontSize = dpToSp(dp = 16.dp),
+                style = myTypography.bold
+            )
+            Text(
+                text = annotatedString,
+                fontSize = dpToSp(dp = 14.dp),
+                style = myTypography.default
+            )
+        }
+        Spacer(modifier = Modifier.height(25.dp))
+        challengers.forEachIndexed { index, item ->
+            if (index < 10) {
+                val count = if (authType == "photo") {
+                    item.inChallenge?.get(0)?.verification_cnt.toString() + "회"
+                } else if (authType == "checkin") {
+                    item.inChallenge?.get(0)?.verification_cnt.toString() + "일"
+                } else {
+                    ""
+                }
+
+                val timeDays = if (authType == "staying_time") {
+                    item.inChallenge?.get(0)?.verification_time.toString()
+                } else {
+                    ""
+                }
+
+                RankItem(
+                    userName = item.getUserName(),
+                    rank = item.inChallenge?.get(0)?.ranking.toString(),
+                    count = count,
+                    timeDays = timeDays,
+                    profileImage = item.imageFile?.thumbnail_path,
+                    isMe = userData?.id == item.id
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+        }
+//        if (totalUserCount > 10) {
+        Spacer(modifier = Modifier.height(17.dp))
+        FlatBorderButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(7.1f),
+            text = "전체보기",
+            onClick = {
+                clickListener?.onClickShowAllChallengers(authType)
+            }
+        )
 //        }
         Spacer(modifier = Modifier.height(32.dp))
     }
@@ -754,36 +852,6 @@ fun ChallengeAuthPage(
                 Spacer(modifier = Modifier.height(8.dp))
             }
             Spacer(modifier = Modifier.height(92.dp))
-        }
-    }
-}
-
-private fun <T> LazyListScope.gridItems(
-    data: List<T>,
-    nColumns: Int,
-    horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
-    key: ((item: T) -> Any)? = null,
-    itemContent: @Composable BoxScope.(T) -> Unit,
-) {
-    val rows = if (data.isEmpty()) 0 else 1 + (data.count() - 1) / nColumns
-    items(rows) { rowIndex ->
-        Row(horizontalArrangement = horizontalArrangement) {
-            for (columnIndex in 0 until nColumns) {
-                val itemIndex = rowIndex * nColumns + columnIndex
-                if (itemIndex < data.count()) {
-                    val item = data[itemIndex]
-                    androidx.compose.runtime.key(key?.invoke(item)) {
-                        Box(
-                            modifier = Modifier.weight(1f, fill = true),
-                            propagateMinConstraints = true
-                        ) {
-                            itemContent.invoke(this, item)
-                        }
-                    }
-                } else {
-                    Spacer(Modifier.weight(1f, fill = true))
-                }
-            }
         }
     }
 }
