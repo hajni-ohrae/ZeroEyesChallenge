@@ -245,9 +245,6 @@ class ChallengeDetailActivity : BaseActivity() {
         viewModel.getChallenge(challengeId.toString())
         viewModel.getUserByChallenge(challengeId.toString(), 1, 11)
         viewModel.getVerifyList(challengeId.toString(), isInit = true, "desc", 0)
-        if (viewModel.isFinished.value == true) {
-            viewModel.getChallengeResult(challengeId.toString())
-        }
     }
 
     override fun onBack() {
@@ -449,6 +446,12 @@ class ChallengeDetailActivity : BaseActivity() {
             } else {
                 val errorData = viewModel.errorData.value
                 showSnackBar(errorData?.code, errorData?.message)
+            }
+        }
+
+        viewModel.isFinished.observe(this) {
+            if (it == true) {
+                viewModel.getChallengeResult(challengeId.toString())
             }
         }
     }
