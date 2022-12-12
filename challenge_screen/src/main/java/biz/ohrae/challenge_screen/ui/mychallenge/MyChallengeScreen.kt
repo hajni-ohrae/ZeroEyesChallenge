@@ -29,7 +29,6 @@ import biz.ohrae.challenge_repo.model.user.User
 import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.model.main.FilterState
 import biz.ohrae.challenge_screen.model.user.UserChallengeListState
-import biz.ohrae.challenge_screen.ui.main.MainClickListener
 import biz.ohrae.challenge_screen.util.OnBottomReached
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState

@@ -58,7 +58,8 @@ private fun CertificationImageItemGallery() {
                     item.count,
                     item.date,
                     userImageUrl = "",
-                    stayingTime = "00:00:00"
+                    stayingTime = "00:00:00",
+                    type = "checkin"
                 )
             }
         }
@@ -163,6 +164,7 @@ fun CertificationImageItem(
                         textAlign = TextAlign.Center
                     )
                 }
+
                 Spacer(modifier = Modifier.fillMaxHeight(0.068f))
             }
         }

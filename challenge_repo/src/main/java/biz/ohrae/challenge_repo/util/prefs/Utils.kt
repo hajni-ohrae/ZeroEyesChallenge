@@ -168,9 +168,9 @@ object Utils {
 
     fun convertDate3(dateStr: String): String {
         return try {
-            val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA)
-            val date = inputFormat.parse(dateStr.replace("T", " "))
-            val outputFormat = SimpleDateFormat("yy.MM.dd HH:mm", Locale.KOREA)
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
+            val date = inputFormat.parse(dateStr)
+            val outputFormat = SimpleDateFormat("yy.MM.dd\nHH:mm a", Locale.KOREA)
             outputFormat.timeZone = TimeZone.getTimeZone("Asia/Seoul")
             outputFormat.format(date!!)
         } catch (ignore: Exception) {
