@@ -157,8 +157,8 @@ fun ChallengeJoinedDetailsTitle(
         Row(verticalAlignment = Alignment.CenterVertically) {
             CategorySurFace(
                 text = if (isFree) "무료" else "유료",
-                backgroundColor = if (isFree) Color(0x33a2cc5e) else Color(0x335c94ff),
-                textColor = if (isFree) Color(0xff73b00e) else Color(0xff5c94ff)
+                backgroundColor = if (isFree) Color(0x33a2cc5e) else Color(0x33ffadad),
+                textColor = if (isFree) Color(0xff73b00e) else Color(0xffd98181)
             )
             if (isPhoto) {
                 Spacer(modifier = Modifier.width(4.dp))
