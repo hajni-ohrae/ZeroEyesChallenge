@@ -244,7 +244,7 @@ class ChallengeMainViewModel @Inject constructor(
                 _userChallengeListPage.value = 1
             }
             val page = _userChallengeListPage.value ?: 1
-            val response = challengeMainRepo.getUserChallengeList(type)
+            val response = challengeMainRepo.getUserChallengeList(type,page)
             response.flowOn(Dispatchers.IO).collect {
                 isLoading(false)
                 _isRefreshing.value = false
@@ -255,17 +255,21 @@ class ChallengeMainViewModel @Inject constructor(
                         _userChallengeListPage.value = page + 1
                         Timber.d("current page : ${_userChallengeListPage.value}")
                     }
-                    val userChallengeList = data as MutableList<ChallengeData>
+                    Timber.d("pager : ${gson.toJson(pager)}")
+
+                    val userChallengeList = data as SnapshotStateList<ChallengeData>
                     val state = userChallengeListState.value?.copy()
                     state?.let {
-                        if (isInit) {
+                        if (isInit){
                             state.userChallengeList = userChallengeList
                         } else {
+                            val list = mutableStateListOf<ChallengeData>()
                             state.userChallengeList?.addAll(userChallengeList)
+                            state.userChallengePage = pager?.page
                         }
                         _userChallengeListState.value = state
                     } ?: run {
-                        _userChallengeListState.value = UserChallengeListState(userChallengeList)
+                        _userChallengeListState.value = UserChallengeListState(userChallengeList,1)
                     }
                 } ?: run {
                     setErrorData(it.errorCode, it.errorMessage)

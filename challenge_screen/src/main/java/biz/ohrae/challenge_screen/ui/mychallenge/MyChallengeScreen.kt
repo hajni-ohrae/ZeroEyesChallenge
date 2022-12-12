@@ -206,7 +206,9 @@ fun UserChallengeList(
             )
         }
         if (userChallengeListState != null) {
-            itemsIndexed(userChallengeListState?.userChallengeList!!, key = { index, _ -> "key-$index" }) { _, item ->
+            itemsIndexed(
+                userChallengeListState?.userChallengeList!!,
+                key = { index, _ -> "key-$index" }) { _, item ->
                 val inChallenge = item.inChallenge?.get(0)
                 val buttonName = Utils.getAuthButtonName(item,true)
                 ChallengesInParticipationCard(
@@ -231,16 +233,17 @@ fun UserChallengeList(
                     isPhoto = item.is_verification_photo
                 )
             }
+            item {
+                listState.OnBottomReached {
+                    Timber.e("bottom reached!!")
+                    onBottomReached()
+                }
+            }
         }
 
         item {
             Spacer(modifier = Modifier.height(20.dp))
         }
-    }
-
-    listState.OnBottomReached {
-        Timber.e("bottom reached!!")
-        onBottomReached()
     }
 }
 

@@ -87,12 +87,11 @@ class ChallengeMainRepo @Inject constructor(
 
     suspend fun getUserChallengeList(
         type: String="",
-        page: Int = 1,
-        perPage: Int = 10,
+        page: Int,
     ): Flow<FlowResult> {
         val accessToken = prefs.getUserData()?.access_token
         val response =
-            apiService.getUserChallengeList(accessToken.toString(), page, perPage, type)
+            apiService.getUserChallengeList(accessToken.toString(), page, 10, type)
         when (response) {
             is NetworkResponse.Success -> {
                 val gson = Gson()
@@ -100,14 +99,15 @@ class ChallengeMainRepo @Inject constructor(
                 if (isSuccess) {
                     val dataset = response.body.dataset
                     dataset?.let {
-
                         val dataSet: JsonElement = dataset?.getAsJsonArray("array")!!.asJsonArray
+                        val pager =
+                            gson.fromJson(dataset.get("meta").toString(), PagerMeta::class.java)
 
-                        val listType = object : TypeToken<List<ChallengeData?>?>() {}.type
+                        val listType = object : TypeToken<SnapshotStateList<ChallengeData?>?>() {}.type
                         val userChallengeList =
-                            gson.fromJson<List<ChallengeData>>(dataSet, listType)
+                            gson.fromJson<SnapshotStateList<ChallengeData>>(dataSet, listType)
                         return flow {
-                            emit(FlowResult(userChallengeList, "", ""))
+                            emit(FlowResult(userChallengeList, "", "",pager))
                         }
                     } ?: run {
                         return flow {
