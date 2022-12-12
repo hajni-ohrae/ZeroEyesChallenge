@@ -106,7 +106,8 @@ fun VerifiedList(
                         clickListener?.onClickLike(
                             item.id,like)
                     },
-                    isLike = item.is_like
+                    isLike = item.is_like,
+                    stayingTime = item.staying_time,
                 )
             }
         }

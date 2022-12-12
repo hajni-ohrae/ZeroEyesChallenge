@@ -52,12 +52,13 @@ fun FeedItem(
     avatarUrl:String ="",
     username: String = "아이오",
     count: Int = 1,
-    date: String = "",
+    date: String = "000000",
     comment: String? = "123",
-    type: String = "photo",
+    type: String = "staying_time",
     onReport: () -> Unit = {},
     onLike: () -> Unit = {},
-    isLike: Int = 0
+    isLike: Int = 0,
+    stayingTime: String = "00000",
 ) {
     val like = isLike == 0
 
@@ -168,12 +169,24 @@ fun FeedItem(
                         text = "${count}회"
                     )
                     Spacer(modifier = Modifier.fillMaxWidth(0.025f))
-                    Text(
-                        text = date,
-                        style = myTypography.extraBold,
-                        fontSize = dpToSp(dp = 20.dp),
-                        textAlign = TextAlign.Center
-                    )
+                    Row() {
+                        Text(
+                            text = date,
+                            style = myTypography.extraBold,
+                            fontSize = dpToSp(dp = 20.dp),
+                            color = Color(0xff505050),
+                            textAlign = TextAlign.Center
+                        )
+
+                        if (type == "staying_time" && stayingTime.isNotEmpty()) {
+                            Text(
+                                text = " 누적 $stayingTime",
+                                color = Color(0xff505050),
+                                style = myTypography.extraBold,
+                                fontSize = dpToSp(dp = 20.dp),
+                            )
+                        }
+                    }
                 }
             }
 

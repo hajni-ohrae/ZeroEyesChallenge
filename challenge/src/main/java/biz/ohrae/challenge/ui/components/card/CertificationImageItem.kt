@@ -148,6 +148,7 @@ fun CertificationImageItem(
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = date,
+                    lineHeight = dpToSp(dp = 28.dp),
                     color = if (type == "photo") DefaultWhite else Color(0xff4a4a4a),
                     style = myTypography.extraBold,
                     fontSize = if (type == "photo") dpToSp(dp = 12.dp) else dpToSp(dp = 16.dp),
