@@ -3,10 +3,7 @@ package biz.ohrae.challenge_screen.ui.mychallenge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -209,7 +206,7 @@ fun UserChallengeList(
             )
         }
         if (userChallengeListState != null) {
-            items(userChallengeListState?.userChallengeList!!) { item ->
+            itemsIndexed(userChallengeListState?.userChallengeList!!, key = { index, _ -> "key-$index" }) { _, item ->
                 val inChallenge = item.inChallenge?.get(0)
                 val buttonName = Utils.getAuthButtonName(item,true)
                 ChallengesInParticipationCard(

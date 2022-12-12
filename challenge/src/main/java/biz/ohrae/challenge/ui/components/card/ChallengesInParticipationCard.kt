@@ -89,12 +89,13 @@ fun ChallengesInParticipationCard(
     todayAuth: String = "",
     isPhoto:Int = 0
 ) {
-//    val achievementRate = (count.toDouble() / maxPeople.toDouble() * 100.0).roundToInt()
-    var remainTime by remember { mutableStateOf(getRemainTime(startDay)) }
-    var isRemainTime by remember { mutableStateOf(!remainTime.startsWith("-")) }
+    var remainTime = getRemainTime(startDay)
+    var isRemainTime = !remainTime.startsWith("-")
+    var timer by remember { mutableStateOf(0) }
 
-    LaunchedEffect(remainTime) {
+    LaunchedEffect(timer) {
         delay(1000 * 60)
+        timer++
         remainTime = getRemainTime(startDay)
         isRemainTime = !remainTime.startsWith("-")
     }
