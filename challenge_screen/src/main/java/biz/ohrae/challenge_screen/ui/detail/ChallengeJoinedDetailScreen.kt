@@ -4,6 +4,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
@@ -12,7 +13,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -45,7 +48,6 @@ import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.model.detail.VerificationState
 import biz.ohrae.challenge_screen.util.OnBottomReached
 import com.google.accompanist.flowlayout.FlowCrossAxisAlignment
-import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.SizeMode
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -135,7 +137,8 @@ fun ChallengeJoinedDetailScreen(
                 ColumnForLazy {
                     TabRow(
                         modifier = Modifier
-                            .fillMaxWidth().height(56.dp),
+                            .fillMaxWidth()
+                            .height(56.dp),
                         selectedTabIndex = pagerState.currentPage,
                         backgroundColor = DefaultWhite,
                         indicator = {
@@ -187,11 +190,33 @@ fun ChallengeJoinedDetailScreen(
                         .fillMaxWidth()
                         .padding(24.dp, 0.dp)
                 ) {
+                    var pagerHeight by remember { mutableStateOf(0.dp) }
+                    var pagerModifier: Modifier by remember { mutableStateOf(Modifier) }
+
+                    LaunchedEffect(pagerState.currentPage) {
+                        pagerModifier = if (pagerState.currentPage == 0) {
+                            if (pagerHeight > 0.dp) {
+                                Modifier.fillMaxWidth().height(pagerHeight)
+                            } else {
+                                Modifier.fillMaxWidth()
+                            }
+                        } else {
+                            Modifier.fillMaxWidth()
+                        }
+                    }
+
                     HorizontalPager(
-                        count = 2, state = pagerState
+                        modifier = pagerModifier,
+                        count = 2,
+                        state = pagerState
                     ) { page ->
                         if (page == 0) {
+                            val localDensity = LocalDensity.current
                             ChallengeJoinedDetailPage(
+                                modifier = Modifier.fillMaxWidth().wrapContentHeight().onGloballyPositioned { coordinates ->
+                                    pagerHeight = with(localDensity) { coordinates.size.height.toDp() }
+                                    Timber.e("pagerHeight : $pagerHeight")
+                                },
                                 challengeData = challengeData,
                                 challengers = challengers,
                                 userData = userData,
@@ -362,13 +387,14 @@ private fun ChallengeProgressDetail(
 
 @Composable
 private fun ChallengeJoinedDetailPage(
+    modifier: Modifier = Modifier,
     challengeData: ChallengeData,
     challengers: List<User>?,
     userData: User? = null,
     verificationState: VerificationState? = null,
     clickListener: ChallengeDetailClickListener? = null
 ) {
-    Column {
+    Column(modifier = modifier) {
         Spacer(modifier = Modifier.height(32.dp))
         if (verificationState != null) {
             ChallengeProgressDetail(verificationState = verificationState)
@@ -661,32 +687,100 @@ fun ChallengeAuthPage(
     } else {
         Column(modifier = Modifier.fillMaxWidth()) {
             Spacer(modifier = Modifier.height(33.dp))
-            FlowRow(
-                modifier = Modifier.fillMaxWidth(),
-                crossAxisSpacing = 8.dp,
-                mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween
-            ) {
-                repeat(challengeVerifiedList.size) { index ->
-                    val item = challengeVerifiedList[index]
-                    val cnt = if (item.type == "staying_time") item.staying_time_cnt else item.cnt
-                    val time =
-                        when (item.type) {
-                            "staying_time" -> Utils.convertDate(item.verified_date)
-                            "checkin" -> Utils.convertDate(item.checkin_date)
-                            else -> Utils.convertDate9(item.updated_date, true)
+//            FlowRow(
+//                modifier = Modifier.fillMaxWidth(),
+//                crossAxisSpacing = 8.dp,
+//                mainAxisAlignment = FlowMainAxisAlignment.SpaceBetween
+//            ) {
+//                repeat(challengeVerifiedList.size) { index ->
+//                    val item = challengeVerifiedList[index]
+//                    val cnt = if (item.type == "staying_time") item.staying_time_cnt else item.cnt
+//                    val time =
+//                        when (item.type) {
+//                            "staying_time" -> Utils.convertDate(item.verified_date)
+//                            "checkin" -> Utils.convertDate(item.checkin_date)
+//                            else -> Utils.convertDate9(item.updated_date, true)
+//                        }
+//                    CertificationImageItem(
+//                        modifier = Modifier.fillMaxWidth(0.49f),
+//                        imageUrl = item.imageFile?.path.toString(),
+//                        username = item.user?.getUserName().toString(),
+//                        date = time,
+//                        count = cnt,
+//                        type = item.type,
+//                        onClick = { clickListener?.onClickAuthItemCard() }
+//                    )
+//                }
+//            }
+            val column = 2
+            val rows = if (challengeVerifiedList.isEmpty()) 0 else 1 + (challengeVerifiedList.count() - 1) / column
+            for (i in 0 until rows) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    for (columnIndex in 0 until column) {
+                        val itemIndex = i * column + columnIndex
+                        if (itemIndex < challengeVerifiedList.count()) {
+                            val item = challengeVerifiedList[itemIndex]
+                            val cnt = if (item.type == "staying_time") item.staying_time_cnt else item.cnt
+                            val time =
+                                when (item.type) {
+                                    "staying_time" -> Utils.convertDate(item.verified_date)
+                                    "checkin" -> Utils.convertDate(item.checkin_date)
+                                    else -> Utils.convertDate9(item.updated_date, true)
+                                }
+                            CertificationImageItem(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .weight(1f),
+                                imageUrl = item.imageFile?.path.toString(),
+                                username = item.user?.getUserName().toString(),
+                                date = time,
+                                count = cnt,
+                                type = item.type,
+                                onClick = { clickListener?.onClickAuthItemCard() }
+                            )
+                            if (columnIndex == 0) {
+                                Spacer(modifier = Modifier.width(8.dp))
+                            }
+                        } else {
+                            Spacer(Modifier.weight(1f, fill = true))
                         }
-                    CertificationImageItem(
-                        modifier = Modifier.fillMaxWidth(0.49f),
-                        imageUrl = item.imageFile?.path.toString(),
-                        username = item.user?.getUserName().toString(),
-                        date = time,
-                        count = cnt,
-                        type = item.type,
-                        onClick = { clickListener?.onClickAuthItemCard() }
-                    )
+                    }
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+            Spacer(modifier = Modifier.height(92.dp))
+        }
+    }
+}
+
+private fun <T> LazyListScope.gridItems(
+    data: List<T>,
+    nColumns: Int,
+    horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
+    key: ((item: T) -> Any)? = null,
+    itemContent: @Composable BoxScope.(T) -> Unit,
+) {
+    val rows = if (data.isEmpty()) 0 else 1 + (data.count() - 1) / nColumns
+    items(rows) { rowIndex ->
+        Row(horizontalArrangement = horizontalArrangement) {
+            for (columnIndex in 0 until nColumns) {
+                val itemIndex = rowIndex * nColumns + columnIndex
+                if (itemIndex < data.count()) {
+                    val item = data[itemIndex]
+                    androidx.compose.runtime.key(key?.invoke(item)) {
+                        Box(
+                            modifier = Modifier.weight(1f, fill = true),
+                            propagateMinConstraints = true
+                        ) {
+                            itemContent.invoke(this, item)
+                        }
+                    }
+                } else {
+                    Spacer(Modifier.weight(1f, fill = true))
                 }
             }
-            Spacer(modifier = Modifier.height(100.dp))
         }
     }
 }
