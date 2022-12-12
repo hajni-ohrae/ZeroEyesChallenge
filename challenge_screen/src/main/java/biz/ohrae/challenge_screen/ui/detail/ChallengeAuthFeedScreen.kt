@@ -1,36 +1,25 @@
 package biz.ohrae.challenge_screen.ui.detail
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import biz.ohrae.challenge.ui.components.card.CertificationImageItem
-import biz.ohrae.challenge.ui.components.card.ChallengeCardItem
 import biz.ohrae.challenge.ui.components.filter.FeedFilter
 import biz.ohrae.challenge.ui.components.filter.FeedItem
-import biz.ohrae.challenge.ui.theme.dpToSp
-import biz.ohrae.challenge.ui.theme.myTypography
-import biz.ohrae.challenge.util.challengeVerificationPeriodMap
 import biz.ohrae.challenge_repo.model.verify.VerifyData
 import biz.ohrae.challenge_repo.util.prefs.Utils
-import biz.ohrae.challenge_screen.model.main.MainScreenState
-import biz.ohrae.challenge_screen.ui.mychallenge.MyChallengeClickListener
 import biz.ohrae.challenge_screen.util.OnBottomReached
-import com.google.accompanist.flowlayout.FlowMainAxisAlignment
-import com.google.accompanist.flowlayout.FlowRow
-import com.google.accompanist.pager.ExperimentalPagerApi
 import timber.log.Timber
 
 
-@OptIn(ExperimentalPagerApi::class)
 @Preview(
     showBackground = true,
     widthDp = 360,
@@ -39,7 +28,8 @@ import timber.log.Timber
 @Composable
 fun ChallengeAuthFeedScreen(
     challengeVerifiedList: List<VerifyData>? = null,
-    clickListener: ChallengeAuthFeedClickListener? = null
+    clickListener: ChallengeAuthFeedClickListener? = null,
+    onBottomReached: () -> Unit = {},
 ) {
     var isMine by remember { mutableStateOf(false) }
     var isOrder by remember { mutableStateOf(false) }
@@ -57,7 +47,11 @@ fun ChallengeAuthFeedScreen(
             isOrder = isOrder,
         )
         Column(modifier = Modifier.fillMaxWidth()) {
-            VerifiedList(challengeVerifiedList, clickListener)
+            VerifiedList(
+                challengeVerifiedList = challengeVerifiedList,
+                clickListener = clickListener,
+                onBottomReached = onBottomReached
+            )
         }
     }
 }
@@ -75,20 +69,21 @@ fun VerifiedList(
         LazyColumn(
             modifier = Modifier,
             verticalArrangement = Arrangement.spacedBy(8.dp),
+            state = listState,
         ) {
             items(challengeVerifiedList) { item ->
                 val cnt = if (item.type == "staying_time") item.staying_time_cnt else item.cnt
                 val time =
                     when (item.type) {
                         "staying_time" -> Utils.convertDate2(item.verified_date)
-                        "checkin" -> Utils.convertDate9(item.checkin_date,true)
-                        else -> Utils.convertDate9(item.created_date,true)
+                        "checkin" -> Utils.convertDate9(item.checkin_date, true)
+                        else -> Utils.convertDate9(item.created_date, true)
                     }
 
                 FeedItem(
                     imageUrl = item.imageFile?.path.toString(),
                     avatarUrl = item.user?.imageFile?.thumbnail_path ?: "",
-                    username = item.user?.getUserName().toString(),
+                    username = item.id + " " + item.user?.getUserName().toString(),
                     date = time,
                     count = cnt,
                     comment = item.comment,
@@ -104,19 +99,17 @@ fun VerifiedList(
                     onLike = {
                         like = !like
                         clickListener?.onClickLike(
-                            item.id,like)
+                            item.id, like
+                        )
                     },
                     isLike = item.is_like,
                     stayingTime = item.staying_time,
                 )
             }
         }
-
     }
-
     listState.OnBottomReached {
         Timber.e("bottom reached!!")
         onBottomReached()
     }
-
 }

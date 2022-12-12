@@ -166,8 +166,6 @@ class ChallengeDetailViewModel @Inject constructor(
 
             repo.getVerifyList(id, isOrder, isMine, page).flowOn(Dispatchers.IO).collect {
                 if (it.data != null) {
-                    val pager = it.pager
-
                     if (it.pager?.page == page) {
                         _verifiedListPage.value = page + 1
                     }

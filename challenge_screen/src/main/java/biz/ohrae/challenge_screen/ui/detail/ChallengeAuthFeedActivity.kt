@@ -2,7 +2,6 @@ package biz.ohrae.challenge_screen.ui.detail
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.camera.core.ImageCapture
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,9 +20,6 @@ import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge_repo.model.user.User
 import biz.ohrae.challenge_screen.ui.BaseActivity
 import biz.ohrae.challenge_screen.ui.dialog.*
-import biz.ohrae.challenge_screen.ui.mychallenge.PolicyScreen
-import biz.ohrae.challenge_screen.ui.register.ChallengeCameraScreen
-import biz.ohrae.challenge_screen.ui.register.ChallengeRegisterNavScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -99,8 +95,13 @@ class ChallengeAuthFeedActivity : BaseActivity() {
             startDestination = ChallengeAuthFeedNavScreen.AuthFeed.route
         ) {
             composable(ChallengeAuthFeedNavScreen.AuthFeed.route) {
-                ChallengeAuthFeedScreen(challengeVerifiedList, authFeedClickListener)
-
+                ChallengeAuthFeedScreen(
+                    challengeVerifiedList = challengeVerifiedList,
+                    clickListener = authFeedClickListener,
+                    onBottomReached = {
+                        onBottomReached()
+                    }
+                )
             }
         }
     }
@@ -161,7 +162,6 @@ class ChallengeAuthFeedActivity : BaseActivity() {
                 viewModel.feedLike(verificationId = verificationId, like = isLike)
                 viewModel.getVerifyList(challengeId.toString(), true, order, mine)
             }
-
         }
     }
 
@@ -191,6 +191,12 @@ class ChallengeAuthFeedActivity : BaseActivity() {
             }
         })
         dialog.show(supportFragmentManager, "showDialog")
+    }
+
+    private fun onBottomReached() {
+        if ((viewModel.verifiedListPage.value ?: 1) >= 2) {
+            viewModel.getVerifyList(challengeId.toString(), isInit = false)
+        }
     }
 }
 
