@@ -735,7 +735,6 @@ fun ChallengeAuthPage(
                                     .fillMaxWidth()
                                     .weight(1f),
                                 imageUrl = item.imageFile?.path.toString(),
-                                avatarUrl = item.user?.imageFile?.thumbnail_path ?: "",
                                 username = item.user?.getUserName().toString(),
                                 userImageUrl = item.user?.imageFile?.thumbnail_path.toString(),
                                 date = time,

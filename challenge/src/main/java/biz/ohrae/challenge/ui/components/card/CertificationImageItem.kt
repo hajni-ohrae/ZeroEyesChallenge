@@ -53,11 +53,13 @@ private fun CertificationImageItemGallery() {
             items(list) { item ->
                 CertificationImageItem(
                     modifier = Modifier.fillMaxWidth(),
-                    item.imageUrl,
-                    "",
-                    item.userName,
+                    imageUrl = item.imageUrl,
+                    username = item.userName,
                     item.count,
-                    item.date)
+                    item.date,
+                    userImageUrl = "",
+                    stayingTime = "00:00:00"
+                )
             }
         }
     }
@@ -72,7 +74,6 @@ private fun CertificationImageItemGallery() {
 fun CertificationImageItem(
     modifier: Modifier = Modifier,
     imageUrl: String = "",
-    avatarUrl:String = "",
     username: String = "",
     count: Int = 0,
     date: String = "",
@@ -115,8 +116,6 @@ fun CertificationImageItem(
                     circularAvatar(
                         modifier = Modifier
                             .fillMaxHeight()
-                            .aspectRatio(1f),
-                        url = avatarUrl,
                             .aspectRatio(1f),
                         url = userImageUrl
                     )
