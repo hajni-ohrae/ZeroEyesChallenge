@@ -11,7 +11,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 @Composable
 fun CameraPreview(
     modifier: Modifier = Modifier,
-    scaleType: PreviewView.ScaleType = PreviewView.ScaleType.FILL_CENTER,
+    scaleType: PreviewView.ScaleType = PreviewView.ScaleType.FILL_START,
     onUseCase: (UseCase) -> Unit = { }
 ) {
     AndroidView(

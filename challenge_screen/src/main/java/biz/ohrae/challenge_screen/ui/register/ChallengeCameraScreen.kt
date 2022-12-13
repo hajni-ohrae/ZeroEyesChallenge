@@ -98,7 +98,7 @@ private fun ConstraintCamera(
         CameraButton(
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(3f)
+                .height(120.dp)
                 .constrainAs(button) {
                     bottom.linkTo(parent.bottom)
                 },
@@ -127,7 +127,7 @@ private fun ConstraintCamera(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.15f)
+                .height(120.dp)
                 .background(Color(0xff0d0d0d).copy(alpha = 0.5f))
                 .constrainAs(box1) {
                     top.linkTo(parent.top)
@@ -136,7 +136,7 @@ private fun ConstraintCamera(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.15f)
+                .height(120.dp)
                 .background(Color(0xff0d0d0d).copy(alpha = 0.5f))
                 .constrainAs(box2) {
                     bottom.linkTo(button.top)

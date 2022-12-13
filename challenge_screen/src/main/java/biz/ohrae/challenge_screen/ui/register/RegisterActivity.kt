@@ -1,6 +1,5 @@
 package biz.ohrae.challenge_screen.ui.register
 
-import android.Manifest
 import android.annotation.TargetApi
 import android.content.ContentValues
 import android.content.Context

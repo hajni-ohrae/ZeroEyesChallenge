@@ -127,7 +127,7 @@ class ChallengeDetailActivity : BaseActivity() {
                 onBack = { onBack() },
                 onShare = {
                     onShare()
-                }
+                },
             )
             Column(
                 modifier = Modifier
