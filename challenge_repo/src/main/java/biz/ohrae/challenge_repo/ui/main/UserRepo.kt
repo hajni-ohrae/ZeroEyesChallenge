@@ -261,6 +261,7 @@ class UserRepo @Inject constructor(
 
                 val listType = object : TypeToken<SnapshotStateList<PaymentHistoryData?>?>() {}.type
                 val paymentHistoryList = gson.fromJson<SnapshotStateList<PaymentHistoryData>>(array, listType)
+
                 return flow {
                     emit(FlowResult(paymentHistoryList, "", "",pager))
                 }

@@ -8,9 +8,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.ui.components.header.BackButton
+import biz.ohrae.challenge.ui.components.list_item.getLabelText
+import biz.ohrae.challenge.ui.components.list_item.getLabelTextColor
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
@@ -28,23 +31,37 @@ import biz.ohrae.challenge_screen.ui.participation.ParticipationScreen
 fun PaymentDetailScreen(
     paymentHistoryData: PaymentHistoryData? = null
 ) {
-    val type = paymentHistoryData?.type == "deposit"
+    val isCancel = paymentHistoryData?.type == "deposit"
+    val type = paymentHistoryData?.type.toString()
 
     BackButton(onBack = { }, "결제 상세")
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .background(DefaultWhite)) {
-        Column(modifier = Modifier
+    Column(
+        modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xfff8f8f8))) {
+            .background(DefaultWhite)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(0xfff8f8f8))
+                .padding(24.dp, 18.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
             Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(24.dp, 18.dp),
+                modifier = Modifier,
                 text = "이용내역",
                 style = myTypography.bold,
                 fontSize = dpToSp(dp = 14.dp),
                 color = Color(0xff707070)
+            )
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                text = getLabelText(type),
+                style = myTypography.bold,
+                fontSize = dpToSp(dp = 14.dp),
+                color = getLabelTextColor(type),
+                textAlign = TextAlign.Right,
             )
         }
         Column(modifier = Modifier.padding(24.dp)) {
@@ -88,9 +105,11 @@ fun PaymentDetailScreen(
                 )
             }
         }
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .background(Color(0xfff8f8f8))) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(0xfff8f8f8))
+        ) {
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -116,7 +135,7 @@ fun PaymentDetailScreen(
                 )
                 Text(
                     text =
-                    if (type) {
+                    if (isCancel) {
                         "${Utils.numberToString(paymentHistoryData?.paid_amount.toString())}원"
                     } else {
                         if (paymentHistoryData?.paid_amount.toString() == "0")
@@ -143,7 +162,7 @@ fun PaymentDetailScreen(
                 )
                 Text(
                     text =
-                    if (type) {
+                    if (isCancel) {
                         "${Utils.numberToString(paymentHistoryData?.rewards_amount.toString())}원"
                     } else {
                         if (paymentHistoryData?.rewards_amount.toString() == "0")
@@ -171,13 +190,13 @@ fun PaymentDetailScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = if (type) "총 결제금액" else "총 환불금액",
+                    text = if (isCancel) "총 결제금액" else "총 결제 취소 금액",
                     style = myTypography.w700,
                     fontSize = dpToSp(dp = 14.dp),
                     color = Color(0xff707070)
                 )
                 Text(
-                    text = if (type) {
+                    text = if (isCancel) {
                         "${Utils.numberToString(paymentHistoryData?.amount.toString())}원"
                     } else {
                         if (paymentHistoryData?.amount.toString() == "0")
@@ -187,7 +206,7 @@ fun PaymentDetailScreen(
                     },
                     style = myTypography.extraBold,
                     fontSize = dpToSp(dp = 14.dp),
-                    color = Color(0xffff0000)
+                    color = getLabelTextColor(type)
                 )
             }
             Spacer(modifier = Modifier.height(10.dp))
@@ -221,7 +240,7 @@ fun PaymentDetailScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "결제일시",
+                    text = if (isCancel) "결제일시" else "결제 취소 일시",
                     style = myTypography.w700,
                     fontSize = dpToSp(dp = 14.dp),
                     color = Color(0xff707070)

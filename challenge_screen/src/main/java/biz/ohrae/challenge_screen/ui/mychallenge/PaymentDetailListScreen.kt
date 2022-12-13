@@ -89,8 +89,8 @@ fun PaymentDetailList(
                     amount = Utils.numberToString(item.amount.toString()),
                     reward = Utils.numberToString(item.rewards_amount.toString()),
                     cardAmount = Utils.numberToString(item.paid_amount.toString()),
-                    isCanceled = type,
-                    onClick = { clickListener?.onClickPaymentItem(item) }
+                    onClick = { clickListener?.onClickPaymentItem(item) },
+                    type = item.type
                 )
             }
             item {

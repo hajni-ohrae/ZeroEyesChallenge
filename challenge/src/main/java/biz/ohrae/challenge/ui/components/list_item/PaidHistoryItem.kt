@@ -15,6 +15,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import biz.ohrae.challenge.ui.components.card.CategorySurFace
+import biz.ohrae.challenge.ui.components.label.ProgressLabel
 import biz.ohrae.challenge.ui.theme.TextBlack
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
@@ -53,7 +55,6 @@ private fun PaidHistoryItemGallery() {
             date = "2022.04.25  09:33",
             title = "책읽기 챌린지",
             amount = "0",
-            isCanceled = true,
         )
     }
 }
@@ -61,28 +62,38 @@ private fun PaidHistoryItemGallery() {
 @Composable
 fun PaidHistoryItem(
     modifier: Modifier = Modifier,
+    type: String = "",
     date: String,
     title: String,
     amount: String,
     reward: String = "",
     cardAmount: String = "",
-    isCanceled: Boolean = false,
     onClick: () -> Unit = {}
 ) {
-    val priceColor = if (isCanceled) {
-        remember { mutableStateOf(Color(0xff4985f8)) }
-    } else {
-        remember { mutableStateOf(Color(0xff6c6c6c)) }
-    }
+
+    val isCanceled = type == "deposit"
+
     Column(
         modifier = modifier.clickable { onClick() }
     ) {
         Spacer(modifier = Modifier.height(19.dp))
-        Text(
-            text = date,
-            style = myTypography.default,
-            fontSize = dpToSp(dp = 14.dp)
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            ProgressLabel(
+                text = getLabelText(type),
+                backgroundColor = getLabelBackColor(type),
+                textColor = getLabelTextColor(type),
+            )
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = date,
+                style = myTypography.default,
+                fontSize = dpToSp(dp = 14.dp),
+                textAlign = TextAlign.Right,
+            )
+        }
         Spacer(modifier = Modifier.height(8.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -102,7 +113,7 @@ fun PaidHistoryItem(
                 textAlign = TextAlign.Right,
                 text = "${amount}원",
                 style = myTypography.bold,
-                color = priceColor.value,
+                color = getLabelTextColor(type),
                 fontSize = dpToSp(dp = 16.dp)
             )
         }
@@ -132,34 +143,33 @@ fun PaidHistoryItem(
                 fontSize = dpToSp(dp = 14.dp)
             )
         }
-        if (!reward.isNullOrEmpty() && reward != "0") {
-            Spacer(modifier = Modifier.height(8.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = if (isCanceled) "리워즈 결제" else "리워즈 결제 취소",
-                    style = myTypography.default,
-                    color = TextBlack,
-                    fontSize = dpToSp(dp = 14.dp)
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                Text(
-                    text = if (isCanceled) {
+        Spacer(modifier = Modifier.height(8.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = if (isCanceled) "리워즈 결제" else "리워즈 결제 취소",
+                style = myTypography.default,
+                color = TextBlack,
+                fontSize = dpToSp(dp = 14.dp)
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Text(
+                text = if (isCanceled) {
+                    "${reward}원"
+                } else {
+                    if (reward == "0")
                         "${reward}원"
-                    } else {
-                        if (reward == "0")
-                            "${reward}원"
-                        else
-                            "-${reward}원"
-                    },
-                    style = myTypography.default,
-                    color = TextBlack,
-                    fontSize = dpToSp(dp = 14.dp)
-                )
-            }
+                    else
+                        "-${reward}원"
+                },
+                style = myTypography.default,
+                color = TextBlack,
+                fontSize = dpToSp(dp = 14.dp)
+            )
         }
+
         Spacer(modifier = Modifier.height(19.dp))
     }
     Divider(
@@ -168,4 +178,38 @@ fun PaidHistoryItem(
             .height(1.dp)
             .background(Color(0xfffafafa))
     )
+}
+
+
+fun getLabelText(type: String): String {
+    return when (type) {
+        "deposit" -> "참여신청"
+        "challenge_cancel" -> "참여취소"
+        "refund" -> "환급"
+        else -> {
+            ""
+        }
+    }
+}
+
+fun getLabelBackColor(type: String): Color {
+    return when (type) {
+        "deposit" -> Color(0xfff8f8f8)
+        "challenge_cancel" -> Color(0xffffefef)
+        "refund" -> Color(0xfff9f3fd)
+        else -> {
+            Color(0xfff8f8f8)
+        }
+    }
+}
+
+fun getLabelTextColor(type: String): Color {
+    return when (type) {
+        "deposit" -> Color(0xff4985f8)
+        "challenge_cancel" -> Color(0xffff0000)
+        "refund" -> Color(0xff9d00ff)
+        else -> {
+            Color(0xff4985f8)
+        }
+    }
 }
