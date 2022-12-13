@@ -1,7 +1,6 @@
 package biz.ohrae.challenge_screen.ui.mychallenge
 
 import AccountAuthScreen
-import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -26,7 +25,6 @@ import androidx.navigation.compose.rememberNavController
 import biz.ohrae.challenge.ui.components.header.BackButton
 import biz.ohrae.challenge.ui.theme.ChallengeInTheme
 import biz.ohrae.challenge.ui.theme.DefaultWhite
-import biz.ohrae.challenge_repo.model.user.PaymentData
 import biz.ohrae.challenge_repo.model.user.PaymentHistoryData
 import biz.ohrae.challenge_repo.model.user.User
 import biz.ohrae.challenge_repo.util.PermissionUtils
@@ -80,13 +78,18 @@ class MyChallengeActivity : BaseActivity() {
 
         challengeId = intent.getStringExtra("challengeId")
         challengeMainViewModel.selectFilter("all")
+        challengeMainViewModel.getUserChallengeList("", isInit = true)
+
         initClickListeners()
         observeViewModels()
         initLauncher()
     }
 
-    private fun init() {
-        challengeMainViewModel.getUserChallengeList("", isInit = true)
+    private fun init(refreshUserChallengeList: Boolean) {
+        if (refreshUserChallengeList) {
+            challengeMainViewModel.selectFilter("all")
+            challengeMainViewModel.getUserChallengeList("", isInit = true)
+        }
         challengeMainViewModel.getChallengeList("", "", "", "", "1", "", isInit = true)
         myChallengeViewModel.getRedCardList(isInit = true)
         myChallengeViewModel.getPaymentHistory(isInit = true)
@@ -128,7 +131,7 @@ class MyChallengeActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
 
-        init()
+        init(false)
     }
 
     override fun onBack() {
@@ -171,7 +174,7 @@ class MyChallengeActivity : BaseActivity() {
                     },
                     onRefresh = {
                         challengeMainViewModel.isRefreshing(true)
-                        init()
+                        init(true)
                     }
                 )
             }
@@ -234,7 +237,7 @@ class MyChallengeActivity : BaseActivity() {
                     },
                     onRefresh = {
                         challengeMainViewModel.isRefreshing(true)
-                        init()
+                        init(true)
                     })
             }
             composable(MyChallengeNavScreen.RedCard.route) {
@@ -404,7 +407,7 @@ class MyChallengeActivity : BaseActivity() {
                             inclusive = true
                         }
                     }
-                    init()
+                    init(true)
                     showSnackBar("출금신청이 완료되었습니다.")
                 }
             }
@@ -423,8 +426,6 @@ class MyChallengeActivity : BaseActivity() {
         intent.putExtra("challengeId", id)
         intent.putExtra("isPhoto", isPhoto)
         startActivity(intent)
-        challengeMainViewModel.selectFilter("all")
-
     }
 
     private fun authOrWithdraw(userData: User) {
