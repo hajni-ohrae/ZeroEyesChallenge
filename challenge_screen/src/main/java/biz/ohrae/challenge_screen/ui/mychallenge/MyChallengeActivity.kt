@@ -361,7 +361,7 @@ class MyChallengeActivity : BaseActivity() {
             override fun onClickRewardFilterType(type: String) {
                 rewardFilterType = type
                 if (!type.isNullOrEmpty()) {
-                    if (type == "all") filterType = ""
+                    if (type == "all") rewardFilterType = ""
                     myChallengeViewModel.selectRewardFilter(type)
                     myChallengeViewModel.getRewardHistory(rewardFilterType,true)
                 }
