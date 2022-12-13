@@ -157,7 +157,7 @@ fun ChallengeFinishedScreen(
                 }
                 Spacer(modifier = Modifier.height(18.dp))
             }
-            if (verificationState != null) {
+            if (verificationState != null && !verificationState.verifications.isNullOrEmpty()) {
                 ChallengeProgressFinishDetail(verificationState)
             }
 
@@ -315,6 +315,7 @@ private fun ChallengeProgressFinishDetail(
     verificationState: VerificationState
 ) {
     Column {
+        Spacer(modifier = Modifier.height(16.dp))
         Row {
             Text(
                 text = "인증성공 ${verificationState.successCount}개",
