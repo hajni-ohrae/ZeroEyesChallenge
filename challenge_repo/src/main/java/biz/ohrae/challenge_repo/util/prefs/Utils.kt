@@ -836,4 +836,13 @@ object Utils {
             }
         }
     }
+
+    fun getTimeDays(timeDays: String): String {
+        val split = timeDays.split(":")
+        return if (split.size >= 2) {
+            "${split[0]}시간 ${split[1]}분"
+        } else {
+            timeDays
+        }
+    }
 }

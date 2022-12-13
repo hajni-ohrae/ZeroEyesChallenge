@@ -54,7 +54,6 @@ import com.google.accompanist.flowlayout.SizeMode
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
-import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -687,7 +686,7 @@ fun Challengers(
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
-//        if (totalUserCount > 10) {
+//        if (totalUserCount > 10 || BuildConfig.DEBUG) {
             Spacer(modifier = Modifier.height(17.dp))
             FlatBorderButton(
                 modifier = Modifier
@@ -755,7 +754,7 @@ fun RankedChallengers(
                 }
 
                 val timeDays = if (authType == "staying_time") {
-                    item.inChallenge?.get(0)?.verification_time.toString()
+                    Utils.getTimeDays(item.inChallenge?.get(0)?.verification_time.toString())
                 } else {
                     ""
                 }
@@ -771,17 +770,17 @@ fun RankedChallengers(
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
-//        if (totalUserCount > 10) {
-        Spacer(modifier = Modifier.height(17.dp))
-        FlatBorderButton(
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(7.1f),
-            text = "전체보기",
-            onClick = {
-                clickListener?.onClickShowAllChallengers(authType)
-            }
-        )
+//        if (totalUserCount > 10 || BuildConfig.DEBUG) {
+            Spacer(modifier = Modifier.height(17.dp))
+            FlatBorderButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(7.1f),
+                text = "전체보기",
+                onClick = {
+                    clickListener?.onClickShowAllChallengers(authType)
+                }
+            )
 //        }
         Spacer(modifier = Modifier.height(32.dp))
     }

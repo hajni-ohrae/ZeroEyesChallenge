@@ -110,14 +110,14 @@ fun RankItem(
                     )
                 }
             }
-            Spacer(modifier = Modifier.fillMaxWidth(0.051f))
+            Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = rank,
                 style = myTypography.extraBold,
                 fontSize = dpToSp(dp = 14.dp),
                 color = TextBlack
             )
-            Spacer(modifier = Modifier.fillMaxWidth(0.051f))
+            Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = name,
                 style = myTypography.default,
@@ -132,7 +132,7 @@ fun RankItem(
                     fontSize = dpToSp(dp = 14.dp),
                     color = TextBlack
                 )
-                Spacer(modifier = Modifier.fillMaxWidth(0.051f))
+                Spacer(modifier = Modifier.width(12.dp))
             }
             if (count.isNotEmpty()) {
                 Text(
@@ -141,7 +141,7 @@ fun RankItem(
                     fontSize = dpToSp(dp = 14.dp),
                     color = TextBlack
                 )
-                Spacer(modifier = Modifier.fillMaxWidth(0.051f))
+                Spacer(modifier = Modifier.width(12.dp))
             }
             if (progress.isNotEmpty()) {
                 Text(

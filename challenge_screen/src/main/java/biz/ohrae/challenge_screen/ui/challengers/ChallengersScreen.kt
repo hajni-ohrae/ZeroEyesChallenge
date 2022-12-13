@@ -17,6 +17,7 @@ import biz.ohrae.challenge.ui.components.list_item.RankItem
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.model.user.User
+import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.util.OnBottomReached
 import timber.log.Timber
 
@@ -53,7 +54,7 @@ fun ChallengersScreen(
                 val timeDays = when (authType) {
                     "photo" -> "${item.inChallenge?.get(0)?.verification_cnt.toString()}회"
                     "checkin" -> "${item.inChallenge?.get(0)?.verification_cnt.toString()}일"
-                    else -> item.inChallenge?.get(0)?.verification_time.toString()
+                    else -> Utils.getTimeDays(item.inChallenge?.get(0)?.verification_time.toString())
                 }
                 RankItem(
                     userName = item.getUserName(),
@@ -76,7 +77,7 @@ fun ChallengersScreen(
                     }
 
                     val timeDays = if (authType == "staying_time") {
-                        item.inChallenge?.get(0)?.verification_time.toString()
+                        Utils.getTimeDays(item.inChallenge?.get(0)?.verification_time.toString())
                     } else {
                         ""
                     }
