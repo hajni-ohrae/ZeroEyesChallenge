@@ -147,7 +147,7 @@ fun ChallengeFinishedScreen(
                         style = myTypography.w500,
                     )
                     Text(
-                        text = "${challengeData?.inChallenge?.get(0)?.verification_time} ",
+                        text = Utils.getTimeDays(challengeData.inChallenge?.get(0)?.verification_time.toString()),
                         fontSize = dpToSp(dp = 16.dp),
                         style = myTypography.bold,
                     )
@@ -230,12 +230,13 @@ private fun MyRewardsAndResults(
         }
         Spacer(modifier = Modifier.height(16.dp))
         if (challengeData?.is_verification_photo == 0) {
-            val title = if (challengeData?.is_verification_checkin == 1) "평균 출석일" else "평균 이용시간"
+            val title = if (challengeData.is_verification_checkin == 1) "평균 출석일" else "평균 이용시간"
             val content =
-                if (challengeData?.is_verification_checkin == 1)
-                    "${challengeData?.summary?.average_verification_cnt ?: 0}일"
-                else
-                    challengeData?.summary?.average_verification_time ?: ""
+                if (challengeData.is_verification_checkin == 1) {
+                    "${challengeData.summary?.average_verification_cnt ?: 0}일"
+                } else {
+                    Utils.getTimeDays(challengeData.summary?.average_verification_time.toString())
+                }
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,

@@ -838,6 +838,10 @@ object Utils {
     }
 
     fun getTimeDays(timeDays: String): String {
+        if (timeDays == "null") {
+            return ""
+        }
+
         val split = timeDays.split(":")
         return if (split.size >= 2) {
             "${split[0]}시간 ${split[1]}분"
