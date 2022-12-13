@@ -48,7 +48,7 @@ fun ParticipationCancelResultScreen(
             )
             Spacer(modifier = Modifier.height(24.dp))
             Text(
-                text = "카드결제 취소 내역",
+                text = "취소 내역",
                 color = TextBlack,
                 fontSize = dpToSp(dp = 18.dp),
                 style = myTypography.bold
@@ -79,7 +79,26 @@ fun ParticipationCancelResultScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "환불 금액",
+                    text = "카드 취소 금액",
+                    style = myTypography.bold,
+                    fontSize = dpToSp(dp = 16.dp),
+                    color = Color(0xffc6c6c6)
+                )
+                Text(
+                    text = "${Utils.numberFormat(challengeData.inChallenge?.get(0)?.deposit_amount)}원",
+                    style = myTypography.bold,
+                    fontSize = dpToSp(dp = 16.dp),
+                    color = Color(0xff4985f8)
+                )
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "리워즈 취소 금액",
                     style = myTypography.bold,
                     fontSize = dpToSp(dp = 16.dp),
                     color = Color(0xffc6c6c6)
