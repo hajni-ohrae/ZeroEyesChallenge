@@ -18,7 +18,8 @@ import biz.ohrae.challenge.ui.components.list_item.RedCardHistoryItem
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
-import biz.ohrae.challenge_screen.model.user.RedCardListState
+import biz.ohrae.challenge_repo.model.user.RedCardListState
+import biz.ohrae.challenge_repo.model.user.RedCardState
 import biz.ohrae.challenge_screen.util.OnBottomReached
 import timber.log.Timber
 
@@ -60,7 +61,7 @@ fun RedCardScreen(
                 backgroundColor = Color(0xfffbefef),
                 title = "레드카드",
                 titleColor = Color(0xff6c6c6c),
-                content = if (redCardListState?.redCardList == null) "0" else "${redCardListState.redCardList.size.toString()}",
+                content = redCardListState?.totalRedCard.toString(),
                 contentColor = Color(0xffff0000)
             )
             Spacer(modifier = Modifier.height(21.dp))
@@ -79,24 +80,24 @@ fun RedCardScreen(
 @Composable
 fun RedCardList(
     onBottomReached: () -> Unit = {},
-    redCardListState: RedCardListState? = null
+    redCardListState: RedCardListState? = null,
 ) {
     val listState = rememberLazyListState()
 
-    if (redCardListState?.redCardList != null) {
+    if (redCardListState?.redCardState != null) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(24.dp, 0.dp),
         ) {
-            items(redCardListState?.redCardList!!) { item ->
+            items(redCardListState?.redCardState!!) { item ->
                 RedCardHistoryItem(
                     modifier = Modifier
                         .fillMaxWidth()
                         .defaultMinSize(minHeight = 99.dp),
-                    date = item.canceled_date,
-                    title = item.reason,
-                    content = item.canceled_reason
+                    date = item.canceled_date ?: "",
+                    title = item.reason ?: "",
+                    content = item.canceled_reason ?: ""
                 )
                 Divider(
                     modifier = Modifier
@@ -104,6 +105,12 @@ fun RedCardList(
                         .height(1.dp)
                         .background(Color(0xfffafafa))
                 )
+            }
+            item {
+                listState.OnBottomReached {
+                    Timber.e("bottom reached!!")
+                    onBottomReached()
+                }
             }
         }
     } else {
@@ -120,8 +127,4 @@ fun RedCardList(
         )
     }
 
-    listState.OnBottomReached {
-        Timber.e("bottom reached!!")
-        onBottomReached()
-    }
 }

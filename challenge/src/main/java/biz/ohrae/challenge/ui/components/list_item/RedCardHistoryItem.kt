@@ -51,9 +51,9 @@ private fun RedCardHistoryItemGallery() {
 @Composable
 fun RedCardHistoryItem(
     modifier: Modifier = Modifier,
-    date: String,
-    title: String,
-    content: String
+    date: String = "",
+    title: String = "",
+    content: String =""
 ) {
     Column(
         modifier = modifier.padding(0.dp, 16.dp)

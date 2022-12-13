@@ -119,7 +119,7 @@ interface ApiService {
         @Header("x-access-token") accessToken: String,
         @Query("page") page: Int,
         @Query("per_page") count: Int,
-    ): NetworkResponse<Result, Error>
+    ): NetworkResponse<Result2, Error>
 
     @GET(Routes.GET_ALL_BLOCK)
     suspend fun getAllBlock(

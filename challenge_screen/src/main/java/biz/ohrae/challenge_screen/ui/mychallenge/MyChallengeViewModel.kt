@@ -1,24 +1,19 @@
 package biz.ohrae.challenge_screen.ui.mychallenge
 
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import biz.ohrae.challenge.ui.components.dropdown.DropDownItem
-import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.model.user.*
 import biz.ohrae.challenge_repo.ui.main.UserRepo
 import biz.ohrae.challenge_repo.ui.mychallenge.MyChallengeRepo
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
-import biz.ohrae.challenge_screen.model.user.RedCard
-import biz.ohrae.challenge_screen.model.user.RedCardListState
 import biz.ohrae.challenge_screen.ui.BaseViewModel
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -60,17 +55,6 @@ class MyChallengeViewModel @Inject constructor(
         _accountScreenState.value = AccountAuthScreenState("확인", "register")
     }
 
-    fun getAllBlock() {
-        viewModelScope.launch {
-            val response = userRepo.getAllBlock()
-            response.flowOn(Dispatchers.IO).collect {
-                it.data?.let { data ->
-                    val challengeList = data as List<RedCardState>
-                }
-            }
-        }
-    }
-
     fun getRedCardList(
         isInit: Boolean = false,
     ) {
@@ -79,18 +63,36 @@ class MyChallengeViewModel @Inject constructor(
                 _userRedCardListPage.value = 1
             }
             val page = _userRedCardListPage.value ?: 1
+
             val response = userRepo.getRedCardList()
             response.flowOn(Dispatchers.IO).collect {
                 it.data?.let { data ->
-                    val pager = it.pager
 
+                    val pager = it.pager
                     if (it.pager?.page == page) {
                         _userRedCardListPage.value = page + 1
                     }
 
-                    val redCardState = data as List<RedCard>
-                    val state = RedCardListState(redCardState)
-                    _redCardListState.value = state
+                    val redCardList = it.data as SnapshotStateList<RedCardState>
+                    val state = redCardListState.value?.copy()
+                    val totalCount = pager?.total ?: 0
+                    state?.let {
+                        if (isInit) {
+                            state.redCardState = redCardList
+                        } else {
+                            state.redCardState?.addAll(redCardList)
+                            state.redCardPage = pager?.page
+                        }
+                        _redCardListState.value = state
+                    } ?: run {
+                        _redCardListState.value = RedCardListState(
+                            redCardState = redCardList,
+                            redCardPage = 1,
+                            totalRedCard = totalCount
+                        )
+                    }
+                } ?: run {
+                    setErrorData(it.errorCode, it.errorMessage)
                 }
             }
         }
@@ -115,9 +117,9 @@ class MyChallengeViewModel @Inject constructor(
                     }
                     val paymentHistoryState = it.data as SnapshotStateList<PaymentHistoryData>
 
-                    if(isInit) {
+                    if (isInit) {
                         _paymentHistoryState.value = paymentHistoryState
-                    } else{
+                    } else {
                         _paymentHistoryState.value?.addAll(paymentHistoryState)
                     }
                 }
@@ -142,8 +144,10 @@ class MyChallengeViewModel @Inject constructor(
         }
     }
 
-    fun getRewardHistory(type: String,
-                         isInit: Boolean = false,) {
+    fun getRewardHistory(
+        type: String,
+        isInit: Boolean = false,
+    ) {
         viewModelScope.launch {
             if (isInit) {
                 _rewardListPage.value = 1

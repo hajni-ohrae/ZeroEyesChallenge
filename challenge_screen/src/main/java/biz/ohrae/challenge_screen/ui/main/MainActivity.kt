@@ -44,8 +44,7 @@ import timber.log.Timber
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
     companion object {
-        //on_going필터 추가되면
-        const val MAIN_USER_FILTER: String = ""
+        const val MAIN_USER_FILTER: String = "on_going"
     }
     private lateinit var viewModel: ChallengeMainViewModel
     private lateinit var myChallengeViewModel: MyChallengeViewModel

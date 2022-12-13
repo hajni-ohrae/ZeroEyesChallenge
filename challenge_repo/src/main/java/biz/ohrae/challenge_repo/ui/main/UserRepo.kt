@@ -213,10 +213,16 @@ class UserRepo @Inject constructor(
 
         when (response) {
             is NetworkResponse.Success -> {
-                val redCardList =
-                    gson.fromJson(response.body.dataset, RedCardState::class.java)
+                val dataSet = response.body.dataset?.asJsonObject
+                val array = dataSet?.get("array")?.asJsonArray
+                val pager =
+                    gson.fromJson(dataSet?.get("meta").toString(), PagerMeta::class.java)
+
+                val listType = object : TypeToken<SnapshotStateList<RedCardState?>?>() {}.type
+                val redCardList = gson.fromJson<SnapshotStateList<RedCardState>>(array, listType)
+
                 return flow {
-                    emit(FlowResult(redCardList, "", ""))
+                    emit(FlowResult(redCardList, "", "",pager))
                 }
             }
             else -> {

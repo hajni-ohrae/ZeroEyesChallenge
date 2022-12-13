@@ -232,7 +232,7 @@ class MyChallengeActivity : BaseActivity() {
                             "",
                             "1",
                             "",
-                            isInit = true
+                            isInit = false
                         )
                     },
                     onRefresh = {
@@ -243,9 +243,9 @@ class MyChallengeActivity : BaseActivity() {
             composable(MyChallengeNavScreen.RedCard.route) {
                 RedCardScreen(
                     clickListener = myChallengeClickListener,
-                    redCardListState,
+                    redCardListState = redCardListState,
                     onBottomReached = {
-                        myChallengeViewModel.getRedCardList(isInit = true)
+                        myChallengeViewModel.getRedCardList(isInit = false)
                     })
             }
             composable(MyChallengeNavScreen.Policy.route) {
