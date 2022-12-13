@@ -62,7 +62,7 @@ interface ApiService {
     suspend fun cancelChallenge(
         @Header("x-access-token") accessToken: String,
         @Path("challenge_id") challengeId: String,
-    ): NetworkResponse<Result, Error>
+    ): NetworkResponse<Result2, Error>
 
     @GET(Routes.GET_USERS_BY_CHALLENGE)
     suspend fun getUsersByChallenge(

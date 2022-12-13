@@ -7,6 +7,7 @@ import android.text.format.DateUtils
 import androidx.compose.ui.graphics.Color
 import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
+import biz.ohrae.challenge_repo.model.participation.ParticipationResult
 import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
@@ -848,5 +849,17 @@ object Utils {
         } else {
             timeDays
         }
+    }
+
+    fun getPaidMethod(participationResult: ParticipationResult): String {
+        val result = mutableListOf<String>()
+        if(!participationResult.card_name.isNullOrEmpty()) {
+            result.add("${participationResult.card_name} (신용카드)")
+        }
+        if (participationResult.rewards_amount > 0) {
+            result.add("리워즈")
+        }
+
+        return result.joinToString(" + ")
     }
 }

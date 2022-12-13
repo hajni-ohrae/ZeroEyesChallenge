@@ -74,7 +74,7 @@ class ParticipationRepo @Inject constructor(
                     }
                 } else {
                     flow {
-                        emit(FlowResult(null, "", ""))
+                        emit(FlowResult(null, response.body.code, response.body.message))
                     }
                 }
             }
@@ -95,12 +95,13 @@ class ParticipationRepo @Inject constructor(
         when (response) {
             is NetworkResponse.Success -> {
                 return if (response.body.success) {
+                    val cancelResult = gson.fromJson(response.body.dataset, ParticipationResult::class.java)
                     flow {
-                        emit(FlowResult(true, "", ""))
+                        emit(FlowResult(cancelResult, "", ""))
                     }
                 } else {
                     flow {
-                        emit(FlowResult(false, response.body.code, response.body.message))
+                        emit(FlowResult(null, response.body.code, response.body.message))
                     }
                 }
             }

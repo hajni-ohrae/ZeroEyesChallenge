@@ -171,6 +171,8 @@ class ParticipationActivity : BaseActivity() {
                     onBack()
                 }
                 val challengeData by detailViewModel.challengeData.observeAsState()
+                val cancelResult by viewModel.cancelResult.observeAsState()
+
                 if (challengeData != null) {
                     ParticipationCancelResultScreen(
                         challengeData = challengeData!!,
@@ -280,7 +282,7 @@ class ParticipationActivity : BaseActivity() {
 
         viewModel.cancelResult.observe(this) { result ->
             viewModel.isLoading(false)
-            if (result == true && !isFreeChallenge) {
+            if (result != null && !isFreeChallenge) {
                 navController.navigate(ChallengeParticipationNavScreen.ParticipationCancelResult.route)
             }
         }

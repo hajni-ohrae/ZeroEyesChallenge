@@ -23,7 +23,7 @@ class ParticipationViewModel @Inject constructor(
     private val prefs: SharedPreference,
     private val gson: Gson
 ) : BaseViewModel(prefs) {
-    private val _cancelResult = MutableLiveData<Boolean?>()
+    private val _cancelResult = MutableLiveData<ParticipationResult?>()
     private val _participationResult = MutableLiveData<ParticipationResult>()
     private val _paidInfo = MutableLiveData<PaidInfo>()
 
@@ -49,11 +49,12 @@ class ParticipationViewModel @Inject constructor(
     fun cancelChallenge(challengeData: ChallengeData) {
         viewModelScope.launch {
             val response = participationRepo.cancelChallenge(challengeData)
-            response.flowOn(Dispatchers.IO).collect {
-                val result = it.data as Boolean?
-                _cancelResult.value = result
-                if (result != true) {
-                    setErrorData(it.errorCode, it.errorMessage)
+            response.flowOn(Dispatchers.IO).collect { result ->
+                result.data?.let {
+                    _cancelResult.value = it as ParticipationResult
+                } ?: run {
+                    _cancelResult.value = null
+                    setErrorData(result.errorCode, result.errorMessage)
                 }
             }
         }

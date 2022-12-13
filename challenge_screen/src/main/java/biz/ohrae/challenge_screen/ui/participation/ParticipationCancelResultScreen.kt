@@ -16,6 +16,7 @@ import biz.ohrae.challenge.ui.theme.TextBlack
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
+import biz.ohrae.challenge_repo.model.participation.ParticipationResult
 import biz.ohrae.challenge_repo.util.prefs.Utils
 
 @Preview(
@@ -26,6 +27,7 @@ import biz.ohrae.challenge_repo.util.prefs.Utils
 @Composable
 fun ParticipationCancelResultScreen(
     challengeData: ChallengeData = ChallengeData.mock(),
+    cancelResult: ParticipationResult = ParticipationResult.mock(),
     clickListener: ParticipationClickListener? = null,
 ) {
     Column(
@@ -66,7 +68,7 @@ fun ParticipationCancelResultScreen(
                     color = Color(0xffc6c6c6)
                 )
                 Text(
-                    text = "신용카드",
+                    text = Utils.getPaidMethod(cancelResult),
                     style = myTypography.bold,
                     fontSize = dpToSp(dp = 16.dp),
                     color = TextBlack
@@ -85,7 +87,7 @@ fun ParticipationCancelResultScreen(
                     color = Color(0xffc6c6c6)
                 )
                 Text(
-                    text = "${Utils.numberFormat(challengeData.inChallenge?.get(0)?.deposit_amount)}원",
+                    text = "${Utils.numberFormat(cancelResult.paid_amount)}원",
                     style = myTypography.bold,
                     fontSize = dpToSp(dp = 16.dp),
                     color = Color(0xff4985f8)
@@ -104,7 +106,26 @@ fun ParticipationCancelResultScreen(
                     color = Color(0xffc6c6c6)
                 )
                 Text(
-                    text = "${Utils.numberFormat(challengeData.inChallenge?.get(0)?.deposit_amount)}원",
+                    text = "${Utils.numberFormat(cancelResult.rewards_amount)}원",
+                    style = myTypography.bold,
+                    fontSize = dpToSp(dp = 16.dp),
+                    color = Color(0xff4985f8)
+                )
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "전체 취소 금액",
+                    style = myTypography.bold,
+                    fontSize = dpToSp(dp = 16.dp),
+                    color = Color(0xffc6c6c6)
+                )
+                Text(
+                    text = "${Utils.numberFormat(cancelResult.total_deposit_amount)}원",
                     style = myTypography.bold,
                     fontSize = dpToSp(dp = 16.dp),
                     color = Color(0xff4985f8)
