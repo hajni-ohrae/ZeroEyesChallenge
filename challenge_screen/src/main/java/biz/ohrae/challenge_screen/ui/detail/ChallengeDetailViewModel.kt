@@ -115,11 +115,36 @@ class ChallengeDetailViewModel @Inject constructor(
     fun getChallengeResult(id: String) {
         viewModelScope.launch {
             repo.getChallengeResult(id).flowOn(Dispatchers.IO).collect { it ->
-                Timber.e("getResult : ${gson.toJson(it.data)}")
                 if (it.data != null) {
                     delay(100)
                     val challengeData = it.data as ChallengeData
                     _challengeData.value = challengeData
+
+                    val verifications = challengeData.inChallenge?.get(0)?.verificationsListed
+
+                    var successCount = 0
+                    var failCount = 0
+                    var remainCount = 0
+
+                    if (verifications != null) {
+                        for (verification in verifications) {
+                            when (verification.status) {
+                                Verification.SUCCESS -> successCount++
+                                Verification.FAILURE -> failCount++
+                                Verification.REMAINING -> remainCount++
+                                else -> {}
+                            }
+                        }
+                    }
+
+                    val state = VerificationState(
+                        successCount,
+                        remainCount,
+                        failCount,
+                        challengeData.inChallenge?.get(0)?.achievement_percent.toString(),
+                        verifications
+                    )
+                    _challengeVerificationState.value = state
                 } else {
                     _challengeData.value = null
                 }

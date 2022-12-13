@@ -8,7 +8,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
@@ -342,7 +345,7 @@ private fun ChallengeProgressFinishDetail(
                         ProgressRatioItem(
                             modifier = Modifier.size(itemSize),
                             isSuccess = item.status == Verification.SUCCESS,
-                            number = item.day.toString()
+                            number = (item.day + 1).toString()
                         )
                     }
                     Verification.FAILURE -> {
