@@ -334,7 +334,8 @@ fun FilterCard(
         }
         PaidFilterCard(
             modifier = Modifier, icon = R.drawable.icon_candle_2,
-            onClick = { clickListener?.onClickFilterType("filter") }, isBadge = isBadge
+            onClick = { clickListener?.onClickFilterType("filter") },
+            isBadge = isBadge
         )
     }
     Row(

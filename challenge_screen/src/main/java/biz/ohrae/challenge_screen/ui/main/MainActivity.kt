@@ -247,14 +247,12 @@ class MainActivity : BaseActivity() {
                     dialog.show(supportFragmentManager, "FilterDialog")
                 } else {
                     paymentType = filterType
-                    periodTypeValue = ""
-                    perWeekValue = ""
-                    periodValue = ""
-                    adultOnlyValue = ""
-
                     viewModel.isLoading(true)
                     viewModel.selectFilter(filterType)
-                    viewModel.getChallengeList(paymentType = filterType, "", "", "", "", "", isInit = true)
+                    viewModel.selectPeriodType(periodTypeValue)
+                    viewModel.selectPeriod(periodValue)
+                    viewModel.selectIsAdultOnly(adultOnlyValue)
+                    viewModel.getChallengeList(paymentType = filterType, periodTypeValue, perWeekValue, periodValue, "", adultOnlyValue, isInit = true)
                 }
             }
 
