@@ -23,13 +23,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.model.list_item.ChallengeItemData
 import biz.ohrae.challenge.model.state.ChallengeDetailStatus
-import biz.ohrae.challenge.ui.components.avatar.Avatar
 import biz.ohrae.challenge.ui.components.avatar.circularAvatar
 import biz.ohrae.challenge.ui.components.label.ChallengeDurationLabel
 import biz.ohrae.challenge.ui.theme.*
 import biz.ohrae.challenge_component.BuildConfig
 import biz.ohrae.challenge_component.R
-import com.bumptech.glide.util.Util
 
 @Preview(
     showBackground = true,
@@ -124,14 +122,13 @@ fun ChallengeCardItem(
     personnel: Int?,
     onClick: (id: String) -> Unit,
     imagePath: String = "",
-    nicknameColor: String? = null,
+    nickNameColor: Color,
     isFree: Boolean,
     ageType: String,
     isPhoto: Boolean,
     isTime: Boolean,
     isCheckIn: Boolean,
 ) {
-    val nameColor = nicknameColor ?: DefaultBlack
     val ageBackgroundColor = if (ageType == "18세 이상 전용") Color(0x33ffadad) else Color(0x33a2cc5e)
     val ageTextColor = if (ageType == "18세 이상 전용") Color(0xffd98181) else Color(0xff73b00e)
     Card(
@@ -228,7 +225,7 @@ fun ChallengeCardItem(
                         textAlign = TextAlign.Center,
                         style = myTypography.bold,
                         fontSize = dpToSp(dp = 12.dp),
-                        color = DefaultBlack
+                        color = nickNameColor
                     )
                 }
                 Row() {

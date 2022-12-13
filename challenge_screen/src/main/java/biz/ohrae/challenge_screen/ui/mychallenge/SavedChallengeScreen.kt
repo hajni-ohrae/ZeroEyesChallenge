@@ -11,13 +11,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.toColorInt
 import biz.ohrae.challenge.ui.components.card.ChallengeCardItem
+import biz.ohrae.challenge.ui.theme.DefaultBlack
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge.util.challengeVerificationPeriodMap
 import biz.ohrae.challenge_repo.util.prefs.Utils
-import biz.ohrae.challenge_repo.util.prefs.Utils.getAuthType
-import biz.ohrae.challenge_repo.util.prefs.Utils.getOpenType
 import biz.ohrae.challenge_screen.model.main.MainScreenState
 import biz.ohrae.challenge_screen.util.OnBottomReached
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -77,7 +77,8 @@ fun SavedChallengeList(
                 val type = challengeVerificationPeriodMap[item.verification_period_type]
                 val weekType = if (type.isNullOrEmpty()) "주${item.per_week}회 인증" else type
                 val ageType = Utils.getAgeType(item.age_limit_type.toString())
-
+                val nickNameColor =
+                    if (item.owner?.main_color != null) Color(item.owner?.main_color!!.toColorInt()) else DefaultBlack
                 ChallengeCardItem(
                     index,
                     item.id,
@@ -92,6 +93,7 @@ fun SavedChallengeList(
                         Timber.e("chall id : ${item.id}")
                         clickListener?.onClickChallengeItem(it)
                     },
+                    nickNameColor = nickNameColor,
                     isFree = item.min_deposit_amount == 0,
                     ageType = ageType,
                     isPhoto = item.is_verification_photo == 1,

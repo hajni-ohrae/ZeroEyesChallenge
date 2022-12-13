@@ -1,5 +1,6 @@
 package biz.ohrae.challenge_screen.ui.main
 
+import android.graphics.Color.parseColor
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.shape.CircleShape
@@ -16,6 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.toColorInt
 import biz.ohrae.challenge.model.filter.FilterItem
 import biz.ohrae.challenge.ui.components.card.ChallengeCardItem
 import biz.ohrae.challenge.ui.components.card.ChallengesInParticipationCard
@@ -28,8 +30,6 @@ import biz.ohrae.challenge.util.challengeVerificationPeriodMap
 import biz.ohrae.challenge_component.R
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.util.prefs.Utils
-import biz.ohrae.challenge_repo.util.prefs.Utils.getAuthType
-import biz.ohrae.challenge_repo.util.prefs.Utils.getOpenType
 import biz.ohrae.challenge_screen.model.main.FilterState
 import biz.ohrae.challenge_screen.model.main.MainScreenState
 import biz.ohrae.challenge_screen.model.user.UserChallengeListState
@@ -171,7 +171,8 @@ private fun ChallengeList(
                 val ageType = Utils.getAgeType(item.age_limit_type.toString())
                 val name =
                     if (item.owner?.nickname.isNullOrEmpty()) item.owner?.name.toString() else item.owner?.nickname.toString()
-
+                val nickNameColor =
+                    if (item.owner?.main_color != null) Color(item.owner?.main_color!!.toColorInt()) else DefaultBlack
                 ChallengeCardItem(
                     index,
                     item.id,
@@ -186,7 +187,7 @@ private fun ChallengeList(
                         clickListener?.onClickChallengeItem(it)
                     },
                     imagePath = item.owner?.imageFile?.thumbnail_path ?: "",
-                    item.owner?.main_color,
+                    nickNameColor = nickNameColor,
                     isFree = item.min_deposit_amount == 0,
                     ageType = ageType,
                     isPhoto = item.is_verification_photo == 1,
@@ -263,7 +264,7 @@ fun InChallenges(
         ) {
             val item = try {
                 userChallengeList[currentPage]
-            } catch(e: Exception) {
+            } catch (e: Exception) {
                 userChallengeList[0]
             }
             val inChallenge = item.inChallenge?.get(0)
