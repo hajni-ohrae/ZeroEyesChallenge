@@ -232,8 +232,10 @@ class ChallengeDetailActivity : BaseActivity() {
                     verificationState = challengeVerificationState,
                     challengeVerifiedList = challengeVerifiedList,
                     challengers = challengers,
-                    clickListener = detailClickListener
-
+                    clickListener = detailClickListener,
+                    onBottomReached = {
+                        onBottomReached()
+                    }
                 )
             }
 

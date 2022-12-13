@@ -233,6 +233,7 @@ fun ChallengeJoinedDetailScreen(
                             )
                         } else {
                             ChallengeAuthPage(
+                                modifier = Modifier.fillMaxWidth(),
                                 challengeVerifiedList = challengeVerifiedList,
                                 clickListener = clickListener
                             )
@@ -788,6 +789,7 @@ fun RankedChallengers(
 
 @Composable
 fun ChallengeAuthPage(
+    modifier: Modifier = Modifier,
     challengeVerifiedList: List<VerifyData>? = null,
     clickListener: ChallengeDetailClickListener? = null
 ) {
@@ -807,7 +809,7 @@ fun ChallengeAuthPage(
             )
         }
     } else {
-        Column(modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = modifier) {
             Spacer(modifier = Modifier.height(33.dp))
             val column = 2
             val rows = if (challengeVerifiedList.isEmpty()) 0 else 1 + (challengeVerifiedList.count() - 1) / column

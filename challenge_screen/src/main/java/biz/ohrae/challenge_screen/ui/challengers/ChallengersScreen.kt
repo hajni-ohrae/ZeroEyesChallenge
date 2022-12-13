@@ -64,6 +64,7 @@ fun ChallengersScreen(
                     profileImage = item.imageFile?.path,
                     isMe = userId == item.id
                 )
+                Spacer(modifier = Modifier.height(16.dp))
             }
         } else {
             if (isRanked) {
