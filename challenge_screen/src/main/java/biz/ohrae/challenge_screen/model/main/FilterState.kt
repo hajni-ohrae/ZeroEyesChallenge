@@ -52,8 +52,8 @@ data class FilterState(
             ),
             etcList = listOf(
                 FilterItem("제한없음","all"),
-                FilterItem("18세 이상 이용","adult"),
-                FilterItem("18세 미만 이용","minor"),
+                FilterItem("18세 이상 전용","adult"),
+                FilterItem("18세 미만 전용","minor"),
             )
         )
     }

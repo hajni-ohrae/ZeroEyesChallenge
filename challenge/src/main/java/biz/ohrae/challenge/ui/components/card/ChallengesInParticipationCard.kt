@@ -87,7 +87,7 @@ fun ChallengesInParticipationCard(
     buttonTextColor: Color = DefaultWhite,
     buttonColor: Color = DefaultWhite,
     todayAuth: String = "",
-    isPhoto:Int = 0
+    isPhoto: Int = 0
 ) {
     var remainTime = getRemainTime(startDay)
     var isRemainTime = !remainTime.startsWith("-")
@@ -100,9 +100,23 @@ fun ChallengesInParticipationCard(
         isRemainTime = !remainTime.startsWith("-")
     }
     val btnName = if (status == "register") remainTime.replace("-", "") + " 남음" else buttonName
-    val btnTextColor = if (status == "register") Color(0xff4985f8) else buttonTextColor
-    val btnColor = if (status == "register") DefaultWhite else buttonColor
-    val enabled = todayAuth == "0" && status == "opened" && isPhoto == 1 && achievementRate.toDouble() < 100f
+    val btnTextColor = if (achievementRate.toDouble() >= 100f) {
+        buttonTextColor
+    } else if (status == "register") {
+        Color(0xff4985f8)
+    } else {
+        buttonTextColor
+    }
+    val btnColor =
+        if (achievementRate.toDouble() >= 100f) {
+            buttonColor
+        } else if (status == "register") {
+            DefaultWhite
+        } else {
+            buttonColor
+        }
+    val enabled =
+        todayAuth == "0" && status == "opened" && isPhoto == 1 && achievementRate.toDouble() < 100f
 
     Card(
         modifier = modifier.clickable { onCardClick() },
@@ -163,7 +177,8 @@ fun ChallengesInParticipationCard(
             }
             ChallengeStatusButton(
                 modifier = Modifier
-                    .fillMaxWidth().height(40.dp),
+                    .fillMaxWidth()
+                    .height(40.dp),
                 text = btnName,
                 backgroundColor = btnColor,
                 onClick = { onClick() },

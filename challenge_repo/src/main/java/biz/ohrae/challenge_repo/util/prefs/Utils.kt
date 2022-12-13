@@ -768,7 +768,10 @@ object Utils {
     }
 
     fun getAuthBtnTextColor(challengeData: ChallengeData): Color {
-        return if (challengeData.status == "finished") {
+        return if(challengeData.inChallenge?.get(0)?.achievement_percent?.toDouble()!! >= 100.0f){
+            DefaultWhite
+        }
+        else if (challengeData.status == "finished") {
             Color(0xff6c6c6c)
         } else {
             if (challengeData.is_verification_photo == 1) {
@@ -800,7 +803,10 @@ object Utils {
     }
 
     fun getAuthBtnColor(challengeData: ChallengeData): Color {
-        return if (challengeData.status == "finished") {
+        return if(challengeData.inChallenge?.get(0)?.achievement_percent?.toDouble()!! >= 100.0f){
+            Color(0xffc7c7c7)
+        }
+        else if (challengeData.status == "finished") {
             DefaultWhite
         } else {
             if (challengeData.is_verification_photo == 1) {
