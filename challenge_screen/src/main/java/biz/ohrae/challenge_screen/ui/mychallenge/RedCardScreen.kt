@@ -20,6 +20,7 @@ import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 import biz.ohrae.challenge_repo.model.user.RedCardListState
 import biz.ohrae.challenge_repo.model.user.RedCardState
+import biz.ohrae.challenge_repo.util.prefs.Utils
 import biz.ohrae.challenge_screen.util.OnBottomReached
 import timber.log.Timber
 
@@ -95,7 +96,7 @@ fun RedCardList(
                     modifier = Modifier
                         .fillMaxWidth()
                         .defaultMinSize(minHeight = 99.dp),
-                    date = item.canceled_date ?: "",
+                    date = Utils.convertDate8(item?.created_date.toString())?: "",
                     title = item.reason ?: "",
                     content = item.canceled_reason ?: ""
                 )

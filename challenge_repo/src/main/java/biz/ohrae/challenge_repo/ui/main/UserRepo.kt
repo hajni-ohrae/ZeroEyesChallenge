@@ -207,9 +207,9 @@ class UserRepo @Inject constructor(
 
     }
 
-    suspend fun getRedCardList(): Flow<FlowResult> {
+    suspend fun getRedCardList(page: Int): Flow<FlowResult> {
         val accessToken = prefs.getUserData()?.access_token
-        val response = apiService.getRedCardList(accessToken.toString(), 1, 10)
+        val response = apiService.getRedCardList(accessToken.toString(), page, 10)
 
         when (response) {
             is NetworkResponse.Success -> {

@@ -64,7 +64,7 @@ class MyChallengeViewModel @Inject constructor(
             }
             val page = _userRedCardListPage.value ?: 1
 
-            val response = userRepo.getRedCardList()
+            val response = userRepo.getRedCardList(page)
             response.flowOn(Dispatchers.IO).collect {
                 it.data?.let { data ->
 
