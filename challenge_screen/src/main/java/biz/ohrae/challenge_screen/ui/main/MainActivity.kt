@@ -43,6 +43,10 @@ import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
+    companion object {
+        //on_going필터 추가되면
+        const val MAIN_USER_FILTER: String = ""
+    }
     private lateinit var viewModel: ChallengeMainViewModel
     private lateinit var myChallengeViewModel: MyChallengeViewModel
     private lateinit var launcher: ActivityResultLauncher<Intent>
@@ -141,7 +145,7 @@ class MainActivity : BaseActivity() {
     private fun init() {
         myChallengeViewModel.getUserData()
         viewModel.getChallengeList("", "", "", "", "", "", isInit = true)
-        viewModel.getUserChallengeList("", isInit = true)
+        viewModel.getUserChallengeList(MAIN_USER_FILTER, isInit = true)
         viewModel.selectPeriodType("")
         viewModel.selectPeriod("")
         viewModel.selectIsAdultOnly("")
@@ -156,7 +160,7 @@ class MainActivity : BaseActivity() {
     private fun refresh() {
         myChallengeViewModel.getUserData()
         viewModel.getChallengeList(paymentType, periodTypeValue, perWeekValue, periodValue, "", adultOnlyValue, isInit = true)
-        viewModel.getUserChallengeList("", isInit = true)
+        viewModel.getUserChallengeList(MAIN_USER_FILTER, isInit = true)
     }
 
     override fun initClickListeners() {
@@ -300,7 +304,7 @@ class MainActivity : BaseActivity() {
                     if (viewModel.challengeListPage.value == 1) {
                         init()
                     } else {
-                        viewModel.getUserChallengeList("", isInit = true)
+                        viewModel.getUserChallengeList(MAIN_USER_FILTER, isInit = true)
                     }
                 }
             }

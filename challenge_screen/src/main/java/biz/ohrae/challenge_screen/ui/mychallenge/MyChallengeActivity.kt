@@ -181,7 +181,7 @@ class MyChallengeActivity : BaseActivity() {
                     clickListener = myChallengeClickListener,
                     rewardList = rewardList,
                     rewardFilter = rewardFilter!!,
-                    onBottomReached = { myChallengeViewModel.getRewardHistory("",) }
+                    onBottomReached = { myChallengeViewModel.getRewardHistory(rewardFilterType,false) }
                 )
             }
             composable(MyChallengeNavScreen.Withdraw.route) {
@@ -212,7 +212,7 @@ class MyChallengeActivity : BaseActivity() {
                     paymentHistoryList = paymentHistoryState,
                     clickListener = myChallengeClickListener,
                     onBottomReached = {
-                        myChallengeViewModel.getPaymentHistory()
+                        myChallengeViewModel.getPaymentHistory(false)
                     },
                 )
             }

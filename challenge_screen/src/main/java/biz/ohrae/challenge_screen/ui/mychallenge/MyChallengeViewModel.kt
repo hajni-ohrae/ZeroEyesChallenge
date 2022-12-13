@@ -100,9 +100,9 @@ class MyChallengeViewModel @Inject constructor(
         isInit: Boolean = false,
     ) {
         if (isInit) {
-            _userRedCardListPage.value = 1
+            _userPaymentHistoryListPage.value = 1
         }
-        val page = _userRedCardListPage.value ?: 1
+        val page = _userPaymentHistoryListPage.value ?: 1
 
         viewModelScope.launch {
             val response = userRepo.getPaymentHistory(page)
