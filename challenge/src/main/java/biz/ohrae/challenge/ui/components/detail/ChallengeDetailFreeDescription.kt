@@ -77,7 +77,7 @@ fun ChallengeDetailFreeDescription(
                     fontSize = dpToSp(dp = 14.dp),
                 )
                 Text(
-                    text = product.toString(),
+                    text = product ?: "없음",
                     color = TextBlack,
                     fontSize = dpToSp(dp = 14.dp),
                 )
@@ -113,7 +113,7 @@ fun ChallengeDetailFreeDescription(
                     fontSize = dpToSp(dp = 14.dp),
                 )
                 Text(
-                    text = paymentMethod.toString(),
+                    text = paymentMethod ?: "없음",
                     color = TextBlack,
                     fontSize = dpToSp(dp = 14.dp),
                 )

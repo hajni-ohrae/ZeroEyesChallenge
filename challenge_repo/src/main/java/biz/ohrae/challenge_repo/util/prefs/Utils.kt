@@ -713,7 +713,7 @@ object Utils {
         } else (if (challengeData.is_verification_checkin == 1) {
             "출석 인증 (입실 시 자동 인증)\n이용권 필요"
         } else if (challengeData.is_verification_time == 1) {
-            "이용시간 인증 ( 입실~퇴실 시간으로 자동 인증)\n이용권 필요"
+            "이용시간 인증 (입실~퇴실 시간으로 자동 인증)\n이용권 필요"
         } else {
             "알 수 없음"
         })
