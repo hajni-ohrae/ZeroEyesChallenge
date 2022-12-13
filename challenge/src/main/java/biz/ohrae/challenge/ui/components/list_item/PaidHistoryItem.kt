@@ -184,7 +184,8 @@ fun PaidHistoryItem(
 fun getLabelText(type: String): String {
     return when (type) {
         "deposit" -> "참여신청"
-        "challenge_cancel" -> "참여취소"
+        "cancel" -> "참여취소"
+        "challenge_cancel" -> "챌린지 취소"
         "refund" -> "환급"
         else -> {
             ""
@@ -195,6 +196,7 @@ fun getLabelText(type: String): String {
 fun getLabelBackColor(type: String): Color {
     return when (type) {
         "deposit" -> Color(0xfff8f8f8)
+        "cancel" -> Color(0xffffefef)
         "challenge_cancel" -> Color(0xffffefef)
         "refund" -> Color(0xfff9f3fd)
         else -> {
@@ -206,6 +208,7 @@ fun getLabelBackColor(type: String): Color {
 fun getLabelTextColor(type: String): Color {
     return when (type) {
         "deposit" -> Color(0xff4985f8)
+        "cancel" -> Color(0xffff0000)
         "challenge_cancel" -> Color(0xffff0000)
         "refund" -> Color(0xff9d00ff)
         else -> {
