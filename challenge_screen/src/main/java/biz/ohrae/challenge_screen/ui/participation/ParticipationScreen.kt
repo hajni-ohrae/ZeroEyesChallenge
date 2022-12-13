@@ -640,9 +640,9 @@ private fun getAuthText(challengeData: ChallengeData): String {
     return if (challengeData.is_verification_photo == 1) {
         "사진 인증"
     } else if (challengeData.is_verification_time == 1) {
-        "이용시간 인증"
+        "이용시간 인증(자동 인증)"
     } else if (challengeData.is_verification_checkin == 1) {
-        "이용권 인증"
+        "출석 인증(자동 인증)"
     } else {
         "기타 인증"
     }
