@@ -291,7 +291,11 @@ fun InChallenges(
                 buttonTextColor = Utils.getAuthBtnTextColor(item),
                 buttonColor = Utils.getAuthBtnColor(item),
                 todayAuth = inChallenge?.today_verification_cnt.toString(),
-                isPhoto = item.is_verification_photo
+                isFree = item.min_deposit_amount == 0,
+                ageType = Utils.getAgeType(item.age_limit_type.toString()),
+                isPhoto = item.is_verification_photo == 1,
+                isTime = item.is_verification_time == 1,
+                isCheckIn = item.is_verification_checkin == 1,
             )
         }
         Spacer(modifier = Modifier.height(10.dp))

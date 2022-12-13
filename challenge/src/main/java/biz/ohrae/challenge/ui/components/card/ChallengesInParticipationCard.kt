@@ -41,7 +41,12 @@ private fun ChallengesInParticipationCardGallery() {
             "진행중",
             "0.00",
             Color(0x335c94ff),
-            Color(0xff5c94ff)
+            Color(0xff5c94ff),
+            isPhoto = true,
+            isCheckIn = true,
+            isFree = true,
+            isTime = true,
+            ageType = ""
         )
         Spacer(modifier = Modifier.height(20.dp))
         ChallengesInParticipationCard(
@@ -52,7 +57,12 @@ private fun ChallengesInParticipationCardGallery() {
             "모집중",
             "0.00",
             Color(0xffebfaf1),
-            Color(0xff219653)
+            Color(0xff219653),
+            isPhoto = true,
+            isCheckIn = true,
+            isFree = true,
+            isTime = true,
+            ageType = ""
         )
         Spacer(modifier = Modifier.height(20.dp))
         ChallengesInParticipationCard(
@@ -63,8 +73,12 @@ private fun ChallengesInParticipationCardGallery() {
             "완료",
             "0.00",
             Color(0xffdedede),
-
-            Color(0xff6c6c6c)
+            Color(0xff6c6c6c),
+            isPhoto = true,
+            isCheckIn = true,
+            isFree = true,
+            isTime = true,
+            ageType = ""
         )
     }
 }
@@ -87,7 +101,11 @@ fun ChallengesInParticipationCard(
     buttonTextColor: Color = DefaultWhite,
     buttonColor: Color = DefaultWhite,
     todayAuth: String = "",
-    isPhoto: Int = 0
+    isFree: Boolean,
+    ageType: String,
+    isPhoto: Boolean,
+    isTime: Boolean,
+    isCheckIn: Boolean,
 ) {
     var remainTime = getRemainTime(startDay)
     var isRemainTime = !remainTime.startsWith("-")
@@ -116,8 +134,9 @@ fun ChallengesInParticipationCard(
             buttonColor
         }
     val enabled =
-        todayAuth == "0" && status == "opened" && isPhoto == 1 && achievementRate.toDouble() < 100f
-
+        todayAuth == "0" && status == "opened" && isPhoto && achievementRate.toDouble() < 100f
+    val ageBackgroundColor = if (ageType == "18세 이상 전용") Color(0x33ffadad) else Color(0x33a2cc5e)
+    val ageTextColor = if (ageType == "18세 이상 전용") Color(0xffd98181) else Color(0xff73b00e)
     Card(
         modifier = modifier.clickable { onCardClick() },
         shape = RoundedCornerShape(10.dp),
@@ -155,6 +174,51 @@ fun ChallengesInParticipationCard(
                     .height(1.dp)
                     .background(Color(0xfffafafa))
             )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(0.dp, 5.dp)
+            ) {
+                CategorySurFace(
+                    text = if (isFree) "무료" else "유료",
+                    backgroundColor = if (isFree) Color(0x33a2cc5e) else Color(0x33ffadad),
+                    textColor = if (isFree) Color(0xff73b00e) else Color(0xffd98181)
+                )
+                if (isPhoto) {
+                    Spacer(modifier = Modifier.width(4.dp))
+                    CategorySurFace(
+                        text = "사진 인증",
+                        backgroundColor = Color(0x335c94ff),
+                        textColor = Color(0xff5c94ff)
+                    )
+                }
+                if (isTime) {
+                    Spacer(modifier = Modifier.width(4.dp))
+                    CategorySurFace(
+                        text = "이용 시간 인증",
+                        backgroundColor = Color(0x33e090d3),
+                        textColor = Color(0xffbd6fb0)
+                    )
+                }
+                if (isCheckIn) {
+                    Spacer(modifier = Modifier.width(4.dp))
+                    CategorySurFace(
+                        text = "출석 인증",
+                        backgroundColor = Color(0x66f2d785),
+                        textColor = Color(0xffe78a00)
+                    )
+                }
+                if (ageType != "제한없음") {
+                    Spacer(modifier = Modifier.width(4.dp))
+                    CategorySurFace(
+                        modifier = Modifier,
+                        text = ageType,
+                        backgroundColor = ageBackgroundColor,
+                        textColor = ageTextColor
+                    )
+
+                }
+            }
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
