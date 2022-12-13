@@ -224,11 +224,29 @@ class RegisterActivity : BaseActivity() {
             }
 
             override fun onClickChallengeCreate(goal: String, precautions: String, imgUrl: Uri?) {
-                if (goal.isEmpty()) {
+                if (goal.replace(" ", "").isEmpty()) {
                     Snackbar.make(
                         this@RegisterActivity,
                         findViewById(android.R.id.content),
                         "챌린지 목표를 입력해주세요.",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                    return
+                }
+                if (imgUrl == null) {
+                    Snackbar.make(
+                        this@RegisterActivity,
+                        findViewById(android.R.id.content),
+                        "챌린지 대표 이미지를 등록해주세요.",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                    return
+                }
+                if (precautions.replace(" ", "").replace("\n", "").isEmpty()) {
+                    Snackbar.make(
+                        this@RegisterActivity,
+                        findViewById(android.R.id.content),
+                        "인증방법 및 주의사항을 입력해주세요.",
                         Snackbar.LENGTH_SHORT
                     ).show()
                     return
