@@ -8,4 +8,5 @@ interface MainClickListener {
     fun onClickChallengeAuthItem(id: String, type: Int)
     fun onClickMyChallengeCard(id: String)
     fun onClickTopBanner()
+    fun onClickInitialization()
 }

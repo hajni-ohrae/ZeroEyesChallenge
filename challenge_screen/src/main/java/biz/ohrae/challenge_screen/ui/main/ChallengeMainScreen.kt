@@ -1,6 +1,7 @@
 package biz.ohrae.challenge_screen.ui.main
 
 import android.graphics.Color.parseColor
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.shape.CircleShape
@@ -405,6 +406,21 @@ fun FilterCard(
                     fontSize = dpToSp(dp = 13.dp),
                     style = myTypography.w500,
                 )
+            }
+            if (!filterState.selectIsAdultOnly.isNullOrEmpty() ||
+                !filterState.selectPeriod.isNullOrEmpty() ||
+                !filterState.selectVerificationPeriodType.isNullOrEmpty()
+            ) {
+                Spacer(modifier = Modifier.width(11.dp))
+                Icon(
+                    modifier = Modifier.clickable {
+                        clickListener?.onClickInitialization()
+                    },
+                    painter = painterResource(id = R.drawable.rotate_left),
+                    contentDescription = "rotate_left",
+                    tint = Color.Unspecified,
+
+                    )
             }
         }
     }

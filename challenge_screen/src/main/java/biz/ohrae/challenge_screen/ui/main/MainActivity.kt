@@ -255,7 +255,7 @@ class MainActivity : BaseActivity() {
                     viewModel.selectPeriodType(periodTypeValue)
                     viewModel.selectPeriod(periodValue)
                     viewModel.selectIsAdultOnly(adultOnlyValue)
-                    viewModel.getChallengeList(paymentType = filterType, periodTypeValue, perWeekValue, periodValue, "", adultOnlyValue, isInit = true)
+                    viewModel.getChallengeList(paymentType = paymentType, periodTypeValue, perWeekValue, periodValue, "", adultOnlyValue, isInit = true)
                 }
             }
 
@@ -284,6 +284,19 @@ class MainActivity : BaseActivity() {
             override fun onClickTopBanner() {
                 val intent = Intent(this@MainActivity, BannerDetailActivity::class.java)
                 startActivity(intent)
+            }
+
+            override fun onClickInitialization() {
+                viewModel.selectFilter("all")
+                viewModel.selectPeriodType("")
+                viewModel.selectPeriod("")
+                viewModel.selectIsAdultOnly("")
+                paymentType = "all"
+                periodTypeValue = ""
+                periodValue = ""
+                adultOnlyValue = ""
+                perWeekValue = ""
+                viewModel.getChallengeList(paymentType = paymentType, periodTypeValue, perWeekValue, periodValue, "", adultOnlyValue, isInit = true)
             }
 
             override fun onClickMyChallengeCard(id: String) {
