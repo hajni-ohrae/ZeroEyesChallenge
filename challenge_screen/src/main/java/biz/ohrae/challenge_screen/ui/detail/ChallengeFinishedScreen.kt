@@ -52,14 +52,23 @@ fun ChallengeFinishedScreen(
 ) {
     val scrollState = rememberScrollState()
     val inChallenge = challengeData?.inChallenge?.get(0)
+    val label = challengeData?.let { Utils.getRefundMethod(it) }
+    val refund = if (challengeData?.free_rewards.isNullOrEmpty()) {
+        if (inChallenge?.refund_amount!! > 0) {
+            "${
+                Utils.numberToString(inChallenge?.refund_amount.toString())
 
-    val refund =
-        (inChallenge?.refund_amount?.toDouble()!! / inChallenge?.deposit_amount?.toDouble()!!) * 100
-    val refundRate =
-        if (inChallenge?.is_refunded == 1) "${refund.toInt()}% 환급" else ""
-    val reward =
-        if (inChallenge?.is_rewards == 1) "리워즈 지급 예정" else if (inChallenge?.is_refunded == 1) "+리워즈" else ""
+            }원 환급되었어요!"
+        } else {
+            ""
+        }
+    } else {
+        "${challengeData?.inChallenge?.get(0)?.achievement_percent}%를 달성하였어요!"
+    }
 
+
+    val startDate by remember { mutableStateOf(Utils.convertDate6(challengeData?.start_date.toString())) }
+    val endDate by remember { mutableStateOf(Utils.convertDate6(challengeData?.end_date.toString())) }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -95,26 +104,53 @@ fun ChallengeFinishedScreen(
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
-                text =
-                if (challengeData?.free_rewards.isNullOrEmpty())
-                    "${
-                        Utils.numberToString(inChallenge?.refund_amount.toString())
-                    }원 환급되었어요!"
-                else
-                    "${challengeData?.inChallenge?.get(0)?.achievement_percent}%를 달성하였어요!",
+                text = refund,
                 fontSize = dpToSp(dp = 20.dp),
                 style = myTypography.extraBold,
             )
-            Spacer(modifier = Modifier.height(16.dp))
-            if (!refundRate.isNullOrEmpty() || !reward.isNullOrEmpty()) {
+            if (label!!.isNotEmpty()) {
+                Spacer(modifier = Modifier.height(16.dp))
                 ProgressLabel(
                     modifier = Modifier.align(CenterHorizontally),
-                    text = refundRate + reward,
+                    text = label,
                     backgroundColor = Color(0xfff3f8ff),
                     textColor = Color(0xff4985f8)
                 )
             }
             Spacer(modifier = Modifier.height(40.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "챌린지 기간", fontSize = dpToSp(dp = 16.dp),
+                    style = myTypography.extraBold,
+                )
+                Text(
+                    text = "$startDate ~ $endDate",
+                    fontSize = dpToSp(dp = 16.dp),
+                    style = myTypography.bold,
+                )
+            }
+            Spacer(modifier = Modifier.height(20.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "나의 랭킹", fontSize = dpToSp(dp = 16.dp),
+                    style = myTypography.extraBold,
+                )
+                Text(
+                    text = "${challengeData?.inChallenge?.get(0)?.ranking ?: ""} 위 ",
+                    fontSize = dpToSp(dp = 16.dp),
+                    style = myTypography.bold,
+                )
+            }
+            Spacer(modifier = Modifier.height(20.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -124,19 +160,13 @@ fun ChallengeFinishedScreen(
                     text = "나의 달성률", fontSize = dpToSp(dp = 16.dp),
                     style = myTypography.extraBold,
                 )
-                Row() {
-                    Text(
-                        text = "${challengeData?.inChallenge?.get(0)?.ranking ?: ""} 위 ",
-                        fontSize = dpToSp(dp = 16.dp),
-                        style = myTypography.bold,
-                    )
-                    Text(
-                        text = "${challengeData?.inChallenge?.get(0)?.achievement_percent}%",
-                        fontSize = dpToSp(dp = 16.dp),
-                        style = myTypography.bold,
-                        color = Color(0xffff5800)
-                    )
-                }
+                Text(
+                    text = "${challengeData?.inChallenge?.get(0)?.achievement_percent}%",
+                    fontSize = dpToSp(dp = 16.dp),
+                    style = myTypography.bold,
+                    color = Color(0xffff5800)
+                )
+
             }
             if (challengeData?.is_verification_time == 1) {
                 Spacer(modifier = Modifier.height(24.dp))
@@ -357,7 +387,6 @@ private fun ChallengeProgressFinishDetail(
                 }
             }
         }
-        Spacer(modifier = Modifier.height(24.dp))
     }
 }
 
@@ -505,9 +534,4 @@ fun MyReWardInfo(
             )
         }
     }
-}
-
-@Composable
-fun MyOverallResults() {
-
 }

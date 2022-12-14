@@ -251,10 +251,10 @@ object Utils {
             val date = inputFormat.parse(dateStr)
             val outputFormat: SimpleDateFormat =
                 if (isFeed) {
-                SimpleDateFormat("yyyy.MM.dd HH:mm a", Locale.US)
-            } else {
-                SimpleDateFormat("yyyy.MM.dd\nHH:mm a", Locale.US)
-            }
+                    SimpleDateFormat("yyyy.MM.dd HH:mm a", Locale.US)
+                } else {
+                    SimpleDateFormat("yyyy.MM.dd\nHH:mm a", Locale.US)
+                }
             outputFormat.timeZone = TimeZone.getTimeZone("Asia/Seoul")
             outputFormat.format(date!!)
         } catch (ignore: Exception) {
@@ -274,6 +274,7 @@ object Utils {
             dateStr
         }
     }
+
     fun endDateCalculation(startDate: String, week: Int): String {
         return try {
             val cal = Calendar.getInstance()
@@ -637,7 +638,7 @@ object Utils {
         }
     }
 
-    fun rewardBackground(type: String):Color {
+    fun rewardBackground(type: String): Color {
         return when (type) {
             "earn" -> Color(0xfff3f8ff)
             "use" -> Color(0xfffafafa)
@@ -651,7 +652,7 @@ object Utils {
         }
     }
 
-    fun rewardTextColor(type: String):Color {
+    fun rewardTextColor(type: String): Color {
         return when (type) {
             "earn" -> Color(0xff4985f8)
             "use" -> Color(0xffff5800)
@@ -665,7 +666,7 @@ object Utils {
         }
     }
 
-    fun reward(type: String):String {
+    fun reward(type: String): String {
         return when (type) {
             "earn" -> "적립"
             "use" -> "사용"
@@ -734,7 +735,7 @@ object Utils {
     }
 
     fun getAuthButtonName(challengeData: ChallengeData, type: Boolean = false): String {
-        return if(challengeData.inChallenge?.get(0)?.achievement_percent?.toDouble()!! >= 100.0f){
+        return if (challengeData.inChallenge?.get(0)?.achievement_percent?.toDouble()!! >= 100.0f) {
             "챌린지 달성 완료"
         } else if (challengeData.status == "finished") {
             "챌린지가 완료되었습니다"
@@ -772,10 +773,9 @@ object Utils {
     }
 
     fun getAuthBtnTextColor(challengeData: ChallengeData): Color {
-        return if(challengeData.inChallenge?.get(0)?.achievement_percent?.toDouble()!! >= 100.0f){
+        return if (challengeData.inChallenge?.get(0)?.achievement_percent?.toDouble()!! >= 100.0f) {
             DefaultWhite
-        }
-        else if (challengeData.status == "finished") {
+        } else if (challengeData.status == "finished") {
             Color(0xff6c6c6c)
         } else {
             if (challengeData.is_verification_photo == 1) {
@@ -807,10 +807,9 @@ object Utils {
     }
 
     fun getAuthBtnColor(challengeData: ChallengeData): Color {
-        return if(challengeData.inChallenge?.get(0)?.achievement_percent?.toDouble()!! >= 100.0f){
+        return if (challengeData.inChallenge?.get(0)?.achievement_percent?.toDouble()!! >= 100.0f) {
             Color(0xffc7c7c7)
-        }
-        else if (challengeData.status == "finished") {
+        } else if (challengeData.status == "finished") {
             DefaultWhite
         } else {
             if (challengeData.is_verification_photo == 1) {
@@ -856,7 +855,7 @@ object Utils {
 
     fun getPaidMethod(participationResult: ParticipationResult): String {
         val result = mutableListOf<String>()
-        if(!participationResult.card_name.isNullOrEmpty()) {
+        if (!participationResult.card_name.isNullOrEmpty()) {
             result.add("${participationResult.card_name} (신용카드)")
         }
         if (participationResult.rewards_amount > 0) {
@@ -868,7 +867,7 @@ object Utils {
 
     fun getPaidMethod(paidInfo: PaidInfo): String {
         val result = mutableListOf<String>()
-        if(paidInfo.cardName.isNotEmpty()) {
+        if (paidInfo.cardName.isNotEmpty()) {
             result.add("${paidInfo.cardName} (신용카드)")
         }
         if (paidInfo.rewardsAmount > 0) {
@@ -880,12 +879,36 @@ object Utils {
 
     fun getPaidMethod(paymentHistoryData: PaymentHistoryData): String {
         val result = mutableListOf<String>()
-        if(paymentHistoryData.payment != null) {
+        if (paymentHistoryData.payment != null) {
             result.add("${paymentHistoryData.payment.card_name} (신용카드)")
         }
         if (paymentHistoryData.rewards_amount > 0) {
             result.add("리워즈")
         }
+
+        return result.joinToString(" + ")
+    }
+
+    fun getRefundMethod(challengeData: ChallengeData): String {
+        val inChallenge = challengeData?.inChallenge?.get(0)
+        val result = mutableListOf<String>()
+        val refund =
+            (inChallenge?.refund_amount?.toDouble()!! / inChallenge?.deposit_amount?.toDouble()!!) * 100
+
+        if (inChallenge?.is_refunded == 1) {
+            result.add("${refund.toInt()}% 환급")
+        }
+        if (inChallenge?.is_rewards == 1)
+            if(!inChallenge?.free_rewards.isNullOrEmpty()){
+                result.add("리워즈 지급 예정")
+            } else {
+                result.add("리워즈 지급")
+            }
+        else if (inChallenge?.is_refunded == 1)
+            result.add("리워즈")
+        else
+            result.add("")
+
 
         return result.joinToString(" + ")
     }
