@@ -48,7 +48,7 @@ fun ChallengeDetailsInfo(challengeItemData: ChallengeItemData = ChallengeItemDat
                 Text(text = "이용시간 인증")
             }
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Text(text = "참가인원")
+                Text(text = "참여인원")
                 Text(text = "${challengeItemData.personnel}명")
             }
             Row(modifier = Modifier.fillMaxWidth().padding(0.dp,16.dp), horizontalArrangement = Arrangement.SpaceBetween) {

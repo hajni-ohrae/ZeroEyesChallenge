@@ -152,11 +152,11 @@ class ParticipationActivity : BaseActivity() {
                 val participationResult by viewModel.participationResult.observeAsState()
                 val paidInfo by viewModel.paidInfo.observeAsState()
 
-                if (challengeData != null && participationResult != null) {
+                if (challengeData != null && participationResult != null && paidInfo != null) {
                     ParticipationFinishScreen(
                         challengeData = challengeData!!,
-                        participationResult = participationResult,
-                        paidInfo = paidInfo,
+                        participationResult = participationResult!!,
+                        paidInfo = paidInfo!!,
                         clickListener = clickListener
                     )
                 }
@@ -275,7 +275,7 @@ class ParticipationActivity : BaseActivity() {
                     paymentLauncher.launch(intent)
                 } else {
                     init()
-                    viewModel.setPaymentInfo("리워즈", "0", "0")
+                    viewModel.setPaymentInfo("", "0", it.rewards_amount.toString())
                     navController.navigate(ChallengeParticipationNavScreen.ParticipationFinish.route)
                 }
             } ?: run {
@@ -305,9 +305,12 @@ class ParticipationActivity : BaseActivity() {
 
     override fun onBack() {
         when (navController.currentBackStackEntry?.destination?.route) {
-            ChallengeParticipationNavScreen.Participation.route,
+            ChallengeParticipationNavScreen.Participation.route -> {
+                finish()
+            }
             ChallengeParticipationNavScreen.ParticipationCancelResult.route,
             ChallengeParticipationNavScreen.ParticipationFinish.route -> {
+                setResult(RESULT_OK)
                 finish()
             }
             else -> {

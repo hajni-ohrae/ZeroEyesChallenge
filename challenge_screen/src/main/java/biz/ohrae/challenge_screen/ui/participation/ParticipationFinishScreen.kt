@@ -2,6 +2,7 @@ package biz.ohrae.challenge_screen.ui.participation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -34,8 +35,8 @@ import java.util.*
 @Composable
 fun ParticipationFinishScreen(
     challengeData: ChallengeData = ChallengeData.mock(),
-    participationResult: ParticipationResult? = null,
-    paidInfo: PaidInfo? = null,
+    participationResult: ParticipationResult = ParticipationResult.mock(),
+    paidInfo: PaidInfo = PaidInfo.mock(),
     clickListener: ParticipationClickListener? = null,
 ) {
     Column(
@@ -58,23 +59,13 @@ fun ParticipationFinishScreen(
             ParticipationDetailCard(challengeData = challengeData)
             Spacer(modifier = Modifier.height(24.dp))
             if (challengeData.min_deposit_amount > 0) {
-                Text(text = "결제 내역", style = myTypography.bold, fontSize = dpToSp(dp = 16.dp))
+                Text(text = "결제내역", style = myTypography.bold, fontSize = dpToSp(dp = 16.dp))
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-
-                    var cardName = "리워즈"
-                    paidInfo?.let {
-                        cardName = it.cardName
-                        if (it.rewardsAmount > 0) {
-                            if (cardName != "리워즈") {
-                                cardName += " + 리워즈"
-                            }
-                        }
-                    }
 
                     Text(
                         text = "결제수단",
@@ -83,13 +74,13 @@ fun ParticipationFinishScreen(
                         color = Color(0xff6c6c6c)
                     )
                     Text(
-                        text = cardName,
+                        text = Utils.getPaidMethod(paidInfo),
                         style = myTypography.default,
                         fontSize = dpToSp(dp = 16.dp),
                         color = TextBlack
                     )
                 }
-                if (participationResult != null && participationResult.rewards_amount > 0) {
+                if (participationResult.paid_amount > 0) {
                     Spacer(modifier = Modifier.height(8.dp))
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -97,7 +88,28 @@ fun ParticipationFinishScreen(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
-                            text = "리워즈 사용",
+                            text = "카드 결제",
+                            style = myTypography.default,
+                            fontSize = dpToSp(dp = 16.dp),
+                            color = Color(0xff6c6c6c)
+                        )
+                        Text(
+                            text = "${Utils.numberFormat(participationResult.paid_amount)}원",
+                            style = myTypography.bold,
+                            fontSize = dpToSp(dp = 16.dp),
+                            color = TextBlack
+                        )
+                    }
+                }
+                if (participationResult.rewards_amount > 0) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = "리워즈 결제",
                             style = myTypography.default,
                             fontSize = dpToSp(dp = 16.dp),
                             color = Color(0xff6c6c6c)
@@ -106,24 +118,28 @@ fun ParticipationFinishScreen(
                             text = "${Utils.numberFormat(participationResult.rewards_amount)}원",
                             style = myTypography.bold,
                             fontSize = dpToSp(dp = 16.dp),
-                            color = Color(0xff4985f8)
+                            color = TextBlack
                         )
                     }
                 }
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(16.dp))
+                Divider(
+                    modifier = Modifier.fillMaxWidth().height(1.dp).background(Color(0xffebebeb))
+                )
+                Spacer(modifier = Modifier.height(16.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = "총 결제 금액",
+                        text = "총 결제금액",
                         style = myTypography.default,
                         fontSize = dpToSp(dp = 16.dp),
-                        color = Color(0xff6c6c6c)
+                        color = Color(0xff121212)
                     )
                     Text(
-                        text = "${Utils.numberFormat(participationResult?.total_deposit_amount)}원",
+                        text = "${Utils.numberFormat(participationResult.total_deposit_amount)}원",
                         style = myTypography.bold,
                         fontSize = dpToSp(dp = 16.dp),
                         color = Color(0xff4985f8)

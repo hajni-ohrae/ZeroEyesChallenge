@@ -277,7 +277,7 @@ private fun InputParticipationAmount(
         verticalAlignment = CenterVertically
     ) {
         Text(
-            text = "리워즈 사용",
+            text = "리워즈 결제",
             style = myTypography.bold,
             fontSize = dpToSp(dp = 14.dp)
         )
@@ -406,7 +406,7 @@ private fun InputParticipationAmount2(
         verticalAlignment = CenterVertically
     ) {
         Text(
-            text = "리워즈 사용",
+            text = "리워즈 결제",
             style = myTypography.bold,
             fontSize = dpToSp(dp = 14.dp)
         )
@@ -541,7 +541,7 @@ fun ParticipationDetailCard(challengeData: ChallengeData) {
                 verticalAlignment = CenterVertically
             ) {
                 Text(
-                    text = "참가인원",
+                    text = "참여인원",
                     style = myTypography.w500,
                     fontSize = dpToSp(dp = 13.dp),
                     color = Color(0xff4f4f4f)
@@ -565,7 +565,7 @@ fun ParticipationDetailCard(challengeData: ChallengeData) {
                     color = Color(0xff4f4f4f)
                 )
                 Text(
-                    text = "총 ${Utils.numberFormat(challengeData.summary?.total_amount)}원",
+                    text = "${Utils.numberFormat(challengeData.summary?.total_amount)}원",
                     style = myTypography.bold,
                     fontSize = dpToSp(dp = 13.dp)
                 )
