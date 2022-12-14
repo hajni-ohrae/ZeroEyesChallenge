@@ -185,7 +185,8 @@ fun getLabelText(type: String): String {
     return when (type) {
         "deposit" -> "참여신청"
         "cancel" -> "참여취소"
-        "challenge_cancel" -> "챌린지 취소"
+        "admin_challenge_cancel" -> "참여취소(관리자)"
+        "admin_cancel" -> "참여취소"
         "refund" -> "환급"
         else -> {
             ""
@@ -197,7 +198,8 @@ fun getLabelBackColor(type: String): Color {
     return when (type) {
         "deposit" -> Color(0xfff8f8f8)
         "cancel" -> Color(0xffffefef)
-        "challenge_cancel" -> Color(0xffffefef)
+        "admin_challenge_cancel" -> Color(0xffffefef)
+        "admin_cancel" -> Color(0xffffefef)
         "refund" -> Color(0xfff9f3fd)
         else -> {
             Color(0xfff8f8f8)
@@ -209,7 +211,8 @@ fun getLabelTextColor(type: String): Color {
     return when (type) {
         "deposit" -> Color(0xff4985f8)
         "cancel" -> Color(0xffff0000)
-        "challenge_cancel" -> Color(0xffff0000)
+        "admin_challenge_cancel" -> Color(0xffff0000)
+        "admin_cancel" -> Color(0xffff0000)
         "refund" -> Color(0xff9d00ff)
         else -> {
             Color(0xff4985f8)
