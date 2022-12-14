@@ -77,7 +77,7 @@ fun ParticipationFinishScreen(
                     }
 
                     Text(
-                        text = "결제 수단",
+                        text = "결제수단",
                         style = myTypography.default,
                         fontSize = dpToSp(dp = 16.dp),
                         color = Color(0xff6c6c6c)

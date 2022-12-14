@@ -177,7 +177,7 @@ fun ParticipationScreen(
                     )
                 }
                 Spacer(modifier = Modifier.height(24.dp))
-                Text(text = "결제 수단")
+                Text(text = "결제수단")
                 MyDropDown(
                     modifier = Modifier
                         .fillMaxWidth()

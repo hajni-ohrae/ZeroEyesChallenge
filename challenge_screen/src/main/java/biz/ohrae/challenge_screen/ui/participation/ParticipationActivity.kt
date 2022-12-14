@@ -101,12 +101,18 @@ class ParticipationActivity : BaseActivity() {
 
     @Composable
     private fun BuildContent() {
+        val title = if (isCancelChallenge) {
+            "챌린지 참여 취소"
+        } else {
+            "챌린지 참여"
+        }
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(DefaultWhite)
         ) {
-            BackButton(onBack = { onBack() }, "챌린지 참여")
+            BackButton(onBack = { onBack() }, title)
             Column(modifier = Modifier) {
                 Navigation()
             }
@@ -121,8 +127,6 @@ class ParticipationActivity : BaseActivity() {
         } else {
             ChallengeParticipationNavScreen.Participation.route
         }
-
-
 
         NavHost(
             navController = navController,
@@ -173,9 +177,10 @@ class ParticipationActivity : BaseActivity() {
                 val challengeData by detailViewModel.challengeData.observeAsState()
                 val cancelResult by viewModel.cancelResult.observeAsState()
 
-                if (challengeData != null) {
+                if (challengeData != null && cancelResult != null) {
                     ParticipationCancelResultScreen(
                         challengeData = challengeData!!,
+                        cancelResult = cancelResult!!,
                         clickListener = clickListener
                     )
                 }

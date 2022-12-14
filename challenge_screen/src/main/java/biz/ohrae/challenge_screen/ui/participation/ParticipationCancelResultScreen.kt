@@ -50,7 +50,7 @@ fun ParticipationCancelResultScreen(
             )
             Spacer(modifier = Modifier.height(24.dp))
             Text(
-                text = "취소 내역",
+                text = "취소내역",
                 color = TextBlack,
                 fontSize = dpToSp(dp = 18.dp),
                 style = myTypography.bold
@@ -62,7 +62,7 @@ fun ParticipationCancelResultScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "결제 수단",
+                    text = "결제수단",
                     style = myTypography.bold,
                     fontSize = dpToSp(dp = 16.dp),
                     color = Color(0xffc6c6c6)
@@ -81,7 +81,7 @@ fun ParticipationCancelResultScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "카드 취소 금액",
+                    text = "카드 결제 취소",
                     style = myTypography.bold,
                     fontSize = dpToSp(dp = 16.dp),
                     color = Color(0xffc6c6c6)
@@ -100,7 +100,7 @@ fun ParticipationCancelResultScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "리워즈 취소 금액",
+                    text = "리워즈 결제 취소",
                     style = myTypography.bold,
                     fontSize = dpToSp(dp = 16.dp),
                     color = Color(0xffc6c6c6)
@@ -119,7 +119,7 @@ fun ParticipationCancelResultScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "전체 취소 금액",
+                    text = "총 취소금액",
                     style = myTypography.bold,
                     fontSize = dpToSp(dp = 16.dp),
                     color = Color(0xffc6c6c6)
@@ -138,7 +138,7 @@ fun ParticipationCancelResultScreen(
                 .background(Color(0xffebebeb)))
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "카드사 사정에 따라 환불 요청 후\n" +
+                text = "카드사 사정에 따라 환불 처리까지\n" +
                         "영업일 기준 최대 4-5일이 소요될 수 있습니다",
                 color = Color(0xff6c6c6c),
                 fontSize = dpToSp(dp = 14.dp),
