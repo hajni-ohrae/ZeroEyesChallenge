@@ -692,7 +692,7 @@ fun Challengers(
             FlatBorderButton(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(7.1f),
+                    .height(44.dp),
                 text = "전체보기",
                 onClick = {
                     clickListener?.onClickShowAllChallengers(authType)
@@ -726,7 +726,15 @@ fun RankedChallengers(
                         color = Color(0xff4985f8)
                     )
                 ) {
-                    append("${myRanking}위 ")
+                    append("${myRanking}위")
+                }
+                append(" / ")
+                withStyle(
+                    style = SpanStyle(
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xff4985f8)
+                    )
+                ) {
                     append("${totalUserCount}명 ")
                 }
                 append("참여")
@@ -776,7 +784,7 @@ fun RankedChallengers(
             FlatBorderButton(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .aspectRatio(7.1f),
+                    .height(44.dp),
                 text = "전체보기",
                 onClick = {
                     clickListener?.onClickShowAllChallengers(authType)
