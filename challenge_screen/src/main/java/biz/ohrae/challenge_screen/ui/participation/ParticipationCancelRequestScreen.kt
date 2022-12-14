@@ -185,7 +185,7 @@ private fun DurationLabel(challengeData: ChallengeData) {
     ChallengeDurationLabel2(
         dDay = day,
         week = "${challengeData.period}주동안",
-        numberOfTimes = if (dayType.isNullOrEmpty()) "주${challengeData.per_week}회 인증" else dayType.toString()
+        numberOfTimes = if (dayType.isNullOrEmpty()) "주${challengeData.per_week}회" else dayType.toString()
     )
 }
 
