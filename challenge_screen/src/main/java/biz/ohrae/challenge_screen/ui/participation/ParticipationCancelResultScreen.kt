@@ -69,7 +69,7 @@ fun ParticipationCancelResultScreen(
                 )
                 Text(
                     text = Utils.getPaidMethod(cancelResult),
-                    style = myTypography.bold,
+                    style = myTypography.default,
                     fontSize = dpToSp(dp = 16.dp),
                     color = TextBlack
                 )
@@ -88,9 +88,9 @@ fun ParticipationCancelResultScreen(
                 )
                 Text(
                     text = "${Utils.numberFormat(cancelResult.paid_amount)}원",
-                    style = myTypography.bold,
+                    style = myTypography.default,
                     fontSize = dpToSp(dp = 16.dp),
-                    color = Color(0xff4985f8)
+                    color = TextBlack
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
@@ -109,26 +109,7 @@ fun ParticipationCancelResultScreen(
                     text = "${Utils.numberFormat(cancelResult.rewards_amount)}원",
                     style = myTypography.bold,
                     fontSize = dpToSp(dp = 16.dp),
-                    color = Color(0xff4985f8)
-                )
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = "총 취소금액",
-                    style = myTypography.bold,
-                    fontSize = dpToSp(dp = 16.dp),
-                    color = Color(0xffc6c6c6)
-                )
-                Text(
-                    text = "${Utils.numberFormat(cancelResult.total_deposit_amount)}원",
-                    style = myTypography.bold,
-                    fontSize = dpToSp(dp = 16.dp),
-                    color = Color(0xff4985f8)
+                    color = TextBlack
                 )
             }
             Spacer(modifier = Modifier.height(16.dp))
@@ -136,6 +117,25 @@ fun ParticipationCancelResultScreen(
                 .fillMaxWidth()
                 .height(1.dp)
                 .background(Color(0xffebebeb)))
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "총 취소금액",
+                    style = myTypography.default,
+                    fontSize = dpToSp(dp = 16.dp),
+                    color = TextBlack
+                )
+                Text(
+                    text = "${Utils.numberFormat(cancelResult.total_deposit_amount)}원",
+                    style = myTypography.default,
+                    fontSize = dpToSp(dp = 16.dp),
+                    color = Color(0xff4985f8)
+                )
+            }
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = "카드사 사정에 따라 환불 처리까지\n" +
