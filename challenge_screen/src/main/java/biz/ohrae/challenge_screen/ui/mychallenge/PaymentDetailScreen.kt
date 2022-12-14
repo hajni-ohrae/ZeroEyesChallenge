@@ -206,7 +206,7 @@ fun PaymentDetailScreen(
                     "${Utils.numberToString(paymentHistoryData?.amount.toString())}원",
                     style = myTypography.extraBold,
                     fontSize = dpToSp(dp = 14.dp),
-                    color = getLabelTextColor(type)
+                    color =  Color(0xff4985f8)
                 )
             }
             Spacer(modifier = Modifier.height(10.dp))
