@@ -43,6 +43,7 @@ import biz.ohrae.challenge_screen.ui.mychallenge.MyChallengeViewModel
 import biz.ohrae.challenge_screen.ui.mychallenge.PolicyScreen
 import biz.ohrae.challenge_screen.ui.niceid.NiceIdActivity
 import biz.ohrae.challenge_screen.ui.participation.ParticipationActivity
+import biz.ohrae.challenge_screen.ui.participation.ParticipationViewModel
 import biz.ohrae.challenge_screen.ui.register.ChallengeCameraScreen
 import biz.ohrae.challenge_screen.ui.terms.TermsWebViewActivity
 import com.google.android.material.snackbar.Snackbar
@@ -57,6 +58,7 @@ import java.net.URLEncoder
 class ChallengeDetailActivity : BaseActivity() {
     private lateinit var viewModel: ChallengeDetailViewModel
     private lateinit var myChallengeViewModel: MyChallengeViewModel
+    private lateinit var participationViewModel: ParticipationViewModel
 
     private lateinit var navController: NavHostController
     private lateinit var detailClickListener: ChallengeDetailClickListener
@@ -74,6 +76,7 @@ class ChallengeDetailActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this)[ChallengeDetailViewModel::class.java]
         myChallengeViewModel = ViewModelProvider(this)[MyChallengeViewModel::class.java]
+        participationViewModel = ViewModelProvider(this)[ParticipationViewModel::class.java]
 
         setContent {
             ChallengeInTheme {
@@ -286,6 +289,10 @@ class ChallengeDetailActivity : BaseActivity() {
 
         detailClickListener = object : ChallengeDetailClickListener {
             override fun onClickParticipation() {
+                if (!isClickable()) {
+                    return
+                }
+
                 viewModel.challengeData.value?.let {
                     val userData = prefs.getUserData()
                     userData?.let { user ->
@@ -299,11 +306,7 @@ class ChallengeDetailActivity : BaseActivity() {
                     }
 
                     if (it.status == "register") {
-                        intent =
-                            Intent(this@ChallengeDetailActivity, ParticipationActivity::class.java)
-                        intent.putExtra("challengeId", challengeId)
-                        intent.putExtra("isCancel", !it.inChallenge.isNullOrEmpty())
-                        launcher.launch(intent)
+                        participationViewModel.checkChallenge(it)
                     } else {
                         showSnackBar("모집종료 되었습니다.")
                     }
@@ -458,6 +461,18 @@ class ChallengeDetailActivity : BaseActivity() {
         viewModel.isFinished.observe(this) {
             if (it == true) {
                 viewModel.getChallengeResult(challengeId.toString())
+            }
+        }
+
+        participationViewModel.checkedChallenge.observe(this) { result ->
+            if (result == true) {
+                viewModel.challengeData.value?.let {
+                    intent =
+                        Intent(this@ChallengeDetailActivity, ParticipationActivity::class.java)
+                    intent.putExtra("challengeId", challengeId)
+                    intent.putExtra("isCancel", !it.inChallenge.isNullOrEmpty())
+                    launcher.launch(intent)
+                }
             }
         }
     }

@@ -87,4 +87,7 @@ object Routes {
 
     // 출금 신청
     const val TRANSFER_REWARDS = "${CHALLENGE}/api/banking/transfer"
+
+    // 챌린지 중복체크
+    const val CHALLENGE_DUPLICATE_CHECK = "${CHALLENGE}/api/challenge/check"
 }

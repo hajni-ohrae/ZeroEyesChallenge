@@ -26,10 +26,12 @@ class ParticipationViewModel @Inject constructor(
     private val _cancelResult = MutableLiveData<ParticipationResult?>()
     private val _participationResult = MutableLiveData<ParticipationResult>()
     private val _paidInfo = MutableLiveData<PaidInfo>()
+    private val _checkedChallenge = MutableLiveData<Boolean>()
 
     val cancelResult get() = _cancelResult
     val participationResult get() = _participationResult
     val paidInfo get() = _paidInfo
+    val checkedChallenge get() = _checkedChallenge
 
     fun registerChallenge(challengeData: ChallengeData, paidAmount: Int, rewardsAmount: Int, depositAmount: Int) {
         viewModelScope.launch {
@@ -63,6 +65,25 @@ class ParticipationViewModel @Inject constructor(
     fun setPaymentInfo(cardName: String, amount: String, rewardsAmount: String) {
         viewModelScope.launch {
             _paidInfo.value = PaidInfo(cardName, amount.toInt(), rewardsAmount.toInt())
+        }
+    }
+
+    fun checkChallenge(challengeData: ChallengeData) {
+        viewModelScope.launch {
+            val response = participationRepo.checkChallenge(challengeData)
+
+            response.flowOn(Dispatchers.IO).collect { result ->
+                result.data?.let {
+                    val success = it as Boolean
+                    if (!success) {
+                        setErrorData(result.errorCode, result.errorMessage)
+                    }
+                    _checkedChallenge.value = success
+                } ?: run {
+                    _checkedChallenge.value = false
+                    setErrorData(result.errorCode, result.errorMessage)
+                }
+            }
         }
     }
 }

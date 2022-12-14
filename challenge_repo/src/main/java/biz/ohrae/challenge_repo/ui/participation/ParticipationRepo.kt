@@ -112,4 +112,33 @@ class ParticipationRepo @Inject constructor(
             }
         }
     }
+
+    suspend fun checkChallenge(challengeData: ChallengeData): Flow<FlowResult> {
+        val accessToken = prefs.getUserData()?.access_token
+        val jsonObject = JsonObject()
+        val challengeType = Utils.getAuthTypeEnglish(challengeData)
+
+        jsonObject.addProperty("challenge_id", challengeData.id)
+        jsonObject.addProperty("verification_type", challengeType)
+
+        val response = apiService.checkDuplicateChallenge(accessToken.toString(), jsonObject)
+        when (response) {
+            is NetworkResponse.Success -> {
+                return if (response.body.success) {
+                    flow {
+                        emit(FlowResult(true, "", ""))
+                    }
+                } else {
+                    flow {
+                        emit(FlowResult(false, response.body.code, response.body.message))
+                    }
+                }
+            }
+            else -> {
+                return flow {
+                    emit(FlowResult(null, "", ""))
+                }
+            }
+        }
+    }
 }

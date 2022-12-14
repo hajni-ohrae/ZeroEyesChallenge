@@ -262,4 +262,10 @@ interface ApiService {
         @Header("x-access-token") accessToken: String,
         @Body body: JsonObject?,
     ): NetworkResponse<Result, Error>
+
+    @POST(Routes.CHALLENGE_DUPLICATE_CHECK)
+    suspend fun checkDuplicateChallenge(
+        @Header("x-access-token") accessToken: String,
+        @Body body: JsonObject?
+    ): NetworkResponse<Result, Error>
 }
