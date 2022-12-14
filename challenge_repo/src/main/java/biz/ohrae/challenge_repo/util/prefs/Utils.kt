@@ -9,6 +9,8 @@ import biz.ohrae.challenge.ui.theme.DefaultWhite
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
 import biz.ohrae.challenge_repo.model.participation.PaidInfo
 import biz.ohrae.challenge_repo.model.participation.ParticipationResult
+import biz.ohrae.challenge_repo.model.user.PaymentData
+import biz.ohrae.challenge_repo.model.user.PaymentHistoryData
 import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
@@ -870,6 +872,18 @@ object Utils {
             result.add("${paidInfo.cardName} (신용카드)")
         }
         if (paidInfo.rewardsAmount > 0) {
+            result.add("리워즈")
+        }
+
+        return result.joinToString(" + ")
+    }
+
+    fun getPaidMethod(paymentHistoryData: PaymentHistoryData): String {
+        val result = mutableListOf<String>()
+        if(paymentHistoryData.payment != null) {
+            result.add("${paymentHistoryData.payment.card_name} (신용카드)")
+        }
+        if (paymentHistoryData.rewards_amount > 0) {
             result.add("리워즈")
         }
 

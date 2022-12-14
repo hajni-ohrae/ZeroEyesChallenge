@@ -33,7 +33,6 @@ fun PaymentDetailScreen(
 ) {
     val isCancel = paymentHistoryData?.type == "deposit"
     val type = paymentHistoryData?.type.toString()
-
     BackButton(onBack = { }, "결제 상세")
     Column(
         modifier = Modifier
@@ -128,6 +127,27 @@ fun PaymentDetailScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
+                    text = "결제수단",
+                    style = myTypography.w700,
+                    fontSize = dpToSp(dp = 14.dp),
+                    color = Color(0xff707070)
+                )
+                paymentHistoryData?.let{
+                    Text(
+                        text = Utils.getPaidMethod(it),
+                        style = myTypography.bold,
+                        fontSize = dpToSp(dp = 14.dp),
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
                     text = "카드결제",
                     style = myTypography.w700,
                     fontSize = dpToSp(dp = 14.dp),
@@ -135,14 +155,7 @@ fun PaymentDetailScreen(
                 )
                 Text(
                     text =
-                    if (isCancel) {
-                        "${Utils.numberToString(paymentHistoryData?.paid_amount.toString())}원"
-                    } else {
-                        if (paymentHistoryData?.paid_amount.toString() == "0")
-                            "${Utils.numberToString(paymentHistoryData?.paid_amount.toString())}원"
-                        else
-                            "-${Utils.numberToString(paymentHistoryData?.paid_amount.toString())}원"
-                    },
+                    "${Utils.numberToString(paymentHistoryData?.paid_amount.toString())}원",
                     style = myTypography.extraBold,
                     fontSize = dpToSp(dp = 14.dp),
                 )
@@ -162,14 +175,7 @@ fun PaymentDetailScreen(
                 )
                 Text(
                     text =
-                    if (isCancel) {
-                        "${Utils.numberToString(paymentHistoryData?.rewards_amount.toString())}원"
-                    } else {
-                        if (paymentHistoryData?.rewards_amount.toString() == "0")
-                            "${Utils.numberToString(paymentHistoryData?.rewards_amount.toString())}원"
-                        else
-                            "-${Utils.numberToString(paymentHistoryData?.rewards_amount.toString())}원"
-                    },
+                    "${Utils.numberToString(paymentHistoryData?.rewards_amount.toString())}원",
                     style = myTypography.extraBold,
                     fontSize = dpToSp(dp = 14.dp),
                 )
@@ -190,20 +196,132 @@ fun PaymentDetailScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = if (isCancel) "총 결제금액" else "총 결제 취소 금액",
+                    text = "총 결제금액",
                     style = myTypography.w700,
                     fontSize = dpToSp(dp = 14.dp),
                     color = Color(0xff707070)
                 )
                 Text(
-                    text = if (isCancel) {
+                    text =
+                    "${Utils.numberToString(paymentHistoryData?.amount.toString())}원",
+                    style = myTypography.extraBold,
+                    fontSize = dpToSp(dp = 14.dp),
+                    color = getLabelTextColor(type)
+                )
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "결제일시",
+                    style = myTypography.w700,
+                    fontSize = dpToSp(dp = 14.dp),
+                    color = Color(0xff707070)
+                )
+                Text(
+                    text = Utils.convertDate8(paymentHistoryData?.created_date.toString()),
+                    style = myTypography.bold,
+                    fontSize = dpToSp(dp = 14.dp),
+                )
+            }
+        }
+//        if(isCancel){
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color(0xfff8f8f8))
+        ) {
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(24.dp, 18.dp),
+                text = "환급내역",
+                style = myTypography.bold,
+                fontSize = dpToSp(dp = 14.dp),
+                color = Color(0xff707070)
+            )
+        }
+        Column(modifier = Modifier.padding(24.dp)) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "카드 결제 취소",
+                    style = myTypography.w700,
+                    fontSize = dpToSp(dp = 14.dp),
+                    color = Color(0xff707070)
+                )
+
+                Text(
+                    text =
+                    if (paymentHistoryData?.paid_amount.toString() == "0")
+                        "${Utils.numberToString(paymentHistoryData?.paid_amount.toString())}원"
+                    else
+                        "-${Utils.numberToString(paymentHistoryData?.paid_amount.toString())}원",
+                    style = myTypography.extraBold,
+                    fontSize = dpToSp(dp = 14.dp),
+                )
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "리워즈 결제 취소",
+                    style = myTypography.w700,
+                    fontSize = dpToSp(dp = 14.dp),
+                    color = Color(0xff707070)
+                )
+                Text(
+                    text =
+                    if (paymentHistoryData?.rewards_amount.toString() == "0")
+                        "${Utils.numberToString(paymentHistoryData?.rewards_amount.toString())}원"
+                    else
+                        "-${Utils.numberToString(paymentHistoryData?.rewards_amount.toString())}원",
+                    style = myTypography.extraBold,
+                    fontSize = dpToSp(dp = 14.dp),
+                )
+            }
+        }
+
+        Divider(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .padding(24.dp, 0.dp)
+                .background(Color(0xfffafafa))
+        )
+        Column(modifier = Modifier.padding(24.dp)) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "총 취소 금액",
+                    style = myTypography.w700,
+                    fontSize = dpToSp(dp = 14.dp),
+                    color = Color(0xff707070)
+                )
+                Text(
+                    text =
+                    if (paymentHistoryData?.amount.toString() == "0")
                         "${Utils.numberToString(paymentHistoryData?.amount.toString())}원"
-                    } else {
-                        if (paymentHistoryData?.amount.toString() == "0")
-                            "${Utils.numberToString(paymentHistoryData?.amount.toString())}원"
-                        else
-                            "-${Utils.numberToString(paymentHistoryData?.amount.toString())}원"
-                    },
+                    else
+                        "-${Utils.numberToString(paymentHistoryData?.amount.toString())}원",
                     style = myTypography.extraBold,
                     fontSize = dpToSp(dp = 14.dp),
                     color = getLabelTextColor(type)
@@ -217,30 +335,7 @@ fun PaymentDetailScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "결제수단",
-                    style = myTypography.w700,
-                    fontSize = dpToSp(dp = 14.dp),
-                    color = Color(0xff707070)
-                )
-                Text(
-                    text =
-                    if (paymentHistoryData?.rewards_amount == paymentHistoryData?.amount)
-                        "리워즈 결제"
-                    else
-                        paymentHistoryData?.payment?.card_name ?: "",
-                    style = myTypography.bold,
-                    fontSize = dpToSp(dp = 14.dp),
-                )
-            }
-            Spacer(modifier = Modifier.height(10.dp))
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = if (isCancel) "결제일시" else "결제 취소 일시",
+                    text = "결제 취소 일시",
                     style = myTypography.w700,
                     fontSize = dpToSp(dp = 14.dp),
                     color = Color(0xff707070)
@@ -252,5 +347,6 @@ fun PaymentDetailScreen(
                 )
             }
         }
+//        }
     }
 }

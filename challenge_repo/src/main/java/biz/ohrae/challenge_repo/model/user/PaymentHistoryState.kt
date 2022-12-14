@@ -1,6 +1,7 @@
 package biz.ohrae.challenge_repo.model.user
 
 import biz.ohrae.challenge_repo.model.detail.ChallengeData
+import biz.ohrae.challenge_repo.model.participation.PaidInfo
 
 data class PaymentHistoryData(
     val id: Int = 0,
@@ -21,4 +22,5 @@ data class PaymentData(
     val id: String,
     val amount: String,
     val card_name: String?
-)
+) {
+}
