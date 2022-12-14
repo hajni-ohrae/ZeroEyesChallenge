@@ -244,7 +244,7 @@ fun ChallengeDescription(
             )
         } else {
             Text(
-                text = "목표 달성률 및 상금",
+                text = "목표 달성률 및 리워즈",
                 style = myTypography.bold,
                 fontSize = dpToSp(dp = 18.dp)
             )

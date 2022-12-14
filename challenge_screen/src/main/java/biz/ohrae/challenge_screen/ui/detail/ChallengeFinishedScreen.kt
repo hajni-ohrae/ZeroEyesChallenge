@@ -445,22 +445,22 @@ fun MyReWardInfo(
                 style = myTypography.w500,
             )
         }
-        Spacer(modifier = Modifier.height(16.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                text = "달성금", fontSize = dpToSp(dp = 14.dp),
-                style = myTypography.w500,
-            )
-            Text(
-                text = "${Utils.numberToString(inChallenge?.refund_amount.toString())} 원",
-                fontSize = dpToSp(dp = 14.dp),
-                style = myTypography.w500,
-            )
-        }
+//        Spacer(modifier = Modifier.height(16.dp))
+//        Row(
+//            modifier = Modifier.fillMaxWidth(),
+//            verticalAlignment = Alignment.CenterVertically,
+//            horizontalArrangement = Arrangement.SpaceBetween
+//        ) {
+//            Text(
+//                text = "달성금", fontSize = dpToSp(dp = 14.dp),
+//                style = myTypography.w500,
+//            )
+//            Text(
+//                text = "${Utils.numberToString(inChallenge?.refund_amount.toString())} 원",
+//                fontSize = dpToSp(dp = 14.dp),
+//                style = myTypography.w500,
+//            )
+//        }
         Spacer(modifier = Modifier.height(16.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),

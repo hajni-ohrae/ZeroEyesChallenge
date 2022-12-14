@@ -553,40 +553,42 @@ fun ParticipationDetailCard(challengeData: ChallengeData) {
                 )
             }
             Spacer(modifier = Modifier.height(16.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = CenterVertically
-            ) {
-                Text(
-                    text = "누적 참여금",
-                    style = myTypography.w500,
-                    fontSize = dpToSp(dp = 13.dp),
-                    color = Color(0xff4f4f4f)
-                )
-                Text(
-                    text = "${Utils.numberFormat(challengeData.summary?.total_amount)}원",
-                    style = myTypography.bold,
-                    fontSize = dpToSp(dp = 13.dp)
-                )
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = CenterVertically
-            ) {
-                Text(
-                    text = "평균 참여금",
-                    style = myTypography.w500,
-                    fontSize = dpToSp(dp = 13.dp),
-                    color = Color(0xff4f4f4f)
-                )
-                Text(
-                    text = "${Utils.numberFormat(challengeData.summary?.average_amount)}원",
-                    style = myTypography.w500,
-                    fontSize = dpToSp(dp = 13.dp)
-                )
+            if (challengeData.min_deposit_amount > 0) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = CenterVertically
+                ) {
+                    Text(
+                        text = "누적 참여금",
+                        style = myTypography.w500,
+                        fontSize = dpToSp(dp = 13.dp),
+                        color = Color(0xff4f4f4f)
+                    )
+                    Text(
+                        text = "${Utils.numberFormat(challengeData.summary?.total_amount)}원",
+                        style = myTypography.bold,
+                        fontSize = dpToSp(dp = 13.dp)
+                    )
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = CenterVertically
+                ) {
+                    Text(
+                        text = "평균 참여금",
+                        style = myTypography.w500,
+                        fontSize = dpToSp(dp = 13.dp),
+                        color = Color(0xff4f4f4f)
+                    )
+                    Text(
+                        text = "${Utils.numberFormat(challengeData.summary?.average_amount)}원",
+                        style = myTypography.w500,
+                        fontSize = dpToSp(dp = 13.dp)
+                    )
+                }
             }
         }
     }
@@ -607,7 +609,7 @@ fun FreeChallengeText(){
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = "· 개설자가 정한 보상기준으로 상금이 지급됩니다",
+            text = "· 개설자가 정한 기준에 따라 리워즈가 지급됩니다",
             style = myTypography.w500,
             fontSize = dpToSp(dp = 14.dp),
         )

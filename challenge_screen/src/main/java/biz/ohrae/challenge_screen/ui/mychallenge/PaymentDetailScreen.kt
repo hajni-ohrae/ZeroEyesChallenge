@@ -155,7 +155,7 @@ fun PaymentDetailScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "상금결제",
+                    text = "리워즈결제",
                     style = myTypography.w700,
                     fontSize = dpToSp(dp = 14.dp),
                     color = Color(0xff707070)

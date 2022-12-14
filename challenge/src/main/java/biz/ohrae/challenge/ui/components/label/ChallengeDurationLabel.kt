@@ -7,16 +7,12 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.Center
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import biz.ohrae.challenge.ui.theme.DefaultBlack
-import biz.ohrae.challenge.ui.theme.appColor
 import biz.ohrae.challenge.ui.theme.dpToSp
 import biz.ohrae.challenge.ui.theme.myTypography
 
@@ -42,6 +38,11 @@ private fun ChallengeDurationLabelGallery() {
             modifier = Modifier.fillMaxWidth(),
             dDay = "D-3", week = "1주동안", numberOfTimes = "주6회"
         )
+        Spacer(modifier = Modifier.height(10.dp))
+        ChallengeDurationLabel2(
+            modifier = Modifier.fillMaxWidth(),
+            dDay = "D-3", week = "1주동안", numberOfTimes = "주6회"
+        )
     }
 }
 @Composable
@@ -57,9 +58,9 @@ fun ChallengeDurationLabel2(
         color = Color(0xfff5f5f5)
     ) {
         Row(
-            modifier = Modifier.padding(20.dp,12.dp)) {
+            modifier = Modifier.padding(0.dp, 12.dp)) {
             Text(
-                modifier = Modifier.weight(3F),
+                modifier = Modifier.weight(0.33f),
                 text = week,
                 textAlign = TextAlign.Center,
                 style = myTypography.bold,
@@ -71,7 +72,7 @@ fun ChallengeDurationLabel2(
                 .width(1.dp)
                 .background(Color(0xfffafafa)))
             Text(
-                modifier = Modifier.weight(3F),
+                modifier = Modifier.weight(0.29f),
                 text = numberOfTimes,
                 textAlign = TextAlign.Center,
                 style = myTypography.bold,
@@ -83,7 +84,7 @@ fun ChallengeDurationLabel2(
                 .width(1.dp)
                 .background(Color(0xfffafafa)))
             Text(
-                modifier = Modifier.weight(4F),
+                modifier = Modifier.weight(0.38f),
                 text = dDay,
                 textAlign = TextAlign.Center,
                 color = Color(0xff005bad),
