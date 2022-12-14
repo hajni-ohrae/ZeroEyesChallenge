@@ -199,7 +199,7 @@ fun ResultChallengers(
         if (challengers.isNotEmpty()) {
             Spacer(modifier = Modifier.height(17.dp))
             FlatGrayButton(
-                modifier = Modifier.padding(24.dp,0.dp)
+                modifier = Modifier
                     .fillMaxWidth().height(44.dp),
                 text = "+더보기",
                 onClick = {
