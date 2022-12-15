@@ -185,27 +185,27 @@ fun ChallengesInParticipationCard(
                 )
 
             }
-            if (progressStatus == "종료"){
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(), Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = "",
-                        style = myTypography.default,
-                        color = Color(0xff6c6c6c),
-                        fontSize = dpToSp(dp = 13.dp),
-                    )
-
-                    Text(
-                        text = "",
-                        style = myTypography.default,
-                        color = Color(0xff6c6c6c),
-                        fontSize = dpToSp(dp = 13.dp),
-                    )
-
-                }
-            } else {
+//            if (progressStatus == "종료"){
+//                Row(
+//                    modifier = Modifier
+//                        .fillMaxWidth(), Arrangement.SpaceBetween
+//                ) {
+//                    Text(
+//                        text = "",
+//                        style = myTypography.default,
+//                        color = Color(0xff6c6c6c),
+//                        fontSize = dpToSp(dp = 13.dp),
+//                    )
+//
+//                    Text(
+//                        text = "",
+//                        style = myTypography.default,
+//                        color = Color(0xff6c6c6c),
+//                        fontSize = dpToSp(dp = 13.dp),
+//                    )
+//
+//                }
+//            } else {
                 ChallengeStatusButton(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -218,7 +218,7 @@ fun ChallengesInParticipationCard(
                     textColor = btnTextColor,
                     enabled = enabled
                 )
-            }
+//            }
         }
     }
 }
