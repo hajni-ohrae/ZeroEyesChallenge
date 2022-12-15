@@ -185,18 +185,40 @@ fun ChallengesInParticipationCard(
                 )
 
             }
-            ChallengeStatusButton(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(40.dp),
-                text = btnName,
-                backgroundColor = btnColor,
-                onClick = { onClick() },
-                isRemainTime = isRemainTime,
-                status = status,
-                textColor = btnTextColor,
-                enabled = enabled
-            )
+            if (progressStatus == "종료"){
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(), Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "",
+                        style = myTypography.default,
+                        color = Color(0xff6c6c6c),
+                        fontSize = dpToSp(dp = 13.dp),
+                    )
+
+                    Text(
+                        text = "",
+                        style = myTypography.default,
+                        color = Color(0xff6c6c6c),
+                        fontSize = dpToSp(dp = 13.dp),
+                    )
+
+                }
+            } else {
+                ChallengeStatusButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(40.dp),
+                    text = btnName,
+                    backgroundColor = btnColor,
+                    onClick = { onClick() },
+                    isRemainTime = isRemainTime,
+                    status = status,
+                    textColor = btnTextColor,
+                    enabled = enabled
+                )
+            }
         }
     }
 }

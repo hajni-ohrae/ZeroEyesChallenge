@@ -13,7 +13,8 @@ data class PaymentHistoryData(
     val created_date: String = "",
     val updated_date: String = "",
     val challenge: ChallengeData,
-    val payment: PaymentData
+    val payment: PaymentData,
+    val deposit: Deposit?
 ) {
 
 }
@@ -24,3 +25,13 @@ data class PaymentData(
     val card_name: String?
 ) {
 }
+
+data class Deposit(
+    val id:Int,
+    val type :String,
+    val amount :Int,
+    val paid_amount :Int,
+    val rewards_amount :Int,
+    val created_date :String,
+    val updated_date :String,
+)

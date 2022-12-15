@@ -31,7 +31,8 @@ import biz.ohrae.challenge_screen.ui.participation.ParticipationScreen
 fun PaymentDetailScreen(
     paymentHistoryData: PaymentHistoryData? = null
 ) {
-    val isCancel = paymentHistoryData?.type == "deposit"
+    val deposit = paymentHistoryData?.deposit
+    val isCancel = deposit != null
     val type = paymentHistoryData?.type.toString()
     BackButton(onBack = { }, "결제 상세")
     Column(
@@ -132,7 +133,7 @@ fun PaymentDetailScreen(
                     fontSize = dpToSp(dp = 14.dp),
                     color = Color(0xff707070)
                 )
-                paymentHistoryData?.let{
+                paymentHistoryData?.let {
                     Text(
                         text = Utils.getPaidMethod(it),
                         style = myTypography.bold,
@@ -155,7 +156,10 @@ fun PaymentDetailScreen(
                 )
                 Text(
                     text =
-                    "${Utils.numberToString(paymentHistoryData?.paid_amount.toString())}원",
+                    if (isCancel)
+                        "${Utils.numberToString(deposit?.paid_amount.toString())}원"
+                    else
+                        "${Utils.numberToString(paymentHistoryData?.paid_amount.toString())}원",
                     style = myTypography.extraBold,
                     fontSize = dpToSp(dp = 14.dp),
                 )
@@ -175,7 +179,10 @@ fun PaymentDetailScreen(
                 )
                 Text(
                     text =
-                    "${Utils.numberToString(paymentHistoryData?.rewards_amount.toString())}원",
+                    if (isCancel)
+                        "${Utils.numberToString(deposit?.rewards_amount.toString())}원"
+                    else
+                        "${Utils.numberToString(paymentHistoryData?.rewards_amount.toString())}원",
                     style = myTypography.extraBold,
                     fontSize = dpToSp(dp = 14.dp),
                 )
@@ -203,10 +210,13 @@ fun PaymentDetailScreen(
                 )
                 Text(
                     text =
-                    "${Utils.numberToString(paymentHistoryData?.amount.toString())}원",
+                    if (isCancel)
+                        "${Utils.numberToString(deposit?.amount.toString())}원"
+                    else
+                        "${Utils.numberToString(paymentHistoryData?.amount.toString())}원",
                     style = myTypography.extraBold,
                     fontSize = dpToSp(dp = 14.dp),
-                    color =  Color(0xff4985f8)
+                    color = Color(0xff4985f8)
                 )
             }
             Spacer(modifier = Modifier.height(10.dp))
@@ -224,129 +234,135 @@ fun PaymentDetailScreen(
                     color = Color(0xff707070)
                 )
                 Text(
-                    text = Utils.convertDate8(paymentHistoryData?.created_date.toString()),
+                    text =
+                    if (isCancel)
+                        Utils.convertDate8(deposit?.created_date.toString())
+                    else
+                        Utils.convertDate8(
+                            paymentHistoryData?.created_date.toString()
+                        ),
                     style = myTypography.bold,
                     fontSize = dpToSp(dp = 14.dp),
                 )
             }
         }
-//        if(isCancel){
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color(0xfff8f8f8))
-        ) {
-            Text(
+        if (isCancel) {
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(24.dp, 18.dp),
-                text = "환급내역",
-                style = myTypography.bold,
-                fontSize = dpToSp(dp = 14.dp),
-                color = Color(0xff707070)
-            )
-        }
-        Column(modifier = Modifier.padding(24.dp)) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+                    .background(Color(0xfff8f8f8))
             ) {
                 Text(
-                    text = "카드 결제 취소",
-                    style = myTypography.w700,
-                    fontSize = dpToSp(dp = 14.dp),
-                    color = Color(0xff707070)
-                )
-
-                Text(
-                    text =
-                    if (paymentHistoryData?.paid_amount.toString() == "0")
-                        "${Utils.numberToString(paymentHistoryData?.paid_amount.toString())}원"
-                    else
-                        "-${Utils.numberToString(paymentHistoryData?.paid_amount.toString())}원",
-                    style = myTypography.extraBold,
-                    fontSize = dpToSp(dp = 14.dp),
-                )
-            }
-            Spacer(modifier = Modifier.height(10.dp))
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = "리워즈 결제 취소",
-                    style = myTypography.w700,
-                    fontSize = dpToSp(dp = 14.dp),
-                    color = Color(0xff707070)
-                )
-                Text(
-                    text =
-                    if (paymentHistoryData?.rewards_amount.toString() == "0")
-                        "${Utils.numberToString(paymentHistoryData?.rewards_amount.toString())}원"
-                    else
-                        "-${Utils.numberToString(paymentHistoryData?.rewards_amount.toString())}원",
-                    style = myTypography.extraBold,
-                    fontSize = dpToSp(dp = 14.dp),
-                )
-            }
-        }
-
-        Divider(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(1.dp)
-                .padding(24.dp, 0.dp)
-                .background(Color(0xfffafafa))
-        )
-        Column(modifier = Modifier.padding(24.dp)) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = "총 취소 금액",
-                    style = myTypography.w700,
-                    fontSize = dpToSp(dp = 14.dp),
-                    color = Color(0xff707070)
-                )
-                Text(
-                    text =
-                    if (paymentHistoryData?.amount.toString() == "0")
-                        "${Utils.numberToString(paymentHistoryData?.amount.toString())}원"
-                    else
-                        "-${Utils.numberToString(paymentHistoryData?.amount.toString())}원",
-                    style = myTypography.extraBold,
-                    fontSize = dpToSp(dp = 14.dp),
-                    color = getLabelTextColor(type)
-                )
-            }
-            Spacer(modifier = Modifier.height(10.dp))
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = "결제 취소 일시",
-                    style = myTypography.w700,
-                    fontSize = dpToSp(dp = 14.dp),
-                    color = Color(0xff707070)
-                )
-                Text(
-                    text = Utils.convertDate8(paymentHistoryData?.created_date.toString()),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(24.dp, 18.dp),
+                    text = "환급내역",
                     style = myTypography.bold,
                     fontSize = dpToSp(dp = 14.dp),
+                    color = Color(0xff707070)
                 )
             }
+            Column(modifier = Modifier.padding(24.dp)) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "카드 결제 취소",
+                        style = myTypography.w700,
+                        fontSize = dpToSp(dp = 14.dp),
+                        color = Color(0xff707070)
+                    )
+
+                    Text(
+                        text =
+                        if (deposit?.paid_amount.toString() == "0")
+                            "${Utils.numberToString(deposit?.paid_amount.toString())}원"
+                        else
+                            "-${Utils.numberToString(deposit?.paid_amount.toString())}원",
+                        style = myTypography.extraBold,
+                        fontSize = dpToSp(dp = 14.dp),
+                    )
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "리워즈 결제 취소",
+                        style = myTypography.w700,
+                        fontSize = dpToSp(dp = 14.dp),
+                        color = Color(0xff707070)
+                    )
+                    Text(
+                        text =
+                        if (deposit?.rewards_amount.toString() == "0")
+                            "${Utils.numberToString(deposit?.rewards_amount.toString())}원"
+                        else
+                            "-${Utils.numberToString(deposit?.rewards_amount.toString())}원",
+                        style = myTypography.extraBold,
+                        fontSize = dpToSp(dp = 14.dp),
+                    )
+                }
+            }
+
+            Divider(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .padding(24.dp, 0.dp)
+                    .background(Color(0xfffafafa))
+            )
+            Column(modifier = Modifier.padding(24.dp)) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "총 취소 금액",
+                        style = myTypography.w700,
+                        fontSize = dpToSp(dp = 14.dp),
+                        color = Color(0xff707070)
+                    )
+                    Text(
+                        text =
+                        if (deposit?.amount.toString() == "0")
+                            "${Utils.numberToString(deposit?.amount.toString())}원"
+                        else
+                            "-${Utils.numberToString(deposit?.amount.toString())}원",
+                        style = myTypography.extraBold,
+                        fontSize = dpToSp(dp = 14.dp),
+                        color = getLabelTextColor(type)
+                    )
+                }
+                Spacer(modifier = Modifier.height(10.dp))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "결제 취소 일시",
+                        style = myTypography.w700,
+                        fontSize = dpToSp(dp = 14.dp),
+                        color = Color(0xff707070)
+                    )
+                    Text(
+                        text = Utils.convertDate8(paymentHistoryData?.created_date.toString()),
+                        style = myTypography.bold,
+                        fontSize = dpToSp(dp = 14.dp),
+                    )
+                }
+            }
         }
-//        }
     }
 }
