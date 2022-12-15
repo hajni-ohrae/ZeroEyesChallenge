@@ -43,7 +43,6 @@ class NiceIdActivity : AppCompatActivity() {
         onBackPressedDispatcher.addCallback(this, callback)
 
         init()
-        observeViewModels()
     }
 
     private fun init() {
@@ -71,18 +70,11 @@ class NiceIdActivity : AppCompatActivity() {
         webView.loadUrl(url)
     }
 
-    private fun observeViewModels() {
-        myChallengeViewModel.userData.observe(this) {
-            it?.let {
-                val intent = Intent()
-                intent.putExtra("done", true)
-                setResult(RESULT_OK, intent)
-                finish()
-            }
-        }
-    }
-
     fun close() {
         myChallengeViewModel.getUserData()
+        val intent = Intent()
+        intent.putExtra("done", true)
+        setResult(RESULT_OK, intent)
+        finish()
     }
 }
