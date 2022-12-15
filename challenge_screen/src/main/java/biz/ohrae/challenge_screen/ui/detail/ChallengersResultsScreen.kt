@@ -110,6 +110,7 @@ fun ChallengersResultsScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth(),
+            
             state = listState
         ) {
             items(1) {
