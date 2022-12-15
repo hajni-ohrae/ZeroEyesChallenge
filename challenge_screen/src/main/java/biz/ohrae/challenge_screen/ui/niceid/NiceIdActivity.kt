@@ -8,9 +8,12 @@ import android.os.Bundle
 import android.webkit.CookieManager
 import android.webkit.WebChromeClient
 import android.webkit.WebSettings
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import biz.ohrae.challenge_repo.data.remote.Routes
 import biz.ohrae.challenge_screen.databinding.ActivityNiceIdBinding
+import biz.ohrae.challenge_screen.ui.mychallenge.MyChallengeViewModel
 import biz.ohrae.challenge_screen.ui.payment.iamport.Bridge
 import biz.ohrae.challenge_screen.util.NiceAuthWebViewClient
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,10 +21,16 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class NiceIdActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNiceIdBinding
+    private lateinit var myChallengeViewModel: MyChallengeViewModel
 
     private val APP_SCHEME = "mooinapp://"
 
     private var userId: String? = null
+    private val callback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            close()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +38,9 @@ class NiceIdActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         userId = intent.getStringExtra("userId")
+        myChallengeViewModel = ViewModelProvider(this)[MyChallengeViewModel::class.java]
+
+        onBackPressedDispatcher.addCallback(this, callback)
 
         init()
     }
@@ -59,6 +71,7 @@ class NiceIdActivity : AppCompatActivity() {
     }
 
     fun close() {
+        myChallengeViewModel.getUserData()
         val intent = Intent()
         intent.putExtra("done", true)
         setResult(RESULT_OK, intent)

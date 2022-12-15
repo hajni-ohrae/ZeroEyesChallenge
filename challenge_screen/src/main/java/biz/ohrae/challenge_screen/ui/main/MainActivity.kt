@@ -1,6 +1,5 @@
 package biz.ohrae.challenge_screen.ui.main
 
-import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -316,6 +315,7 @@ class MainActivity : BaseActivity() {
                     if (viewModel.challengeListPage.value == 1) {
                         init()
                     } else {
+                        myChallengeViewModel.getUserData()
                         viewModel.getUserChallengeList(MAIN_USER_FILTER, isInit = true)
                     }
                 }
