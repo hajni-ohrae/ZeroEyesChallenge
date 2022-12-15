@@ -88,7 +88,7 @@ buildscript {
         okhttp3Logging = "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
 
         /** Firebase **/
-        firebase_version = "30.3.1"
+        firebase_version = "31.0.1"
         firebaseBom = "com.google.firebase:firebase-bom:$firebase_version"
         firebaseCrashlytics = 'com.google.firebase:firebase-crashlytics-ktx'
         firebaseAnalytics = 'com.google.firebase:firebase-analytics-ktx'
