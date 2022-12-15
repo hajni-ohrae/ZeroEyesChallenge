@@ -1,6 +1,5 @@
 package biz.ohrae.challenge_screen.ui.main
 
-import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
