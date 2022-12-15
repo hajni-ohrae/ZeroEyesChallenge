@@ -75,7 +75,6 @@ class CalendarDialog : DialogFragment() {
 
     override fun onResume() {
         super.onResume()
-        hideSystemUI()
 
         val windowMetrics =
             WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(requireActivity())

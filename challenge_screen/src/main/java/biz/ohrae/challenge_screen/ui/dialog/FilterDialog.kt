@@ -62,7 +62,6 @@ class FilterDialog(private val viewModel: ChallengeMainViewModel) : DialogFragme
 
     override fun onResume() {
         super.onResume()
-        hideSystemUI()
 
         val windowMetrics =
             WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(requireActivity())

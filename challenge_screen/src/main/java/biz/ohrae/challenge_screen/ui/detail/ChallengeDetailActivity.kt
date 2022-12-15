@@ -473,6 +473,17 @@ class ChallengeDetailActivity : BaseActivity() {
                     intent.putExtra("isCancel", !it.inChallenge.isNullOrEmpty())
                     launcher.launch(intent)
                 }
+            } else {
+                val errorData = participationViewModel.errorData.value
+                viewModel.challengeData.value?.let {
+                    if (errorData?.code == "4352") {
+                        val authType = Utils.getAuthType(it)
+                        val message = "${authType}은 인증 방식 특성상 1개의 챌린지 참여만 가능합니다\n단, 개인/매장/브랜드/제로아이즈는 각 1개씩은 동시 참여가 가능합니다"
+                        showAlertDialog(message)
+                    } else {
+                        showSnackBar(errorData?.code, errorData?.message)
+                    }
+                }
             }
         }
     }

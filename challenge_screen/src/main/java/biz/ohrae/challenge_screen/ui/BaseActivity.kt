@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.os.SystemClock
 import androidx.appcompat.app.AppCompatActivity
 import biz.ohrae.challenge_repo.util.prefs.SharedPreference
+import biz.ohrae.challenge_screen.ui.dialog.CustomDialog
+import biz.ohrae.challenge_screen.ui.dialog.CustomDialogListener
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 
@@ -44,5 +46,21 @@ open class BaseActivity: AppCompatActivity() {
         }
         lastClickedTime = SystemClock.elapsedRealtime()
         return true
+    }
+
+    fun showAlertDialog(content: String) {
+        val dialog =
+            CustomDialog(positiveBtnName = "확인", content = content)
+        dialog.isCancelable = false
+        dialog.setListener(object : CustomDialogListener {
+            override fun clickPositive() {
+                dialog.dismiss()
+            }
+
+            override fun clickNegative() {
+                dialog.dismiss()
+            }
+        })
+        dialog.show(supportFragmentManager, "showDialog")
     }
 }
