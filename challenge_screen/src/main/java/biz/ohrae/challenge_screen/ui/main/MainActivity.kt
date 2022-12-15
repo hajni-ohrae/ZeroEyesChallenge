@@ -315,6 +315,7 @@ class MainActivity : BaseActivity() {
                     if (viewModel.challengeListPage.value == 1) {
                         init()
                     } else {
+                        myChallengeViewModel.getUserData()
                         viewModel.getUserChallengeList(MAIN_USER_FILTER, isInit = true)
                     }
                 }
