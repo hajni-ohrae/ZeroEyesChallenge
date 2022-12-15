@@ -305,10 +305,14 @@ class ChallengeDetailActivity : BaseActivity() {
                         }
                     }
 
-                    if (it.status == "register") {
-                        participationViewModel.checkChallenge(it)
+                    if (it.is_cancelable == 1 || !it.inChallenge.isNullOrEmpty()) {
+                        goParticipation()
                     } else {
-                        showSnackBar("모집종료 되었습니다.")
+                        if (it.status == "register") {
+                            participationViewModel.checkChallenge(it)
+                        } else {
+                            showSnackBar("모집종료 되었습니다.")
+                        }
                     }
                 }
             }
@@ -466,13 +470,7 @@ class ChallengeDetailActivity : BaseActivity() {
 
         participationViewModel.checkedChallenge.observe(this) { result ->
             if (result == true) {
-                viewModel.challengeData.value?.let {
-                    intent =
-                        Intent(this@ChallengeDetailActivity, ParticipationActivity::class.java)
-                    intent.putExtra("challengeId", challengeId)
-                    intent.putExtra("isCancel", !it.inChallenge.isNullOrEmpty())
-                    launcher.launch(intent)
-                }
+                goParticipation()
             } else {
                 val errorData = participationViewModel.errorData.value
                 viewModel.challengeData.value?.let {
@@ -539,6 +537,16 @@ class ChallengeDetailActivity : BaseActivity() {
 
     private fun onBottomReached() {
         viewModel.getVerifyList(id = challengeId.toString())
+    }
+
+    private fun goParticipation() {
+        viewModel.challengeData.value?.let {
+            intent =
+                Intent(this@ChallengeDetailActivity, ParticipationActivity::class.java)
+            intent.putExtra("challengeId", challengeId)
+            intent.putExtra("isCancel", !it.inChallenge.isNullOrEmpty())
+            launcher.launch(intent)
+        }
     }
 
     private fun showAuthCancelDialog() {
